@@ -1,0 +1,17 @@
+/.mrsd
+*.pyc
+/.settings
+/.project
+/.pydevproject
+/.installed.cfg
+/.mr.developer.cfg
+/src/cone.ugm.egg-info
+/src/zc.recipe.cmmi/src/zc.recipe.cmmi.egg-info
+/bin
+/buildout.cfg
+/develop-eggs
+/devsrc
+/eggs
+/parts
+/downloads
+/var
