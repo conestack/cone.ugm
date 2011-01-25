@@ -1,0 +1,31 @@
+Root Application Node
+=====================
+
+    >>> from cone.ugm.model import get_root
+    >>> root = get_root(None)
+    >>> root
+    <Ugm object 'None' at ...>
+    
+    >>> root.factories
+    odict([('users', <class 'cone.ugm.model.users.Users'>), 
+    ('settings', <class 'cone.ugm.model.settings.Settings'>)])
+
+## later
+
+    odict([('users', <class 'cone.ugm.model.users.Users'>), 
+    ('groups', <class 'cone.ugm.model.groups.Groups'>), 
+    ('settings', <class 'cone.ugm.model.settings.Settings'>)])
+    
+    >>> root.properties
+    <cone.app.model.Properties object at ...>
+    
+    >>> root.metadata
+    <cone.app.model.BaseMetadata object at ...>
+    
+Causes ``&nbsp`` to be rendered instead of title for mainmenu links.
+
+    >>> root.properties.mainmenu_empty_title
+    True
+    
+    >>> root.properties.default_child
+    'users'

@@ -1,0 +1,26 @@
+<tal:ajax xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax" omit-tag="True">
+  <div class="column left_column box">
+  
+    <div class="add_button">
+      <form action="">
+        <input type="submit"
+               name="add"
+               value="${context.add_label}"
+               ajax:bind="click"
+               ajax:target="${context.add_target}"
+               ajax:action="add:#content:inner" />
+      </form>
+    </div>
+  
+    <div class="column_filter">
+      <input type="text" name="column_filter" value="filter listing" />
+    </div>
+  
+    <div class="clear"></div>
+  
+    <tal:batch condition="None" replace="structure tile('columnbatch')" />
+  
+    <tal:listing replace="structure tile('columnlisting')" />
+  
+  </div>
+</tal:ajax>

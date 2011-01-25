@@ -1,0 +1,29 @@
+Group Adapter Application Node
+=======================
+
+    >>> from cone.ugm.model.groups import Groups
+    >>> groups = Groups()
+    >>> group = groups['group0']
+    >>> group
+    <Group object 'group0' at ...>
+
+Check Properties.
+::
+
+    >>> props = group.properties
+
+Group object is editable.
+::
+
+    >>> props.editable
+    True
+
+Check Metadata.
+::
+
+    >>> md = group.metadata
+    >>> md.title
+    'Group'
+    
+    >>> md.description
+    'Group'

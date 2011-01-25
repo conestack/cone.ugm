@@ -1,0 +1,365 @@
+From c79af4ccc11f02d8ee0b9f1a97c0a90c34419955 Mon Sep 17 00:00:00 2001
+From: Florian Friesdorf <flo@chaoflow.net>
+Date: Wed, 5 Jan 2011 09:51:21 +0100
+Subject: [PATCH] /usr/bin/file -> file
+
+---
+ aclocal.m4                 |   16 ++++++++--------
+ build/ltmain.sh            |    2 +-
+ configure                  |   16 ++++++++--------
+ contrib/ldapc++/aclocal.m4 |   18 +++++++++---------
+ contrib/ldapc++/configure  |   18 +++++++++---------
+ contrib/ldapc++/ltmain.sh  |    2 +-
+ 6 files changed, 36 insertions(+), 36 deletions(-)
+
+diff --git a/aclocal.m4 b/aclocal.m4
+index d5ecbec..1a92cdc 100644
+--- a/aclocal.m4
++++ b/aclocal.m4
+@@ -959,7 +959,7 @@ ia64-*-hpux*)
+   # Find out which ABI we are using.
+   echo 'int i;' > conftest.$ac_ext
+   if AC_TRY_EVAL(ac_compile); then
+-    case `/usr/bin/file conftest.$ac_objext` in
++    case `file conftest.$ac_objext` in
+     *ELF-32*)
+       HPUX_IA64_MODE="32"
+       ;;
+@@ -975,7 +975,7 @@ ia64-*-hpux*)
+   echo '[#]line __oline__ "configure"' > conftest.$ac_ext
+   if AC_TRY_EVAL(ac_compile); then
+    if test "$lt_cv_prog_gnu_ld" = yes; then
+-    case `/usr/bin/file conftest.$ac_objext` in
++    case `file conftest.$ac_objext` in
+     *32-bit*)
+       LD="${LD-ld} -melf32bsmip"
+       ;;
+@@ -987,7 +987,7 @@ ia64-*-hpux*)
+       ;;
+     esac
+    else
+-    case `/usr/bin/file conftest.$ac_objext` in
++    case `file conftest.$ac_objext` in
+     *32-bit*)
+       LD="${LD-ld} -32"
+       ;;
+@@ -1007,7 +1007,7 @@ x86_64-*linux*|ppc*-*linux*|powerpc*-*linux*|s390*-*linux*|sparc*-*linux*)
+   # Find out which ABI we are using.
+   echo 'int i;' > conftest.$ac_ext
+   if AC_TRY_EVAL(ac_compile); then
+-    case `/usr/bin/file conftest.o` in
++    case `file conftest.o` in
+     *32-bit*)
+       case $host in
+         x86_64-*linux*)
+@@ -2686,7 +2686,7 @@ beos*)
+ 
+ bsdi[[45]]*)
+   lt_cv_deplibs_check_method='file_magic ELF [[0-9]][[0-9]]*-bit [[ML]]SB (shared object|dynamic lib)'
+-  lt_cv_file_magic_cmd='/usr/bin/file -L'
++  lt_cv_file_magic_cmd='file -L'
+   lt_cv_file_magic_test_file=/shlib/libc.so
+   ;;
+ 
+@@ -2714,7 +2714,7 @@ freebsd* | kfreebsd*-gnu | dragonfly*)
+       # Not sure whether the presence of OpenBSD here was a mistake.
+       # Let's accept both of them until this is cleared up.
+       lt_cv_deplibs_check_method='file_magic (FreeBSD|OpenBSD|DragonFly)/i[[3-9]]86 (compact )?demand paged shared library'
+-      lt_cv_file_magic_cmd=/usr/bin/file
++      lt_cv_file_magic_cmd=file
+       lt_cv_file_magic_test_file=`echo /usr/lib/libc.so.*`
+       ;;
+     esac
+@@ -2728,7 +2728,7 @@ gnu*)
+   ;;
+ 
+ hpux10.20* | hpux11*)
+-  lt_cv_file_magic_cmd=/usr/bin/file
++  lt_cv_file_magic_cmd=file
+   case $host_cpu in
+   ia64*)
+     lt_cv_deplibs_check_method='file_magic (s[[0-9]][[0-9]][[0-9]]|ELF-[[0-9]][[0-9]]) shared object file - IA64'
+@@ -2770,7 +2770,7 @@ netbsd*)
+ 
+ newos6*)
+   lt_cv_deplibs_check_method='file_magic ELF [[0-9]][[0-9]]*-bit [[ML]]SB (executable|dynamic lib)'
+-  lt_cv_file_magic_cmd=/usr/bin/file
++  lt_cv_file_magic_cmd=file
+   lt_cv_file_magic_test_file=/usr/lib/libnls.so
+   ;;
+ 
+diff --git a/build/ltmain.sh b/build/ltmain.sh
+index d14b8ab..e7224a7 100755
+--- a/build/ltmain.sh
++++ b/build/ltmain.sh
+@@ -2727,7 +2727,7 @@ EOF
+ 		  *-*-darwin* )
+ 		    # if the lib is a module then we can not link against
+ 		    # it, someone is ignoring the new warnings I added
+-		    if /usr/bin/file -L $add 2> /dev/null |
++		    if file -L $add 2> /dev/null |
+                       $EGREP ": [^:]* bundle" >/dev/null ; then
+ 		      $echo "** Warning, lib $linklib is a module, not a shared library"
+ 		      if test -z "$old_library" ; then
+diff --git a/configure b/configure
+index da30577..620ddf1 100755
+--- a/configure
++++ b/configure
+@@ -6277,7 +6277,7 @@ beos*)
+ 
+ bsdi[45]*)
+   lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib)'
+-  lt_cv_file_magic_cmd='/usr/bin/file -L'
++  lt_cv_file_magic_cmd='file -L'
+   lt_cv_file_magic_test_file=/shlib/libc.so
+   ;;
+ 
+@@ -6305,7 +6305,7 @@ freebsd* | kfreebsd*-gnu | dragonfly*)
+       # Not sure whether the presence of OpenBSD here was a mistake.
+       # Let's accept both of them until this is cleared up.
+       lt_cv_deplibs_check_method='file_magic (FreeBSD|OpenBSD|DragonFly)/i[3-9]86 (compact )?demand paged shared library'
+-      lt_cv_file_magic_cmd=/usr/bin/file
++      lt_cv_file_magic_cmd=file
+       lt_cv_file_magic_test_file=`echo /usr/lib/libc.so.*`
+       ;;
+     esac
+@@ -6319,7 +6319,7 @@ gnu*)
+   ;;
+ 
+ hpux10.20* | hpux11*)
+-  lt_cv_file_magic_cmd=/usr/bin/file
++  lt_cv_file_magic_cmd=file
+   case $host_cpu in
+   ia64*)
+     lt_cv_deplibs_check_method='file_magic (s[0-9][0-9][0-9]|ELF-[0-9][0-9]) shared object file - IA64'
+@@ -6361,7 +6361,7 @@ netbsd*)
+ 
+ newos6*)
+   lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (executable|dynamic lib)'
+-  lt_cv_file_magic_cmd=/usr/bin/file
++  lt_cv_file_magic_cmd=file
+   lt_cv_file_magic_test_file=/usr/lib/libnls.so
+   ;;
+ 
+@@ -6453,7 +6453,7 @@ ia64-*-hpux*)
+   ac_status=$?
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); }; then
+-    case `/usr/bin/file conftest.$ac_objext` in
++    case `file conftest.$ac_objext` in
+     *ELF-32*)
+       HPUX_IA64_MODE="32"
+       ;;
+@@ -6473,7 +6473,7 @@ ia64-*-hpux*)
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); }; then
+    if test "$lt_cv_prog_gnu_ld" = yes; then
+-    case `/usr/bin/file conftest.$ac_objext` in
++    case `file conftest.$ac_objext` in
+     *32-bit*)
+       LD="${LD-ld} -melf32bsmip"
+       ;;
+@@ -6485,7 +6485,7 @@ ia64-*-hpux*)
+       ;;
+     esac
+    else
+-    case `/usr/bin/file conftest.$ac_objext` in
++    case `file conftest.$ac_objext` in
+     *32-bit*)
+       LD="${LD-ld} -32"
+       ;;
+@@ -6509,7 +6509,7 @@ x86_64-*linux*|ppc*-*linux*|powerpc*-*linux*|s390*-*linux*|sparc*-*linux*)
+   ac_status=$?
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); }; then
+-    case `/usr/bin/file conftest.o` in
++    case `file conftest.o` in
+     *32-bit*)
+       case $host in
+         x86_64-*linux*)
+diff --git a/contrib/ldapc++/aclocal.m4 b/contrib/ldapc++/aclocal.m4
+index 1d4ddbf..8b19913 100644
+--- a/contrib/ldapc++/aclocal.m4
++++ b/contrib/ldapc++/aclocal.m4
+@@ -575,7 +575,7 @@ ia64-*-hpux*)
+   # Find out which ABI we are using.
+   echo 'int i;' > conftest.$ac_ext
+   if AC_TRY_EVAL(ac_compile); then
+-    case `/usr/bin/file conftest.$ac_objext` in
++    case `file conftest.$ac_objext` in
+     *ELF-32*)
+       HPUX_IA64_MODE="32"
+       ;;
+@@ -591,7 +591,7 @@ ia64-*-hpux*)
+   echo '[#]line __oline__ "configure"' > conftest.$ac_ext
+   if AC_TRY_EVAL(ac_compile); then
+    if test "$lt_cv_prog_gnu_ld" = yes; then
+-    case `/usr/bin/file conftest.$ac_objext` in
++    case `file conftest.$ac_objext` in
+     *32-bit*)
+       LD="${LD-ld} -melf32bsmip"
+       ;;
+@@ -603,7 +603,7 @@ ia64-*-hpux*)
+       ;;
+     esac
+    else
+-    case `/usr/bin/file conftest.$ac_objext` in
++    case `file conftest.$ac_objext` in
+     *32-bit*)
+       LD="${LD-ld} -32"
+       ;;
+@@ -624,7 +624,7 @@ s390*-*linux*|sparc*-*linux*)
+   # Find out which ABI we are using.
+   echo 'int i;' > conftest.$ac_ext
+   if AC_TRY_EVAL(ac_compile); then
+-    case `/usr/bin/file conftest.o` in
++    case `file conftest.o` in
+     *32-bit*)
+       case $host in
+         x86_64-*kfreebsd*-gnu)
+@@ -685,7 +685,7 @@ sparc*-*solaris*)
+   # Find out which ABI we are using.
+   echo 'int i;' > conftest.$ac_ext
+   if AC_TRY_EVAL(ac_compile); then
+-    case `/usr/bin/file conftest.o` in
++    case `file conftest.o` in
+     *64-bit*)
+       case $lt_cv_prog_gnu_ld in
+       yes*) LD="${LD-ld} -m elf64_sparc" ;;
+@@ -2431,7 +2431,7 @@ beos*)
+ 
+ bsdi[[45]]*)
+   lt_cv_deplibs_check_method='file_magic ELF [[0-9]][[0-9]]*-bit [[ML]]SB (shared object|dynamic lib)'
+-  lt_cv_file_magic_cmd='/usr/bin/file -L'
++  lt_cv_file_magic_cmd='file -L'
+   lt_cv_file_magic_test_file=/shlib/libc.so
+   ;;
+ 
+@@ -2465,7 +2465,7 @@ freebsd* | dragonfly*)
+       # Not sure whether the presence of OpenBSD here was a mistake.
+       # Let's accept both of them until this is cleared up.
+       lt_cv_deplibs_check_method='file_magic (FreeBSD|OpenBSD|DragonFly)/i[[3-9]]86 (compact )?demand paged shared library'
+-      lt_cv_file_magic_cmd=/usr/bin/file
++      lt_cv_file_magic_cmd=file
+       lt_cv_file_magic_test_file=`echo /usr/lib/libc.so.*`
+       ;;
+     esac
+@@ -2479,7 +2479,7 @@ gnu*)
+   ;;
+ 
+ hpux10.20* | hpux11*)
+-  lt_cv_file_magic_cmd=/usr/bin/file
++  lt_cv_file_magic_cmd=file
+   case $host_cpu in
+   ia64*)
+     lt_cv_deplibs_check_method='file_magic (s[[0-9]][[0-9]][[0-9]]|ELF-[[0-9]][[0-9]]) shared object file - IA64'
+@@ -2526,7 +2526,7 @@ netbsd* | netbsdelf*-gnu)
+ 
+ newos6*)
+   lt_cv_deplibs_check_method='file_magic ELF [[0-9]][[0-9]]*-bit [[ML]]SB (executable|dynamic lib)'
+-  lt_cv_file_magic_cmd=/usr/bin/file
++  lt_cv_file_magic_cmd=file
+   lt_cv_file_magic_test_file=/usr/lib/libnls.so
+   ;;
+ 
+diff --git a/contrib/ldapc++/configure b/contrib/ldapc++/configure
+index 60c77f2..d1623ee 100755
+--- a/contrib/ldapc++/configure
++++ b/contrib/ldapc++/configure
+@@ -4684,7 +4684,7 @@ beos*)
+ 
+ bsdi[45]*)
+   lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib)'
+-  lt_cv_file_magic_cmd='/usr/bin/file -L'
++  lt_cv_file_magic_cmd='file -L'
+   lt_cv_file_magic_test_file=/shlib/libc.so
+   ;;
+ 
+@@ -4718,7 +4718,7 @@ freebsd* | dragonfly*)
+       # Not sure whether the presence of OpenBSD here was a mistake.
+       # Let's accept both of them until this is cleared up.
+       lt_cv_deplibs_check_method='file_magic (FreeBSD|OpenBSD|DragonFly)/i[3-9]86 (compact )?demand paged shared library'
+-      lt_cv_file_magic_cmd=/usr/bin/file
++      lt_cv_file_magic_cmd=file
+       lt_cv_file_magic_test_file=`echo /usr/lib/libc.so.*`
+       ;;
+     esac
+@@ -4732,7 +4732,7 @@ gnu*)
+   ;;
+ 
+ hpux10.20* | hpux11*)
+-  lt_cv_file_magic_cmd=/usr/bin/file
++  lt_cv_file_magic_cmd=file
+   case $host_cpu in
+   ia64*)
+     lt_cv_deplibs_check_method='file_magic (s[0-9][0-9][0-9]|ELF-[0-9][0-9]) shared object file - IA64'
+@@ -4779,7 +4779,7 @@ netbsd* | netbsdelf*-gnu)
+ 
+ newos6*)
+   lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (executable|dynamic lib)'
+-  lt_cv_file_magic_cmd=/usr/bin/file
++  lt_cv_file_magic_cmd=file
+   lt_cv_file_magic_test_file=/usr/lib/libnls.so
+   ;;
+ 
+@@ -4877,7 +4877,7 @@ ia64-*-hpux*)
+   ac_status=$?
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); }; then
+-    case `/usr/bin/file conftest.$ac_objext` in
++    case `file conftest.$ac_objext` in
+     *ELF-32*)
+       HPUX_IA64_MODE="32"
+       ;;
+@@ -4897,7 +4897,7 @@ ia64-*-hpux*)
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); }; then
+    if test "$lt_cv_prog_gnu_ld" = yes; then
+-    case `/usr/bin/file conftest.$ac_objext` in
++    case `file conftest.$ac_objext` in
+     *32-bit*)
+       LD="${LD-ld} -melf32bsmip"
+       ;;
+@@ -4909,7 +4909,7 @@ ia64-*-hpux*)
+       ;;
+     esac
+    else
+-    case `/usr/bin/file conftest.$ac_objext` in
++    case `file conftest.$ac_objext` in
+     *32-bit*)
+       LD="${LD-ld} -32"
+       ;;
+@@ -4934,7 +4934,7 @@ s390*-*linux*|sparc*-*linux*)
+   ac_status=$?
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); }; then
+-    case `/usr/bin/file conftest.o` in
++    case `file conftest.o` in
+     *32-bit*)
+       case $host in
+         x86_64-*kfreebsd*-gnu)
+@@ -5058,7 +5058,7 @@ sparc*-*solaris*)
+   ac_status=$?
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); }; then
+-    case `/usr/bin/file conftest.o` in
++    case `file conftest.o` in
+     *64-bit*)
+       case $lt_cv_prog_gnu_ld in
+       yes*) LD="${LD-ld} -m elf64_sparc" ;;
+diff --git a/contrib/ldapc++/ltmain.sh b/contrib/ldapc++/ltmain.sh
+index 06823e0..542db4a 100644
+--- a/contrib/ldapc++/ltmain.sh
++++ b/contrib/ldapc++/ltmain.sh
+@@ -2659,7 +2659,7 @@ EOF
+ 		  *-*-darwin* )
+ 		    # if the lib is a module then we can not link against
+ 		    # it, someone is ignoring the new warnings I added
+-		    if /usr/bin/file -L $add 2> /dev/null |
++		    if file -L $add 2> /dev/null |
+                       $EGREP ": [^:]* bundle" >/dev/null ; then
+ 		      $echo "** Warning, lib $linklib is a module, not a shared library"
+ 		      if test -z "$old_library" ; then
+-- 
+1.7.3.2
+

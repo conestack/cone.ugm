@@ -1,0 +1,15 @@
+<configure xmlns="http://namespaces.repoze.org/bfg">
+
+  <include package="repoze.bfg.includes" />
+  
+  <include package="cone.app" />  
+  
+  <scan package=".browser" />
+  
+  <view
+    for="*"
+    view=".browser.static_view"
+    name="cone.ugm.static"
+  />
+
+</configure>

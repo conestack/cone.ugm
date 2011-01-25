@@ -1,0 +1,29 @@
+User Adapter Application Node
+=============================
+
+    >>> from cone.ugm.model.users import Users
+    >>> users = Users(layer['props'], layer['ucfg'])
+    >>> user = users['uid0']
+    >>> user
+    <User object 'uid0' at ...>
+
+Check Properties.
+::
+
+    >>> props = user.properties
+
+User object is editable.
+::
+
+    >>> props.editable
+    True
+
+Check Metadata.
+::
+
+    >>> md = user.metadata
+    >>> md.title
+    'User'
+    
+    >>> md.description
+    'User'

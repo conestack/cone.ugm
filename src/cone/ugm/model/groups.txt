@@ -1,0 +1,26 @@
+Groups Application Node
+=======================
+
+    >>> from cone.ugm.model.groups import Groups
+    >>> groups = Groups()
+
+Check Properties.
+::
+
+    >>> props = groups.properties
+
+Groups object is not editable.
+::
+
+    >>> props.editable
+    False
+
+Check Metadata.
+::
+
+    >>> md = groups.metadata
+    >>> md.title
+    'Groups'
+    
+    >>> md.description
+    'Container for Groups'

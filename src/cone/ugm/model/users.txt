@@ -1,0 +1,76 @@
+Users Application Node
+=======================
+
+    >>> from cone.ugm.model.users import Users
+    >>> users = Users(layer['props'], layer['ucfg'])
+
+Check Properties.
+::
+
+    >>> props = users.properties
+
+Users object is not editable.
+::
+
+    >>> props.editable
+    False
+
+Check Metadata.
+::
+
+    >>> md = users.metadata
+    >>> md.title
+    'Users'
+    
+    >>> md.description
+    'Container for Users'
+
+Check for test users.
+::
+
+    >>> len([x for x in users])
+    300
+
+The children are user application nodes.
+::
+    >>> user0 = users[users.keys()[0]]
+    >>> user0
+    <User object 'uid0' at ...>
+
+The real user objects are available via .model.
+::
+    >>> user0.model
+    <User 'uid0'>
+    >>> user0.model.__class__
+    <class 'node.ext.ldap.users.User'>
+
+XXX: model is too generic, needs discussion. If so generic I'd say .context,
+otherwise more specific.
+
+XXX: should all this below work on the application model user or on the data
+model behind?
+
+The attributes of the user are wrapped.
+::
+    >>> user0.attrs.items()
+    [('cn', u'cn0'),
+     ('sn', u'sn0'),
+     ('mail', u'uid0@users300.my-domain.com'),
+     ('login', u'uid0')]
+
+    >>> user0.attrs['mail'] = 'foo'
+
+# XXX: changed/__call__ should be available on the user object
+
+    >>> user0.attrs.changed
+    True
+    >>> user0.model.context()
+    >>> user0.attrs.changed
+    False
+
+    >>> user0.attrs['mail']
+    u'foo'
+
+    >>> del user0.attrs['mail']
+    >>> user0.attrs['mail'] = 'uid0@users300.my-domain.com'
+    >>> user0.model.context()

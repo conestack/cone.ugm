@@ -1,0 +1,356 @@
+/* general */
+body {
+	margin:0;
+	padding:0;
+	font-family:Arial;
+	color:#333;
+	font-size:90%;
+}
+hr {
+	border-style:solid;
+	border-width:1px 0 0 0;
+	border-color:#ccc;
+	margin:12px 0;
+}
+label {
+    display:block;
+	font-weight:bold;
+}
+form .field {
+	margin-bottom:6px;
+}
+form .field div.error {
+	color:red;
+}
+form .field div.error label {
+	color:#333;
+}
+.clear {
+	clear:both;
+}
+/* main layout styles */
+#wrapper {
+	margin:0;
+	padding:0;
+}
+#header {
+	position:relative;
+	height:60px;
+	background-color:#23de10;
+}
+h1#logo {
+	position:absolute;
+	top:3px;
+	left:12px;
+	margin:0;
+	text-shadow:#aaa 1px 1px 1px;
+}
+h1#logo a {
+	text-decoration:none;
+	font-size:40px;
+	color:#fff;
+	font-weight: normal;
+	font-family:Times;
+}
+div#menu {
+	position:absolute;
+	left: 140px;
+	top: 33px;
+}
+ul#mainmenu {
+	margin:0;
+	padding:0;
+	list-style-type:none;
+}
+ul#mainmenu li {
+	display:inline;
+	margin-right:20px;
+}
+ul#mainmenu li a {
+    text-decoration:none;
+	padding-left:46px;
+	line-height:51px;
+	font-size:51px;
+}
+ul#mainmenu li.node-users a {
+	background: url('/cone.ugm.static/images/menu_users.png') top left no-repeat;
+}
+ul#mainmenu li.node-users a.current_page_item {
+    background: url('/cone.ugm.static/images/menu_users_selected.png') top left no-repeat;
+}
+ul#mainmenu li.node-groups a {
+    background: url('/cone.ugm.static/images/menu_groups.png') top left no-repeat;
+}
+ul#mainmenu li.node-groups a.current_page_item {
+    background: url('/cone.ugm.static/images/menu_groups_selected.png') top left no-repeat;
+}
+ul#mainmenu li.node-settings a {
+    background: url('/cone.ugm.static/images/menu_settings.png') top left no-repeat;
+}
+ul#mainmenu li.node-settings a.current_page_item {
+    background: url('/cone.ugm.static/images/menu_settings_selected.png') top left no-repeat;
+}
+div#content {
+	padding-top:12px;
+	padding-left:12px;
+}
+div#footer {
+	clear:both;
+	padding-left:12px;
+	font-size:80%;
+	color:#aaa;
+}
+div#footer a {
+	text-decoration:none;
+	font-weight:bold;
+    color:#aaa;
+}
+/* box background */
+div.box,
+#form-loginform,
+#form-userform,
+#form-editform {
+	background: url('/cone.ugm.static/images/box.gif') top left no-repeat;
+	padding:12px;
+}
+/* columns */
+div.columns div.column {
+	float:left;
+}
+div.column {
+	width:500px;
+	min-width:500px;
+}
+/* add button */
+div.add_button {
+	float:left;
+}
+div.add_button input {
+	font-size:80%;
+}
+/* column filter */
+div.column_filter {
+	float:right;
+}
+div.column_filter input {
+	color:#ccc;
+	font-size:80%;
+}
+/* column batch */
+div.column .batch {
+	clear:both;
+	padding-top:12px;
+}
+div.column .batch span {
+    color:#ccc;
+}
+div.column .batch a {
+	color:#49539f;
+	text-decoration:none;
+}
+div.column .batch strong {
+    font-weight:bold;
+	font-size:110%;
+	color:#333;
+}
+/* column listing */
+div.columnsorting {
+	padding-top:6px;
+	padding-bottom:6px;
+}
+div.columnsorting a {
+	color:#333;
+	cursor:pointer;
+	text-decoration:none;
+	font-size:80%;
+	font-weight:bold;
+	padding-left:11px;
+}
+div.columnsorting a.asc {
+	background: url('/cone.ugm.static/images/icon_asc.gif') 0 50% no-repeat;
+}
+div.columnsorting a.desc {
+	background: url('/cone.ugm.static/images/icon_desc.gif') 0 50% no-repeat;
+}
+div.columnlisting {
+	border-left:#ccc 1px solid;
+	border-bottom:#ccc 1px solid;
+	height:450px;
+	overflow-y:scroll;
+}
+div.columnlisting ul {
+	margin:0;
+	padding:0;
+	list-style-type:none;
+}
+div.columnlisting li {
+	clear:both;
+	border-top:#ccc 1px solid;
+	height:24px;
+}
+div.columnlisting li.hidden {
+	display:none;
+}
+div.columnlisting li.selected {
+	color:#fff;
+	background-color:#49539f !important;
+}
+div.columnlisting div.head {
+	float:left;
+	width:420px;
+	overflow:hidden;
+	padding:2px;
+	cursor:pointer;
+}
+div.columnlisting div.head span {
+}
+div.columnlisting div.actions {
+	float:right;
+	overflow:hidden;
+	padding:2px;
+}
+/* left column */
+div.left_column {
+}
+/* right column */
+div.right_column {
+}
+div.right_column #form-addform,
+div.right_column #form-editform {
+    background:none;
+    padding:0px;
+}
+div.right_column div.field {
+	width:300px;
+	clear:both;
+	padding-bottom:20px;
+}
+div.right_column div.field label {
+	float:left;
+	font-size:80%;
+}
+div.right_column input {
+	font-size:80%;
+}
+div.right_column div.field input {
+    float:right;
+}
+div.right_column div.column_limit {
+	float:right;
+	margin-right:24px;
+}
+div.right_column div.column_limit label {
+	display:inline;
+	float:left;
+	font-size:80%;
+	line-height:1.5em;
+}
+div.right_column div.column_limit input {
+    float:right;
+	font-size:80%;
+}
+div.right_column div.field div {
+    float:right;
+    font-size:80%;
+	width:160px;
+}
+
+/* action icons */
+a.action {
+	line-height:16px;
+	font-size:16px;
+	padding-left:16px;
+	text-decoration:none;
+	float:right;
+	margin-top:1px;
+}
+a.add_item {
+	background:url('/cone.ugm.static/images/icon_add.png') 50% 50% no-repeat;
+	cursor:pointer;
+}
+a.add_item_disabled {
+    background:url('/cone.ugm.static/images/icon_add_disabled.png') 50% 50% no-repeat;
+}
+a.remove_item {
+	background:url('/cone.ugm.static/images/icon_remove.png') 50% 50% no-repeat;
+	cursor:pointer;
+}
+a.remove_item_disabled {
+    background:url('/cone.ugm.static/images/icon_remove_disabled.png') 50% 50% no-repeat;
+}
+a.delete_item {
+	background:url('/cone.ugm.static/images/icon_delete.png') 50% 50% no-repeat;
+	cursor:pointer;
+}
+a.delete_item_disabled {
+    background:url('/cone.ugm.static/images/icon_delete_disabled.png') 50% 50% no-repeat;
+}
+/* Settings */
+.settings {
+	border-collapse:collapse;
+}
+.settings td {
+	padding:4px;
+	vertical-align:top;
+}
+.attrmap {
+    width:400px;
+}
+tr.table_seperator td {
+	border-top:#ccc 1px solid;
+}
+td.left_col {
+	text-align:right;
+}
+
+/*user form */
+#form-userform input {
+	width: 230px;
+}
+#form-userform #input-userform-save,
+#form-userform #input-userform-cancel {
+    width: 100px;
+}
+#form-userform #field-userform-id div {
+	width:230px;
+	padding:2px;
+}
+
+/* dict widget XXX: move to yafowil.widget.dict */
+.dictwidget {
+	border-collapse:collapse;
+}
+.dictwidget input {
+	width:150px;
+}
+.dictwidget th {
+	width:150px;
+	color:#333;
+	font-weight:normal;
+}
+.dict_actions a {
+    line-height:16px;
+    font-size:16px;
+    padding-left:16px;
+    text-decoration:none;
+    float:right;
+    margin-top:1px;
+}
+.dict_actions a.dict_row_add {
+	background:url('/cone.ugm.static/images/icon_add.png') 50% 50% no-repeat;
+}
+.dict_actions a.dict_row_remove {
+    background:url('/cone.ugm.static/images/icon_remove.png') 50% 50% no-repeat;
+}
+.dict_actions a.dict_row_up {
+    background:url('/cone.ugm.static/images/icon_up.png') 50% 50% no-repeat;
+}
+.dict_actions a.dict_row_up_disabled {
+    background:url('/cone.ugm.static/images/icon_up_disabled.png') 50% 50% no-repeat !important;
+}
+.dict_actions a.dict_row_down {
+    background:url('/cone.ugm.static/images/icon_down.png') 50% 50% no-repeat;
+}
+.dict_actions a.dict_row_down_disabled {
+    background:url('/cone.ugm.static/images/icon_down_disabled.png') 50% 50% no-repeat !important;
+}

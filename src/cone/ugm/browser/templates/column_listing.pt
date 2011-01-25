@@ -1,0 +1,38 @@
+<tal:ajax xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax" omit-tag="True">
+  
+  <div class="columnsorting">
+    <a href="sort_name" class="default">name</a>&nbsp;|&nbsp;
+    <a href="sort_surname">surname</a>&nbsp;|&nbsp;
+    <a href="sort_email">email</a>
+  </div>
+  
+  <div class="columnlisting">
+    
+    <ul class="${context.slot}">
+      <tal:item repeat="item context.items">
+        <li ajax:target="${item['target']}"
+            tal:attributes="class item['current'] and 'selected' or None">
+          <div class="head li_trigger"
+               tal:content="structure item['head']">head</div>
+          <div class="actions">
+            <tal:action repeat="action item['actions']">
+              <tal:enabled condition="action['enabled']">
+                <a href=""
+                   title="${action['title']}"
+                   class="${'action %s enabled' % action['id']}"
+                   ajax:target="${action['target']}">&nbsp;</a>
+              </tal:enabled>
+              <tal:disabled condition="not action['enabled']">
+                <a href=""
+                   title="${action['title']}"
+                   class="${'action %s_disabled' % action['id']}"
+                   ajax:target="${action['target']}">&nbsp;</a>
+              </tal:disabled>
+            </tal:action>
+          </div>
+        </li>
+      </tal:item>
+    </ul>
+  
+  </div>
+</tal:ajax>

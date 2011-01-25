@@ -1,0 +1,7 @@
+<div class="columns">
+  
+  <tal:leftcol replace="structure tile('leftcolumn')" />
+  
+  <tal:leftcol replace="structure tile('rightcolumn')" />
+  
+</div>
