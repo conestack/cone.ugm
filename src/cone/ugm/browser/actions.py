@@ -1,4 +1,4 @@
-from repoze.bfg.view import bfg_view
+from pyramid.view import bfg_view
 from cone.ugm.model.interfaces import IUser
 from cone.ugm.model.interfaces import IGroup
 

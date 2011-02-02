@@ -4,7 +4,7 @@ from node.ext.ldap import LDAPProps
 from node.ext.ldap.base import testLDAPConnectivity
 from node.ext.ldap.bbb import queryNode
 from node.ext.ldap.users import LDAPUsersConfig
-from repoze.bfg.security import (
+from pyramid.security import (
     Everyone,
     Allow,
     Deny,

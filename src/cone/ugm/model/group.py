@@ -1,5 +1,5 @@
 from zope.interface import implements
-from repoze.bfg.security import (
+from pyramid.security import (
     Everyone,
     Allow,
     Deny,
