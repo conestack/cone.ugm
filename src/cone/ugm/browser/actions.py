@@ -1,4 +1,4 @@
-from pyramid.view import bfg_view
+from pyramid.view import view_config
 from cone.ugm.model.interfaces import IUser
 from cone.ugm.model.interfaces import IGroup
 
@@ -6,9 +6,9 @@ class Action(object):
     """Abstract action.
     
     A Subclass must implement ``__call__`` and is supposed to be registetred
-    as JSON bfg view, like:
+    as JSON view, like:
     
-    @bfg_view(name='action_id', accept='application/json', renderer='json')
+    @view_config(name='action_id', accept='application/json', renderer='json')
     """
     
     def __init__(self, model, request):
@@ -31,8 +31,8 @@ class Action(object):
 # Actions for IUser application node
 ###############################################################################
 
-@bfg_view(name='delete_item', accept='application/json',
-          renderer='json', context=IUser, permission="view")
+@view_config(name='delete_item', accept='application/json',
+             renderer='json', context=IUser, permission="view")
 class DeleteUserAction(Action):
     
     def __call__(self):
@@ -54,7 +54,7 @@ class DeleteUserAction(Action):
             'message': 'Deleted user %s from database' % id,
         }
 
-@bfg_view(name='add_item', accept='application/json',
+@view_config(name='add_item', accept='application/json',
           renderer='json', context=IUser, permission="view")
 class UserAddToGroupAction(Action):
     
@@ -66,7 +66,7 @@ class UserAddToGroupAction(Action):
             'message': 'Added user to group',
         }
 
-@bfg_view(name='remove_item', accept='application/json',
+@view_config(name='remove_item', accept='application/json',
           renderer='json', context=IUser, permission="view")
 class UserRemoveFromGroupAction(Action):
     
@@ -82,7 +82,7 @@ class UserRemoveFromGroupAction(Action):
 # Actions for IGroup application node
 ###############################################################################
 
-@bfg_view(name='delete_item', accept='application/json',
+@view_config(name='delete_item', accept='application/json',
           renderer='json', context=IGroup, permission="view")
 class DeleteGroupAction(Action):
     
@@ -94,7 +94,7 @@ class DeleteGroupAction(Action):
             'message': 'Deleted group from database',
         }
 
-@bfg_view(name='add_item', accept='application/json',
+@view_config(name='add_item', accept='application/json',
           renderer='json', context=IGroup, permission="view")
 class GroupAddUserAction(Action):
     
@@ -106,7 +106,7 @@ class GroupAddUserAction(Action):
             'message': 'Added user to group',
         }
 
-@bfg_view(name='remove_item', accept='application/json',
+@view_config(name='remove_item', accept='application/json',
           renderer='json', context=IGroup, permission="view")
 class GroupRemoveUserAction(Action):
     
