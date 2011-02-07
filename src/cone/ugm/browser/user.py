@@ -1,3 +1,4 @@
+from plumber import plumber
 from odict import odict
 from paste.httpexceptions import HTTPFound
 from zodict import AttributedNode
@@ -15,8 +16,9 @@ from cone.app.browser.utils import (
     make_query,
 )
 from cone.app.browser.form import (
-    AddForm,
-    EditForm,
+    Form,
+    AddPart,
+    EditPart,
 )
 from cone.ugm.model.interfaces import IUser
 from cone.ugm.browser.columns import Column
@@ -143,8 +145,7 @@ class UserForm(object):
     def _required_fields(self):
         return ['id', 'login', 'cn', 'sn', 'mail', 'userPassword']
     
-    @property
-    def form(self):
+    def prepare(self):
         resource = 'add'
         if self.model.__name__ is not None:
             resource = 'edit'
@@ -202,10 +203,12 @@ class UserForm(object):
                     'label': 'Cancel',
                     'skip': True,
                 })
-        return form
+        self.form = form
 
 @tile('addform', interface=IUser, permission="view")
-class UserAddForm(UserForm, AddForm):
+class UserAddForm(UserForm, Form):
+    __metaclass__ = plumber
+    __plumbing__ = AddPart
     
     def save(self, widget, data):
         settings = self.model.root['settings']
@@ -234,8 +237,11 @@ class UserAddForm(UserForm, AddForm):
             url = make_url(request.request, node=self.model)
         return HTTPFound(url)
 
+
 @tile('editform', interface=IUser, permission="view")
-class UserEditForm(UserForm, EditForm):
+class UserEditForm(UserForm, Form):
+    __metaclass__ = plumber
+    __plumbing__ = EditPart
     
     def save(self, widget, data):
         settings = self.model.root['settings']

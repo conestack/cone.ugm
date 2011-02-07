@@ -1,3 +1,4 @@
+from plumber import plumber
 from odict import odict
 from node.ext.ldap.scope import (
     BASE,
@@ -10,7 +11,10 @@ from yafowil.base import (
 )
 from cone.tile import tile
 from cone.app.browser.layout import ProtectedContentTile
-from cone.app.browser.form import EditForm
+from cone.app.browser.form import (
+    Form,
+    EditPart,
+)
 from cone.ugm.model.interfaces import ISettings
 
 scope_vocab = [
@@ -48,10 +52,11 @@ class Settings(ProtectedContentTile):
         return ''
 
 @tile('editform', interface=ISettings, permission="edit")
-class LDAPSettingsForm(EditForm):
+class LDAPSettingsForm(Form):
+    __metaclass__ = plumber
+    __plumbing__ = EditPart
     
-    @property
-    def form(self):
+    def prepare(self):
         model = self.model
         form = factory(u'form',
                        name='editform',
@@ -170,7 +175,7 @@ class LDAPSettingsForm(EditForm):
                 'label': 'Cancel',
                 'skip': True,
             })
-        return form
+        self.form = form
     
     def save(self, widget, data):
         # XXX: groups stuff -> 'groups_dn', 'groups_scope', 'groups_query'
