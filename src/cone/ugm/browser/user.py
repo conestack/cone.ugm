@@ -1,6 +1,5 @@
 from plumber import plumber
 from odict import odict
-from paste.httpexceptions import HTTPFound
 from zodict import AttributedNode
 from yafowil.base import (
     factory,
@@ -24,6 +23,7 @@ from cone.ugm.model.interfaces import IUser
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.browser.listing import ColumnListing
+from webob.exc import HTTPFound
 
 @tile('leftcolumn', interface=IUser, permission='view')
 class UserLeftColumn(Column):
@@ -235,7 +235,7 @@ class UserAddForm(UserForm, Form):
                            resource=self.next_resource)
         else:
             url = make_url(request.request, node=self.model)
-        return HTTPFound(url)
+        return HTTPFound(location=url)
 
 
 @tile('editform', interface=IUser, permission="view")
@@ -258,4 +258,4 @@ class UserEditForm(UserForm, Form):
             self.model.__parent__.ldap_users.passwd(id, None, password)
     
     def next(self, request):
-        return HTTPFound(make_url(request.request, node=self.model))
+        return HTTPFound(location=make_url(request.request, node=self.model))
