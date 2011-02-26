@@ -4,8 +4,6 @@
     <!-- XXX: let context render editform tile - other model required -->
     <tal:batch replace="structure tile('editform')" />
     
-    <tal:later condition="None">
-    
     <hr />
     
     <div class="column_filter">
@@ -26,8 +24,6 @@
     <tal:batch condition="None" replace="structure tile('columnbatch')" />
     
     <tal:listing replace="structure tile('columnlisting')" />
-    
-    </tal:later>
   
   </div>
 </tal:ajax>

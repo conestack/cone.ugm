@@ -40,38 +40,37 @@ class GroupColumnListing(ColumnListing):
     @property
     def items(self):
         ret = list()
+        for i in range(10):
+            item_target = make_url(self.request,
+                                   node=self.model.root['users'],
+                                   resource=u'user%i' % i)
+            action_query = make_query(id=u'user%i' % i)
+            action_target = make_url(self.request,
+                                     node=self.model.root['groups'],
+                                     resource=self.model.__name__,
+                                     query=action_query)
+            
+            ret.append({
+                'target': item_target,
+                'head': 'Group Member - User %i' % i,
+                'current': False,
+                'actions': [
+                    {
+                        'id': 'add_item',
+                        'enabled': False,
+                        'title': 'Add User to selected Group',
+                        'target': action_target,
+                    },
+                    {
+                        'id': 'remove_item',
+                        'enabled': True,
+                        'title': 'Remove User from selected Group',
+                        'target': action_target,
+                    },
+                ],
+            })
+            
         return ret
-#        for i in range(10):
-#            item_target = make_url(self.request,
-#                                   node=self.model.root['users'],
-#                                   resource=u'user%i' % i)
-#            action_query = make_query(id=u'user%i' % i)
-#            action_target = make_url(self.request,
-#                                     node=self.model.root['groups'],
-#                                     resource=self.model.__name__,
-#                                     query=action_query)
-#            
-#            ret.append({
-#                'target': item_target,
-#                'head': 'Group Member - User %i' % i,
-#                'current': False,
-#                'actions': [
-#                    {
-#                        'id': 'add_item',
-#                        'enabled': False,
-#                        'title': 'Add User to selected Group',
-#                        'target': action_target,
-#                    },
-#                    {
-#                        'id': 'remove_item',
-#                        'enabled': True,
-#                        'title': 'Remove User from selected Group',
-#                        'target': action_target,
-#                    },
-#                ],
-#            })
-#            
-#        return ret
 
 @tile('allcolumnlisting', 'templates/column_listing.pt',
       interface=IGroup, permission='view')

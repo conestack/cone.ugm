@@ -16,7 +16,7 @@ class Ugm(FactoryNode):
     
     factories = odict((
         ('users', Users),
-        #('groups', Groups), #XXX: later
+        ('groups', Groups),
         ('settings', Settings),
     ))
     

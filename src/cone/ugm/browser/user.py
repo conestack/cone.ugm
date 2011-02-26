@@ -52,30 +52,29 @@ class UserColumnListing(ColumnListing):
     @property
     def items(self):
         ret = list()
+        for i in range(10):
+            item_target = make_url(self.request,
+                                   node=self.model.root['groups'],
+                                   resource=u'group%i' % i)
+            action_query = make_query(id=u'group%i' % i)
+            action_target = make_url(self.request,
+                                     node=self.model.root['users'],
+                                     resource=self.model.__name__,
+                                     query=action_query)
+            ret.append({
+                'target': item_target,
+                'head': 'User in Group - Group %i' % i,
+                'current': False,
+                'actions': [{
+                    'id': 'add_item',
+                    'enabled': False,
+                    'title': 'Add selected User to Group',
+                    'target': action_target},
+                    {'id': 'remove_item',
+                    'enabled': True,
+                    'title': 'Remove selected User from Group',
+                    'target': action_target}]})
         return ret
-#        for i in range(10):
-#            item_target = make_url(self.request,
-#                                   node=self.model.root['groups'],
-#                                   resource=u'group%i' % i)
-#            action_query = make_query(id=u'group%i' % i)
-#            action_target = make_url(self.request,
-#                                     node=self.model.root['users'],
-#                                     resource=self.model.__name__,
-#                                     query=action_query)
-#            ret.append({
-#                'target': item_target,
-#                'head': 'User in Group - Group %i' % i,
-#                'current': False,
-#                'actions': [{
-#                    'id': 'add_item',
-#                    'enabled': False,
-#                    'title': 'Add selected User to Group',
-#                    'target': action_target},
-#                    {'id': 'remove_item',
-#                    'enabled': True,
-#                    'title': 'Remove selected User from Group',
-#                    'target': action_target}]})
-#        return ret
 
 @tile('allcolumnlisting', 'templates/column_listing.pt',
       interface=IUser, permission='view')
@@ -152,12 +151,15 @@ class UserForm(object):
             
             # XXX: tmp - load props each time they are accessed.
             self.model.attrs.context.load()
-            
+        
         action = make_url(self.request, node=self.model, resource=resource)
         form = factory(
             u'form',
             name='userform',
-            props={'action': action})
+            props={
+                'action': action,
+                'class': 'ajax',
+            })
         settings = self.model.root['settings']
         attrmap = settings.attrs.users_form_attrmap
         if not attrmap:
@@ -229,6 +231,8 @@ class UserAddForm(UserForm, Form):
             users.passwd(id, None, password)
     
     def next(self, request):
+        if request.get('ajax'):
+            return
         if hasattr(self, 'next_resource'):
             url = make_url(request.request,
                            node=self.model,
@@ -258,4 +262,6 @@ class UserEditForm(UserForm, Form):
             self.model.__parent__.ldap_users.passwd(id, None, password)
     
     def next(self, request):
+        if request.get('ajax'):
+            return
         return HTTPFound(location=make_url(request.request, node=self.model))
