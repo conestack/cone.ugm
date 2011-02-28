@@ -10,6 +10,7 @@ from cone.ugm.model.users import Users
 from cone.ugm.model.groups import Groups
 from cone.ugm.model.settings import Settings
 
+
 class Ugm(FactoryNode):
     
     implements(IUgm)

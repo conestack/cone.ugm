@@ -1,5 +1,6 @@
 from cone.tile import Tile
 
+
 class ColumnListing(Tile):
     """Abstract column listing.
     """

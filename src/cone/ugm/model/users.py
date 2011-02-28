@@ -10,6 +10,7 @@ from cone.app.model import (
 from cone.ugm.model.interfaces import IUsers
 from cone.ugm.model.user import User
 
+
 class Users(BaseNode):
     
     implements(IUsers)

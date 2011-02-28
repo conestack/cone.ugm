@@ -10,6 +10,7 @@ from cone.ugm.model.interfaces import IUsers
 from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.browser.listing import ColumnListing
 
+
 @tile('leftcolumn', 'templates/left_column.pt',
       interface=IUsers, permission='view')
 class UsersLeftColumn(Tile):
@@ -22,15 +23,18 @@ class UsersLeftColumn(Tile):
                         node=self.model.root['users'],
                         query=make_query(factory=u'user'))
 
+
 @tile('rightcolumn', interface=IUsers, permission='view')
 class UsersRightColumn(Tile):
     
     def render(self):
         return u'<div class="column right_column">&nbsp;</div>'
 
+
 @tile('columnbatch', interface=IUsers, permission='view')
 class UsersColumnBatch(ColumnBatch):
     pass
+
 
 @tile('columnlisting', 'templates/column_listing.pt',
       interface=IUsers, permission='view')

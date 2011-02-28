@@ -2,6 +2,7 @@ import pyramid_zcml
 from pyramid.config import Configurator
 from cone.ugm.model import get_root
 
+
 def app(global_config, **settings):
     """ This function returns a WSGI application.
     """

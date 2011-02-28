@@ -12,6 +12,7 @@ from cone.app.model import (
 )
 from cone.ugm.model.interfaces import IGroup
 
+
 class Group(AdapterNode):
     
     implements(IGroup)

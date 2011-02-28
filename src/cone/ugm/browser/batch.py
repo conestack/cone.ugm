@@ -3,6 +3,7 @@ from cone.app.browser.batch import Batch
 from cone.ugm.model.users import Users
 from cone.ugm.model.groups import Groups
 
+
 class ColumnBatch(Batch):
     """Abstract UGM column batch.
     """

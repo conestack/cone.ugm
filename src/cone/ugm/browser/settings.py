@@ -17,11 +17,13 @@ from cone.app.browser.form import (
 )
 from cone.ugm.model.interfaces import ISettings
 
+
 scope_vocab = [
     (str(BASE), 'BASE'),
     (str(ONELEVEL), 'ONELEVEL'),
     (str(SUBTREE), 'SUBTREE'),
 ]
+
 
 @tile('content', 'templates/settings.pt', interface=ISettings,
       permission='login', strict=False)
@@ -50,6 +52,7 @@ class Settings(ProtectedContentTile):
             if term[0] == scope:
                 return term[1]
         return ''
+
 
 @tile('editform', interface=ISettings, permission="edit")
 class LDAPSettingsForm(Form):

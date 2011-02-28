@@ -14,6 +14,7 @@ from cone.app.model import (
 )
 from cone.ugm.model.interfaces import IUser
 
+
 class User(AdapterNode):
     
     implements(IUser)

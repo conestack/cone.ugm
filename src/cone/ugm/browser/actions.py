@@ -2,6 +2,7 @@ from pyramid.view import view_config
 from cone.ugm.model.interfaces import IUser
 from cone.ugm.model.interfaces import IGroup
 
+
 class Action(object):
     """Abstract action.
     
@@ -26,6 +27,7 @@ class Action(object):
         """
         raise NotImplementedError(u"Abstract action does not implement "
                                   u"``__call__``.")
+
 
 ###############################################################################
 # Actions for IUser application node
@@ -54,6 +56,7 @@ class DeleteUserAction(Action):
             'message': 'Deleted user %s from database' % id,
         }
 
+
 @view_config(name='add_item', accept='application/json',
           renderer='json', context=IUser, permission="view")
 class UserAddToGroupAction(Action):
@@ -66,6 +69,7 @@ class UserAddToGroupAction(Action):
             'message': 'Added user to group',
         }
 
+
 @view_config(name='remove_item', accept='application/json',
           renderer='json', context=IUser, permission="view")
 class UserRemoveFromGroupAction(Action):
@@ -77,6 +81,7 @@ class UserRemoveFromGroupAction(Action):
             'success': True,
             'message': 'Removed User from Group',
         }
+
 
 ###############################################################################
 # Actions for IGroup application node
@@ -94,6 +99,7 @@ class DeleteGroupAction(Action):
             'message': 'Deleted group from database',
         }
 
+
 @view_config(name='add_item', accept='application/json',
           renderer='json', context=IGroup, permission="view")
 class GroupAddUserAction(Action):
@@ -105,6 +111,7 @@ class GroupAddUserAction(Action):
             'success': True,
             'message': 'Added user to group',
         }
+
 
 @view_config(name='remove_item', accept='application/json',
           renderer='json', context=IGroup, permission="view")

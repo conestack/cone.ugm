@@ -19,6 +19,7 @@ from cone.app.model import (
 from cone.ugm.model.interfaces import ISettings
 from cone.ugm.model.utils import APP_PATH
 
+
 class Settings(BaseNode):
     
     implements(ISettings)

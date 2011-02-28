@@ -18,6 +18,7 @@ from cone.ugm.browser.columns import Column
 from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.browser.listing import ColumnListing
 
+
 @tile('leftcolumn', interface=IGroup, permission='view')
 class GroupLeftColumn(Column):
     
@@ -27,14 +28,17 @@ class GroupLeftColumn(Column):
         self.request['_curr_listing_id'] = self.model.__name__
         return self._render(self.model.__parent__, 'leftcolumn')
 
+
 @tile('rightcolumn', 'templates/right_column.pt',
       interface=IGroup, permission='view')
 class GroupRightColumn(Tile):
     pass
 
+
 @tile('columnbatch', interface=IGroup, permission='view')
 class GroupColumnBatch(ColumnBatch):
     pass
+
 
 @tile('columnlisting', 'templates/column_listing.pt',
       interface=IGroup, permission='view')
@@ -77,6 +81,7 @@ class GroupColumnListing(ColumnListing):
             
         return ret
 
+
 @tile('allcolumnlisting', 'templates/column_listing.pt',
       interface=IGroup, permission='view')
 class AllGroupColumnListing(ColumnListing):
@@ -118,6 +123,7 @@ class AllGroupColumnListing(ColumnListing):
             
         return ret
 
+
 class GroupForm(object):
     
     def prepare(self):
@@ -140,6 +146,7 @@ class GroupForm(object):
                 'label': 'Save',
             })
         self.form = form
+
 
 @tile('editform', interface=IGroup, permission="view")
 class GroupEditForm(GroupForm, Form):

@@ -6,11 +6,13 @@ from cone.tile import (
 )
 from cone.app.browser.layout import ProtectedContentTile
 
+
 registerTile('content',
              'cone.ugm:browser/templates/columns.pt',
              class_=ProtectedContentTile,
              permission='login',
              strict=False)
+
 
 class Column(Tile):
     """Abstract column.

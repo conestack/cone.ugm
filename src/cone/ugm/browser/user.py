@@ -26,6 +26,7 @@ from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.browser.listing import ColumnListing
 from webob.exc import HTTPFound
 
+
 @tile('leftcolumn', interface=IUser, permission='view')
 class UserLeftColumn(Column):
     
@@ -35,14 +36,17 @@ class UserLeftColumn(Column):
         self.request['_curr_listing_id'] = self.model.__name__
         return self._render(self.model.__parent__, 'leftcolumn')
 
+
 @tile('rightcolumn', 'templates/right_column.pt',
       interface=IUser, permission='view')
 class UserRightColumn(Tile):
     pass
 
+
 @tile('columnbatch', interface=IUser, permission='view')
 class UserColumnBatch(ColumnBatch):
     pass
+
 
 @tile('columnlisting', 'templates/column_listing.pt',
       interface=IUser, permission='view')
@@ -77,6 +81,7 @@ class UserColumnListing(ColumnListing):
                     'target': action_target}]})
         return ret
 
+
 @tile('allcolumnlisting', 'templates/column_listing.pt',
       interface=IUser, permission='view')
 class AllUserColumnListing(ColumnListing):
@@ -109,6 +114,7 @@ class AllUserColumnListing(ColumnListing):
                     'title': 'Remove selected User from Group',
                     'target': action_target}]})
         return ret
+
 
 class UserForm(object):
     
@@ -207,6 +213,7 @@ class UserForm(object):
                     'skip': True,
                 })
         self.form = form
+
 
 @tile('addform', interface=IUser, permission="view")
 class UserAddForm(UserForm, Form):

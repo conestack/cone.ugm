@@ -7,6 +7,7 @@ from cone.app.model import (
 from cone.ugm.model.interfaces import IGroups
 from cone.ugm.model.group import Group
 
+
 class Groups(BaseNode):
     
     implements(IGroups)
