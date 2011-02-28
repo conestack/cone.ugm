@@ -42,7 +42,7 @@ The real user objects are available via .model.
     >>> user0.model
     <User 'uid0'>
     >>> user0.model.__class__
-    <class 'node.ext.ldap.users.User'>
+    <class 'node.ext.ldap.outbox.User'>
 
 XXX: model is too generic, needs discussion. If so generic I'd say .context,
 otherwise more specific.
