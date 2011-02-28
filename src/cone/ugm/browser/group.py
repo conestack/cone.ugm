@@ -42,7 +42,7 @@ class GroupColumnBatch(ColumnBatch):
 
 @tile('columnlisting', 'templates/column_listing.pt',
       interface=IGroup, permission='view')
-class GroupColumnListing(ColumnListing):
+class UsersOfGroupColumnListing(ColumnListing):
     
     slot = 'rightlisting'
     
@@ -96,7 +96,7 @@ class GroupColumnListing(ColumnListing):
 
 @tile('allcolumnlisting', 'templates/column_listing.pt',
       interface=IGroup, permission='view')
-class AllGroupColumnListing(ColumnListing):
+class AllUsersColumnListing(ColumnListing):
     
     slot = 'rightlisting'
     

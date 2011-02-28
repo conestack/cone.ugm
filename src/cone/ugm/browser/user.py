@@ -50,7 +50,7 @@ class UserColumnBatch(ColumnBatch):
 
 @tile('columnlisting', 'templates/column_listing.pt',
       interface=IUser, permission='view')
-class UserColumnListing(ColumnListing):
+class GroupsOfUserColumnListing(ColumnListing):
     
     slot = 'rightlisting'
     
@@ -78,9 +78,13 @@ class UserColumnListing(ColumnListing):
         result = groups.search(criteria=criteria, attrlist=['cn'])
         node = self.model.root['groups']
         for entry in result:
-            target = make_url(self.request,
-                              node=node,
-                              resource=entry[0])
+            item_target = make_url(self.request,
+                                   node=node,
+                                   resource=entry[0])
+            action_query = make_query(id=entry[0])
+            action_target = make_url(self.request,
+                                     node=self.model,
+                                     query=action_query)
             attrs = entry[1]
             
             # XXX: from config
@@ -89,16 +93,18 @@ class UserColumnListing(ColumnListing):
             cn = cn and cn[0] or ''
             head = head % cn
             ret.append({
-                'target': target,
+                'target': item_target,
                 'head': head,
                 'current': self.current_id == entry[0] and True or False,
-                'actions': [
-                    {
-                        'id': 'delete_item',
-                        'enabled': True,
-                        'title': 'Delete Group',
-                        'target': target
-                    }
+                'actions': [{
+                    'id': 'add_item',
+                    'enabled': False,
+                    'title': 'Add selected User to Group',
+                    'target': action_target},
+                    {'id': 'remove_item',
+                    'enabled': True,
+                    'title': 'Remove selected User from Group',
+                    'target': action_target},
                 ]
             })
         return ret
@@ -106,14 +112,14 @@ class UserColumnListing(ColumnListing):
 
 @tile('allcolumnlisting', 'templates/column_listing.pt',
       interface=IUser, permission='view')
-class AllUserColumnListing(ColumnListing):
+class AllGroupsColumnListing(ColumnListing):
     
     slot = 'rightlisting'
     
     @property
     def sortheader(self):
         ret = list()
-        for id in ['name', 'surname', 'email']:
+        for id in ['name']:
             ret.append({
                 'id': 'sort_%s' % id,
                 'default': False,
@@ -124,29 +130,47 @@ class AllUserColumnListing(ColumnListing):
     
     @property
     def items(self):
+        dn = self.model.model.context.__parent__.child_dn(self.model.model.id)
+        criteria = {
+            'member': dn,
+        }
+        groups = self.model.root['groups']
+        result = groups.ldap_groups.search(criteria=criteria, attrlist=['cn'])
+        member_of = [res[0] for res in result]
+        
         ret = list()
-        for i in range(10):
+        result = groups.ldap_groups.search(attrlist=['cn'])
+        for entry in result:
             item_target = make_url(self.request,
-                                   node=self.model.root['groups'],
-                                   resource=u'group%i' % i)
-            action_query = make_query(id=u'group%i' % i)
+                                   node=groups,
+                                   resource=entry[0])
+            action_query = make_query(id=entry[0])
             action_target = make_url(self.request,
-                                     node=self.model.root['users'],
-                                     resource=self.model.__name__,
+                                     node=self.model,
                                      query=action_query)
+            attrs = entry[1]
+            already_member = entry[0] in member_of
+            
+            # XXX: from config
+            head = '<span class="sort_name">%s&nbsp;</span>'
+            cn = attrs.get('cn')
+            cn = cn and cn[0] or ''
+            head = head % cn
             ret.append({
                 'target': item_target,
-                'head': 'User in Group - Group %i' % i,
-                'current': False,
+                'head': head,
+                'current': self.current_id == entry[0] and True or False,
                 'actions': [{
                     'id': 'add_item',
-                    'enabled': False,
+                    'enabled': not already_member and True or False,
                     'title': 'Add selected User to Group',
                     'target': action_target},
                     {'id': 'remove_item',
-                    'enabled': True,
+                    'enabled': already_member and True or False,
                     'title': 'Remove selected User from Group',
-                    'target': action_target}]})
+                    'target': action_target},
+                ]
+            })
         return ret
 
 
