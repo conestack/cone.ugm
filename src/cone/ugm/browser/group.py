@@ -1,4 +1,5 @@
 from plumber import plumber
+from node.base import AttributedNode
 from yafowil.base import factory
 from cone.tile import (
     tile,
@@ -234,7 +235,14 @@ class GroupAddForm(GroupForm, Form):
     __plumbing__ = AddPart
     
     def save(self, widget, data):
-        pass
+        group = AttributedNode()
+        group.attrs['cn'] = data.fetch('groupform.name').extracted
+        group.attrs['member'] = ['cn=nobody']
+        groups = self.model.__parent__.ldap_groups
+        cn = group.attrs['cn']
+        self.next_resource = cn
+        groups[cn] = group
+        groups.context()
     
     def next(self, request):
         if hasattr(self, 'next_resource'):

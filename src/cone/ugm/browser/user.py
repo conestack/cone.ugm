@@ -1,6 +1,6 @@
 from plumber import plumber
 from odict import odict
-from zodict import AttributedNode
+from node.base import AttributedNode
 from yafowil.base import (
     factory,
     UNSET,
