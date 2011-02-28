@@ -94,6 +94,17 @@ class DeleteGroupAction(Action):
     def __call__(self):
         """Delete group from database.
         """
+        groups = self.model.__parent__.ldap_groups
+        id = self.model.model.__name__
+        del groups[id]
+        try:
+            groups.context()
+            groups = self.model.__parent__.invalidate()
+        except Exception, e:
+            return {
+                'success': False,
+                'message': str(e),
+            }
         return {
             'success': True,
             'message': 'Deleted group from database',
