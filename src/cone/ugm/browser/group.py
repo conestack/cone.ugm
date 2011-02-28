@@ -49,7 +49,7 @@ class UsersOfGroupColumnListing(ColumnListing):
     @property
     def sortheader(self):
         ret = list()
-        for id in ['name']:
+        for id in ['name', 'surname', 'email']:
             ret.append({
                 'id': 'sort_%s' % id,
                 'default': False,
@@ -61,19 +61,31 @@ class UsersOfGroupColumnListing(ColumnListing):
     @property
     def items(self):
         ret = list()
-        for i in range(10):
+        members = self.model.attrs['member']
+        users = self.model.root['users']
+        for member in members:
+            try:
+                id = users.ldap_users.idbydn(member)
+            except KeyError:
+                continue
+            user = users[id]
             item_target = make_url(self.request,
-                                   node=self.model.root['users'],
-                                   resource=u'user%i' % i)
-            action_query = make_query(id=u'user%i' % i)
+                                   node=user)
+            action_query = make_query(id=id)
             action_target = make_url(self.request,
-                                     node=self.model.root['groups'],
-                                     resource=self.model.__name__,
+                                     node=self.model,
                                      query=action_query)
-            
+            # XXX: from config
+            head = '<span class="sort_name">%s&nbsp;</span>' + \
+                   '<span class="sort_surname">%s&nbsp;</span>' + \
+                   '<span class="sort_email">&lt;%s&gt;</span>'
+            cn = user.attrs.get('cn', '')
+            sn = user.attrs.get('sn', '')
+            mail = user.attrs.get('mail', '')
+            head = head % (cn, sn, mail)
             ret.append({
                 'target': item_target,
-                'head': 'Group Member - User %i' % i,
+                'head': head,
                 'current': False,
                 'actions': [
                     {
@@ -90,7 +102,6 @@ class UsersOfGroupColumnListing(ColumnListing):
                     },
                 ],
             })
-            
         return ret
 
 
@@ -103,7 +114,7 @@ class AllUsersColumnListing(ColumnListing):
     @property
     def sortheader(self):
         ret = list()
-        for id in ['name']:
+        for id in ['name', 'surname', 'email']:
             ret.append({
                 'id': 'sort_%s' % id,
                 'default': False,
@@ -115,36 +126,57 @@ class AllUsersColumnListing(ColumnListing):
     @property
     def items(self):
         ret = list()
-        for i in range(10):
+        members = self.model.attrs['member']
+        users = self.model.root['users']
+        member_ids = list()
+        for member in members:
+            try:
+                member_ids.append(users.ldap_users.idbydn(member))
+            except KeyError:
+                continue
+        result = users.ldap_users.search(criteria=None,
+                                         attrlist=['cn', 'sn' , 'mail'])
+        for entry in result:
             item_target = make_url(self.request,
-                                   node=self.model.root['users'],
-                                   resource=u'user%i' % i)
-            action_query = make_query(id=u'user%i' % i)
+                                   node=users,
+                                   resource=entry[0])
+            action_query = make_query(id=entry[0])
             action_target = make_url(self.request,
-                                     node=self.model.root['groups'],
-                                     resource=self.model.__name__,
+                                     node=self.model,
                                      query=action_query)
+            attrs = entry[1]
+            already_member = entry[0] in member_ids
             
+            # XXX: from config
+            head = '<span class="sort_name">%s&nbsp;</span>' + \
+                   '<span class="sort_surname">%s&nbsp;</span>' + \
+                   '<span class="sort_email">&lt;%s&gt;</span>'
+            cn = attrs.get('cn')
+            cn = cn and cn[0] or ''
+            sn = attrs.get('sn')
+            sn = sn and sn[0] or ''
+            mail = attrs.get('mail')
+            mail = mail and mail[0] or ''
+            head = head % (cn, sn, mail)
             ret.append({
                 'target': item_target,
-                'head': 'Group Member - User %i' % i,
+                'head': head,
                 'current': False,
                 'actions': [
                     {
                         'id': 'add_item',
-                        'enabled': False,
+                        'enabled': not already_member and True or False,
                         'title': 'Add User to selected Group',
                         'target': action_target,
                     },
                     {
                         'id': 'remove_item',
-                        'enabled': True,
+                        'enabled': already_member and True or False,
                         'title': 'Remove User from selected Group',
                         'target': action_target,
                     },
                 ],
             })
-            
         return ret
 
 
