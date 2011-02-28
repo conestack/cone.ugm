@@ -28,7 +28,7 @@ class GroupsLeftColumn(Tile):
 class GroupsRightColumn(Tile):
     
     def render(self):
-        return u'<div class="right_column">&nbsp;</div>'
+        return u'<div class="column right_column">&nbsp;</div>'
 
 
 @tile('columnbatch', interface=IGroups, permission='view')

@@ -13,10 +13,12 @@ from cone.app.browser.form import (
     AddPart,
     EditPart,
 )
+from cone.app.browser.ajax import AjaxAction
 from cone.ugm.model.interfaces import IGroup
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.browser.listing import ColumnListing
+from webob.exc import HTTPFound
 
 
 @tile('leftcolumn', interface=IGroup, permission='view')
@@ -183,25 +185,70 @@ class AllUsersColumnListing(ColumnListing):
 class GroupForm(object):
     
     def prepare(self):
-        form = factory(u'form',
-                       name='editform',
-                       props={'action': self.nodeurl})
+        resource = 'add'
+        if self.model.__name__ is not None:
+            resource = 'edit'
+        action = make_url(self.request, node=self.model, resource=resource)
+        form = factory(
+            u'form',
+            name='groupform',
+            props={
+                'action': action,
+                'class': 'ajax',
+            })
+        props = {
+            'label': 'Name',
+        }
+        if resource == 'edit':
+            props['mode'] = 'display'
         form['name'] = factory(
-            'field:error:label:text',
-            value = self.model.__name__,
-            props = {
-                'label': 'Name',
-            })
-        form['save'] = factory(
-            'submit',
-            props = {
-                'action': 'save',
-                'expression': True,
-                'handler': self.save,
-                'next': self.next,
-                'label': 'Save',
-            })
+            'field:label:error:mode:text',
+            value=self.model.__name__,
+            props=props)
+        if resource =='add': # XXX: no fields to edit atm
+            form['save'] = factory(
+                'submit',
+                props={
+                    'action': 'save',
+                    'expression': True,
+                    'handler': self.save,
+                    'next': self.next,
+                    'label': 'Save',
+                })
+        if resource =='add':
+            form['cancel'] = factory(
+                'submit',
+                props={
+                    'action': 'cancel',
+                    'expression': True,
+                    'next': self.next,
+                    'label': 'Cancel',
+                    'skip': True,
+                })
         self.form = form
+
+
+@tile('addform', interface=IGroup, permission="view")
+class GroupAddForm(GroupForm, Form):
+    __metaclass__ = plumber
+    __plumbing__ = AddPart
+    
+    def save(self, widget, data):
+        pass
+    
+    def next(self, request):
+        if hasattr(self, 'next_resource'):
+            url = make_url(request.request,
+                           node=self.model,
+                           resource=self.next_resource)
+        else:
+            url = make_url(request.request, node=self.model)
+        if request.get('ajax'):
+            return [
+                AjaxAction(url, 'leftcolumn', 'replace', '.left_column'),
+                AjaxAction(url, 'rightcolumn', 'replace', '.right_column'),
+            ]
+        return HTTPFound(location=url)
 
 
 @tile('editform', interface=IGroup, permission="view")
@@ -211,3 +258,12 @@ class GroupEditForm(GroupForm, Form):
     
     def save(self, widget, data):
         pass
+    
+    def next(self, request):
+        url = make_url(request.request, node=self.model)
+        if request.get('ajax'):
+            return [
+                AjaxAction(url, 'leftcolumn', 'replace', '.left_column'),
+                AjaxAction(url, 'rightcolumn', 'replace', '.right_column'),
+            ]
+        return HTTPFound(location=url)

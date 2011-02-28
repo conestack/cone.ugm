@@ -9,6 +9,8 @@ from cone.app.model import (
     AdapterNode,
     Properties,
     BaseMetadata,
+    BaseNodeInfo,
+    registerNodeInfo,
 )
 from cone.ugm.model.interfaces import IGroup
 
@@ -39,3 +41,10 @@ class Group(AdapterNode):
     
     def __call__(self):
         self.model()
+
+info = BaseNodeInfo()
+info.title = 'Group'
+info.description = 'Group'
+info.node = Group
+info.addables = []
+registerNodeInfo('group', info)

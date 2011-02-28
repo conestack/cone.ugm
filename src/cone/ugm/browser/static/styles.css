@@ -109,7 +109,7 @@ div#footer a {
 div.box,
 #form-loginform,
 #form-userform,
-#form-editform {
+#form-groupform {
 	background: url('/cone.ugm.static/images/box.gif') top left no-repeat;
 	padding:12px;
 }
@@ -173,6 +173,7 @@ div.columnsorting a.desc {
 	background: url('/cone.ugm.static/images/icon_desc.gif') 0 50% no-repeat;
 }
 div.columnitems {
+	border-left:#ccc 1px solid;
 	border-bottom:#ccc 1px solid;
 	height:450px;
 	overflow-y:scroll;
@@ -208,16 +209,15 @@ div.columnitems div.actions {
 	overflow:hidden;
 	padding:2px;
 }
+div.right_column div.columnitems {
+    height:320px;
+}
+
 /* left column */
 div.left_column {
 }
 /* right column */
 div.right_column {
-}
-div.right_column #form-addform,
-div.right_column #form-editform {
-    background:none;
-    padding:0px;
 }
 div.right_column div.field {
 	width:300px;
