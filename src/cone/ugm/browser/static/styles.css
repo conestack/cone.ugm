@@ -304,12 +304,19 @@ td.left_col {
 }
 
 /*user form */
+#form-userform .error {
+	width:234px;
+	text-align:left;
+}
+#form-userform .errormessage {
+	width:234px;
+}
 #form-userform input {
-	width: 230px;
+	width:230px;
 }
 #form-userform #input-userform-save,
 #form-userform #input-userform-cancel {
-    width: 100px;
+    width:100px;
 }
 #form-userform #field-userform-id div {
 	width:230px;

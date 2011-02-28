@@ -116,21 +116,21 @@ class UserForm(object):
         # XXX: info from LDAP Schema.
         return {
             'id': {
-                'chain': 'field:*ascii:error:label:mode:text',
+                'chain': 'field:*ascii:label:error:mode:text',
                 'props': {
                     'ascii': True},
                 'custom': {
                     'ascii': ([ascii_extractor], [], [], [])}},
             'login': {
-                'chain': 'field:*ascii:error:label:mode:text',
+                'chain': 'field:*ascii:label:error:mode:text',
                 'props': {
                     'ascii': True},
                 'custom': {
                     'ascii': ([ascii_extractor], [], [], [])}},
             'mail': {
-                'chain': 'field:error:label:mode:email'},
+                'chain': 'field:label:error:mode:email'},
             'userPassword': {
-                'chain': 'field:error:label:password',
+                'chain': 'field:label:error:password',
                 'props': {
                     'minlength': 6,
                     'ascii': True,
@@ -167,7 +167,7 @@ class UserForm(object):
         schema = self.schema
         required = self._required_fields
         protected = self._protected_fields
-        default_chain = 'field:error:label:mode:text'
+        default_chain = 'field:label:error:mode:text'
         for key, val in attrmap.items():
             field = schema.get(key, dict())
             chain = field.get('chain', default_chain)
