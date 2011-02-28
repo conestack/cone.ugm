@@ -157,6 +157,12 @@ class LDAPSettingsForm(Form):
             props = {
                 'label': 'Groups query',
             })
+        form['groups_object_classes'] = factory(
+            'field:label:text',
+            value = u', '.join(model.attrs.get('groups_object_classes', [])),
+            props = {
+                'label': 'Groups object classes',
+            })
         form['save'] = factory(
             'submit',
             props = {
@@ -179,13 +185,14 @@ class LDAPSettingsForm(Form):
         self.form = form
     
     def save(self, widget, data):
-        # XXX: groups stuff -> 'groups_dn', 'groups_scope', 'groups_query'
         model = self.model
         for attr_name in ['uri', 'user', 'users_dn', 'users_scope',
                           'users_query', 'users_object_classes',
-                          'users_attrmap', 'users_form_attrmap']:
+                          'users_attrmap', 'users_form_attrmap',
+                          'groups_dn', 'groups_scope', 'groups_query',
+                          'groups_object_classes']:
             val = data.fetch('editform.%s' % attr_name).extracted
-            if attr_name in ['users_object_classes']:
+            if attr_name in ['users_object_classes', 'groups_object_classes']:
                 val = [v.strip() for v in val.split(',') if v.strip()]
             setattr(model.attrs, attr_name, val)
         password = data.fetch('editform.password').extracted

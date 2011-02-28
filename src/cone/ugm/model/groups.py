@@ -1,8 +1,11 @@
 from zope.interface import implements
+from node.ext.ldap.ugm import Groups as LDAPGroups
 from cone.app.model import (
     BaseNode,
     Properties,
     BaseMetadata,
+    BaseNodeInfo,
+    registerNodeInfo,
 )
 from cone.ugm.model.interfaces import IGroups
 from cone.ugm.model.group import Group
@@ -12,6 +15,21 @@ class Groups(BaseNode):
     
     implements(IGroups)
     
+    node_info_name = 'groups'
+    
+    def __init__(self, props=None, gcfg=None):
+        """``props`` and `gcfg`` just needed for testing. never used in
+        application code.
+        """
+        super(Groups, self).__init__()
+        self._testenv = None
+        if props or gcfg:
+            self._testenv = {
+                'props': props,
+                'gcfg': gcfg,
+            }
+        self._ldap_groups = None
+    
     @property
     def metadata(self):
         metadata = BaseMetadata()
@@ -19,9 +37,34 @@ class Groups(BaseNode):
         metadata.description = "Container for Groups"
         return metadata
     
+    @property
+    def settings(self):
+        return self.__parent__['settings']
+    
+    @property
+    def ldap_groups(self):
+        if self._ldap_groups is None:
+            if self._testenv is not None:
+                props = self._testenv['props']
+                gcfg = self._testenv['gcfg']
+            else:
+                settings = self.settings
+                props = settings.ldap_props
+                gcfg = settings.ldap_gcfg
+            self._ldap_groups = LDAPGroups(props, gcfg)
+        return self._ldap_groups
+
+    def invalidate(self):
+        self._ldap_groups = None
+        self.clear()
+    
     def __iter__(self):
-        for i in range(1000):
-            yield 'group%i' % i
+        try:
+            for key in self.ldap_groups:
+                yield key
+        except Exception, e:
+            # XXX: explicit exception
+            print e
     
     iterkeys = __iter__
     
@@ -31,7 +74,13 @@ class Groups(BaseNode):
         except KeyError:
             if not name in self.iterkeys():
                 raise KeyError(name)
-            # XXX: Group(ldapNode, name, self)
-            group = Group(BaseNode(), name, self)
+            group = Group(self.ldap_groups[name], name, self)
             self[name] = group
             return group
+
+info = BaseNodeInfo()
+info.title = 'Groups'
+info.description = 'Groups Container.'
+info.node = Groups
+info.addables = ['group']
+registerNodeInfo('groups', info)

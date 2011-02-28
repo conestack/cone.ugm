@@ -1,5 +1,5 @@
 from zope.interface import implements
-from node.ext.ldap.users import LDAPUsers
+from node.ext.ldap.ugm import Users as LDAPUsers
 from cone.app.model import (
     BaseNode,
     Properties,

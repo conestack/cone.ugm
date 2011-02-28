@@ -3,7 +3,8 @@ from zope.interface import implements
 from node.ext.ldap import LDAPProps
 from node.ext.ldap.base import testLDAPConnectivity
 from node.ext.ldap.bbb import queryNode
-from node.ext.ldap.users import LDAPUsersConfig
+from node.ext.ldap.ugm import UsersConfig as LDAPUsersConfig
+from node.ext.ldap.ugm import GroupsConfig as LDAPGroupsConfig
 from pyramid.security import (
     Everyone,
     Allow,
@@ -57,6 +58,7 @@ class Settings(BaseNode):
     def invalidate(self):
         self._ldap_props = None
         self._ldap_ucfg = None
+        self._ldap_gcfg = None
     
     @property
     def ldap_connectivity(self):
@@ -108,3 +110,20 @@ class Settings(BaseNode):
                 queryFilter=config.users_query,
                 objectClasses=config.users_object_classes)
         return self._ldap_ucfg
+    
+    @property
+    def ldap_gcfg(self):
+        if self._ldap_gcfg is None:
+            config = self._config
+            map = dict()
+            self._ldap_gcfg = LDAPGroupsConfig(
+                baseDN=config.groups_dn,
+                attrmap={
+                    'id': 'cn',
+                    'rdn': 'cn',
+                    'cn': 'cn',
+                },
+                scope=int(config.groups_scope),
+                queryFilter=config.groups_query,
+                objectClasses=config.groups_object_classes)
+        return self._ldap_gcfg

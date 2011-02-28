@@ -49,36 +49,36 @@ class UsersColumnListing(ColumnListing):
     @property
     def items(self):
         ret = list()
-        
-        # XXX: use ``self.model.ldap_users.search``
-        
-        for key in self.model:
+        result = self.model.ldap_users.search(criteria=None,
+                                              attrlist=['cn', 'sn' , 'mail'])
+        for entry in result:
             target = make_url(self.request,
                               node=self.model,
-                              resource=key)
-            attrs = self.model[key].attrs
-            
-            # XXX: tmp - load props each time they are accessed.
-            attrs.context.load()
+                              resource=entry[0])
+            attrs = entry[1]
             
             # XXX: from config
             head = '<span class="sort_name">%s&nbsp;</span>' + \
                    '<span class="sort_surname">%s&nbsp;</span>' + \
                    '<span class="sort_email">&lt;%s&gt;</span>'
-            head = head % (attrs.get('cn'), attrs.get('sn'), attrs.get('mail'))
-            
-            #head = '%s %s %s' % (attrs.get('cn'),
-            #                     attrs.get('sn'),
-            #                     '<%s>' % attrs.get('mail'))
-            #head = head.strip()
+            cn = attrs.get('cn')
+            cn = cn and cn[0] or ''
+            sn = attrs.get('sn')
+            sn = sn and sn[0] or ''
+            mail = attrs.get('mail')
+            mail = mail and mail[0] or ''
+            head = head % (cn, sn, mail)
             ret.append({
                 'target': target,
                 'head': head,
-                'current': self.current_id == key and True or False,
+                'current': self.current_id == entry[0] and True or False,
                 'actions': [
                     {
                         'id': 'delete_item',
                         'enabled': True,
                         'title': 'Delete User',
-                        'target': target}]})
+                        'target': target
+                    }
+                ]
+            })
         return ret

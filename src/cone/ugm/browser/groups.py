@@ -49,21 +49,30 @@ class GroupsColumnListing(ColumnListing):
     @property
     def items(self):
         ret = list()
-        for i in range(1000):
+        result = self.model.ldap_groups.search(criteria=None,
+                                               attrlist=['cn'])
+        for entry in result:
             target = make_url(self.request,
                               node=self.model,
-                              resource=u'group%i' % i)
+                              resource=entry[0])
+            attrs = entry[1]
+            
+            # XXX: from config
+            head = '<span class="sort_name">%s&nbsp;</span>'
+            cn = attrs.get('cn')
+            cn = cn and cn[0] or ''
+            head = head % cn
             ret.append({
                 'target': target,
-                'head': 'Group %i' % i,
-                'current': self.current_id == u'group%i' % i and True or False,
+                'head': head,
+                'current': self.current_id == entry[0] and True or False,
                 'actions': [
                     {
                         'id': 'delete_item',
                         'enabled': True,
                         'title': 'Delete Group',
-                        'target': target,
+                        'target': target
                     }
-                ],
+                ]
             })
         return ret
