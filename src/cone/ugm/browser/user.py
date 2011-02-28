@@ -239,7 +239,10 @@ class UserAddForm(UserForm, Form):
         else:
             url = make_url(request.request, node=self.model)
         if request.get('ajax'):
-            return AjaxAction(url, 'rightcolumn', 'replace', '.right_column')
+            return [
+                AjaxAction(url, 'leftcolumn', 'replace', '.left_column'),
+                AjaxAction(url, 'rightcolumn', 'replace', '.right_column'),
+            ]
         return HTTPFound(location=url)
 
 
@@ -265,5 +268,8 @@ class UserEditForm(UserForm, Form):
     def next(self, request):
         url = make_url(request.request, node=self.model)
         if request.get('ajax'):
-            return AjaxAction(url, 'rightcolumn', 'replace', '.right_column')
+            return [
+                AjaxAction(url, 'leftcolumn', 'replace', '.left_column'),
+                AjaxAction(url, 'rightcolumn', 'replace', '.right_column'),
+            ]
         return HTTPFound(location=url)
