@@ -64,6 +64,20 @@ class UserAddToGroupAction(Action):
     def __call__(self):
         """Add user to group.
         """
+        # XXX: use mechanism from LDAP Groups
+        groups = self.model.root['groups'].ldap_groups
+        group_id = self.request.params.get('id')
+        path = self.model.model.path
+        path.reverse()
+        user_dn = 'uid=' + ','.join(path)
+        group = groups[group_id]
+        if not user_dn in group.attrs['member']:
+            members = group.attrs['member']
+            members.append(user_dn)
+            # group.attrs['member'].append(user_dn) not works
+            group.attrs['member'] = members
+            group.context()
+            self.model.__parent__.invalidate()
         return {
             'success': True,
             'message': 'Added user to group',
@@ -77,6 +91,20 @@ class UserRemoveFromGroupAction(Action):
     def __call__(self):
         """Remove user from group.
         """
+        # XXX: use mechanism from LDAP Groups
+        groups = self.model.root['groups'].ldap_groups
+        group_id = self.request.params.get('id')
+        path = self.model.model.path
+        path.reverse()
+        user_dn = 'uid=' + ','.join(path)
+        group = groups[group_id]
+        if user_dn in group.attrs['member']:
+            members = group.attrs['member']
+            members.remove(user_dn)
+            # group.attrs['member'].remove(user_dn) not works
+            group.attrs['member'] = members
+            group.context()
+            self.model.__parent__.invalidate()
         return {
             'success': True,
             'message': 'Removed User from Group',
@@ -118,6 +146,22 @@ class GroupAddUserAction(Action):
     def __call__(self):
         """Add user to group.
         """
+        user_id = self.request.params.get('id')
+        group_id = self.model.__name__
+        groups = self.model.__parent__.ldap_groups
+        group = groups[group_id]
+        users = self.model.root['users'].ldap_users
+        user = users[user_id]
+        path = user.path
+        path.reverse()
+        user_dn = 'uid=' + ','.join(path)
+        if not user_dn in group.attrs['member']:
+            members = group.attrs['member']
+            members.append(user_dn)
+            # group.attrs['member'].append(user_dn) not works
+            group.attrs['member'] = members
+            group.context()
+            self.model.__parent__.invalidate()
         return {
             'success': True,
             'message': 'Added user to group',
@@ -131,6 +175,23 @@ class GroupRemoveUserAction(Action):
     def __call__(self):
         """Remove user from group.
         """
+        # XXX: use mechanism from LDAP Groups
+        user_id = self.request.params.get('id')
+        group_id = self.model.__name__
+        groups = self.model.__parent__.ldap_groups
+        group = groups[group_id]
+        users = self.model.root['users'].ldap_users
+        user = users[user_id]
+        path = user.path
+        path.reverse()
+        user_dn = 'uid=' + ','.join(path)
+        if user_dn in group.attrs['member']:
+            members = group.attrs['member']
+            members.remove(user_dn)
+            # group.attrs['member'].remove(user_dn) not works
+            group.attrs['member'] = members
+            group.context()
+            self.model.__parent__.invalidate()
         return {
             'success': True,
             'message': 'Removed user from group',
