@@ -1,3 +1,4 @@
+from plumber import plumber
 from yafowil.base import factory
 from cone.tile import (
     tile,
@@ -7,7 +8,11 @@ from cone.app.browser.utils import (
     make_url,
     make_query,
 )
-from cone.app.browser.form import EditForm
+from cone.app.browser.form import (
+    Form,
+    AddPart,
+    EditPart,
+)
 from cone.ugm.model.interfaces import IGroup
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.batch import ColumnBatch
@@ -113,11 +118,9 @@ class AllGroupColumnListing(ColumnListing):
             
         return ret
 
-@tile('editform', interface=IGroup, permission="edit")
-class GroupEditForm(EditForm):
+class GroupForm(object):
     
-    @property
-    def form(self):
+    def prepare(self):
         form = factory(u'form',
                        name='editform',
                        props={'action': self.nodeurl})
@@ -136,7 +139,12 @@ class GroupEditForm(EditForm):
                 'next': self.next,
                 'label': 'Save',
             })
-        return form
+        self.form = form
+
+@tile('editform', interface=IGroup, permission="view")
+class GroupEditForm(GroupForm, Form):
+    __metaclass__ = plumber
+    __plumbing__ = EditPart
     
     def save(self, widget, data):
         pass

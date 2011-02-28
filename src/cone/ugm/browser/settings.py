@@ -134,28 +134,26 @@ class LDAPSettingsForm(Form):
                     'value': 'Form label',
                 }
             })
-        
-        # XXX: later
-#        form['groups_dn'] = factory(
-#            'field:label:error:text',
-#            value = model.attrs.groups_dn,
-#            props = {
-#                'required': 'No Groups DN defined',
-#                'label': 'Groups Base DN',
-#            })
-#        form['groups_scope'] = factory(
-#            'field:label:select',
-#            value = model.attrs.groups_scope,
-#            props = {
-#                'label': 'Groups scope',
-#                'vocabulary': scope_vocab,
-#            })
-#        form['groups_query'] = factory(
-#            'field:label:text',
-#            value = model.attrs.groups_query,
-#            props = {
-#                'label': 'Groups query',
-#            })
+        form['groups_dn'] = factory(
+            'field:label:error:text',
+            value = model.attrs.groups_dn,
+            props = {
+                'required': 'No Groups DN defined',
+                'label': 'Groups Base DN',
+            })
+        form['groups_scope'] = factory(
+            'field:label:select',
+            value = model.attrs.groups_scope,
+            props = {
+                'label': 'Groups scope',
+                'vocabulary': scope_vocab,
+            })
+        form['groups_query'] = factory(
+            'field:label:text',
+            value = model.attrs.groups_query,
+            props = {
+                'label': 'Groups query',
+            })
         form['save'] = factory(
             'submit',
             props = {

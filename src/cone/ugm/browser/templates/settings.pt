@@ -106,8 +106,6 @@
         </td>
       </tr>
       
-      <tal:later condition="None">
-      
       <tr class="table_seperator">
         <td class="left_col"><strong>Groups DN:</strong></td>
         <td tal:content="model.attrs.groups_dn"></td>
@@ -132,8 +130,6 @@
           </strong>
         </td>
       </tr>
-      
-      </tal:later>
       
     </table>
     

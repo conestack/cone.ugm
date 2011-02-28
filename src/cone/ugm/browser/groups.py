@@ -2,7 +2,10 @@ from cone.tile import (
     tile,
     Tile,
 )
-from cone.app.browser.utils import make_url
+from cone.app.browser.utils import (
+    make_url,
+    make_query,
+)
 from cone.ugm.model.interfaces import IGroups
 from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.browser.listing import ColumnListing
@@ -12,6 +15,12 @@ from cone.ugm.browser.listing import ColumnListing
 class GroupsLeftColumn(Tile):
     
     add_label = u"Add Group"
+    
+    @property
+    def add_target(self):
+        return make_url(self.request,
+                        node=self.model.root['groups'],
+                        query=make_query(factory=u'group'))
 
 @tile('rightcolumn', interface=IGroups, permission='view')
 class GroupsRightColumn(Tile):
