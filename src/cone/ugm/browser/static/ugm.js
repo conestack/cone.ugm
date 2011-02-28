@@ -238,7 +238,7 @@
             // refresh focused column with filtered listing
             $('div.column_filter input', context).bind('keyup', function() {
                 var current_filter = this.value.toLowerCase();
-                $('div.columnlisting li', $(this).parent().parent())
+                $('div.columnitems li', $(this).parent().parent())
                     .each(function() {
                         var li = $(this);
                         var val = $('div.head', li).html().toLowerCase();
@@ -336,7 +336,7 @@
                           .removeClass('inv')
                           .removeClass('asc')
                           .removeClass('desc');
-                var cont = $('.columnlisting', elem.parent().parent());
+                var cont = $('.columnitems', elem.parent().parent());
                 if (inv) {
                     elem.addClass('asc');
                 } else {

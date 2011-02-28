@@ -172,39 +172,38 @@ div.columnsorting a.asc {
 div.columnsorting a.desc {
 	background: url('/cone.ugm.static/images/icon_desc.gif') 0 50% no-repeat;
 }
-div.columnlisting {
-	border-left:#ccc 1px solid;
+div.columnitems {
 	border-bottom:#ccc 1px solid;
 	height:450px;
 	overflow-y:scroll;
 }
-div.columnlisting ul {
+div.columnitems ul {
 	margin:0;
 	padding:0;
 	list-style-type:none;
 }
-div.columnlisting li {
+div.columnitems li {
 	clear:both;
 	border-top:#ccc 1px solid;
 	height:24px;
 }
-div.columnlisting li.hidden {
+div.columnitems li.hidden {
 	display:none;
 }
-div.columnlisting li.selected {
+div.columnitems li.selected {
 	color:#fff;
 	background-color:#49539f !important;
 }
-div.columnlisting div.head {
+div.columnitems div.head {
 	float:left;
 	width:420px;
 	overflow:hidden;
 	padding:2px;
 	cursor:pointer;
 }
-div.columnlisting div.head span {
+div.columnitems div.head span {
 }
-div.columnlisting div.actions {
+div.columnitems div.actions {
 	float:right;
 	overflow:hidden;
 	padding:2px;

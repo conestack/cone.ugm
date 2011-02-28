@@ -1,43 +1,45 @@
 <tal:ajax xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax" omit-tag="True">
   
-  <div class="columnsorting">
-  	<tal:sortheader repeat="header context.sortheader">
-  		<a href="${header['id']}"
-		   tal:attributes="class header['default'] and 'default' or None"
-		   tal:content="header['name']">name</a>
-		<tal:seperator condition="not repeat['header'].end">
-			&nbsp;|&nbsp;
-		</tal:seperator>
-  	</tal:sortheader>
-  </div>
-  
   <div class="columnlisting">
+  
+    <div class="columnsorting">
+        <tal:sortheader repeat="header context.sortheader">
+            <a href="${header['id']}"
+             tal:attributes="class header['default'] and 'default' or None"
+           tal:content="header['name']">name</a>
+          <tal:seperator condition="not repeat['header'].end">
+            &nbsp;|&nbsp;
+          </tal:seperator>
+        </tal:sortheader>
+    </div>
     
-    <ul class="${context.slot}">
-      <tal:item repeat="item context.items">
-        <li ajax:target="${item['target']}"
-            tal:attributes="class item['current'] and 'selected' or None">
-          <div class="head li_trigger"
-               tal:content="structure item['head']">head</div>
-          <div class="actions">
-            <tal:action repeat="action item['actions']">
-              <tal:enabled condition="action['enabled']">
-                <a href=""
-                   title="${action['title']}"
-                   class="${'action %s enabled' % action['id']}"
-                   ajax:target="${action['target']}">&nbsp;</a>
-              </tal:enabled>
-              <tal:disabled condition="not action['enabled']">
-                <a href=""
-                   title="${action['title']}"
-                   class="${'action %s_disabled' % action['id']}"
-                   ajax:target="${action['target']}">&nbsp;</a>
-              </tal:disabled>
-            </tal:action>
-          </div>
-        </li>
-      </tal:item>
-    </ul>
+    <div class="columnitems">
+      <ul class="${context.slot}">
+        <tal:item repeat="item context.items">
+          <li ajax:target="${item['target']}"
+              tal:attributes="class item['current'] and 'selected' or None">
+            <div class="head li_trigger"
+                 tal:content="structure item['head']">head</div>
+            <div class="actions">
+              <tal:action repeat="action item['actions']">
+                <tal:enabled condition="action['enabled']">
+                  <a href=""
+                     title="${action['title']}"
+                     class="${'action %s enabled' % action['id']}"
+                     ajax:target="${action['target']}">&nbsp;</a>
+                </tal:enabled>
+                <tal:disabled condition="not action['enabled']">
+                  <a href=""
+                     title="${action['title']}"
+                     class="${'action %s_disabled' % action['id']}"
+                     ajax:target="${action['target']}">&nbsp;</a>
+                </tal:disabled>
+              </tal:action>
+            </div>
+          </li>
+        </tal:item>
+      </ul>
+    </div>
   
   </div>
 </tal:ajax>
