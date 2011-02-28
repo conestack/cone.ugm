@@ -2,13 +2,13 @@
   <div class="column left_column box">
   
     <div class="add_button">
-      <form action="">
+      <form action="#">
         <input type="submit"
                name="add"
                value="${context.add_label}"
                ajax:bind="click"
                ajax:target="${context.add_target}"
-               ajax:action="add:#content:inner" />
+               ajax:action="add:.right_column:inner" />
       </form>
     </div>
   

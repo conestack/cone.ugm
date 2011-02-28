@@ -19,6 +19,7 @@ from cone.app.browser.form import (
     AddPart,
     EditPart,
 )
+from cone.app.browser.ajax import AjaxAction
 from cone.ugm.model.interfaces import IUser
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.batch import ColumnBatch
@@ -231,14 +232,14 @@ class UserAddForm(UserForm, Form):
             users.passwd(id, None, password)
     
     def next(self, request):
-        if request.get('ajax'):
-            return
         if hasattr(self, 'next_resource'):
             url = make_url(request.request,
                            node=self.model,
                            resource=self.next_resource)
         else:
             url = make_url(request.request, node=self.model)
+        if request.get('ajax'):
+            return AjaxAction(url, 'rightcolumn', 'replace', '.right_column')
         return HTTPFound(location=url)
 
 
@@ -262,6 +263,7 @@ class UserEditForm(UserForm, Form):
             self.model.__parent__.ldap_users.passwd(id, None, password)
     
     def next(self, request):
+        url = make_url(request.request, node=self.model)
         if request.get('ajax'):
-            return
-        return HTTPFound(location=make_url(request.request, node=self.model))
+            return AjaxAction(url, 'rightcolumn', 'replace', '.right_column')
+        return HTTPFound(location=url)
