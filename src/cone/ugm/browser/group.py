@@ -47,6 +47,18 @@ class GroupColumnListing(ColumnListing):
     slot = 'rightlisting'
     
     @property
+    def sortheader(self):
+        ret = list()
+        for id in ['name']:
+            ret.append({
+                'id': 'sort_%s' % id,
+                'default': False,
+                'name': id,
+            })
+        ret[0]['default'] = True
+        return ret
+    
+    @property
     def items(self):
         ret = list()
         for i in range(10):
@@ -87,6 +99,18 @@ class GroupColumnListing(ColumnListing):
 class AllGroupColumnListing(ColumnListing):
     
     slot = 'rightlisting'
+    
+    @property
+    def sortheader(self):
+        ret = list()
+        for id in ['name']:
+            ret.append({
+                'id': 'sort_%s' % id,
+                'default': False,
+                'name': id,
+            })
+        ret[0]['default'] = True
+        return ret
     
     @property
     def items(self):

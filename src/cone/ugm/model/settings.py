@@ -116,12 +116,14 @@ class Settings(BaseNode):
         if self._ldap_gcfg is None:
             config = self._config
             map = dict()
+            # XXX: each criteria is expected in attrmap. is this what we want? 
             self._ldap_gcfg = LDAPGroupsConfig(
                 baseDN=config.groups_dn,
                 attrmap={
                     'id': 'cn',
                     'rdn': 'cn',
                     'cn': 'cn',
+                    'member': 'member',
                 },
                 scope=int(config.groups_scope),
                 queryFilter=config.groups_query,

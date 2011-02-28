@@ -47,6 +47,18 @@ class UsersColumnListing(ColumnListing):
         return self.request.get('_curr_listing_id')
     
     @property
+    def sortheader(self):
+        ret = list()
+        for id in ['name', 'surname', 'email']:
+            ret.append({
+                'id': 'sort_%s' % id,
+                'default': False,
+                'name': id,
+            })
+        ret[0]['default'] = True
+        return ret
+    
+    @property
     def items(self):
         ret = list()
         result = self.model.ldap_users.search(criteria=None,

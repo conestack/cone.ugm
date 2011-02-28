@@ -1,9 +1,14 @@
 <tal:ajax xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax" omit-tag="True">
   
   <div class="columnsorting">
-    <a href="sort_name" class="default">name</a>&nbsp;|&nbsp;
-    <a href="sort_surname">surname</a>&nbsp;|&nbsp;
-    <a href="sort_email">email</a>
+  	<tal:sortheader repeat="header context.sortheader">
+  		<a href="${header['id']}"
+		   tal:attributes="class header['default'] and 'default' or None"
+		   tal:content="header['name']">name</a>
+		<tal:seperator condition="not repeat['header'].end">
+			&nbsp;|&nbsp;
+		</tal:seperator>
+  	</tal:sortheader>
   </div>
   
   <div class="columnlisting">
