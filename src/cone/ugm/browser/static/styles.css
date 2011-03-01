@@ -118,8 +118,8 @@ div.columns div.column {
 	float:left;
 }
 div.column {
-	width:500px;
-	min-width:500px;
+	width:600px;
+	min-width:600px;
 }
 /* add button */
 div.add_button {
@@ -156,11 +156,19 @@ div.column .batch strong {
 /* column listing */
 div.columnsorting {
 	margin-top:12px;
-	width:420px;
+	width:520px;
 }
 div.columnsorting div {
 	float:left;
-	width:140px;
+}
+div.columnsorting div.sort_name {
+	width:124px;
+}
+div.columnsorting div.sort_surname {
+    width:124px;
+}
+div.columnsorting div.sort_email {
+    width:270px;
 }
 div.columnsorting a {
 	color:#333;
@@ -202,7 +210,7 @@ div.columnitems li.selected {
 }
 div.columnitems div.head {
 	float:left;
-	width:420px;
+	width:520px;
 	overflow:hidden;
 	cursor:pointer;
 }
@@ -213,14 +221,14 @@ div.columnitems div.head div {
 	padding:2px;
 }
 div.columnitems div.head div.sort_name {
-	width:136px;
+	width:120px;
 }
 div.columnitems div.head div.sort_surname {
-    width:135px;
+    width:120px;
 	border-left:#ccc 1px solid;
 }
 div.columnitems div.head div.sort_email {
-    width:135px;
+    width:266px;
 	border-left:#ccc 1px solid;
 }
 div.columnitems div.actions {
@@ -239,7 +247,7 @@ div.left_column {
 div.right_column {
 }
 div.right_column div.field {
-	width:300px;
+	width:400px;
 	clear:both;
 	padding-bottom:20px;
 }
@@ -323,21 +331,21 @@ td.left_col {
 
 /*user form */
 #form-userform .error {
-	width:234px;
+	width:334px;
 	text-align:left;
 }
 #form-userform .errormessage {
-	width:234px;
+	width:334px;
 }
 #form-userform input {
-	width:230px;
+	width:330px;
 }
 #form-userform #input-userform-save,
 #form-userform #input-userform-cancel {
     width:100px;
 }
 #form-userform #field-userform-id div {
-	width:230px;
+	width:330px;
 	padding:2px;
 }
 
