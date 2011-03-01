@@ -28,9 +28,7 @@
         <td>
           <strong tal:define="status context.ldap_status"
                   tal:content="status"
-                  tal:attributes="style status == 'OK'
-                                        and 'color:green;'
-                                        or 'color:red;'">
+                  tal:attributes="style status == 'OK' and 'color:green' or 'color:red'">
             OK
           </strong>
         </td>
@@ -98,9 +96,7 @@
         <td>
           <strong tal:define="status context.ldap_users"
                   tal:content="status"
-                  tal:attributes="style status == 'OK'
-                                        and 'color:green;'
-                                        or 'color:red;'">
+                  tal:attributes="style status == 'OK' and 'color:green' or 'color:red'">
             OK
           </strong>
         </td>
@@ -127,9 +123,7 @@
         <td>
           <strong tal:define="status context.ldap_groups"
                   tal:content="status"
-                  tal:attributes="style status == 'OK'
-                                        and 'color:green;'
-                                        or 'color:red;'">
+                  tal:attributes="style status == 'OK' and 'color:green' or 'color:red'">
             OK
           </strong>
         </td>
