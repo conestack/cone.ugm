@@ -48,18 +48,7 @@ class GroupColumnBatch(ColumnBatch):
 class UsersOfGroupColumnListing(ColumnListing):
     
     slot = 'rightlisting'
-    
-    @property
-    def sortheader(self):
-        ret = list()
-        for id in ['name', 'surname', 'email']:
-            ret.append({
-                'id': 'sort_%s' % id,
-                'default': False,
-                'name': id,
-            })
-        ret[0]['default'] = True
-        return ret
+    list_columns = ['name', 'surname', 'email']
     
     @property
     def items(self):
@@ -78,17 +67,12 @@ class UsersOfGroupColumnListing(ColumnListing):
             action_target = make_url(self.request,
                                      node=self.model,
                                      query=action_query)
-            # XXX: from config
-            head = '<span class="sort_name">%s&nbsp;</span>' + \
-                   '<span class="sort_surname">%s&nbsp;</span>' + \
-                   '<span class="sort_email">&lt;%s&gt;</span>'
             cn = user.attrs.get('cn', '')
             sn = user.attrs.get('sn', '')
             mail = user.attrs.get('mail', '')
-            head = head % (cn, sn, mail)
             ret.append({
                 'target': item_target,
-                'head': head,
+                'head': self._itemhead(cn, sn, mail),
                 'current': False,
                 'actions': [
                     {
@@ -113,18 +97,7 @@ class UsersOfGroupColumnListing(ColumnListing):
 class AllUsersColumnListing(ColumnListing):
     
     slot = 'rightlisting'
-    
-    @property
-    def sortheader(self):
-        ret = list()
-        for id in ['name', 'surname', 'email']:
-            ret.append({
-                'id': 'sort_%s' % id,
-                'default': False,
-                'name': id,
-            })
-        ret[0]['default'] = True
-        return ret
+    list_columns = ['name', 'surname', 'email']
     
     @property
     def items(self):
@@ -150,20 +123,12 @@ class AllUsersColumnListing(ColumnListing):
             attrs = entry[1]
             already_member = entry[0] in member_ids
             
-            # XXX: from config
-            head = '<span class="sort_name">%s&nbsp;</span>' + \
-                   '<span class="sort_surname">%s&nbsp;</span>' + \
-                   '<span class="sort_email">&lt;%s&gt;</span>'
-            cn = attrs.get('cn')
-            cn = cn and cn[0] or ''
-            sn = attrs.get('sn')
-            sn = sn and sn[0] or ''
-            mail = attrs.get('mail')
-            mail = mail and mail[0] or ''
-            head = head % (cn, sn, mail)
+            cn = attrs.get('cn') and attrs.get('cn')[0] or ''
+            sn = attrs.get('sn') and attrs.get('sn')[0] or ''
+            mail = attrs.get('mail') and attrs.get('mail')[0] or ''
             ret.append({
                 'target': item_target,
-                'head': head,
+                'head': self._itemhead(cn, sn, mail),
                 'current': False,
                 'actions': [
                     {

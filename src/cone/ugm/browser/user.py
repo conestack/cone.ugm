@@ -53,18 +53,7 @@ class UserColumnBatch(ColumnBatch):
 class GroupsOfUserColumnListing(ColumnListing):
     
     slot = 'rightlisting'
-    
-    @property
-    def sortheader(self):
-        ret = list()
-        for id in ['name']:
-            ret.append({
-                'id': 'sort_%s' % id,
-                'default': False,
-                'name': id,
-            })
-        ret[0]['default'] = True
-        return ret
+    list_columns = ['name']
     
     @property
     def items(self):
@@ -86,15 +75,10 @@ class GroupsOfUserColumnListing(ColumnListing):
                                      node=self.model,
                                      query=action_query)
             attrs = entry[1]
-            
-            # XXX: from config
-            head = '<span class="sort_name">%s&nbsp;</span>'
-            cn = attrs.get('cn')
-            cn = cn and cn[0] or ''
-            head = head % cn
+            cn = attrs.get('cn') and attrs.get('cn')[0] or ''
             ret.append({
                 'target': item_target,
-                'head': head,
+                'head': self._itemhead(cn),
                 'current': self.current_id == entry[0] and True or False,
                 'actions': [{
                     'id': 'add_item',
@@ -115,18 +99,7 @@ class GroupsOfUserColumnListing(ColumnListing):
 class AllGroupsColumnListing(ColumnListing):
     
     slot = 'rightlisting'
-    
-    @property
-    def sortheader(self):
-        ret = list()
-        for id in ['name']:
-            ret.append({
-                'id': 'sort_%s' % id,
-                'default': False,
-                'name': id,
-            })
-        ret[0]['default'] = True
-        return ret
+    list_columns = ['name']
     
     @property
     def items(self):
@@ -150,15 +123,10 @@ class AllGroupsColumnListing(ColumnListing):
                                      query=action_query)
             attrs = entry[1]
             already_member = entry[0] in member_of
-            
-            # XXX: from config
-            head = '<span class="sort_name">%s&nbsp;</span>'
-            cn = attrs.get('cn')
-            cn = cn and cn[0] or ''
-            head = head % cn
+            cn = attrs.get('cn') and attrs.get('cn')[0] or ''
             ret.append({
                 'target': item_target,
-                'head': head,
+                'head': self._itemhead(cn),
                 'current': self.current_id == entry[0] and True or False,
                 'actions': [{
                     'id': 'add_item',

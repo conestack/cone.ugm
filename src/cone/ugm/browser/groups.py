@@ -41,22 +41,11 @@ class GroupsColumnBatch(ColumnBatch):
 class GroupsColumnListing(ColumnListing):
     
     slot = 'leftlisting'
+    list_columns = ['name']
     
     @property
     def current_id(self):
         return self.request.get('_curr_listing_id')
-    
-    @property
-    def sortheader(self):
-        ret = list()
-        for id in ['name']:
-            ret.append({
-                'id': 'sort_%s' % id,
-                'default': False,
-                'name': id,
-            })
-        ret[0]['default'] = True
-        return ret
     
     @property
     def items(self):
@@ -68,15 +57,10 @@ class GroupsColumnListing(ColumnListing):
                               node=self.model,
                               resource=entry[0])
             attrs = entry[1]
-            
-            # XXX: from config
-            head = '<span class="sort_name">%s&nbsp;</span>'
-            cn = attrs.get('cn')
-            cn = cn and cn[0] or ''
-            head = head % cn
+            cn = attrs.get('cn') and attrs.get('cn')[0] or ''
             ret.append({
                 'target': target,
-                'head': head,
+                'head': self._itemhead(cn),
                 'current': self.current_id == entry[0] and True or False,
                 'actions': [
                     {
