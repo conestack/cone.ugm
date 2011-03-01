@@ -155,8 +155,12 @@ div.column .batch strong {
 }
 /* column listing */
 div.columnsorting {
-	padding-top:6px;
-	padding-bottom:6px;
+	margin-top:12px;
+	width:420px;
+}
+div.columnsorting div {
+	float:left;
+	width:140px;
 }
 div.columnsorting a {
 	color:#333;
@@ -173,6 +177,7 @@ div.columnsorting a.desc {
 	background: url('/cone.ugm.static/images/icon_desc.gif') 0 50% no-repeat;
 }
 div.columnitems {
+	clear:both;
 	border-left:#ccc 1px solid;
 	border-bottom:#ccc 1px solid;
 	height:450px;
@@ -199,10 +204,24 @@ div.columnitems div.head {
 	float:left;
 	width:420px;
 	overflow:hidden;
-	padding:2px;
 	cursor:pointer;
 }
-div.columnitems div.head span {
+div.columnitems div.head div {
+	float:left;
+	overflow:hidden;
+	height:20px;
+	padding:2px;
+}
+div.columnitems div.head div.sort_name {
+	width:136px;
+}
+div.columnitems div.head div.sort_surname {
+    width:135px;
+	border-left:#ccc 1px solid;
+}
+div.columnitems div.head div.sort_email {
+    width:135px;
+	border-left:#ccc 1px solid;
 }
 div.columnitems div.actions {
 	float:right;

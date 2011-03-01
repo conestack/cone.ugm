@@ -336,7 +336,7 @@
                           .removeClass('inv')
                           .removeClass('asc')
                           .removeClass('desc');
-                var cont = $('.columnitems', elem.parent().parent());
+                var cont = $('.columnitems', elem.parent().parent().parent());
                 if (inv) {
                     elem.addClass('asc');
                 } else {

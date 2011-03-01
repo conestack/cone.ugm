@@ -3,14 +3,13 @@
   <div class="columnlisting">
   
     <div class="columnsorting">
-        <tal:sortheader repeat="header context.sortheader">
-            <a href="${header['id']}"
+      <tal:sortheader repeat="header context.sortheader">
+        <div class="${header['id']}">
+          <a href="${header['id']}"
              tal:attributes="class header['default'] and 'default' or None"
-           tal:content="header['name']">name</a>
-          <tal:seperator condition="not repeat['header'].end">
-            &nbsp;|&nbsp;
-          </tal:seperator>
-        </tal:sortheader>
+             tal:content="header['name']">name</a>
+        </div>
+      </tal:sortheader>
     </div>
     
     <div class="columnitems">
