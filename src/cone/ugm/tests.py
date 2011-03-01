@@ -8,7 +8,7 @@ import unittest2 as unittest
 
 from plone.testing import layered, Layer
 
-from node.ext.ldap.testing import LDIF_users300
+from node.ext.ldap.testing import LDIF_groupOfNames_10_10
 
 
 class Base(Layer):
@@ -20,10 +20,10 @@ BASE = Base()
 DOCFILES = [
     ('model/ugm.txt', BASE),
     ('model/setting.txt', BASE),
-    ('model/users.txt', LDIF_users300),
-    ('model/user.txt', LDIF_users300),
-    ('model/groups.txt', BASE),
-    ('model/group.txt', BASE),
+    ('model/users.txt', LDIF_groupOfNames_10_10),
+    ('model/user.txt', LDIF_groupOfNames_10_10),
+    ('model/groups.txt', LDIF_groupOfNames_10_10),
+    ('model/group.txt', LDIF_groupOfNames_10_10),
 ]
 
 

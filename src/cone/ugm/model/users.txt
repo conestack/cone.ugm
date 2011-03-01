@@ -29,7 +29,7 @@ Check for test users.
 ::
 
     >>> len([x for x in users])
-    300
+    10
 
 The children are user application nodes.
 ::
@@ -42,7 +42,7 @@ The real user objects are available via .model.
     >>> user0.model
     <User 'uid0'>
     >>> user0.model.__class__
-    <class 'node.ext.ldap.outbox.User'>
+    <class 'node.ext.ldap.ugm.User'>
 
 XXX: model is too generic, needs discussion. If so generic I'd say .context,
 otherwise more specific.
@@ -53,10 +53,10 @@ model behind?
 The attributes of the user are wrapped.
 ::
     >>> user0.attrs.items()
-    [('cn', u'cn0'),
-     ('sn', u'sn0'),
-     ('mail', u'uid0@users300.my-domain.com'),
-     ('login', u'uid0')]
+    [('cn', u'cn0'), 
+    ('sn', u'sn0'), 
+    ('mail', u'uid0@groupOfNames_10_10.com'), 
+    ('login', u'uid0')]
 
     >>> user0.attrs['mail'] = 'foo'
 

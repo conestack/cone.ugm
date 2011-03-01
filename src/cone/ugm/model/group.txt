@@ -2,7 +2,9 @@ Group Adapter Application Node
 =======================
 
     >>> from cone.ugm.model.groups import Groups
-    >>> groups = Groups()
+    
+    >>> from cone.ugm.model.users import Users
+    >>> groups = Groups(layer['props'], layer['gcfg'])
     >>> group = groups['group0']
     >>> group
     <Group object 'group0' at ...>

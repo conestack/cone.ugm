@@ -33,10 +33,10 @@ Check default LDAP attributes.
     u'secret'
     
     >>> attrs.users_dn
-    u'ou=users300,dc=my-domain,dc=com'
+    u'ou=users,...
     
     >>> attrs.groups_dn
-    u'ou=groups,dc=example,dc=com'
+    u'ou=groups,...
     
     >>> md = settings.metadata
     >>> md.title
