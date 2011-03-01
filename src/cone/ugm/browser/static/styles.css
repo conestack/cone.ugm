@@ -329,7 +329,7 @@ td.left_col {
 	text-align:right;
 }
 
-/*user form */
+/* user form */
 #form-userform .error {
 	width:334px;
 	text-align:left;
@@ -347,6 +347,23 @@ td.left_col {
 #form-userform #field-userform-id div {
 	width:330px;
 	padding:2px;
+}
+
+/* group form */
+#form-groupform .error {
+    width:334px;
+    text-align:left;
+}
+#form-groupform .errormessage {
+    width:334px;
+}
+#form-groupform #input-groupform-save,
+#form-groupform #input-groupform-cancel {
+    width:100px;
+}
+#form-groupform #field-groupform-name input {
+    width:330px;
+    padding:2px;
 }
 
 /* dict widget XXX: move to yafowil.widget.dict */

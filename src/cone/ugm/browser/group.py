@@ -1,6 +1,7 @@
 from plumber import plumber
 from node.base import AttributedNode
 from yafowil.base import factory
+from yafowil.common import ascii_extractor
 from cone.tile import (
     tile,
     Tile,
@@ -164,13 +165,18 @@ class GroupForm(object):
             })
         props = {
             'label': 'Name',
+            'required': 'No group id defined',
+            'ascii': True,
         }
         if resource == 'edit':
             props['mode'] = 'display'
         form['name'] = factory(
-            'field:label:error:mode:text',
+            'field:*ascii:label:error:mode:text',
             value=self.model.__name__,
-            props=props)
+            props=props,
+            custom= {
+                'ascii': ([ascii_extractor], [], [], []),
+            })
         if resource =='add': # XXX: no fields to edit atm
             form['save'] = factory(
                 'submit',
