@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.9b7'
+version = '1.0dev'
 shortdesc = 'cone.ugm'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
@@ -13,8 +13,8 @@ setup(name='cone.ugm',
             'Development Status :: 3 - Alpha',
             'Environment :: Web Environment',
             'Operating System :: OS Independent',
-            'Programming Language :: Python', 
-            'Topic :: Internet :: WWW/HTTP :: Dynamic Content',        
+            'Programming Language :: Python',
+            'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
       ],
       keywords='',
       author='BlueDynamics Alliance',
@@ -50,5 +50,5 @@ setup(name='cone.ugm',
       entry_points = """\
       [paste.app_factory]
       app = cone.ugm.run:app
-      """        
+      """
       )
