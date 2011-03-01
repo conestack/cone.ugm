@@ -119,8 +119,13 @@
             delete_item: function(event) {
                 event.preventDefault();
                 var elem = $(event.currentTarget);
-                var id = $('.head div.sort_name',
-                           elem.parent().parent()).text();
+                var col = $('.head div.sort_email', elem.parent().parent());
+                if (!col.length) {
+                    col = $('.head .sort_name', elem.parent().parent());
+                }
+                var id = col.text();
+                id = id.replace('<', '&lt;');
+                id = id.replace('>', '&gt;');
                 var msg = 'Do you really want to delete this item?\n\n\n"' + 
                           id + '"';
                 var options = {

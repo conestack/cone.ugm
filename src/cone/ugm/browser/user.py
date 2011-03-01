@@ -166,8 +166,7 @@ class UserForm(object):
                 'chain': 'field:label:error:password',
                 'props': {
                     'minlength': 6,
-                    'ascii': True,
-                    'strength': 2}}}
+                    'ascii': True}}}
     
     @property
     def _protected_fields(self):
