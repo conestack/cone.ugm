@@ -6,6 +6,9 @@
   <users_scope>1</users_scope>
   <users_query></users_query>
   <users_object_classes>
+    <item>top</item>
+    <item>person</item>
+    <item>organizationalPerson</item>
     <item>inetOrgPerson</item>
   </users_object_classes>
   <users_attrmap>
@@ -36,7 +39,7 @@
     </elem>
     <elem>
       <key>cn</key>
-      <value>Name</value>
+      <value>Fullname</value>
     </elem>
     <elem>
       <key>sn</key>
