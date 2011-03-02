@@ -29,9 +29,9 @@ from webob.exc import HTTPFound
 
 @tile('leftcolumn', interface=IUser, permission='view')
 class UserLeftColumn(Column):
-    
+
     add_label = u"Add User"
-    
+
     def render(self):
         self.request['_curr_listing_id'] = self.model.__name__
         return self._render(self.model.__parent__, 'leftcolumn')
@@ -51,10 +51,10 @@ class UserColumnBatch(ColumnBatch):
 @tile('columnlisting', 'templates/column_listing.pt',
       interface=IUser, permission='view')
 class GroupsOfUserColumnListing(ColumnListing):
-    
+
     slot = 'rightlisting'
     list_columns = ['name']
-    
+
     @property
     def items(self):
         ret = list()
@@ -97,10 +97,10 @@ class GroupsOfUserColumnListing(ColumnListing):
 @tile('allcolumnlisting', 'templates/column_listing.pt',
       interface=IUser, permission='view')
 class AllGroupsColumnListing(ColumnListing):
-    
+
     slot = 'rightlisting'
     list_columns = ['name']
-    
+
     @property
     def items(self):
         dn = self.model.model.context.__parent__.child_dn(self.model.model.id)
@@ -110,7 +110,7 @@ class AllGroupsColumnListing(ColumnListing):
         groups = self.model.root['groups']
         result = groups.ldap_groups.search(criteria=criteria, attrlist=['cn'])
         member_of = [res[0] for res in result]
-        
+
         ret = list()
         result = groups.ldap_groups.search(attrlist=['cn'])
         for entry in result:
@@ -143,7 +143,7 @@ class AllGroupsColumnListing(ColumnListing):
 
 
 class UserForm(object):
-    
+
     @property
     def schema(self):
         # XXX: info from LDAP Schema.
@@ -167,23 +167,23 @@ class UserForm(object):
                 'props': {
                     'minlength': 6,
                     'ascii': True}}}
-    
+
     @property
     def _protected_fields(self):
         return ['id', 'login']
-    
+
     @property
     def _required_fields(self):
         return ['id', 'login', 'cn', 'sn', 'mail', 'userPassword']
-    
+
     def prepare(self):
         resource = 'add'
         if self.model.__name__ is not None:
             resource = 'edit'
-            
+
             # XXX: tmp - load props each time they are accessed.
             self.model.attrs.context.load()
-        
+
         action = make_url(self.request, node=self.model, resource=resource)
         form = factory(
             u'form',
@@ -244,7 +244,7 @@ class UserForm(object):
 class UserAddForm(UserForm, Form):
     __metaclass__ = plumber
     __plumbing__ = AddPart
-    
+
     def save(self, widget, data):
         settings = self.model.root['settings']
         attrmap = settings.attrs.users_form_attrmap
@@ -262,7 +262,7 @@ class UserAddForm(UserForm, Form):
         password = data.fetch('userform.userPassword').extracted
         if password is not UNSET:
             users.passwd(id, None, password)
-    
+
     def next(self, request):
         if hasattr(self, 'next_resource'):
             url = make_url(request.request,
@@ -282,7 +282,7 @@ class UserAddForm(UserForm, Form):
 class UserEditForm(UserForm, Form):
     __metaclass__ = plumber
     __plumbing__ = EditPart
-    
+
     def save(self, widget, data):
         settings = self.model.root['settings']
         attrmap = settings.attrs.users_form_attrmap
@@ -296,7 +296,7 @@ class UserEditForm(UserForm, Form):
         if password is not UNSET:
             id = self.model.__name__
             self.model.__parent__.ldap_users.passwd(id, None, password)
-    
+
     def next(self, request):
         url = make_url(request.request, node=self.model)
         if request.get('ajax'):
