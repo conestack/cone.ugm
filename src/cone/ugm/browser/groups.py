@@ -14,9 +14,9 @@ from cone.ugm.browser.listing import ColumnListing
 @tile('leftcolumn', 'templates/left_column.pt',
       interface=IGroups, permission='view')
 class GroupsLeftColumn(Tile):
-    
+
     add_label = u"Add Group"
-    
+
     @property
     def add_target(self):
         return make_url(self.request,
@@ -26,7 +26,7 @@ class GroupsLeftColumn(Tile):
 
 @tile('rightcolumn', interface=IGroups, permission='view')
 class GroupsRightColumn(Tile):
-    
+
     def render(self):
         return u'<div class="column right_column">&nbsp;</div>'
 
@@ -39,14 +39,14 @@ class GroupsColumnBatch(ColumnBatch):
 @tile('columnlisting', 'templates/column_listing.pt',
       interface=IGroups, permission='view')
 class GroupsColumnListing(ColumnListing):
-    
+
     slot = 'leftlisting'
     list_columns = ['name']
-    
+
     @property
     def current_id(self):
         return self.request.get('_curr_listing_id')
-    
+
     @property
     def items(self):
         ret = list()

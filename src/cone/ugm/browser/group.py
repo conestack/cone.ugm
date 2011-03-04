@@ -25,9 +25,9 @@ from webob.exc import HTTPFound
 
 @tile('leftcolumn', interface=IGroup, permission='view')
 class GroupLeftColumn(Column):
-    
+
     add_label = u"Add Group"
-    
+
     def render(self):
         self.request['_curr_listing_id'] = self.model.__name__
         return self._render(self.model.__parent__, 'leftcolumn')
@@ -47,10 +47,10 @@ class GroupColumnBatch(ColumnBatch):
 @tile('columnlisting', 'templates/column_listing.pt',
       interface=IGroup, permission='view')
 class UsersOfGroupColumnListing(ColumnListing):
-    
+
     slot = 'rightlisting'
     list_columns = ['name', 'surname', 'email']
-    
+
     @property
     def items(self):
         ret = list()
@@ -96,10 +96,10 @@ class UsersOfGroupColumnListing(ColumnListing):
 @tile('allcolumnlisting', 'templates/column_listing.pt',
       interface=IGroup, permission='view')
 class AllUsersColumnListing(ColumnListing):
-    
+
     slot = 'rightlisting'
     list_columns = ['name', 'surname', 'email']
-    
+
     @property
     def items(self):
         ret = list()
@@ -123,7 +123,7 @@ class AllUsersColumnListing(ColumnListing):
                                      query=action_query)
             attrs = entry[1]
             already_member = entry[0] in member_ids
-            
+
             cn = attrs.get('cn') and attrs.get('cn')[0] or ''
             sn = attrs.get('sn') and attrs.get('sn')[0] or ''
             mail = attrs.get('mail') and attrs.get('mail')[0] or ''
@@ -150,7 +150,7 @@ class AllUsersColumnListing(ColumnListing):
 
 
 class GroupForm(object):
-    
+
     def prepare(self):
         resource = 'add'
         if self.model.__name__ is not None:
@@ -204,7 +204,7 @@ class GroupForm(object):
 class GroupAddForm(GroupForm, Form):
     __metaclass__ = plumber
     __plumbing__ = AddPart
-    
+
     def save(self, widget, data):
         group = AttributedNode()
         group.attrs['cn'] = data.fetch('groupform.name').extracted
@@ -214,7 +214,7 @@ class GroupAddForm(GroupForm, Form):
         self.next_resource = cn
         groups[cn] = group
         groups.context()
-    
+
     def next(self, request):
         if hasattr(self, 'next_resource'):
             url = make_url(request.request,
@@ -234,10 +234,10 @@ class GroupAddForm(GroupForm, Form):
 class GroupEditForm(GroupForm, Form):
     __metaclass__ = plumber
     __plumbing__ = EditPart
-    
+
     def save(self, widget, data):
         pass
-    
+
     def next(self, request):
         url = make_url(request.request, node=self.model)
         if request.get('ajax'):
