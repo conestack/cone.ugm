@@ -22,16 +22,16 @@ from cone.ugm.model.utils import APP_PATH
 
 
 class Settings(BaseNode):
-    
+
     implements(ISettings)
-    
+
     __acl__ = [
-        (Allow, 'group:manager', 'view'),  
+        (Allow, 'group:manager', 'view'),
         (Allow, 'group:manager', 'edit'),
         (Allow, Everyone, 'login'),
         (Deny, Everyone, ALL_PERMISSIONS),
     ]
-    
+
     def __init__(self, name=None, _app_path=None):
         """``_app_path`` defines an alternative path for app root and is
         for testing purposes only
@@ -40,31 +40,31 @@ class Settings(BaseNode):
         path = os.path.join(_app_path or APP_PATH, 'etc', 'ldap.xml')
         self._config = XMLProperties(path)
         self.invalidate()
-    
+
     def __call__(self):
         self.attrs()
-    
+
     @property
     def attrs(self):
         return self._config
-    
+
     @property
     def metadata(self):
         metadata = BaseMetadata()
         metadata.title = "LDAP Settings"
         metadata.description = "LDAP Connection Settings"
         return metadata
-    
+
     def invalidate(self):
         self._ldap_props = None
         self._ldap_ucfg = None
         self._ldap_gcfg = None
-    
+
     @property
     def ldap_connectivity(self):
         config = self._config
         return testLDAPConnectivity(props=self.ldap_props)
-    
+
     @property
     def ldap_users_container_valid(self):
         try:
@@ -73,7 +73,7 @@ class Settings(BaseNode):
         except Exception:
             # XXX: ldap no such object
             return False
-    
+
     @property
     def ldap_groups_container_valid(self):
         try:
@@ -82,7 +82,7 @@ class Settings(BaseNode):
         except Exception:
             # XXX: ldap no such object
             return False
-    
+
     @property
     def ldap_props(self):
         if self._ldap_props is None:
@@ -110,13 +110,13 @@ class Settings(BaseNode):
                 queryFilter=config.users_query,
                 objectClasses=config.users_object_classes)
         return self._ldap_ucfg
-    
+
     @property
     def ldap_gcfg(self):
         if self._ldap_gcfg is None:
             config = self._config
             map = dict()
-            # XXX: each criteria is expected in attrmap. is this what we want? 
+            # XXX: each criteria is expected in attrmap. is this what we want?
             self._ldap_gcfg = LDAPGroupsConfig(
                 baseDN=config.groups_dn,
                 attrmap={
