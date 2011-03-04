@@ -124,6 +124,7 @@ class Settings(BaseNode):
                     'rdn': 'cn',
                     'cn': 'cn',
                     'member': 'member',
+                    'uniqueMember': 'uniqueMember',
                 },
                 scope=int(config.groups_scope),
                 queryFilter=config.groups_query,
