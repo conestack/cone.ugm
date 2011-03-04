@@ -59,9 +59,10 @@ class GroupsOfUserColumnListing(ColumnListing):
     def items(self):
         ret = list()
         # XXX: error in self.model.model.groups !
+        # What is the error? As you know it, I don't feel like guessing/searching.
         dn = self.model.model.context.__parent__.child_dn(self.model.model.id)
         criteria = {
-            'member': dn,
+            'uniqueMember': dn,
         }
         groups = self.model.root['groups'].ldap_groups
         result = groups.search(criteria=criteria, attrlist=['cn'])
@@ -105,7 +106,7 @@ class AllGroupsColumnListing(ColumnListing):
     def items(self):
         dn = self.model.model.context.__parent__.child_dn(self.model.model.id)
         criteria = {
-            'member': dn,
+            'uniqueMember': dn,
         }
         groups = self.model.root['groups']
         result = groups.ldap_groups.search(criteria=criteria, attrlist=['cn'])

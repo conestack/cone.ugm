@@ -54,7 +54,7 @@ class UsersOfGroupColumnListing(ColumnListing):
     @property
     def items(self):
         ret = list()
-        members = self.model.attrs['member']
+        members = self.model.attrs['uniqueMember']
         users = self.model.root['users']
         for member in members:
             try:
@@ -103,7 +103,7 @@ class AllUsersColumnListing(ColumnListing):
     @property
     def items(self):
         ret = list()
-        members = self.model.attrs['member']
+        members = self.model.attrs['uniqueMember']
         users = self.model.root['users']
         member_ids = list()
         for member in members:
@@ -208,7 +208,7 @@ class GroupAddForm(GroupForm, Form):
     def save(self, widget, data):
         group = AttributedNode()
         group.attrs['cn'] = data.fetch('groupform.name').extracted
-        group.attrs['member'] = ['cn=nobody']
+        group.attrs['uniqueMember'] = ['cn=nobody']
         groups = self.model.__parent__.ldap_groups
         cn = group.attrs['cn']
         self.next_resource = cn
