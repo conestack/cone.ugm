@@ -118,6 +118,10 @@
         <td class="left_col"><strong>Groups Object Classes:</strong></td>
         <td tal:content="', '.join(model.attrs.get('groups_object_classes', []))"></td>
       </tr>
+	  <tr>
+        <td class="left_col"><strong>Group Relationship:</strong></td>
+        <td tal:content="model.attrs.groups_relationship"></td>
+      </tr>
       <tr>
         <td class="left_col"><strong>Check Groups DN:</strong></td>
         <td>

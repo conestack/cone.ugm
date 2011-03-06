@@ -163,6 +163,12 @@ class LDAPSettingsForm(Form):
             props = {
                 'label': 'Groups object classes',
             })
+        form['groups_relationship'] = factory(
+            'field:label:text',
+            value = model.attrs.groups_relationship,
+            props = {
+                'label': 'Group Relationship',
+            })
         form['save'] = factory(
             'submit',
             props = {
@@ -190,7 +196,7 @@ class LDAPSettingsForm(Form):
                           'users_query', 'users_object_classes',
                           'users_attrmap', 'users_form_attrmap',
                           'groups_dn', 'groups_scope', 'groups_query',
-                          'groups_object_classes']:
+                          'groups_object_classes', 'groups_relationship']:
             val = data.fetch('editform.%s' % attr_name).extracted
             if attr_name in ['users_object_classes', 'groups_object_classes']:
                 val = [v.strip() for v in val.split(',') if v.strip()]
