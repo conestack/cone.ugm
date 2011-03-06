@@ -54,7 +54,7 @@ class Settings(ProtectedContentTile):
         return ''
 
 
-@tile('editform', interface=ISettings, permission="edit")
+@tile('editform', interface=ISettings, permission="view")
 class LDAPSettingsForm(Form):
     __metaclass__ = plumber
     __plumbing__ = EditPart

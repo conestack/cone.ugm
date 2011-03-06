@@ -26,8 +26,7 @@ class Settings(BaseNode):
     implements(ISettings)
 
     __acl__ = [
-        (Allow, 'group:manager', 'view'),
-        (Allow, 'group:manager', 'edit'),
+        (Allow, 'system.Authenticated', ['view']),
         (Allow, Everyone, 'login'),
         (Deny, Everyone, ALL_PERMISSIONS),
     ]

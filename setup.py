@@ -30,13 +30,6 @@ setup(name='cone.ugm',
           'setuptools',
           'cone.app',
           'node.ext.ldap',
-          'pyramid',
-          'pyramid_zcml',
-          'yafowil.widget.datetime',
-          'yafowil.widget.richtext',
-          'yafowil.widget.dict',
-          'yafowil.widget.autocomplete',
-          'yafowil.widget.dynatree',
       ],
       extras_require = dict(
           test=[
@@ -49,6 +42,6 @@ setup(name='cone.ugm',
       test_suite = "cone.ugm.tests.test_suite",
       entry_points = """\
       [paste.app_factory]
-      app = cone.ugm.run:app
+      main = cone.ugm.run:main
       """
       )
