@@ -12,15 +12,14 @@ from cone.ugm.model.settings import Settings
 
 
 class Ugm(FactoryNode):
-    
     implements(IUgm)
-    
+
     factories = odict((
         ('users', Users),
         ('groups', Groups),
         ('settings', Settings),
     ))
-    
+
     @property
     def properties(self):
         props = Properties()

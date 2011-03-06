@@ -28,25 +28,25 @@ scope_vocab = [
 @tile('content', 'templates/settings.pt', interface=ISettings,
       permission='login', strict=False)
 class Settings(ProtectedContentTile):
-    
+
     @property
     def ldap_status(self):
         if self.model.ldap_connectivity == 'success':
             return 'OK'
         return 'Down'
-    
+
     @property
     def ldap_users(self):
         if self.model.ldap_users_container_valid:
             return 'OK'
         return 'Inexistent'
-        
+
     @property
     def ldap_groups(self):
         if self.model.ldap_groups_container_valid:
             return 'OK'
         return 'Inexistent'
-    
+
     def scope(self, scope):
         for term in scope_vocab:
             if term[0] == scope:
@@ -58,7 +58,7 @@ class Settings(ProtectedContentTile):
 class LDAPSettingsForm(Form):
     __metaclass__ = plumber
     __plumbing__ = EditPart
-    
+
     def prepare(self):
         model = self.model
         form = factory(u'form',
@@ -189,7 +189,7 @@ class LDAPSettingsForm(Form):
                 'skip': True,
             })
         self.form = form
-    
+
     def save(self, widget, data):
         model = self.model
         for attr_name in ['uri', 'user', 'users_dn', 'users_scope',

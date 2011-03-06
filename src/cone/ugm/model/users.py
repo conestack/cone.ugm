@@ -12,11 +12,10 @@ from cone.ugm.model.user import User
 
 
 class Users(BaseNode):
-    
     implements(IUsers)
-    
+
     node_info_name = 'users'
-    
+
     def __init__(self, props=None, ucfg=None):
         """``props`` and `ucfg`` just needed for testing. never used in
         application code.
@@ -36,11 +35,11 @@ class Users(BaseNode):
         metadata.title = "Users"
         metadata.description = "Container for Users"
         return metadata
-    
+
     @property
     def settings(self):
         return self.__parent__['settings']
-    
+
     @property
     def ldap_users(self):
         if self._ldap_users is None:
@@ -65,9 +64,9 @@ class Users(BaseNode):
         except Exception, e:
             # XXX: explicit exception
             print e
-    
+
     iterkeys = __iter__
-    
+
     def __getitem__(self, name):
         try:
             return BaseNode.__getitem__(self, name)
