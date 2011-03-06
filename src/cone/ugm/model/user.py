@@ -21,13 +21,6 @@ class User(AdapterNode):
     
     node_info_name = 'user'
     
-    __acl__ = [
-        (Allow, 'group:authenticated', 'view'),
-        (Allow, 'group:authenticated', 'edit'),
-        (Allow, Everyone, 'login'),
-        (Deny, Everyone, ALL_PERMISSIONS),
-    ]
-    
     @property
     def properties(self):
         props = Properties()

@@ -19,13 +19,6 @@ class Group(AdapterNode):
     
     implements(IGroup)
     
-    __acl__ = [
-        (Allow, 'group:authenticated', 'view'),
-        (Allow, 'group:authenticated', 'edit'),
-        (Allow, Everyone, 'login'),
-        (Deny, Everyone, ALL_PERMISSIONS),
-    ]
-    
     @property
     def properties(self):
         props = Properties()
