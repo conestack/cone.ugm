@@ -15,7 +15,9 @@ def main(global_config, **settings):
     config = Configurator(
         root_factory=get_root,
         settings=settings,
-        authentication_policy=authn_factory(secret=secret_password, max_age=3600),
+        authentication_policy=authn_factory(secret=secret_password,
+                                            max_age=3600,
+                                            include_ip=True),
         authorization_policy=authz_factory(secret=secret_password),
         autocommit=True)
     zcml_file = settings.get('configure_zcml', 'configure.zcml')
