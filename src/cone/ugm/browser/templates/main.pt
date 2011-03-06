@@ -42,11 +42,11 @@
   </head>
   <body>
     <tal:bdajax replace="structure tile('bdajax')" />
-	
-	<iframe id="ajaxformresponse"
-	        name="ajaxformresponse"
-	        src="#"
-			style="width:0px;height:0px;display:none">
+    
+    <iframe id="ajaxformresponse"
+            name="ajaxformresponse"
+            src="#"
+            style="width:0px;height:0px;display:none">
     </iframe>
   
     <div id="wrapper">
@@ -62,8 +62,10 @@
                          contextchanged:#content"
              tal:content="model.root.metadata.title">Title</a>
         </h1>
-		
-		<a href="${request.application_url}/logout" class="logout">logout</a>
+        
+        <a href="${request.application_url}/logout"
+           class="logout"
+           tal:condition="util.authenticated(request)">logout</a>
         
         <div id="menu">
           <tal:mainmenu replace="structure tile('mainmenu')" />
