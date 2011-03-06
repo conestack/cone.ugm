@@ -42,6 +42,7 @@ class UsersColumnListing(ColumnListing):
 
     slot = 'leftlisting'
     list_columns = ['name', 'surname', 'email']
+    css = 'users'
 
     @property
     def current_id(self):

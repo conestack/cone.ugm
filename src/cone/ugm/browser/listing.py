@@ -8,6 +8,7 @@ class ColumnListing(Tile):
     current_id = None
     slot = None
     list_columns = []
+    css = ''
     
     @property
     def sortheader(self):

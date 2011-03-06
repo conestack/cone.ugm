@@ -54,6 +54,7 @@ class GroupsOfUserColumnListing(ColumnListing):
 
     slot = 'rightlisting'
     list_columns = ['name']
+    css = 'groups'
 
     @property
     def items(self):
@@ -101,6 +102,7 @@ class AllGroupsColumnListing(ColumnListing):
 
     slot = 'rightlisting'
     list_columns = ['name']
+    css = 'groups'
 
     @property
     def items(self):

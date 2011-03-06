@@ -42,6 +42,7 @@ class GroupsColumnListing(ColumnListing):
 
     slot = 'leftlisting'
     list_columns = ['name']
+    css = 'groups'
 
     @property
     def current_id(self):

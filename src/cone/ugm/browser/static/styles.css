@@ -228,8 +228,11 @@ div.columnitems div.head div {
     height:20px;
     padding:2px;
 }
-div.columnitems div.head div.sort_name {
+div.columnlisting div.users div.head div.sort_name {
     width:120px;
+}
+div.columnlisting div.groups div.head div.sort_name {
+    width:500px;
 }
 div.columnitems div.head div.sort_surname {
     width:120px;

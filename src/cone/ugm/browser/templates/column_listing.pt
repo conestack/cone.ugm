@@ -12,7 +12,8 @@
       </tal:sortheader>
     </div>
     
-    <div class="columnitems">
+    <div class="columnitems"
+	     tal:attributes="class 'columnitems ' + context.css">
       <ul class="${context.slot}">
         <tal:item repeat="item context.items">
           <li ajax:target="${item['target']}"
