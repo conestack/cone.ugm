@@ -1,7 +1,8 @@
 from plumber import plumber
 from node.base import AttributedNode
-from yafowil.base import factory
+from yafowil.base import factory, ExtractionError
 from yafowil.common import ascii_extractor
+from yafowil.utils import UNSET
 from cone.tile import (
     tile,
     Tile,
@@ -150,11 +151,12 @@ class GroupForm(object):
         if resource == 'edit':
             props['mode'] = 'display'
         form['name'] = factory(
-            'field:*ascii:label:error:mode:text',
+            'field:*ascii:*exists:label:error:mode:text',
             value=self.model.__name__,
             props=props,
             custom= {
                 'ascii': ([ascii_extractor], [], [], []),
+                'exists': ([self.exists], [], [], []),
             })
         if resource =='add': # XXX: no fields to edit atm
             form['save'] = factory(
@@ -178,6 +180,14 @@ class GroupForm(object):
                 })
         self.form = form
 
+    def exists(self, widget, data):
+        group_id = data.extracted
+        if group_id is UNSET:
+            return data.extracted
+        if group_id in self.model.__parent__.ldap_groups:
+            msg = "Group '%s' already exists." % (group_id,)
+            raise ExtractionError(msg)
+        return data.extracted
 
 @tile('addform', interface=IGroup, permission="add")
 class GroupAddForm(GroupForm, Form):
@@ -186,13 +196,12 @@ class GroupAddForm(GroupForm, Form):
 
     def save(self, widget, data):
         group = AttributedNode()
-        group.attrs['cn'] = data.fetch('groupform.name').extracted
-        group.attrs['uniqueMember'] = ['cn=nobody']
+        id = data.fetch('groupform.name').extracted
         groups = self.model.__parent__.ldap_groups
-        cn = group.attrs['cn']
-        self.next_resource = cn
-        groups[cn] = group
+        self.next_resource = id
+        groups[id] = group
         groups.context()
+        self.model.__parent__.invalidate()
 
     def next(self, request):
         if hasattr(self, 'next_resource'):
