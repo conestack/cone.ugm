@@ -2,6 +2,7 @@ from plumber import plumber
 from odict import odict
 from node.base import AttributedNode
 from yafowil.base import (
+    ExtractionError,
     factory,
     UNSET,
 )
@@ -135,11 +136,14 @@ class UserForm(object):
         # XXX: info from LDAP Schema.
         return {
             'id': {
-                'chain': 'field:*ascii:label:error:mode:text',
+                'chain': 'field:*ascii:*exists:label:error:mode:text',
                 'props': {
                     'ascii': True},
                 'custom': {
-                    'ascii': ([ascii_extractor], [], [], [])}},
+                    'ascii': ([ascii_extractor], [], [], []),
+                    'exists': ([self.exists], [], [], [])
+                    },
+                },
             'login': {
                 'chain': 'field:*ascii:label:error:mode:text',
                 'props': {
@@ -224,6 +228,15 @@ class UserForm(object):
                     'skip': True,
                 })
         self.form = form
+
+    def exists(self, widget, data):
+        id = data.extracted
+        if id is UNSET:
+            return data.extracted
+        if id in self.model.__parent__.ldap_users:
+            msg = "User %s already exists." % (id,)
+            raise ExtractionError(msg)
+        return data.extracted
 
 
 @tile('addform', interface=IUser, permission='add')

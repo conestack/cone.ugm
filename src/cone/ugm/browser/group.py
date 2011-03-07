@@ -185,7 +185,7 @@ class GroupForm(object):
         if group_id is UNSET:
             return data.extracted
         if group_id in self.model.__parent__.ldap_groups:
-            msg = "Group '%s' already exists." % (group_id,)
+            msg = "Group %s already exists." % (group_id,)
             raise ExtractionError(msg)
         return data.extracted
 
