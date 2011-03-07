@@ -179,7 +179,7 @@ class GroupForm(object):
         self.form = form
 
 
-@tile('addform', interface=IGroup, permission="view")
+@tile('addform', interface=IGroup, permission="add")
 class GroupAddForm(GroupForm, Form):
     __metaclass__ = plumber
     __plumbing__ = AddPart
@@ -209,7 +209,7 @@ class GroupAddForm(GroupForm, Form):
         return HTTPFound(location=url)
 
 
-@tile('editform', interface=IGroup, permission="view")
+@tile('editform', interface=IGroup, permission="edit")
 class GroupEditForm(GroupForm, Form):
     __metaclass__ = plumber
     __plumbing__ = EditPart

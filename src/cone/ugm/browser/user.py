@@ -243,7 +243,7 @@ class UserForm(object):
         self.form = form
 
 
-@tile('addform', interface=IUser, permission="view")
+@tile('addform', interface=IUser, permission='add')
 class UserAddForm(UserForm, Form):
     __metaclass__ = plumber
     __plumbing__ = AddPart
@@ -281,7 +281,7 @@ class UserAddForm(UserForm, Form):
         return HTTPFound(location=url)
 
 
-@tile('editform', interface=IUser, permission="view")
+@tile('editform', interface=IUser, permission='edit')
 class UserEditForm(UserForm, Form):
     __metaclass__ = plumber
     __plumbing__ = EditPart

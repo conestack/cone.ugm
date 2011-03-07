@@ -5,12 +5,6 @@ from node.ext.ldap.base import testLDAPConnectivity
 from node.ext.ldap.bbb import queryNode
 from node.ext.ldap.ugm import UsersConfig as LDAPUsersConfig
 from node.ext.ldap.ugm import GroupsConfig as LDAPGroupsConfig
-from pyramid.security import (
-    Everyone,
-    Allow,
-    Deny,
-    ALL_PERMISSIONS,
-)
 from cone.app.model import (
     BaseNode,
     Properties,
@@ -24,12 +18,6 @@ from cone.ugm.model.utils import APP_PATH
 class Settings(BaseNode):
 
     implements(ISettings)
-
-    __acl__ = [
-        (Allow, 'system.Authenticated', ['view']),
-        (Allow, Everyone, 'login'),
-        (Deny, Everyone, ALL_PERMISSIONS),
-    ]
 
     def __init__(self, name=None, _app_path=None):
         """``_app_path`` defines an alternative path for app root and is

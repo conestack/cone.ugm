@@ -26,7 +26,7 @@ scope_vocab = [
 
 
 @tile('content', 'templates/settings.pt', interface=ISettings,
-      permission='login', strict=False)
+      permission='manage', strict=False)
 class Settings(ProtectedContentTile):
 
     @property
@@ -54,7 +54,7 @@ class Settings(ProtectedContentTile):
         return ''
 
 
-@tile('editform', interface=ISettings, permission="view")
+@tile('editform', interface=ISettings, permission='manage')
 class LDAPSettingsForm(Form):
     __metaclass__ = plumber
     __plumbing__ = EditPart

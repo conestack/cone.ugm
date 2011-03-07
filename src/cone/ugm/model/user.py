@@ -1,10 +1,4 @@
 from zope.interface import implements
-from pyramid.security import (
-    Everyone,
-    Allow,
-    Deny,
-    ALL_PERMISSIONS,
-)
 from cone.app.model import (
     AdapterNode,
     Properties,
