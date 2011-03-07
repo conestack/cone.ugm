@@ -56,6 +56,7 @@ class Users(BaseNode):
     def invalidate(self):
         self._ldap_users = None
         self.clear()
+        self.ldap_users.groups = self.__parent__['groups'].ldap_groups
 
     def __iter__(self):
         try:

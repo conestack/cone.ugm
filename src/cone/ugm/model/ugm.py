@@ -28,9 +28,17 @@ class Ugm(FactoryNode):
         props.mainmenu_empty_title = True
         props.default_child = 'users'
         return props
-    
+
     @property
     def metadata(self):
         metadata = BaseMetadata()
         metadata.title = "ugm"
         return metadata
+
+    def __init__(self, *args, **kw):
+        super(Ugm, self).__init__(*args, **kw)
+        # XXX: currently the ldap users and groups need to know
+        # mutually about themselves. Feels like node.ext.ugm should
+        # present us the combo.
+        self['users'].ldap_users.groups = self['groups'].ldap_groups
+        self['groups'].ldap_groups.users = self['users'].ldap_users

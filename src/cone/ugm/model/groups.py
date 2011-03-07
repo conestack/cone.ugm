@@ -12,11 +12,11 @@ from cone.ugm.model.group import Group
 
 
 class Groups(BaseNode):
-    
+
     implements(IGroups)
-    
+
     node_info_name = 'groups'
-    
+
     def __init__(self, props=None, gcfg=None):
         """``props`` and `gcfg`` just needed for testing. never used in
         application code.
@@ -29,18 +29,18 @@ class Groups(BaseNode):
                 'gcfg': gcfg,
             }
         self._ldap_groups = None
-    
+
     @property
     def metadata(self):
         metadata = BaseMetadata()
         metadata.title = "Groups"
         metadata.description = "Container for Groups"
         return metadata
-    
+
     @property
     def settings(self):
         return self.__parent__['settings']
-    
+
     @property
     def ldap_groups(self):
         if self._ldap_groups is None:
@@ -57,7 +57,8 @@ class Groups(BaseNode):
     def invalidate(self):
         self._ldap_groups = None
         self.clear()
-    
+        self.ldap_groups.users = self.__parent__['users'].ldap_users
+
     def __iter__(self):
         try:
             for key in self.ldap_groups:
@@ -65,9 +66,9 @@ class Groups(BaseNode):
         except Exception, e:
             # XXX: explicit exception
             print e
-    
+
     iterkeys = __iter__
-    
+
     def __getitem__(self, name):
         try:
             return BaseNode.__getitem__(self, name)
