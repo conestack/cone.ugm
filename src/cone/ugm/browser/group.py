@@ -44,111 +44,88 @@ class GroupColumnBatch(ColumnBatch):
     pass
 
 
-@tile('columnlisting', 'templates/column_listing.pt',
-      interface=IGroup, permission='view')
-class UsersOfGroupColumnListing(ColumnListing):
+class Principals(object):
+    """Descriptor to return principal items for listing
+    """
+    def __init__(self, members_only=False):
+        self.members_only = members_only
 
-    slot = 'rightlisting'
-    list_columns = ['name', 'surname', 'email']
-    css = 'users'
+    def __get__(self, obj, objtype=None):
+        if obj is None:
+            return self
 
-    @property
-    def items(self):
+        appgroup = obj.model
+        group = appgroup.model
+        member_ids = group.keys()
+        # always True if we list members only, otherwise will be set
+        # in the loop below
+        already_member = self.members_only
+
+        # XXX: so far only users as members of groups, for
+        # group-in-group we need to prefix groups
+        if self.members_only:
+            users = group
+        else:
+            users = obj.model.root['users'].ldap_users
+
         ret = list()
-        members = self.model.attrs['uniqueMember']
-        users = self.model.root['users']
-        for member in members:
-            try:
-                id = users.ldap_users.idbydn(member)
-            except KeyError:
-                continue
-            user = users[id]
-            item_target = make_url(self.request,
-                                   node=user)
+
+        # XXX: These should be the mapped attributes - lack of backend support
+        for id, attrs in users.search(attrlist=('cn', 'sn', 'mail')):
+            # XXX: resource was only set for alluserlisting
+            item_target = make_url(obj.request, node=users[id], resource=id)
             action_query = make_query(id=id)
-            action_target = make_url(self.request,
-                                     node=self.model,
-                                     query=action_query)
-            cn = user.attrs.get('cn', '')
-            sn = user.attrs.get('sn', '')
-            mail = user.attrs.get('mail', '')
+            action_target = make_url(obj.request, node=appgroup, query=action_query)
+
+            if not self.members_only:
+                already_member = id in member_ids
+
+            # XXX: this should not be hardcoded
+            cn = attrs.get('cn', '')
+            sn = attrs.get('sn', '')
+            mail = attrs.get('mail', '')
             ret.append({
                 'target': item_target,
-                'head': self._itemhead(cn, sn, mail),
+                'head': obj._itemhead(cn, sn, mail),
                 'current': False,
                 'actions': [
                     {
                         'id': 'add_item',
-                        'enabled': False,
-                        'title': 'Add User to selected Group',
+                        'enabled': not bool(already_member),
+                        'title': 'Add user to selected group.',
                         'target': action_target,
                     },
                     {
                         'id': 'remove_item',
-                        'enabled': True,
-                        'title': 'Remove User from selected Group',
+                        'enabled': bool(already_member),
+                        'title': 'Remove user from selected group.',
                         'target': action_target,
                     },
                 ],
             })
         return ret
+
+
+@tile('columnlisting', 'templates/column_listing.pt',
+      interface=IGroup, permission='view')
+class UsersOfGroupColumnListing(ColumnListing):
+    css = 'users'
+    slot = 'rightlisting'
+    list_columns = ['name', 'surname', 'email']
+    # XXX: Why items and not keys() / __iter__?
+    # used to be a readonly property
+    items = Principals(members_only=True)
 
 
 @tile('allcolumnlisting', 'templates/column_listing.pt',
       interface=IGroup, permission='view')
 class AllUsersColumnListing(ColumnListing):
-
+    css = 'users'
     slot = 'rightlisting'
     list_columns = ['name', 'surname', 'email']
-    css = 'users'
-
-    @property
-    def items(self):
-        ret = list()
-        members = self.model.attrs['uniqueMember']
-        users = self.model.root['users']
-        member_ids = list()
-        for member in members:
-            try:
-                member_ids.append(users.ldap_users.idbydn(member))
-            except KeyError:
-                continue
-        result = users.ldap_users.search(criteria=None,
-                                         attrlist=['cn', 'sn' , 'mail'])
-        for entry in result:
-            item_target = make_url(self.request,
-                                   node=users,
-                                   resource=entry[0])
-            action_query = make_query(id=entry[0])
-            action_target = make_url(self.request,
-                                     node=self.model,
-                                     query=action_query)
-            attrs = entry[1]
-            already_member = entry[0] in member_ids
-
-            cn = attrs.get('cn') and attrs.get('cn')[0] or ''
-            sn = attrs.get('sn') and attrs.get('sn')[0] or ''
-            mail = attrs.get('mail') and attrs.get('mail')[0] or ''
-            ret.append({
-                'target': item_target,
-                'head': self._itemhead(cn, sn, mail),
-                'current': False,
-                'actions': [
-                    {
-                        'id': 'add_item',
-                        'enabled': not already_member and True or False,
-                        'title': 'Add User to selected Group',
-                        'target': action_target,
-                    },
-                    {
-                        'id': 'remove_item',
-                        'enabled': already_member and True or False,
-                        'title': 'Remove User from selected Group',
-                        'target': action_target,
-                    },
-                ],
-            })
-        return ret
+    # XXX: Why items and not keys() / __iter__?
+    # used to be a readonly property
+    items = Principals()
 
 
 class GroupForm(object):
