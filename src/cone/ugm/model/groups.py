@@ -55,9 +55,16 @@ class Groups(BaseNode):
         return self._ldap_groups
 
     def invalidate(self):
+        """
+        - get rid of ldap_groups
+        - get new ldap_groups
+        - tell it about ldap_users
+        - tell ldap_users about new ldap_groups
+        """
         self._ldap_groups = None
         self.clear()
         self.ldap_groups.users = self.__parent__['users'].ldap_users
+        self.__parent__['users'].ldap_users.groups = self.ldap_groups
 
     def __iter__(self):
         try:

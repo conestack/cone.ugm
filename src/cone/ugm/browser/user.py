@@ -48,6 +48,66 @@ class UserColumnBatch(ColumnBatch):
     pass
 
 
+class Groups(object):
+    """Descriptor to return principal items for listing
+
+    XXX: check also group.Principals, naming here is sometimes newer
+    """
+    def __init__(self, related_only=False):
+        self.related_only = related_only
+
+    def __get__(self, obj, objtype=None):
+        if obj is None:
+            return self
+
+        appuser = obj.model
+        user = appuser.model
+        related_ids = user.groups.keys()
+        # always True if we list members only, otherwise will be set
+        # in the loop below
+        related = self.related_only
+
+        if self.related_only:
+            groups = user.groups
+        else:
+            groups = obj.model.root['groups'].ldap_groups
+
+        ret = list()
+
+        # XXX: These should be the mapped attributes - lack of backend support
+        for id, attrs in groups.search(attrlist=('cn',)):
+            # XXX: resource was only set for alluserlisting
+            item_target = make_url(obj.request, node=groups[id], resource=id)
+            action_query = make_query(id=id)
+            action_target = make_url(obj.request, node=appuser, query=action_query)
+
+            if not self.related_only:
+                related = id in related_ids
+
+            # XXX: this should not be hardcoded
+            cn = attrs.get('cn', [''])[0]
+            ret.append({
+                'target': item_target,
+                'head': obj._itemhead(cn),
+                'current': False,
+                'actions': [
+                    {
+                        'id': 'add_item',
+                        'enabled': not bool(related),
+                        'title': 'Add user to selected group.',
+                        'target': action_target,
+                    },
+                    {
+                        'id': 'remove_item',
+                        'enabled': bool(related),
+                        'title': 'Remove user from selected group.',
+                        'target': action_target,
+                    },
+                ],
+            })
+        return ret
+
+
 @tile('columnlisting', 'templates/column_listing.pt',
       interface=IUser, permission='view')
 class GroupsOfUserColumnListing(ColumnListing):
@@ -55,45 +115,7 @@ class GroupsOfUserColumnListing(ColumnListing):
     slot = 'rightlisting'
     list_columns = ['name']
     css = 'groups'
-
-    @property
-    def items(self):
-        ret = list()
-        # XXX: error in self.model.model.groups !
-        # What is the error? As you know it, I don't feel like guessing/searching.
-        dn = self.model.model.context.__parent__.child_dn(self.model.model.id)
-        criteria = {
-            'uniqueMember': dn,
-        }
-        groups = self.model.root['groups'].ldap_groups
-        result = groups.search(criteria=criteria, attrlist=['cn'])
-        node = self.model.root['groups']
-        for entry in result:
-            item_target = make_url(self.request,
-                                   node=node,
-                                   resource=entry[0])
-            action_query = make_query(id=entry[0])
-            action_target = make_url(self.request,
-                                     node=self.model,
-                                     query=action_query)
-            attrs = entry[1]
-            cn = attrs.get('cn') and attrs.get('cn')[0] or ''
-            ret.append({
-                'target': item_target,
-                'head': self._itemhead(cn),
-                'current': self.current_id == entry[0] and True or False,
-                'actions': [{
-                    'id': 'add_item',
-                    'enabled': False,
-                    'title': 'Add selected User to Group',
-                    'target': action_target},
-                    {'id': 'remove_item',
-                    'enabled': True,
-                    'title': 'Remove selected User from Group',
-                    'target': action_target},
-                ]
-            })
-        return ret
+    items = Groups(related_only=True)
 
 
 @tile('allcolumnlisting', 'templates/column_listing.pt',
@@ -103,46 +125,7 @@ class AllGroupsColumnListing(ColumnListing):
     slot = 'rightlisting'
     list_columns = ['name']
     css = 'groups'
-
-    @property
-    def items(self):
-        dn = self.model.model.context.__parent__.child_dn(self.model.model.id)
-        criteria = {
-            'uniqueMember': dn,
-        }
-        groups = self.model.root['groups']
-        result = groups.ldap_groups.search(criteria=criteria, attrlist=['cn'])
-        member_of = [res[0] for res in result]
-
-        ret = list()
-        result = groups.ldap_groups.search(attrlist=['cn'])
-        for entry in result:
-            item_target = make_url(self.request,
-                                   node=groups,
-                                   resource=entry[0])
-            action_query = make_query(id=entry[0])
-            action_target = make_url(self.request,
-                                     node=self.model,
-                                     query=action_query)
-            attrs = entry[1]
-            already_member = entry[0] in member_of
-            cn = attrs.get('cn') and attrs.get('cn')[0] or ''
-            ret.append({
-                'target': item_target,
-                'head': self._itemhead(cn),
-                'current': self.current_id == entry[0] and True or False,
-                'actions': [{
-                    'id': 'add_item',
-                    'enabled': not already_member and True or False,
-                    'title': 'Add selected User to Group',
-                    'target': action_target},
-                    {'id': 'remove_item',
-                    'enabled': already_member and True or False,
-                    'title': 'Remove selected User from Group',
-                    'target': action_target},
-                ]
-            })
-        return ret
+    items = Groups(related_only=False)
 
 
 class UserForm(object):
@@ -262,6 +245,7 @@ class UserAddForm(UserForm, Form):
         self.next_resource = id
         users[id] = user
         users.context()
+        self.model.__parent__.invalidate()
         password = data.fetch('userform.userPassword').extracted
         if password is not UNSET:
             users.passwd(id, None, password)
