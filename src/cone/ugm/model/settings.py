@@ -58,6 +58,10 @@ class Settings(BaseNode):
         self._ldap_props = None
         self._ldap_ucfg = None
         self._ldap_gcfg = None
+        if self.__parent__:
+            pass
+            # XXX: tell whole ugm to invalidate
+            # XXX: send an event that settings have been changed
 
     @property
     def ldap_connectivity(self):
@@ -127,5 +131,7 @@ class Settings(BaseNode):
                 },
                 scope=int(config.groups_scope),
                 queryFilter=config.groups_query,
-                objectClasses=config.groups_object_classes)
+                objectClasses=config.groups_object_classes,
+                member_relation=config.groups_relation,
+                )
         return self._ldap_gcfg
