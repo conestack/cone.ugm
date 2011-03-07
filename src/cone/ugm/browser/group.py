@@ -81,9 +81,9 @@ class Principals(object):
                 already_member = id in member_ids
 
             # XXX: this should not be hardcoded
-            cn = attrs.get('cn', '')
-            sn = attrs.get('sn', '')
-            mail = attrs.get('mail', '')
+            cn = attrs.get('cn', [''])[0]
+            sn = attrs.get('sn', [''])[0]
+            mail = attrs.get('mail', [''])[0]
             ret.append({
                 'target': item_target,
                 'head': obj._itemhead(cn, sn, mail),
