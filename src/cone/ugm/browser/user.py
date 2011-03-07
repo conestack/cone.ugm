@@ -76,7 +76,7 @@ class Groups(object):
         ret = list()
 
         # XXX: These should be the mapped attributes - lack of backend support
-        for id, attrs in groups.search(attrlist=('cn',)):
+        for id in groups.keys():
             # XXX: resource was only set for alluserlisting
             item_target = make_url(obj.request, node=groups[id], resource=id)
             action_query = make_query(id=id)
@@ -86,10 +86,9 @@ class Groups(object):
                 related = id in related_ids
 
             # XXX: this should not be hardcoded
-            cn = attrs.get('cn', [''])[0]
             ret.append({
                 'target': item_target,
-                'head': obj._itemhead(cn),
+                'head': obj._itemhead(id),
                 'current': False,
                 'actions': [
                     {
