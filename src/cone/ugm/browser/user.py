@@ -63,13 +63,13 @@ class Groups(object):
 
         appuser = obj.model
         user = appuser.model
-        related_ids = user.groups.keys()
+        related_ids = user.member_groups.keys()
         # always True if we list members only, otherwise will be set
         # in the loop below
         related = self.related_only
 
         if self.related_only:
-            groups = user.groups
+            groups = user.member_groups
         else:
             groups = obj.model.root['groups'].ldap_groups
 
