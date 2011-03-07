@@ -16,7 +16,7 @@ def main(global_config, **settings):
         root_factory=get_root,
         settings=settings,
         authentication_policy=authn_factory(secret=secret_password,
-                                            max_age=3600,
+                                            max_age=43200,
                                             include_ip=True),
         authorization_policy=authz_factory(secret=secret_password),
         autocommit=True)
