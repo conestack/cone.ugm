@@ -10,7 +10,7 @@ class ColumnListing(Tile):
     slot = None
     list_columns = []
     css = ''
-    slicesize = 10
+    slicesize = 50
     batchname = ''
     column = ''
     
