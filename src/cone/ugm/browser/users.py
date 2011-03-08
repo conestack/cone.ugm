@@ -31,11 +31,6 @@ class UsersRightColumn(Tile):
         return u'<div class="column right_column">&nbsp;</div>'
 
 
-@tile('columnbatch', interface=IUsers, permission='view')
-class UsersColumnBatch(ColumnBatch):
-    pass
-
-
 @tile('columnlisting', 'templates/column_listing.pt',
       interface=IUsers, permission='view')
 class UsersColumnListing(ColumnListing):
@@ -43,13 +38,14 @@ class UsersColumnListing(ColumnListing):
     slot = 'leftlisting'
     list_columns = ['name', 'surname', 'email']
     css = 'users'
+    batchname = 'leftbatch'
 
     @property
     def current_id(self):
         return self.request.get('_curr_listing_id')
 
     @property
-    def items(self):
+    def query_items(self):
         ret = list()
         result = self.model.ldap_users.search(criteria=None,
                                               attrlist=['cn', 'sn' , 'mail'])

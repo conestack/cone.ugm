@@ -1,4 +1,5 @@
 from cone.tile import Tile
+from cone.ugm.browser.batch import ColumnBatch
 
 
 class ColumnListing(Tile):
@@ -9,6 +10,13 @@ class ColumnListing(Tile):
     slot = None
     list_columns = []
     css = ''
+    slicesize = 10
+    batchname = ''
+    column = ''
+    
+    @property
+    def ajax_action(self):
+        return 'columnlisting'
     
     @property
     def sortheader(self):
@@ -23,7 +31,25 @@ class ColumnListing(Tile):
         return ret
     
     @property
+    def batch(self):
+        return ColumnBatch(self.batchname,
+                           self.query_items,
+                           self.slicesize)(self.model, self.request)
+    
+    @property
+    def slice(self):
+        current = int(self.request.params.get('b_page', '0'))
+        start = current * self.slicesize
+        end = start + self.slicesize
+        return start, end
+    
+    @property
     def items(self):
+        start, end = self.slice
+        return self.query_items[start:end]
+    
+    @property
+    def query_items(self):
         """Return list of dicts like:
         
         {

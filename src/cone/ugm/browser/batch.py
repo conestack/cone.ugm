@@ -1,35 +1,46 @@
-from cone.tile import tile
 from cone.app.browser.batch import Batch
-from cone.ugm.model.users import Users
-from cone.ugm.model.groups import Groups
+from cone.app.browser.utils import (
+    nodepath,
+    make_query, 
+    make_url,
+)
 
 
 class ColumnBatch(Batch):
     """Abstract UGM column batch.
     """
     
+    def __init__(self, name, items, slicesize):
+        self.name = name
+        #self.name = 'columnbatch'
+        self.path = None
+        self.attribute = 'render'
+        self.items = items
+        self.slicesize = slicesize
+    
     @property
     def display(self):
-        return True
+        return len(self.vocab) > 1
     
     @property
     def vocab(self):
-        # XXX: nothing senceful yet, dummy code for CSS
         ret = list()
-        for char in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
-                     'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
-                     'Y', 'X', 'Y', 'Z', 5 * '&nbsp;' + 'ALL']:
+        path = nodepath(self.model)
+        count = len(self.items)
+        pages = count / self.slicesize
+        if count % self.slicesize != 0:
+            pages += 1
+        current = self.request.params.get('b_page', '0')
+        for i in range(pages):
+            query = make_query(b_page=str(i))
+            url = make_url(self.request, path=path, query=query)
             ret.append({
-                'page': char,
-                'current': False,
+                'page': '%i' % (i + 1),
+                'current': current == str(i),
                 'visible': True,
-                'url': '',
+                'url': url,
             })
-        ret[3]['visible'] = False
-        ret[10]['current'] = True
         return ret
-    
-    # just want to dislpay the batch vocab, disable other UI elements.
     
     @property
     def firstpage(self):

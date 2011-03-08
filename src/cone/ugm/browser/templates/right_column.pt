@@ -21,8 +21,6 @@
     
     <div class="clear"></div>
     
-    <tal:batch condition="None" replace="structure tile('columnbatch')" />
-    
     <tal:listing replace="structure tile('columnlisting')" />
   
   </div>

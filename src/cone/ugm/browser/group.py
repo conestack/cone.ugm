@@ -40,11 +40,6 @@ class GroupRightColumn(Tile):
     pass
 
 
-@tile('columnbatch', interface=IGroup, permission='view')
-class GroupColumnBatch(ColumnBatch):
-    pass
-
-
 class Principals(object):
     """Descriptor to return principal items for listing
     """
@@ -115,7 +110,8 @@ class UsersOfGroupColumnListing(ColumnListing):
     list_columns = ['name', 'surname', 'email']
     # XXX: Why items and not keys() / __iter__?
     # used to be a readonly property
-    items = Principals(members_only=True)
+    query_items = Principals(members_only=True)
+    batchname = 'rightbatch'
 
 
 @tile('allcolumnlisting', 'templates/column_listing.pt',
@@ -126,7 +122,12 @@ class AllUsersColumnListing(ColumnListing):
     list_columns = ['name', 'surname', 'email']
     # XXX: Why items and not keys() / __iter__?
     # used to be a readonly property
-    items = Principals()
+    query_items = Principals()
+    batchname = 'rightbatch'
+    
+    @property
+    def ajax_action(self):
+        return 'allcolumnlisting'
 
 
 class GroupForm(object):

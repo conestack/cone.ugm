@@ -31,11 +31,6 @@ class GroupsRightColumn(Tile):
         return u'<div class="column right_column">&nbsp;</div>'
 
 
-@tile('columnbatch', interface=IGroups, permission='view')
-class GroupsColumnBatch(ColumnBatch):
-    pass
-
-
 @tile('columnlisting', 'templates/column_listing.pt',
       interface=IGroups, permission='view')
 class GroupsColumnListing(ColumnListing):
@@ -43,13 +38,14 @@ class GroupsColumnListing(ColumnListing):
     slot = 'leftlisting'
     list_columns = ['name']
     css = 'groups'
+    batchname = 'leftbatch'
 
     @property
     def current_id(self):
         return self.request.get('_curr_listing_id')
 
     @property
-    def items(self):
+    def query_items(self):
         ret = list()
         result = self.model.ldap_groups.search(criteria=None,
                                                attrlist=['cn'])

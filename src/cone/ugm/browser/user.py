@@ -44,11 +44,6 @@ class UserRightColumn(Tile):
     pass
 
 
-@tile('columnbatch', interface=IUser, permission='view')
-class UserColumnBatch(ColumnBatch):
-    pass
-
-
 class Groups(object):
     """Descriptor to return principal items for listing
 
@@ -116,7 +111,8 @@ class GroupsOfUserColumnListing(ColumnListing):
     slot = 'rightlisting'
     list_columns = ['name']
     css = 'groups'
-    items = Groups(related_only=True)
+    query_items = Groups(related_only=True)
+    batchname = 'rightbatch'
 
 
 @tile('allcolumnlisting', 'templates/column_listing.pt',
@@ -126,7 +122,12 @@ class AllGroupsColumnListing(ColumnListing):
     slot = 'rightlisting'
     list_columns = ['name']
     css = 'groups'
-    items = Groups(related_only=False)
+    query_items = Groups(related_only=False)
+    batchname = 'rightbatch'
+    
+    @property
+    def ajax_action(self):
+        return 'allcolumnlisting'
 
 
 class UserForm(object):
