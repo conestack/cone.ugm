@@ -69,7 +69,13 @@ class Principals(object):
         # XXX: These should be the mapped attributes - lack of backend support
         for id, attrs in users.search(attrlist=('cn', 'sn', 'mail')):
             # XXX: resource was only set for alluserlisting
-            item_target = make_url(obj.request, node=users[id], resource=id)
+            try:
+                user = users[id]
+            except KeyError, e:
+                # XXX logging
+                print e
+                continue
+            item_target = make_url(obj.request, node=user, resource=id)
             action_query = make_query(id=id)
             action_target = make_url(obj.request, node=appgroup, query=action_query)
 
