@@ -67,7 +67,7 @@ class UserAddToGroupAction(Action):
         group_id = self.request.params.get('id')
         # XXX: self.model.model is weird naming
         user = self.model.model
-        user.groups.add(group_id)
+        user.membership.add(group_id)
         self.model.__parent__.invalidate()
         return {
             'success': True,
@@ -85,7 +85,7 @@ class UserRemoveFromGroupAction(Action):
         # XXX: use mechanism from LDAP Groups
         group_id = self.request.params.get('id')
         user = self.model.model
-        del user.groups[group_id]
+        del user.membership[group_id]
         # XXX: this feels bad and makes problems, see in invalidate()
         self.model.__parent__.invalidate()
         return {
