@@ -81,6 +81,7 @@ class Principals(object):
             sn = attrs.get('sn', [''])[0]
             mail = attrs.get('mail', [''])[0]
             ret.append({
+                'cn': cn, # XXX: hack
                 'target': item_target,
                 'head': obj._itemhead(cn, sn, mail),
                 'current': False,
@@ -99,6 +100,8 @@ class Principals(object):
                     },
                 ],
             })
+        ret = sorted(
+            ret, lambda x, y: x['cn'].lower() < y['cn'].lower() and 1 or -1)
         return ret
 
 

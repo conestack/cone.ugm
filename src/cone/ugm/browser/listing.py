@@ -12,7 +12,6 @@ class ColumnListing(Tile):
     css = ''
     slicesize = 50
     batchname = ''
-    column = ''
     
     @property
     def ajax_action(self):

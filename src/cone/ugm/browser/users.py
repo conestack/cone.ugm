@@ -58,6 +58,7 @@ class UsersColumnListing(ColumnListing):
             sn = attrs.get('sn') and attrs.get('sn')[0] or ''
             mail = attrs.get('mail') and attrs.get('mail')[0] or ''
             ret.append({
+                'cn': cn, # XXX: hack
                 'target': target,
                 'head': self._itemhead(cn, sn, mail),
                 'current': self.current_id == entry[0] and True or False,
@@ -70,4 +71,6 @@ class UsersColumnListing(ColumnListing):
                     }
                 ]
             })
+        ret = sorted(
+            ret, lambda x, y: x['cn'].lower() < y['cn'].lower() and 1 or -1)
         return ret

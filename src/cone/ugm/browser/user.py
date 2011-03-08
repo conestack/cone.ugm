@@ -82,6 +82,7 @@ class Groups(object):
 
             # XXX: this should not be hardcoded
             ret.append({
+                'id': id, # XXX: hack
                 'target': item_target,
                 'head': obj._itemhead(id),
                 'current': False,
@@ -100,6 +101,8 @@ class Groups(object):
                     },
                 ],
             })
+        ret = sorted(
+            ret, lambda x, y: x['id'].lower() < y['id'].lower() and 1 or -1)
         return ret
 
 

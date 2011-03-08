@@ -56,6 +56,7 @@ class GroupsColumnListing(ColumnListing):
             attrs = entry[1]
             cn = attrs.get('cn') and attrs.get('cn')[0] or ''
             ret.append({
+                'cn': cn, # XXX: hack
                 'target': target,
                 'head': self._itemhead(cn),
                 'current': self.current_id == entry[0] and True or False,
@@ -68,4 +69,6 @@ class GroupsColumnListing(ColumnListing):
                     }
                 ]
             })
+        ret = sorted(
+            ret, lambda x, y: x['cn'].lower() < y['cn'].lower() and 1 or -1)
         return ret
