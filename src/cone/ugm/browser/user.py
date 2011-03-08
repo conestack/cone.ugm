@@ -58,20 +58,20 @@ class Groups(object):
 
         appuser = obj.model
         user = appuser.model
-        related_ids = user.groups.keys()
+        related_ids = user.member_groups.keys()
         # always True if we list members only, otherwise will be set
         # in the loop below
         related = self.related_only
 
         if self.related_only:
-            groups = user.groups
+            groups = user.member_groups
         else:
             groups = obj.model.root['groups'].ldap_groups
 
         ret = list()
 
         # XXX: These should be the mapped attributes - lack of backend support
-        for id, attrs in groups.search(attrlist=('cn',)):
+        for id in groups.keys():
             # XXX: resource was only set for alluserlisting
             item_target = make_url(obj.request, node=groups[id], resource=id)
             action_query = make_query(id=id)
@@ -81,10 +81,9 @@ class Groups(object):
                 related = id in related_ids
 
             # XXX: this should not be hardcoded
-            cn = attrs.get('cn', [''])[0]
             ret.append({
                 'target': item_target,
-                'head': obj._itemhead(cn),
+                'head': obj._itemhead(id),
                 'current': False,
                 'actions': [
                     {
