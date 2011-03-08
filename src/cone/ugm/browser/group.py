@@ -106,8 +106,7 @@ class Principals(object):
                     },
                 ],
             })
-        ret = sorted(
-            ret, lambda x, y: x['cn'].lower() < y['cn'].lower() and 1 or -1)
+        ret = sorted(ret, key=lambda x: x['cn'].lower())
         return ret
 
 

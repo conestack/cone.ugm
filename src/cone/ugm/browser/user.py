@@ -101,8 +101,7 @@ class Groups(object):
                     },
                 ],
             })
-        ret = sorted(
-            ret, lambda x, y: x['id'].lower() < y['id'].lower() and 1 or -1)
+        ret = sorted(ret, key=lambda x: x['id'].lower())
         return ret
 
 
