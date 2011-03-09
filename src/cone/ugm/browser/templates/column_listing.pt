@@ -24,7 +24,7 @@
           <li ajax:target="${item['target']}"
               tal:attributes="class item['current'] and 'selected' or None">
             <div class="head li_trigger"
-                 tal:content="structure item['head']">head</div>
+                 tal:content="structure item['content']">head</div>
             <div class="actions">
               <tal:action repeat="action item['actions']">
                 <tal:enabled condition="action['enabled']">

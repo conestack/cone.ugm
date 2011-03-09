@@ -1,6 +1,8 @@
+from yafowil.utils import Tag
 from cone.tile import Tile
 from cone.ugm.browser.batch import ColumnBatch
 
+tag = Tag(lambda x: x)
 
 class ColumnListing(Tile):
     """Abstract column listing.
@@ -59,7 +61,7 @@ class ColumnListing(Tile):
         
         {
             'target': u'http://example.com/foo',
-            'head': u'Head Column content',
+            'content': u'Head Column content',
             'sort_by: u'Sort value',
             'current': False,
             'actions': [
@@ -75,19 +77,19 @@ class ColumnListing(Tile):
         raise NotImplementedError(u"Abstract ``ColumnListing`` does not "
                                   u"implement ``items`` property")
     
-    def itemhead(self, col_1, col_2=None, col_3=None):
-        head = '<div class="sort_col_1">%s&nbsp;</div>' % col_1
-        if col_2 is not None:
-            head += '<div class="sort_col_2">%s&nbsp;</div>' % col_2
-        if col_3 is not None:
-            head += '<div class="sort_col_3">&lt;%s&gt;</div>' % col_3
-        return head
+    def item_content(self, *args):
+        ret = u''
+        pt = 0
+        for arg in args:
+            pt += 1
+            ret += tag('div', '%s&nbsp;' % arg, class_='sort_col_%i' % pt)
+        return ret
     
-    def create_item(self, sort, target, head, current, actions):
+    def create_item(self, sort, target, content, current, actions):
         return {
             'sort_by': sort,
             'target': target,
-            'head': head,
+            'content': content,
             'current': current,
             'actions': actions,
         }
@@ -108,12 +110,14 @@ class ColumnListing(Tile):
     def user_attrs(self):
         settings = self.settings
         column_config = settings.attrs.users_listing_columns
-        col_1_attr = column_config['col_1'].split(':')[0]
-        col_2_attr = column_config['col_2'].split(':')[0]
-        col_3_attr = column_config['col_3'].split(':')[0]
+        ret = list()
+        for i in range(3):
+            attr = column_config['col_%i' % (i + 1)].split(':')[0]
+            ret.append(attr)
         sort_column = settings.attrs.users_listing_default_column
         sort_attr = column_config[sort_column]
-        return col_1_attr, col_2_attr, col_3_attr, sort_attr
+        ret.append(sort_attr)
+        return ret
     
     @property
     def group_attrs(self):
@@ -125,11 +129,11 @@ class ColumnListing(Tile):
     def user_list_columns(self):
         settings = self.settings
         column_config = settings.attrs.users_listing_columns
-        return [
-            ('col_1', column_config['col_1'].split(':')[1]),
-            ('col_2', column_config['col_2'].split(':')[1]),
-            ('col_3', column_config['col_3'].split(':')[1]),
-        ]
+        ret = list()
+        for i in range(3):
+            ret.append(('col_%i' % (i + 1),
+                        column_config['col_%i' % (i + 1)].split(':')[1]))
+        return ret
         
     @property
     def group_list_columns(self):

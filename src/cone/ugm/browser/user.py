@@ -85,9 +85,6 @@ class Groups(object):
             if not self.related_only:
                 related = id in related_ids
             
-            val_1 = group.attrs[col_1_attr]
-            head = obj.itemhead(val_1)
-            
             action_id = 'add_item'
             action_enabled = not bool(related)
             action_title = 'Add user to selected group'
@@ -101,7 +98,9 @@ class Groups(object):
                 action_id, action_enabled, action_title, action_target)
             
             actions = [add_item_action, remove_item_action]
-            item = obj.create_item(val_1, item_target, head, False, actions)
+            val_1 = group.attrs[col_1_attr]
+            content = obj.item_content(val_1)
+            item = obj.create_item(val_1, item_target, content, False, actions)
             ret.append(item)
         return ret
 

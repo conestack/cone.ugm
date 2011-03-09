@@ -92,13 +92,6 @@ class Principals(object):
             if not self.members_only:
                 related = id in member_ids
             
-            val_1 = obj.extract_raw(attrs, col_1_attr)
-            val_2 = obj.extract_raw(attrs, col_2_attr)
-            val_3 = obj.extract_raw(attrs, col_3_attr)
-            sort = obj.extract_raw(attrs, sort_attr)
-            head = obj.itemhead(val_1, val_2, val_3)
-            current = False
-            
             action_id = 'add_item'
             action_enabled = not bool(related)
             action_title = 'Add user to selected group'
@@ -112,7 +105,13 @@ class Principals(object):
                 action_id, action_enabled, action_title, action_target)
             
             actions = [add_item_action, remove_item_action]
-            item = obj.create_item(sort, item_target, head, current, actions)
+            val_1 = obj.extract_raw(attrs, col_1_attr)
+            val_2 = obj.extract_raw(attrs, col_2_attr)
+            val_3 = obj.extract_raw(attrs, col_3_attr)
+            content = obj.item_content(val_1, val_2, val_3)
+            sort = obj.extract_raw(attrs, sort_attr)
+            current = False
+            item = obj.create_item(sort, item_target, content, current, actions)
             ret.append(item)
         return ret
 

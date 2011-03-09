@@ -59,19 +59,19 @@ class UsersColumnListing(ColumnListing):
             target = make_url(self.request,
                               node=self.model,
                               resource=key)
-            val_1 = self.extract_raw(attrs, col_1_attr)
-            val_2 = self.extract_raw(attrs, col_2_attr)
-            val_3 = self.extract_raw(attrs, col_3_attr)
-            sort = self.extract_raw(attrs, sort_attr)
-            head = self.itemhead(val_1, val_2, val_3)
-            current = self.current_id == key and True or False
-
+            
             action_id = 'delete_item'
             action_title = 'Delete User'
             delete_action = self.create_action(
                 action_id, True, action_title, target)
             
+            val_1 = self.extract_raw(attrs, col_1_attr)
+            val_2 = self.extract_raw(attrs, col_2_attr)
+            val_3 = self.extract_raw(attrs, col_3_attr)
+            sort = self.extract_raw(attrs, sort_attr)
+            content = self.item_content(val_1, val_2, val_3)
+            current = self.current_id == key
             item = self.create_item(
-                sort, target, head, current, [delete_action])
+                sort, target, content, current, [delete_action])
             ret.append(item)
         return ret

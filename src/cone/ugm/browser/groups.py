@@ -54,16 +54,15 @@ class GroupsColumnListing(ColumnListing):
             target = make_url(self.request,
                               node=self.model,
                               resource=key)
-            val_1 = self.extract_raw(attrs, col_1_attr)
-            head = self.itemhead(val_1)
-            current = self.current_id == key and True or False
-            
             action_id = 'delete_item'
             action_title = 'Delete Group'
             delete_action = self.create_action(
                 action_id, True, action_title, target)
             
+            val_1 = self.extract_raw(attrs, col_1_attr)
+            content = self.item_content(val_1)
+            current = self.current_id == key
             item = self.create_item(
-                val_1, target, head, current, [delete_action])
+                val_1, target, content, current, [delete_action])
             ret.append(item)
         return ret
