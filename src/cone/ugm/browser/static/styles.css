@@ -169,13 +169,13 @@ div.columnsorting {
 div.columnsorting div {
     float:left;
 }
-div.columnsorting div.sort_name {
+div.columnsorting div.sort_col_1 {
     width:124px;
 }
-div.columnsorting div.sort_surname {
+div.columnsorting div.sort_col_2 {
     width:124px;
 }
-div.columnsorting div.sort_email {
+div.columnsorting div.sort_col_3 {
     width:270px;
 }
 div.columnsorting a {
@@ -228,17 +228,17 @@ div.columnitems div.head div {
     height:20px;
     padding:2px;
 }
-div.columnlisting div.users div.head div.sort_name {
+div.columnlisting div.users div.head div.sort_col_1 {
     width:120px;
 }
-div.columnlisting div.groups div.head div.sort_name {
+div.columnlisting div.groups div.head div.sort_col_1 {
     width:500px;
 }
-div.columnitems div.head div.sort_surname {
+div.columnitems div.head div.sort_col_2 {
     width:120px;
     border-left:#ccc 1px solid;
 }
-div.columnitems div.head div.sort_email {
+div.columnitems div.head div.sort_col_3 {
     width:266px;
     border-left:#ccc 1px solid;
 }
