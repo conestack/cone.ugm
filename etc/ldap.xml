@@ -50,15 +50,15 @@
   <users_listing_columns>
     <elem>
       <key>col_1</key>
-      <value>cn</value>
+      <value>cn:Fullname</value>
     </elem>
     <elem>
       <key>col_2</key>
-      <value>sn</value>
+      <value>sn:Surname</value>
     </elem>
     <elem>
       <key>col_3</key>
-      <value>mail</value>
+      <value>mail:Email</value>
     </elem>
   </users_listing_columns>
   <users_listing_default_column>col_1</users_listing_default_column>
@@ -72,7 +72,7 @@
   <groups_listing_columns>
     <elem>
       <key>col_1</key>
-      <value>cn</value>
+      <value>cn:Groupname</value>
     </elem>
   </groups_listing_columns>
 </properties>

@@ -111,7 +111,7 @@ class Groups(object):
 class GroupsOfUserColumnListing(ColumnListing):
 
     slot = 'rightlisting'
-    list_columns = [('col_1', 'Groupname')]
+    list_columns = ColumnListing.group_list_columns
     css = 'groups'
     query_items = Groups(related_only=True)
     batchname = 'rightbatch'
@@ -122,7 +122,7 @@ class GroupsOfUserColumnListing(ColumnListing):
 class AllGroupsColumnListing(ColumnListing):
 
     slot = 'rightlisting'
-    list_columns = [('col_1', 'Groupname')]
+    list_columns = ColumnListing.group_list_columns
     css = 'groups'
     query_items = Groups(related_only=False)
     batchname = 'rightbatch'

@@ -122,11 +122,7 @@ class Principals(object):
 class UsersOfGroupColumnListing(ColumnListing):
     css = 'users'
     slot = 'rightlisting'
-    list_columns = [
-        ('col_1', 'Fullname'),
-        ('col_2', 'Surname'),
-        ('col_3', 'Email'),
-    ]
+    list_columns = ColumnListing.user_list_columns
     # XXX: Why items and not keys() / __iter__?
     # used to be a readonly property
     query_items = Principals(members_only=True)
@@ -138,11 +134,7 @@ class UsersOfGroupColumnListing(ColumnListing):
 class AllUsersColumnListing(ColumnListing):
     css = 'users'
     slot = 'rightlisting'
-    list_columns = [
-        ('col_1', 'Fullname'),
-        ('col_2', 'Surname'),
-        ('col_3', 'Email'),
-    ]
+    list_columns = ColumnListing.user_list_columns
     # XXX: Why items and not keys() / __iter__?
     # used to be a readonly property
     query_items = Principals()

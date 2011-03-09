@@ -36,11 +36,7 @@ class UsersRightColumn(Tile):
 class UsersColumnListing(ColumnListing):
 
     slot = 'leftlisting'
-    list_columns = [
-        ('col_1', 'Fullname'),
-        ('col_2', 'Surname'),
-        ('col_3', 'Email'),
-    ]
+    list_columns = ColumnListing.user_list_columns
     css = 'users'
     batchname = 'leftbatch'
 

@@ -144,9 +144,9 @@ class LDAPSettingsForm(Form):
                 }
             })
         users_listing_columns = odict()
-        key_1 = model.attrs.users_listing_columns.get('col_1', 'cn')
-        key_2 = model.attrs.users_listing_columns.get('col_2', 'sn')
-        key_3 = model.attrs.users_listing_columns.get('col_3', 'mail')
+        key_1 = model.attrs.users_listing_columns.get('col_1', 'cn:Fullname')
+        key_2 = model.attrs.users_listing_columns.get('col_2', 'sn:Surname')
+        key_3 = model.attrs.users_listing_columns.get('col_3', 'mail:Email')
         users_listing_columns['col_1'] = key_1
         users_listing_columns['col_2'] = key_2
         users_listing_columns['col_3'] = key_3
@@ -206,7 +206,7 @@ class LDAPSettingsForm(Form):
                 'label': 'Group-member-relation',
             })
         groups_listing_columns = odict()
-        key_1 = model.attrs.groups_listing_columns.get('col_1', 'cn')
+        key_1 = model.attrs.groups_listing_columns.get('col_1', 'cn:Groupname')
         groups_listing_columns['col_1'] = key_1
         form['groups_listing_columns'] = factory(
             'field:label:dict',

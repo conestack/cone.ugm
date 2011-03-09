@@ -108,9 +108,9 @@ class ColumnListing(Tile):
     def user_attrs(self):
         settings = self.settings
         column_config = settings.attrs.users_listing_columns
-        col_1_attr = column_config['col_1']
-        col_2_attr = column_config['col_2']
-        col_3_attr = column_config['col_3']
+        col_1_attr = column_config['col_1'].split(':')[0]
+        col_2_attr = column_config['col_2'].split(':')[0]
+        col_3_attr = column_config['col_3'].split(':')[0]
         sort_column = settings.attrs.users_listing_default_column
         sort_attr = column_config[sort_column]
         return col_1_attr, col_2_attr, col_3_attr, sort_attr
@@ -119,4 +119,22 @@ class ColumnListing(Tile):
     def group_attrs(self):
         settings = self.settings
         column_config = settings.attrs.groups_listing_columns
-        return column_config['col_1']
+        return column_config['col_1'].split(':')[0]
+    
+    @property
+    def user_list_columns(self):
+        settings = self.settings
+        column_config = settings.attrs.users_listing_columns
+        return [
+            ('col_1', column_config['col_1'].split(':')[1]),
+            ('col_2', column_config['col_2'].split(':')[1]),
+            ('col_3', column_config['col_3'].split(':')[1]),
+        ]
+        
+    @property
+    def group_list_columns(self):
+        settings = self.settings
+        column_config = settings.attrs.groups_listing_columns
+        return [
+            ('col_1', column_config['col_1'].split(':')[1]),
+        ]

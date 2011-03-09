@@ -36,7 +36,7 @@ class GroupsRightColumn(Tile):
 class GroupsColumnListing(ColumnListing):
 
     slot = 'leftlisting'
-    list_columns = [('col_1', 'Groupname')]
+    list_columns = ColumnListing.group_list_columns
     css = 'groups'
     batchname = 'leftbatch'
 
