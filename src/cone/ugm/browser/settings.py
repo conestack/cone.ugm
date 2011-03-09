@@ -24,6 +24,12 @@ scope_vocab = [
     (str(SUBTREE), 'SUBTREE'),
 ]
 
+sort_column_vocab = [
+    ('name', 'name'),
+    ('surname', 'surname'),
+    ('email', 'email'),
+]
+
 
 @tile('content', 'templates/settings.pt', interface=ISettings,
       permission='manage', strict=False)
@@ -137,6 +143,36 @@ class LDAPSettingsForm(Form):
                     'value': 'Form label',
                 }
             })
+        users_listing_columns = odict()
+        name = model.attrs.users_listing_columns.get('name', 'cn')
+        surname = model.attrs.users_listing_columns.get('surname', 'sn')
+        email = model.attrs.users_listing_columns.get('email', 'email')
+        users_listing_columns['name'] = name
+        users_listing_columns['surname'] = surname
+        users_listing_columns['email'] = email
+        form['users_listing_columns'] = factory(
+            'field:label:dict',
+            value = users_listing_columns,
+            props = {
+                'required': 'Column configuration for user listings values ' +\
+                            'are mandatory',
+                'label': 'Column configuration for user listings',
+                'static': True,
+                'head': {
+                    'key': 'Listing column',
+                    'value': 'LDAP Attribute',
+                }
+            })
+        users_listing_default_column = model.attrs.users_listing_default_column
+        if not users_listing_default_column:
+            users_listing_default_column = 'name'
+        form['users_listing_default_column'] = factory(
+            'field:label:select',
+            value = users_listing_default_column,
+            props = {
+                'label': 'Users listing default columns',
+                'vocabulary': sort_column_vocab,
+            })
         form['groups_dn'] = factory(
             'field:label:error:text',
             value = model.attrs.groups_dn,
@@ -169,6 +205,22 @@ class LDAPSettingsForm(Form):
             props = {
                 'label': 'Group-member-relation',
             })
+        groups_listing_columns = odict()
+        name = model.attrs.groups_listing_columns.get('name', 'cn')
+        groups_listing_columns['name'] = name
+        form['groups_listing_columns'] = factory(
+            'field:label:dict',
+            value = groups_listing_columns,
+            props = {
+                'required': 'Column configuration for group listings value ' +\
+                            'is mandatory',
+                'label': 'Column configuration for groups listings',
+                'static': True,
+                'head': {
+                    'key': 'Listing Column',
+                    'value': 'LDAP Attribute',
+                }
+            })
         form['save'] = factory(
             'submit',
             props = {
@@ -192,11 +244,22 @@ class LDAPSettingsForm(Form):
 
     def save(self, widget, data):
         model = self.model
-        for attr_name in ['uri', 'user', 'users_dn', 'users_scope',
-                          'users_query', 'users_object_classes',
-                          'users_attrmap', 'users_form_attrmap',
-                          'groups_dn', 'groups_scope', 'groups_query',
-                          'groups_object_classes', 'groups_relation']:
+        for attr_name in ['uri',
+                          'user',
+                          'users_dn',
+                          'users_scope',
+                          'users_query',
+                          'users_object_classes',
+                          'users_attrmap',
+                          'users_form_attrmap',
+                          'users_listing_columns',
+                          'users_listing_default_column',
+                          'groups_dn',
+                          'groups_scope',
+                          'groups_query',
+                          'groups_object_classes',
+                          'groups_relation',
+                          'groups_listing_columns']:
             val = data.fetch('editform.%s' % attr_name).extracted
             if attr_name in ['users_object_classes', 'groups_object_classes']:
                 val = [v.strip() for v in val.split(',') if v.strip()]

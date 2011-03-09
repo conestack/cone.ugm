@@ -92,6 +92,31 @@
         </td>
       </tr>
       <tr>
+        <td class="left_col"><strong>Users listing columns:</strong></td>
+        <td tal:define="map model.attrs.users_listing_columns">
+          <table class="map">
+            <thead>
+              <tr>
+                <th>Listing column</th>
+                <th>LDAP Attribute</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tal:rows condition="bool(map)">
+                <tr tal:repeat="key map.keys()">
+                  <td tal:content="key">key</td>
+                  <td tal:content="map[key]">value</td>
+                </tr>
+              </tal:rows>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td class="left_col"><strong>Users default column:</strong></td>
+        <td tal:content="model.attrs.users_listing_default_column"></td>
+      </tr>
+      <tr>
         <td class="left_col"><strong>Check Users DN:</strong></td>
         <td>
           <strong tal:define="status context.ldap_users"
@@ -114,13 +139,34 @@
         <td class="left_col"><strong>Groups Query:</strong></td>
         <td tal:content="model.attrs.groups_query"></td>
       </tr>
-	  <tr>
+      <tr>
         <td class="left_col"><strong>Groups Object Classes:</strong></td>
         <td tal:content="', '.join(model.attrs.get('groups_object_classes', []))"></td>
       </tr>
-	  <tr>
+      <tr>
         <td class="left_col"><strong>Group-member-relation:</strong></td>
         <td tal:content="model.attrs.groups_relation"></td>
+      </tr>
+      <tr>
+        <td class="left_col"><strong>Groups listing columns:</strong></td>
+        <td tal:define="map model.attrs.groups_listing_columns">
+          <table class="map">
+            <thead>
+              <tr>
+                <th>Listing column</th>
+                <th>LDAP Attribute</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tal:rows condition="bool(map)">
+                <tr tal:repeat="key map.keys()">
+                  <td tal:content="key">key</td>
+                  <td tal:content="map[key]">value</td>
+                </tr>
+              </tal:rows>
+            </tbody>
+          </table>
+        </td>
       </tr>
       <tr>
         <td class="left_col"><strong>Check Groups DN:</strong></td>
