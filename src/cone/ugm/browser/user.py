@@ -69,22 +69,29 @@ class Groups(object):
             groups = obj.model.root['groups'].ldap_groups
 
         ret = list()
-
+        name_attr = obj.group_attrs
+        
         # XXX: These should be the mapped attributes - lack of backend support
         for id in groups.keys():
+            group = groups[id]
+            
             # XXX: resource was only set for alluserlisting
-            item_target = make_url(obj.request, node=groups[id], resource=id)
+            item_target = make_url(obj.request, node=group, resource=id)
             action_query = make_query(id=id)
-            action_target = make_url(obj.request, node=appuser, query=action_query)
+            action_target = make_url(obj.request,
+                                     node=appuser,
+                                     query=action_query)
 
             if not self.related_only:
                 related = id in related_ids
+            
+            name = group.attrs[name_attr]
 
             # XXX: this should not be hardcoded
             ret.append({
-                'id': id, # XXX: hack
+                'sort_by': name,
                 'target': item_target,
-                'head': obj._itemhead(id),
+                'head': obj.itemhead(name),
                 'current': False,
                 'actions': [
                     {
@@ -101,7 +108,6 @@ class Groups(object):
                     },
                 ],
             })
-        ret = sorted(ret, key=lambda x: x['id'].lower())
         return ret
 
 

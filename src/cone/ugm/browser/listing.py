@@ -14,6 +14,10 @@ class ColumnListing(Tile):
     batchname = ''
     
     @property
+    def settings(self):
+        return self.model.root['settings']
+    
+    @property
     def ajax_action(self):
         return 'columnlisting'
     
@@ -45,7 +49,9 @@ class ColumnListing(Tile):
     @property
     def items(self):
         start, end = self.slice
-        return self.query_items[start:end]
+        items = self.query_items
+        items = sorted(items, key=lambda x: x['sort_by'].lower())
+        return items[start:end]
     
     @property
     def query_items(self):
@@ -54,6 +60,7 @@ class ColumnListing(Tile):
         {
             'target': u'http://example.com/foo',
             'head': u'Head Column content',
+            'sort_by: u'Sort value',
             'current': False,
             'actions': [
                 {
@@ -68,10 +75,31 @@ class ColumnListing(Tile):
         raise NotImplementedError(u"Abstract ``ColumnListing`` does not "
                                   u"implement ``items`` property")
     
-    def _itemhead(self, name, surname=None, email=None):
+    def itemhead(self, name, surname=None, email=None):
         head = '<div class="sort_name">%s&nbsp;</div>' % name
         if surname is not None:
             head += '<div class="sort_surname">%s&nbsp;</div>' % surname
         if email is not None:
             head += '<div class="sort_email">&lt;%s&gt;</div>' % email
         return head
+    
+    def extract_raw(self, attrs, name):
+        raw = attrs.get(name)
+        return raw and raw[0] or ''
+    
+    @property
+    def user_attrs(self):
+        settings = self.settings
+        column_config = settings.attrs.users_listing_columns
+        name_attr = column_config['name']
+        surname_attr = column_config['surname']
+        email_attr = column_config['email']
+        sort_column = settings.attrs.users_listing_default_column
+        sort_attr = column_config[sort_column]
+        return name_attr, surname_attr, email_attr, sort_attr
+    
+    @property
+    def group_attrs(self):
+        settings = self.settings
+        column_config = settings.attrs.groups_listing_columns
+        return column_config['name']

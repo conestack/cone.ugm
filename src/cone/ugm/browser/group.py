@@ -63,11 +63,21 @@ class Principals(object):
             users = group
         else:
             users = obj.model.root['users'].ldap_users
-
+        
+        name_attr, surname_attr, email_attr, sort_attr = obj.user_attrs
         ret = list()
-
+        try:
+            result = users.search(attrlist=[name_attr,
+                                            surname_attr,
+                                            email_attr])
+        except Exception, e:
+            # XXX: explizit exception catch
+            # XXX: logging
+            print e
+            return []
+        
         # XXX: These should be the mapped attributes - lack of backend support
-        for id, attrs in users.search(attrlist=('cn', 'sn', 'mail')):
+        for id, attrs in result:
             # XXX: resource was only set for alluserlisting
             try:
                 user = users[id]
@@ -75,21 +85,24 @@ class Principals(object):
                 # XXX logging
                 print e
                 continue
+            
             item_target = make_url(obj.request, node=user, resource=id)
             action_query = make_query(id=id)
-            action_target = make_url(obj.request, node=appgroup, query=action_query)
-
+            action_target = make_url(obj.request,
+                                     node=appgroup,
+                                     query=action_query)
+            
             if not self.members_only:
                 already_member = id in member_ids
-
-            # XXX: this should not be hardcoded
-            cn = attrs.get('cn', [''])[0]
-            sn = attrs.get('sn', [''])[0]
-            mail = attrs.get('mail', [''])[0]
+            
+            name = obj.extract_raw(attrs, name_attr)
+            surname = obj.extract_raw(attrs, surname_attr)
+            email = obj.extract_raw(attrs, email_attr)
+            sort = obj.extract_raw(attrs, sort_attr)
             ret.append({
-                'cn': cn, # XXX: hack
+                'sort_by': sort,
                 'target': item_target,
-                'head': obj._itemhead(cn, sn, mail),
+                'head': obj.itemhead(name, surname, email),
                 'current': False,
                 'actions': [
                     {
@@ -106,7 +119,6 @@ class Principals(object):
                     },
                 ],
             })
-        ret = sorted(ret, key=lambda x: x['cn'].lower())
         return ret
 
 

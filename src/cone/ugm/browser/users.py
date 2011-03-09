@@ -46,22 +46,32 @@ class UsersColumnListing(ColumnListing):
 
     @property
     def query_items(self):
+        name_attr, surname_attr, email_attr, sort_attr = self.user_attrs
         ret = list()
-        result = self.model.ldap_users.search(criteria=None,
-                                              attrlist=['cn', 'sn' , 'mail'])
-        for entry in result:
+        try:
+            result = self.model.ldap_users.search(criteria=None,
+                                                  attrlist=[name_attr,
+                                                            surname_attr,
+                                                            email_attr])
+        except Exception, e:
+            # XXX: explizit exception catch
+            # XXX: logging
+            print e
+            return []
+        
+        for key, attrs in result:
             target = make_url(self.request,
                               node=self.model,
-                              resource=entry[0])
-            attrs = entry[1]
-            cn = attrs.get('cn') and attrs.get('cn')[0] or ''
-            sn = attrs.get('sn') and attrs.get('sn')[0] or ''
-            mail = attrs.get('mail') and attrs.get('mail')[0] or ''
+                              resource=key)
+            name = self.extract_raw(attrs, name_attr)
+            surname = self.extract_raw(attrs, surname_attr)
+            email = self.extract_raw(attrs, email_attr)
+            sort = self.extract_raw(attrs, sort_attr)
             ret.append({
-                'cn': cn, # XXX: hack
+                'sort_by': sort,
                 'target': target,
-                'head': self._itemhead(cn, sn, mail),
-                'current': self.current_id == entry[0] and True or False,
+                'head': self.itemhead(name, surname, email),
+                'current': self.current_id == key and True or False,
                 'actions': [
                     {
                         'id': 'delete_item',
@@ -71,5 +81,4 @@ class UsersColumnListing(ColumnListing):
                     }
                 ]
             })
-        ret = sorted(ret, key=lambda x: x['cn'].lower())
         return ret

@@ -46,20 +46,20 @@ class GroupsColumnListing(ColumnListing):
 
     @property
     def query_items(self):
+        name_attr = self.group_attrs
         ret = list()
         result = self.model.ldap_groups.search(criteria=None,
-                                               attrlist=['cn'])
-        for entry in result:
+                                               attrlist=[name_attr])
+        for key, attrs in result:
             target = make_url(self.request,
                               node=self.model,
-                              resource=entry[0])
-            attrs = entry[1]
-            cn = attrs.get('cn') and attrs.get('cn')[0] or ''
+                              resource=key)
+            name = self.extract_raw(attrs, name_attr)
             ret.append({
-                'cn': cn, # XXX: hack
+                'sort_by': name,
                 'target': target,
-                'head': self._itemhead(cn),
-                'current': self.current_id == entry[0] and True or False,
+                'head': self.itemhead(name),
+                'current': self.current_id == key and True or False,
                 'actions': [
                     {
                         'id': 'delete_item',
@@ -69,5 +69,4 @@ class GroupsColumnListing(ColumnListing):
                     }
                 ]
             })
-        ret = sorted(ret, key=lambda x: x['cn'].lower())
         return ret

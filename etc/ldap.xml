@@ -58,7 +58,7 @@
     </elem>
     <elem>
       <key>email</key>
-      <value>email</value>
+      <value>mail</value>
     </elem>
   </users_listing_columns>
   <users_listing_default_column>name</users_listing_default_column>

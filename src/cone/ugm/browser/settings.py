@@ -146,7 +146,7 @@ class LDAPSettingsForm(Form):
         users_listing_columns = odict()
         name = model.attrs.users_listing_columns.get('name', 'cn')
         surname = model.attrs.users_listing_columns.get('surname', 'sn')
-        email = model.attrs.users_listing_columns.get('email', 'email')
+        email = model.attrs.users_listing_columns.get('email', 'mail')
         users_listing_columns['name'] = name
         users_listing_columns['surname'] = surname
         users_listing_columns['email'] = email
