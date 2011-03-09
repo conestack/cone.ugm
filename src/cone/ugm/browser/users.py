@@ -49,16 +49,12 @@ class UsersColumnListing(ColumnListing):
         name_attr, surname_attr, email_attr, sort_attr = self.user_attrs
         ret = list()
         try:
-            result = self.model.ldap_users.search(criteria=None,
-                                                  attrlist=[name_attr,
-                                                            surname_attr,
-                                                            email_attr])
+            attrlist = [name_attr, surname_attr, email_attr]
+            users = self.model.ldap_users
+            result = users.search(criteria=None, attrlist=attrlist)
         except Exception, e:
-            # XXX: explizit exception catch
-            # XXX: logging
-            print e
+            print 'Query Failed: ' + str(e)
             return []
-        
         for key, attrs in result:
             target = make_url(self.request,
                               node=self.model,
@@ -67,18 +63,15 @@ class UsersColumnListing(ColumnListing):
             surname = self.extract_raw(attrs, surname_attr)
             email = self.extract_raw(attrs, email_attr)
             sort = self.extract_raw(attrs, sort_attr)
-            ret.append({
-                'sort_by': sort,
-                'target': target,
-                'head': self.itemhead(name, surname, email),
-                'current': self.current_id == key and True or False,
-                'actions': [
-                    {
-                        'id': 'delete_item',
-                        'enabled': True,
-                        'title': 'Delete User',
-                        'target': target
-                    }
-                ]
-            })
+            head = self.itemhead(name, surname, email)
+            current = self.current_id == key and True or False
+
+            action_id = 'delete_item'
+            action_title = 'Delete User'
+            delete_action = self.create_action(
+                action_id, True, action_title, target)
+            
+            item = self.create_item(
+                sort, target, head, current, [delete_action])
+            ret.append(item)
         return ret

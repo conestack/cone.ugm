@@ -83,6 +83,23 @@ class ColumnListing(Tile):
             head += '<div class="sort_email">&lt;%s&gt;</div>' % email
         return head
     
+    def create_item(self, sort, target, head, current, actions):
+        return {
+            'sort_by': sort,
+            'target': target,
+            'head': head,
+            'current': current,
+            'actions': actions,
+        }
+    
+    def create_action(self, id, enabled, title, target):
+        return {
+            'id': id,
+            'enabled': enabled,
+            'title': title,
+            'target': target,
+        }
+    
     def extract_raw(self, attrs, name):
         raw = attrs.get(name)
         return raw and raw[0] or ''

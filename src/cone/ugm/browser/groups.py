@@ -55,18 +55,15 @@ class GroupsColumnListing(ColumnListing):
                               node=self.model,
                               resource=key)
             name = self.extract_raw(attrs, name_attr)
-            ret.append({
-                'sort_by': name,
-                'target': target,
-                'head': self.itemhead(name),
-                'current': self.current_id == key and True or False,
-                'actions': [
-                    {
-                        'id': 'delete_item',
-                        'enabled': True,
-                        'title': 'Delete Group',
-                        'target': target
-                    }
-                ]
-            })
+            head = self.itemhead(name)
+            current = self.current_id == key and True or False
+            
+            action_id = 'delete_item'
+            action_title = 'Delete Group'
+            delete_action = self.create_action(
+                action_id, True, action_title, target)
+            
+            item = self.create_item(
+                name, target, head, current, [delete_action])
+            ret.append(item)
         return ret

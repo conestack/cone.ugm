@@ -86,28 +86,23 @@ class Groups(object):
                 related = id in related_ids
             
             name = group.attrs[name_attr]
-
-            # XXX: this should not be hardcoded
-            ret.append({
-                'sort_by': name,
-                'target': item_target,
-                'head': obj.itemhead(name),
-                'current': False,
-                'actions': [
-                    {
-                        'id': 'add_item',
-                        'enabled': not bool(related),
-                        'title': 'Add user to selected group.',
-                        'target': action_target,
-                    },
-                    {
-                        'id': 'remove_item',
-                        'enabled': bool(related),
-                        'title': 'Remove user from selected group.',
-                        'target': action_target,
-                    },
-                ],
-            })
+            head = obj.itemhead(name)
+            
+            action_id = 'add_item'
+            action_enabled = not bool(related)
+            action_title = 'Add user to selected group'
+            add_item_action = obj.create_action(
+                action_id, action_enabled, action_title, action_target)
+            
+            action_id = 'remove_item'
+            action_enabled = bool(related)
+            action_title = 'Remove user from selected group'
+            remove_item_action = obj.create_action(
+                action_id, action_enabled, action_title, action_target)
+            
+            actions = [add_item_action, remove_item_action]
+            item = obj.create_item(name, item_target, head, False, actions)
+            ret.append(item)
         return ret
 
 

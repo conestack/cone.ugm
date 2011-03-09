@@ -55,7 +55,7 @@ class Principals(object):
         member_ids = group.keys()
         # always True if we list members only, otherwise will be set
         # in the loop below
-        already_member = self.members_only
+        related = self.members_only
 
         # XXX: so far only users as members of groups, for
         # group-in-group we need to prefix groups
@@ -67,13 +67,10 @@ class Principals(object):
         name_attr, surname_attr, email_attr, sort_attr = obj.user_attrs
         ret = list()
         try:
-            result = users.search(attrlist=[name_attr,
-                                            surname_attr,
-                                            email_attr])
+            attrlist = [name_attr, surname_attr, email_attr]
+            result = users.search(attrlist=attrlist)
         except Exception, e:
-            # XXX: explizit exception catch
-            # XXX: logging
-            print e
+            print 'Query Failed: ' + str(e)
             return []
         
         # XXX: These should be the mapped attributes - lack of backend support
@@ -93,32 +90,30 @@ class Principals(object):
                                      query=action_query)
             
             if not self.members_only:
-                already_member = id in member_ids
+                related = id in member_ids
             
             name = obj.extract_raw(attrs, name_attr)
             surname = obj.extract_raw(attrs, surname_attr)
             email = obj.extract_raw(attrs, email_attr)
             sort = obj.extract_raw(attrs, sort_attr)
-            ret.append({
-                'sort_by': sort,
-                'target': item_target,
-                'head': obj.itemhead(name, surname, email),
-                'current': False,
-                'actions': [
-                    {
-                        'id': 'add_item',
-                        'enabled': not bool(already_member),
-                        'title': 'Add user to selected group.',
-                        'target': action_target,
-                    },
-                    {
-                        'id': 'remove_item',
-                        'enabled': bool(already_member),
-                        'title': 'Remove user from selected group.',
-                        'target': action_target,
-                    },
-                ],
-            })
+            head = obj.itemhead(name, surname, email)
+            current = False
+            
+            action_id = 'add_item'
+            action_enabled = not bool(related)
+            action_title = 'Add user to selected group'
+            add_item_action = obj.create_action(
+                action_id, action_enabled, action_title, action_target)
+            
+            action_id = 'remove_item'
+            action_enabled = bool(related)
+            action_title = 'Remove user from selected group'
+            remove_item_action = obj.create_action(
+                action_id, action_enabled, action_title, action_target)
+            
+            actions = [add_item_action, remove_item_action]
+            item = obj.create_item(sort, item_target, head, current, actions)
+            ret.append(item)
         return ret
 
 
