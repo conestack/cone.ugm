@@ -24,11 +24,11 @@ class ColumnListing(Tile):
     @property
     def sortheader(self):
         ret = list()
-        for id in self.list_columns:
+        for id, name in self.list_columns:
             ret.append({
                 'id': 'sort_%s' % id,
                 'default': False,
-                'name': id,
+                'name': name,
             })
         ret[0]['default'] = True
         return ret
@@ -75,12 +75,12 @@ class ColumnListing(Tile):
         raise NotImplementedError(u"Abstract ``ColumnListing`` does not "
                                   u"implement ``items`` property")
     
-    def itemhead(self, name, surname=None, email=None):
-        head = '<div class="sort_name">%s&nbsp;</div>' % name
-        if surname is not None:
-            head += '<div class="sort_surname">%s&nbsp;</div>' % surname
-        if email is not None:
-            head += '<div class="sort_email">&lt;%s&gt;</div>' % email
+    def itemhead(self, col_1, col_2=None, col_3=None):
+        head = '<div class="sort_col_1">%s&nbsp;</div>' % col_1
+        if col_2 is not None:
+            head += '<div class="sort_col_2">%s&nbsp;</div>' % col_2
+        if col_3 is not None:
+            head += '<div class="sort_col_3">&lt;%s&gt;</div>' % col_3
         return head
     
     def create_item(self, sort, target, head, current, actions):
@@ -108,15 +108,15 @@ class ColumnListing(Tile):
     def user_attrs(self):
         settings = self.settings
         column_config = settings.attrs.users_listing_columns
-        name_attr = column_config['name']
-        surname_attr = column_config['surname']
-        email_attr = column_config['email']
+        col_1_attr = column_config['col_1']
+        col_2_attr = column_config['col_2']
+        col_3_attr = column_config['col_3']
         sort_column = settings.attrs.users_listing_default_column
         sort_attr = column_config[sort_column]
-        return name_attr, surname_attr, email_attr, sort_attr
+        return col_1_attr, col_2_attr, col_3_attr, sort_attr
     
     @property
     def group_attrs(self):
         settings = self.settings
         column_config = settings.attrs.groups_listing_columns
-        return column_config['name']
+        return column_config['col_1']

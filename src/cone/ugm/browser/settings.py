@@ -25,9 +25,9 @@ scope_vocab = [
 ]
 
 sort_column_vocab = [
-    ('name', 'name'),
-    ('surname', 'surname'),
-    ('email', 'email'),
+    ('col_1', 'col_1'),
+    ('col_2', 'col_2'),
+    ('col_2', 'col_2'),
 ]
 
 
@@ -144,12 +144,12 @@ class LDAPSettingsForm(Form):
                 }
             })
         users_listing_columns = odict()
-        name = model.attrs.users_listing_columns.get('name', 'cn')
-        surname = model.attrs.users_listing_columns.get('surname', 'sn')
-        email = model.attrs.users_listing_columns.get('email', 'mail')
-        users_listing_columns['name'] = name
-        users_listing_columns['surname'] = surname
-        users_listing_columns['email'] = email
+        key_1 = model.attrs.users_listing_columns.get('col_1', 'cn')
+        key_2 = model.attrs.users_listing_columns.get('col_2', 'sn')
+        key_3 = model.attrs.users_listing_columns.get('col_3', 'mail')
+        users_listing_columns['col_1'] = key_1
+        users_listing_columns['col_2'] = key_2
+        users_listing_columns['col_3'] = key_3
         form['users_listing_columns'] = factory(
             'field:label:dict',
             value = users_listing_columns,
@@ -165,7 +165,7 @@ class LDAPSettingsForm(Form):
             })
         users_listing_default_column = model.attrs.users_listing_default_column
         if not users_listing_default_column:
-            users_listing_default_column = 'name'
+            users_listing_default_column = 'col_1'
         form['users_listing_default_column'] = factory(
             'field:label:select',
             value = users_listing_default_column,
@@ -206,8 +206,8 @@ class LDAPSettingsForm(Form):
                 'label': 'Group-member-relation',
             })
         groups_listing_columns = odict()
-        name = model.attrs.groups_listing_columns.get('name', 'cn')
-        groups_listing_columns['name'] = name
+        key_1 = model.attrs.groups_listing_columns.get('col_1', 'cn')
+        groups_listing_columns['col_1'] = key_1
         form['groups_listing_columns'] = factory(
             'field:label:dict',
             value = groups_listing_columns,

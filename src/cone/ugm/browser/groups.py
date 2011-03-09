@@ -36,7 +36,7 @@ class GroupsRightColumn(Tile):
 class GroupsColumnListing(ColumnListing):
 
     slot = 'leftlisting'
-    list_columns = ['name']
+    list_columns = [('col_1', 'Groupname')]
     css = 'groups'
     batchname = 'leftbatch'
 
@@ -46,16 +46,16 @@ class GroupsColumnListing(ColumnListing):
 
     @property
     def query_items(self):
-        name_attr = self.group_attrs
+        col_1_attr = self.group_attrs
         ret = list()
         result = self.model.ldap_groups.search(criteria=None,
-                                               attrlist=[name_attr])
+                                               attrlist=[col_1_attr])
         for key, attrs in result:
             target = make_url(self.request,
                               node=self.model,
                               resource=key)
-            name = self.extract_raw(attrs, name_attr)
-            head = self.itemhead(name)
+            val_1 = self.extract_raw(attrs, col_1_attr)
+            head = self.itemhead(val_1)
             current = self.current_id == key and True or False
             
             action_id = 'delete_item'
@@ -64,6 +64,6 @@ class GroupsColumnListing(ColumnListing):
                 action_id, True, action_title, target)
             
             item = self.create_item(
-                name, target, head, current, [delete_action])
+                val_1, target, head, current, [delete_action])
             ret.append(item)
         return ret

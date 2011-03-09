@@ -36,7 +36,11 @@ class UsersRightColumn(Tile):
 class UsersColumnListing(ColumnListing):
 
     slot = 'leftlisting'
-    list_columns = ['name', 'surname', 'email']
+    list_columns = [
+        ('col_1', 'Fullname'),
+        ('col_2', 'Surname'),
+        ('col_3', 'Email'),
+    ]
     css = 'users'
     batchname = 'leftbatch'
 
@@ -46,10 +50,10 @@ class UsersColumnListing(ColumnListing):
 
     @property
     def query_items(self):
-        name_attr, surname_attr, email_attr, sort_attr = self.user_attrs
+        col_1_attr, col_2_attr, col_3_attr, sort_attr = self.user_attrs
         ret = list()
         try:
-            attrlist = [name_attr, surname_attr, email_attr]
+            attrlist = [col_1_attr, col_2_attr, col_3_attr]
             users = self.model.ldap_users
             result = users.search(criteria=None, attrlist=attrlist)
         except Exception, e:
@@ -59,11 +63,11 @@ class UsersColumnListing(ColumnListing):
             target = make_url(self.request,
                               node=self.model,
                               resource=key)
-            name = self.extract_raw(attrs, name_attr)
-            surname = self.extract_raw(attrs, surname_attr)
-            email = self.extract_raw(attrs, email_attr)
+            val_1 = self.extract_raw(attrs, col_1_attr)
+            val_2 = self.extract_raw(attrs, col_2_attr)
+            val_3 = self.extract_raw(attrs, col_3_attr)
             sort = self.extract_raw(attrs, sort_attr)
-            head = self.itemhead(name, surname, email)
+            head = self.itemhead(val_1, val_2, val_3)
             current = self.current_id == key and True or False
 
             action_id = 'delete_item'

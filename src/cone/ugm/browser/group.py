@@ -64,10 +64,10 @@ class Principals(object):
         else:
             users = obj.model.root['users'].ldap_users
         
-        name_attr, surname_attr, email_attr, sort_attr = obj.user_attrs
+        col_1_attr, col_2_attr, col_3_attr, sort_attr = obj.user_attrs
         ret = list()
         try:
-            attrlist = [name_attr, surname_attr, email_attr]
+            attrlist = [col_1_attr, col_2_attr, col_3_attr]
             result = users.search(attrlist=attrlist)
         except Exception, e:
             print 'Query Failed: ' + str(e)
@@ -92,11 +92,11 @@ class Principals(object):
             if not self.members_only:
                 related = id in member_ids
             
-            name = obj.extract_raw(attrs, name_attr)
-            surname = obj.extract_raw(attrs, surname_attr)
-            email = obj.extract_raw(attrs, email_attr)
+            val_1 = obj.extract_raw(attrs, col_1_attr)
+            val_2 = obj.extract_raw(attrs, col_2_attr)
+            val_3 = obj.extract_raw(attrs, col_3_attr)
             sort = obj.extract_raw(attrs, sort_attr)
-            head = obj.itemhead(name, surname, email)
+            head = obj.itemhead(val_1, val_2, val_3)
             current = False
             
             action_id = 'add_item'
@@ -122,7 +122,11 @@ class Principals(object):
 class UsersOfGroupColumnListing(ColumnListing):
     css = 'users'
     slot = 'rightlisting'
-    list_columns = ['name', 'surname', 'email']
+    list_columns = [
+        ('col_1', 'Fullname'),
+        ('col_2', 'Surname'),
+        ('col_3', 'Email'),
+    ]
     # XXX: Why items and not keys() / __iter__?
     # used to be a readonly property
     query_items = Principals(members_only=True)
@@ -134,7 +138,11 @@ class UsersOfGroupColumnListing(ColumnListing):
 class AllUsersColumnListing(ColumnListing):
     css = 'users'
     slot = 'rightlisting'
-    list_columns = ['name', 'surname', 'email']
+    list_columns = [
+        ('col_1', 'Fullname'),
+        ('col_2', 'Surname'),
+        ('col_3', 'Email'),
+    ]
     # XXX: Why items and not keys() / __iter__?
     # used to be a readonly property
     query_items = Principals()

@@ -69,7 +69,7 @@ class Groups(object):
             groups = obj.model.root['groups'].ldap_groups
 
         ret = list()
-        name_attr = obj.group_attrs
+        col_1_attr = obj.group_attrs
         
         # XXX: These should be the mapped attributes - lack of backend support
         for id in groups.keys():
@@ -85,8 +85,8 @@ class Groups(object):
             if not self.related_only:
                 related = id in related_ids
             
-            name = group.attrs[name_attr]
-            head = obj.itemhead(name)
+            val_1 = group.attrs[col_1_attr]
+            head = obj.itemhead(val_1)
             
             action_id = 'add_item'
             action_enabled = not bool(related)
@@ -101,7 +101,7 @@ class Groups(object):
                 action_id, action_enabled, action_title, action_target)
             
             actions = [add_item_action, remove_item_action]
-            item = obj.create_item(name, item_target, head, False, actions)
+            item = obj.create_item(val_1, item_target, head, False, actions)
             ret.append(item)
         return ret
 
@@ -111,7 +111,7 @@ class Groups(object):
 class GroupsOfUserColumnListing(ColumnListing):
 
     slot = 'rightlisting'
-    list_columns = ['name']
+    list_columns = [('col_1', 'Groupname')]
     css = 'groups'
     query_items = Groups(related_only=True)
     batchname = 'rightbatch'
@@ -122,7 +122,7 @@ class GroupsOfUserColumnListing(ColumnListing):
 class AllGroupsColumnListing(ColumnListing):
 
     slot = 'rightlisting'
-    list_columns = ['name']
+    list_columns = [('col_1', 'Groupname')]
     css = 'groups'
     query_items = Groups(related_only=False)
     batchname = 'rightbatch'
