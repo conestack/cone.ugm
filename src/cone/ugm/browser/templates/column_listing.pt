@@ -4,9 +4,9 @@
        ajax:bind="batchclicked"
        ajax:target="${context.nodeurl}"
        ajax:action="${context.ajax_action}:.${context.batchname}sensitiv:replace">
-  	
-	<tal:batch replace="structure context.batch" />
-  
+    
+    <tal:batch replace="structure context.batch" />
+    
     <div class="columnsorting">
       <tal:sortheader repeat="header context.sortheader">
         <div class="${header['id']}">
@@ -18,7 +18,7 @@
     </div>
     
     <div class="columnitems"
-	     tal:attributes="class 'columnitems ' + context.css">
+         tal:attributes="class 'columnitems ' + context.css">
       <ul class="${context.slot}">
         <tal:item repeat="item context.items">
           <li ajax:target="${item['target']}"
@@ -45,6 +45,6 @@
         </tal:item>
       </ul>
     </div>
-  
+    
   </div>
 </tal:ajax>
