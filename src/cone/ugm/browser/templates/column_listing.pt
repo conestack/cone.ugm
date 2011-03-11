@@ -1,12 +1,12 @@
 <tal:ajax xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax" omit-tag="True">
-  
+
   <div class="columnlisting ${context.batchname}sensitiv"
        ajax:bind="batchclicked"
        ajax:target="${context.nodeurl}"
        ajax:action="${context.ajax_action}:.${context.batchname}sensitiv:replace">
-    
+
     <tal:batch replace="structure context.batch" />
-    
+
     <div class="columnsorting">
       <tal:sortheader repeat="header context.sortheader">
         <div class="${header['id']}">
@@ -16,7 +16,7 @@
         </div>
       </tal:sortheader>
     </div>
-    
+
     <div class="columnitems"
          tal:attributes="class 'columnitems ' + context.css">
       <ul class="${context.slot}">
@@ -45,6 +45,6 @@
         </tal:item>
       </ul>
     </div>
-    
+
   </div>
 </tal:ajax>

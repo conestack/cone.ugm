@@ -59,12 +59,12 @@ class UsersColumnListing(ColumnListing):
             target = make_url(self.request,
                               node=self.model,
                               resource=key)
-            
+
             action_id = 'delete_item'
             action_title = 'Delete User'
             delete_action = self.create_action(
                 action_id, True, action_title, target)
-            
+
             val_1 = self.extract_raw(attrs, col_1_attr)
             val_2 = self.extract_raw(attrs, col_2_attr)
             val_3 = self.extract_raw(attrs, col_3_attr)
