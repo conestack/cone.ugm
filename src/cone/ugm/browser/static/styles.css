@@ -225,7 +225,7 @@ div.columnitems div.head {
 div.columnitems div.head div {
     float:left;
     overflow:hidden;
-    height:20px;
+/*    height:20px;  - allow mutiline "table" rows */
     padding:2px;
 }
 div.columnlisting div.users div.head div.sort_col_1 {

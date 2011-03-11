@@ -7,22 +7,24 @@ tag = Tag(lambda x: x)
 class ColumnListing(Tile):
     """Abstract column listing.
     """
-    
+
     current_id = None
     slot = None
     list_columns = []
     css = ''
-    slicesize = 50
+    # XXX: Batch is effectively disabled, if enabled, the sorting
+    # needs to be fixed before slicing
+    slicesize = 100000
     batchname = ''
-    
+
     @property
     def settings(self):
         return self.model.root['settings']
-    
+
     @property
     def ajax_action(self):
         return 'columnlisting'
-    
+
     @property
     def sortheader(self):
         ret = list()
@@ -34,31 +36,31 @@ class ColumnListing(Tile):
             })
         ret[0]['default'] = True
         return ret
-    
+
     @property
     def batch(self):
         return ColumnBatch(self.batchname,
                            self.query_items,
                            self.slicesize)(self.model, self.request)
-    
+
     @property
     def slice(self):
         current = int(self.request.params.get('b_page', '0'))
         start = current * self.slicesize
         end = start + self.slicesize
         return start, end
-    
+
     @property
     def items(self):
         start, end = self.slice
         items = self.query_items
         items = sorted(items, key=lambda x: x['sort_by'].lower())
         return items[start:end]
-    
+
     @property
     def query_items(self):
         """Return list of dicts like:
-        
+
         {
             'target': u'http://example.com/foo',
             'content': u'Head Column content',
@@ -76,7 +78,7 @@ class ColumnListing(Tile):
         """
         raise NotImplementedError(u"Abstract ``ColumnListing`` does not "
                                   u"implement ``items`` property")
-    
+
     def item_content(self, *args):
         ret = u''
         pt = 0
@@ -84,7 +86,7 @@ class ColumnListing(Tile):
             pt += 1
             ret += tag('div', '%s&nbsp;' % arg, class_='sort_col_%i' % pt)
         return ret
-    
+
     def create_item(self, sort, target, content, current, actions):
         return {
             'sort_by': sort,
@@ -93,7 +95,7 @@ class ColumnListing(Tile):
             'current': current,
             'actions': actions,
         }
-    
+
     def create_action(self, id, enabled, title, target):
         return {
             'id': id,
@@ -101,11 +103,11 @@ class ColumnListing(Tile):
             'title': title,
             'target': target,
         }
-    
+
     def extract_raw(self, attrs, name):
         raw = attrs.get(name)
         return raw and raw[0] or ''
-    
+
     @property
     def user_attrs(self):
         settings = self.settings
@@ -118,13 +120,13 @@ class ColumnListing(Tile):
         sort_attr = column_config[sort_column]
         ret.append(sort_attr)
         return ret
-    
+
     @property
     def group_attrs(self):
         settings = self.settings
         column_config = settings.attrs.groups_listing_columns
         return column_config['col_1'].split(':')[0]
-    
+
     @property
     def user_list_columns(self):
         settings = self.settings
@@ -134,7 +136,7 @@ class ColumnListing(Tile):
             ret.append(('col_%i' % (i + 1),
                         column_config['col_%i' % (i + 1)].split(':')[1]))
         return ret
-        
+
     @property
     def group_list_columns(self):
         settings = self.settings
