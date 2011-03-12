@@ -8,6 +8,9 @@
     <tal:batch replace="structure context.batch" />
 
     <div class="columnsorting">
+      <div class="sortintro sort_col_1">
+        Sorting:
+      </div>
       <tal:sortheader repeat="header context.sortheader">
         <div class="${header['id']}">
           <a href="${header['id']}"
@@ -15,6 +18,7 @@
              tal:content="header['name']">name</a>
         </div>
       </tal:sortheader>
+      <p>&nbsp;</p>
     </div>
 
     <div class="columnitems"
