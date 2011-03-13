@@ -63,7 +63,8 @@
              tal:content="model.root.metadata.title">Title</a>
         </h1>
         
-        <h1 id="site" tal:content="structure tile('site')">
+        <h1 id="site" tal:content="structure tile('site')"
+            tal:condition="util.authenticated(request)">
           SITE
         </h1>
 
