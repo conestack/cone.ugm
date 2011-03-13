@@ -1,6 +1,16 @@
-from cone.tile import tile
+from cone.tile import tile, Tile
 from cone.ugm.model.interfaces import IUgm
 from cone.ugm.browser.columns import Column
+
+
+# XXX: hack to display the site name
+@tile('site', interface=IUgm, permission='view')
+class SiteName(Tile):
+    def render(self):
+        if 'oshanet' in self.model['settings'].ldap_gcfg.baseDN:
+            return "OSHANET"
+        else:
+            return "CORPORATE"
 
 
 @tile('leftcolumn', interface=IUgm, permission='view')
