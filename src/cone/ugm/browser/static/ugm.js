@@ -322,8 +322,8 @@
             var sel = '.' + name;
             var inverse = inv;
             var func = function(a, b) {
-                var a_val = $(sel, a).text().toLowerCase();
-                var b_val = $(sel, b).text().toLowerCase();
+                var a_val = $(sel, a).text().toLowerCase().replace(/ö/g, 'ozzz').replace(/ü/g, 'uzzz').replace(/ä/g, 'azzz').replace(/ß/g, 'szzz');
+                var b_val = $(sel, b).text().toLowerCase().replace(/ö/g, 'ozzz').replace(/ü/g, 'uzzz').replace(/ä/g, 'azzz').replace(/ß/g, 'szzz');
                 if (inverse) {
                     return a_val < b_val ? 1 : -1;
                 } else {
