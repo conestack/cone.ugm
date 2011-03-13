@@ -208,8 +208,10 @@ div.columnitems {
     border-right:#ccc 1px solid;
     border-bottom:#ccc 1px solid;
     border-top:#ccc 1px solid;
-    height:641px;
     overflow-y:scroll;
+}
+div.left_column div.columnitems {
+    height:641px;
 }
 div.columnitems ul {
     margin:0;
@@ -260,8 +262,11 @@ div.columnitems div.actions {
     overflow:hidden;
     padding:2px;
 }
-div.right_column div.columnitems {
+div.right_column div.users {
     height:578px;
+}
+div.right_column div.groups {
+    height:295px;
 }
 
 /* left column */
