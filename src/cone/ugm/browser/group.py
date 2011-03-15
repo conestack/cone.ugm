@@ -11,15 +11,14 @@ from cone.app.browser.utils import (
     make_url,
     make_query,
 )
-from cone.app.browser.form import (
-    Form,
+from cone.app.browser.form import Form
+from cone.app.browser.authoring import (
     AddPart,
     EditPart,
 )
 from cone.app.browser.ajax import AjaxAction
 from cone.ugm.model.interfaces import IGroup
 from cone.ugm.browser.columns import Column
-from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.browser.listing import ColumnListing
 from webob.exc import HTTPFound
 
@@ -156,7 +155,6 @@ class GroupForm(object):
             name='groupform',
             props={
                 'action': action,
-                'class': 'ajax',
             })
         props = {
             'label': 'Name',
@@ -225,7 +223,7 @@ class GroupAddForm(GroupForm, Form):
                            resource=self.next_resource)
         else:
             url = make_url(request.request, node=self.model)
-        if request.get('ajax'):
+        if self.ajax_request:
             return [
                 AjaxAction(url, 'leftcolumn', 'replace', '.left_column'),
                 AjaxAction(url, 'rightcolumn', 'replace', '.right_column'),
@@ -243,7 +241,7 @@ class GroupEditForm(GroupForm, Form):
 
     def next(self, request):
         url = make_url(request.request, node=self.model)
-        if request.get('ajax'):
+        if self.ajax_request:
             return [
                 AjaxAction(url, 'leftcolumn', 'replace', '.left_column'),
                 AjaxAction(url, 'rightcolumn', 'replace', '.right_column'),

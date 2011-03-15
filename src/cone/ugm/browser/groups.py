@@ -7,7 +7,6 @@ from cone.app.browser.utils import (
     make_query,
 )
 from cone.ugm.model.interfaces import IGroups
-from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.browser.listing import ColumnListing
 
 

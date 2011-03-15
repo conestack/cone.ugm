@@ -1,89 +1,8 @@
-/* general */
-body {
-    margin:0;
-    padding:0;
-    font-family:Arial;
-    color:#333;
-    font-size:90%;
-}
-hr {
-    border-style:solid;
-    border-width:1px 0 0 0;
-    border-color:#ccc;
-    margin:12px 0;
-}
-label {
-    display:block;
-    font-weight:bold;
-}
-form .field {
-    margin-bottom:6px;
-}
-form .field div.error {
-    color:red;
-}
-form .field div.error label {
-    color:#333;
-}
-.clear {
-    clear:both;
-}
 /* main layout styles */
-#wrapper {
-    margin:0;
-    padding:0;
-}
-#header {
-    position:relative;
-    height:60px;
-    background-color:#23de10;
-}
-h1#logo {
-    position:absolute;
-    top:3px;
-    left:12px;
-    margin:0;
-    text-shadow:#aaa 1px 1px 1px;
-}
-h1#logo a {
-    text-decoration:none;
-    font-size:40px;
-    color:#fff;
-    font-weight: normal;
-    font-family:Times;
-}
 h1#site {
     color: white;
     position: absolute;
     left: 552px;
-}
-#header a.logout {
-    position:absolute;
-    right:10px;
-    top:6px;
-    text-decoration:none;
-    font-weight:bold;
-    color:#fff;
-}
-div#menu {
-    position:absolute;
-    left: 140px;
-    top: 33px;
-}
-ul#mainmenu {
-    margin:0;
-    padding:0;
-    list-style-type:none;
-}
-ul#mainmenu li {
-    display:inline;
-    margin-right:20px;
-}
-ul#mainmenu li a {
-    text-decoration:none;
-    padding-left:46px;
-    line-height:51px;
-    font-size:51px;
 }
 ul#mainmenu li.node-users a {
     background: url('/cone.ugm.static/images/menu_users.png') top left no-repeat;
@@ -97,36 +16,21 @@ ul#mainmenu li.node-groups a {
 ul#mainmenu li.node-groups a.current_page_item {
     background: url('/cone.ugm.static/images/menu_groups_selected.png') top left no-repeat;
 }
-ul#mainmenu li.node-settings a {
-    background: url('/cone.ugm.static/images/menu_settings.png') top left no-repeat;
-}
-ul#mainmenu li.node-settings a.current_page_item {
-    background: url('/cone.ugm.static/images/menu_settings_selected.png') top left no-repeat;
-}
-div#content {
-    padding-top:12px;
-    padding-left:12px;
-}
-div#footer {
-    clear:both;
-    padding-left:12px;
-    padding-top:12px;
-    font-size:80%;
-    color:#aaa;
-}
-div#footer a {
-    text-decoration:none;
-    font-weight:bold;
-    color:#aaa;
-}
+
 /* box background */
-div.box,
-#form-loginform,
 #form-userform,
 #form-groupform {
-    background: url('/cone.ugm.static/images/box.gif') top left no-repeat;
+    background: url('/static/images/box.gif') top left no-repeat;
     padding:12px;
 }
+
+/* content */
+div#content {
+    float:left;
+    width:1240px;
+    padding:12px;
+}
+
 /* columns */
 div.columns div.column {
     float:left;
@@ -135,6 +39,7 @@ div.column {
     width:600px;
     min-width:600px;
 }
+
 /* add button */
 div.add_button {
     float:left;
@@ -142,6 +47,7 @@ div.add_button {
 div.add_button input {
     font-size:80%;
 }
+
 /* column filter */
 div.column_filter {
     float:right;
@@ -150,6 +56,7 @@ div.column_filter input {
     color:#ccc;
     font-size:80%;
 }
+
 /* column batch */
 div.column .batch {
     clear:both;
@@ -167,6 +74,7 @@ div.column .batch strong {
     font-size:110%;
     color:#333;
 }
+
 /* column listing */
 div.columnsorting {
     margin-top:12px;
@@ -277,6 +185,7 @@ div.right_column div.groups {
 /* left column */
 div.left_column {
 }
+
 /* right column */
 div.right_column {
 }
@@ -345,23 +254,6 @@ a.delete_item {
 a.delete_item_disabled {
     background:url('/cone.ugm.static/images/icon_delete_disabled.png') 50% 50% no-repeat;
 }
-/* Settings */
-.settings {
-    border-collapse:collapse;
-}
-.settings td {
-    padding:4px;
-    vertical-align:top;
-}
-.attrmap {
-    width:400px;
-}
-tr.table_seperator td {
-    border-top:#ccc 1px solid;
-}
-td.left_col {
-    text-align:right;
-}
 
 /* user form */
 #form-userform .error {
@@ -398,43 +290,4 @@ td.left_col {
 #form-groupform #field-groupform-name input {
     width:330px;
     padding:2px;
-}
-
-/* dict widget XXX: move to yafowil.widget.dict */
-.dictwidget {
-    border-collapse:collapse;
-}
-.dictwidget input {
-    width:150px;
-}
-.dictwidget th {
-    width:150px;
-    color:#333;
-    font-weight:normal;
-}
-.dict_actions a {
-    line-height:16px;
-    font-size:16px;
-    padding-left:16px;
-    text-decoration:none;
-    float:right;
-    margin-top:1px;
-}
-.dict_actions a.dict_row_add {
-    background:url('/cone.ugm.static/images/icon_add.png') 50% 50% no-repeat;
-}
-.dict_actions a.dict_row_remove {
-    background:url('/cone.ugm.static/images/icon_remove.png') 50% 50% no-repeat;
-}
-.dict_actions a.dict_row_up {
-    background:url('/cone.ugm.static/images/icon_up.png') 50% 50% no-repeat;
-}
-.dict_actions a.dict_row_up_disabled {
-    background:url('/cone.ugm.static/images/icon_up_disabled.png') 50% 50% no-repeat !important;
-}
-.dict_actions a.dict_row_down {
-    background:url('/cone.ugm.static/images/icon_down.png') 50% 50% no-repeat;
-}
-.dict_actions a.dict_row_down_disabled {
-    background:url('/cone.ugm.static/images/icon_down_disabled.png') 50% 50% no-repeat !important;
 }

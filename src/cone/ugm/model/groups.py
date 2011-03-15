@@ -9,6 +9,7 @@ from cone.app.model import (
 )
 from cone.ugm.model.interfaces import IGroups
 from cone.ugm.model.group import Group
+from cone.ugm.model.utils import ugm_settings
 
 
 class Groups(BaseNode):
@@ -38,17 +39,15 @@ class Groups(BaseNode):
         return metadata
 
     @property
-    def settings(self):
-        return self.__parent__['settings']
-
-    @property
     def ldap_groups(self):
+        """XXX: this property should be named model
+        """
         if self._ldap_groups is None:
             if self._testenv is not None:
                 props = self._testenv['props']
                 gcfg = self._testenv['gcfg']
             else:
-                settings = self.settings
+                settings = ugm_settings(self)
                 props = settings.ldap_props
                 gcfg = settings.ldap_gcfg
             self._ldap_groups = LDAPGroups(props, gcfg)

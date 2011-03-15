@@ -1,185 +1,31 @@
-<tal:ajax xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax" omit-tag="True">
-  <div class="box">
+<div>
+  
+  <h1>Solr Settings</h1>
 
-    <a href="${context.nodeurl}/edit"
-       ajax:target="${context.nodeurl}"
-       ajax:action="editform:#content:inner"
-       ajax:bind="click"
-       class="edit16_16"
-       title="Edit">
-      &nbsp;
-    </a>
-      
-    <table class="settings">
-      <tr>
-        <td class="left_col"><strong>Uri:</strong></td>
-        <td tal:content="model.attrs.uri">ldap://127.0.0.1:12345</td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Manager DN:</strong></td>
-        <td tal:content="model.attrs.user"></td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Manager Password:</strong></td>
-        <td tal:content="model.attrs.password and len(model.attrs.password) * '*' or ''"></td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Server Connection:</strong></td>
-        <td>
-          <strong tal:define="status context.ldap_status"
-                  tal:content="status"
-                  tal:attributes="style status == 'OK' and 'color:green' or 'color:red'">
-            OK
-          </strong>
-        </td>
-      </tr>
-      <tr class="table_seperator">
-        <td class="left_col"><strong>Users DN:</strong></td>
-        <td tal:content="model.attrs.users_dn"></td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Users Scope:</strong></td>
-        <td tal:content="context.scope(model.attrs.users_scope)"></td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Users Query:</strong></td>
-        <td tal:content="model.attrs.users_query"></td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Users Object Classes:</strong></td>
-        <td tal:content="', '.join(model.attrs.get('users_object_classes', []))"></td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Users Attribute Mapping:</strong></td>
-        <td tal:define="attrmap model.attrs.users_attrmap">
-          <table class="attrmap">
-            <thead>
-              <tr>
-                <th>Reserved key</th>
-                <th>LDAP attr name</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tal:rows condition="bool(attrmap)">
-                <tr tal:repeat="key attrmap.keys()">
-                  <td tal:content="key">key</td>
-                  <td tal:content="attrmap[key]">value</td>
-                </tr>
-              </tal:rows>
-            </tbody>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Users Form Map:</strong></td>
-        <td tal:define="attrmap model.attrs.users_form_attrmap">
-          <table class="attrmap">
-            <thead>
-              <tr>
-                <th>LDAP attr name</th>
-                <th>Form label</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tal:rows condition="bool(attrmap)">
-                <tr tal:repeat="key attrmap.keys()">
-                  <td tal:content="key">key</td>
-                  <td tal:content="attrmap[key]">value</td>
-                </tr>
-              </tal:rows>
-            </tbody>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Users listing columns:</strong></td>
-        <td tal:define="map model.attrs.users_listing_columns">
-          <table class="map">
-            <thead>
-              <tr>
-                <th>Listing column</th>
-                <th>LDAP Attribute</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tal:rows condition="bool(map)">
-                <tr tal:repeat="key map.keys()">
-                  <td tal:content="key">key</td>
-                  <td tal:content="map[key]">value</td>
-                </tr>
-              </tal:rows>
-            </tbody>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Users default column:</strong></td>
-        <td tal:content="model.attrs.users_listing_default_column"></td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Check Users DN:</strong></td>
-        <td>
-          <strong tal:define="status context.ldap_users"
-                  tal:content="status"
-                  tal:attributes="style status == 'OK' and 'color:green' or 'color:red'">
-            OK
-          </strong>
-        </td>
-      </tr>
-      
-      <tr class="table_seperator">
-        <td class="left_col"><strong>Groups DN:</strong></td>
-        <td tal:content="model.attrs.groups_dn"></td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Groups Scope:</strong></td>
-        <td tal:content="context.scope(model.attrs.groups_scope)"></td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Groups Query:</strong></td>
-        <td tal:content="model.attrs.groups_query"></td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Groups Object Classes:</strong></td>
-        <td tal:content="', '.join(model.attrs.get('groups_object_classes', []))"></td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Group-member-relation:</strong></td>
-        <td tal:content="model.attrs.groups_relation"></td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Groups listing columns:</strong></td>
-        <td tal:define="map model.attrs.groups_listing_columns">
-          <table class="map">
-            <thead>
-              <tr>
-                <th>Listing column</th>
-                <th>LDAP Attribute</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tal:rows condition="bool(map)">
-                <tr tal:repeat="key map.keys()">
-                  <td tal:content="key">key</td>
-                  <td tal:content="map[key]">value</td>
-                </tr>
-              </tal:rows>
-            </tbody>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td class="left_col"><strong>Check Groups DN:</strong></td>
-        <td>
-          <strong tal:define="status context.ldap_groups"
-                  tal:content="status"
-                  tal:attributes="style status == 'OK' and 'color:green' or 'color:red'">
-            OK
-          </strong>
-        </td>
-      </tr>
-      
-    </table>
-    
-  </div>
-</tal:ajax>
+  <br />
+  <strong>Server Connection:</strong>
+  <strong tal:define="status context.ldap_status"
+          tal:content="status"
+          tal:attributes="style status == 'OK' and 'color:green' or 'color:red'">
+    OK
+  </strong>
+  <br />
+  <strong>Check Users DN:</strong></td>
+  <strong tal:define="status context.ldap_users"
+          tal:content="status"
+          tal:attributes="style status == 'OK' and 'color:green' or 'color:red'">
+    OK
+  </strong>
+  <br />
+  <strong>Check Groups DN:</strong>
+  <strong tal:define="status context.ldap_groups"
+          tal:content="status"
+          tal:attributes="style status == 'OK' and 'color:green' or 'color:red'">
+    OK
+  </strong>
+  <br />
+  <br />       
+
+  <tal:settings replace="structure tile('editform')" />
+
+</div>
