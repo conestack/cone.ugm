@@ -1,0 +1,46 @@
+LDAP Settings Application Node
+==============================
+
+App path for testing.
+::
+
+    >>> import os
+    >>> import sys
+    >>> _app_path = os.path.sep.join(sys.path[0].split(os.path.sep)[:-3])
+    >>> _app_path
+    '...cone.ugm'
+
+Import and create Settings application node.
+::
+    
+    >>> from cone.ugm.model.settings import UgmSettings
+    >>> settings = UgmSettings(_app_path=_app_path)
+    >>> settings
+    <UgmSettings object 'None' at ...>
+
+Check default LDAP attributes.
+::
+
+    >>> attrs = settings.attrs
+    
+    >>> attrs.uri
+    u'ldap://127.0.0.1:12345'
+    
+    >>> attrs.user
+    u'cn=Manager,dc=my-domain,dc=com'
+    
+    >>> attrs.password
+    u'secret'
+    
+    >>> attrs.users_dn
+    u'ou=users,...
+    
+    >>> attrs.groups_dn
+    u'ou=groups,...
+    
+    >>> md = settings.metadata
+    >>> md.title
+    'LDAP Settings'
+    
+    >>> md.description
+    'LDAP Connection Settings'
