@@ -162,6 +162,7 @@ class GroupForm(object):
             'label': 'Name',
             'required': 'No group id defined',
             'ascii': True,
+            'html5required': False,
         }
         if resource == 'edit':
             props['mode'] = 'display'

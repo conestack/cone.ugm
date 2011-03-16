@@ -197,6 +197,7 @@ class UserForm(object):
             chain = field.get('chain', default_chain)
             props = dict()
             props['label'] = val
+            props['html5required'] = False
             if key in required:
                 props['required'] = 'No %s defined' % val
             props.update(field.get('props', dict()))
@@ -225,6 +226,7 @@ class UserForm(object):
                 props = {
                     'action': 'cancel',
                     'expression': True,
+                    'handler': None,
                     'next': self.next,
                     'label': 'Cancel',
                     'skip': True,
