@@ -153,7 +153,10 @@ class UserForm(object):
                 'custom': {
                     'ascii': ([ascii_extractor], [], [], [])}},
             'mail': {
-                'chain': 'field:label:error:mode:email'},
+                'chain': 'field:label:error:mode:email',
+                'props': {
+                    'html5type': False,
+                }},
             'userPassword': {
                 'chain': 'field:label:error:password',
                 'props': {
