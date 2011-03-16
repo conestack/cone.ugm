@@ -214,16 +214,17 @@ class GroupAddForm(GroupForm, Form):
         group = AttributedNode()
         id = data.fetch('groupform.name').extracted
         groups = self.model.__parent__.ldap_groups
-        self.next_resource = id
+        self.request.environ['next_resource'] = id
         groups[id] = group
         groups.context()
         self.model.__parent__.invalidate()
 
     def next(self, request):
-        if hasattr(self, 'next_resource'):
+        next_resource = self.request.environ.get('next_resource')
+        if next_resource:
             url = make_url(request.request,
                            node=self.model,
-                           resource=self.next_resource)
+                           resource=next_resource)
         else:
             url = make_url(request.request, node=self.model)
         if request.get('ajax'):
