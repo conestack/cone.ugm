@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.9b14'
+version = '0.9b15'
 shortdesc = 'cone.ugm'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
