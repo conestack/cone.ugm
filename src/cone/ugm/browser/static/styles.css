@@ -216,7 +216,7 @@ div.columnitems {
     overflow-y:scroll;
 }
 div.left_column div.columnitems {
-    height:641px;
+    height:572px;
 }
 div.columnitems ul {
     margin:0;
@@ -268,10 +268,10 @@ div.columnitems div.actions {
     padding:2px;
 }
 div.right_column div.users {
-    height:578px;
+    height:509px;
 }
 div.right_column div.groups {
-    height:295px;
+    height:226px;
 }
 
 /* left column */
