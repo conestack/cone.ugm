@@ -154,7 +154,10 @@ class UserForm(object):
                 'custom': {
                     'ascii': ([ascii_extractor], [], [], [])}},
             'mail': {
-                'chain': 'field:label:error:mode:email'},
+                'chain': 'field:label:error:mode:email',
+                'props': {
+                    'html5type': False,
+                }},
             'userPassword': {
                 'chain': 'field:label:error:password',
                 'props': {
@@ -197,6 +200,7 @@ class UserForm(object):
             chain = field.get('chain', default_chain)
             props = dict()
             props['label'] = val
+            props['html5required'] = False
             if key in required:
                 props['required'] = 'No %s defined' % val
             props.update(field.get('props', dict()))
@@ -225,6 +229,7 @@ class UserForm(object):
                 props = {
                     'action': 'cancel',
                     'expression': True,
+                    'handler': None,
                     'next': self.next,
                     'label': 'Cancel',
                     'skip': True,
@@ -257,7 +262,7 @@ class UserAddForm(UserForm, Form):
             user.attrs[key] = val
         users = self.model.__parent__.ldap_users
         id = user.attrs['id']
-        self.next_resource = id
+        self.request.environ['next_resource'] = id
         users[id] = user
         users.context()
         self.model.__parent__.invalidate()
@@ -266,10 +271,11 @@ class UserAddForm(UserForm, Form):
             users.passwd(id, None, password)
 
     def next(self, request):
-        if hasattr(self, 'next_resource'):
+        next_resource = self.request.environ.get('next_resource')
+        if next_resource:
             url = make_url(request.request,
                            node=self.model,
-                           resource=self.next_resource)
+                           resource=next_resource)
         else:
             url = make_url(request.request, node=self.model)
         if self.ajax_request:

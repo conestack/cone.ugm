@@ -1,5 +1,6 @@
 from zope.interface import implements
 from node.ext.ldap.ugm import Groups as LDAPGroups
+from cone.app.browser.utils import unquote_slash
 from cone.app.model import (
     BaseNode,
     Properties,
@@ -76,6 +77,9 @@ class Groups(BaseNode):
     iterkeys = __iter__
 
     def __getitem__(self, name):
+        # XXX: temporary hack until paster/webob/pyramid handle urllib
+        # quoted slashes in path components
+        name = unquote_slash(name)
         try:
             return BaseNode.__getitem__(self, name)
         except KeyError:

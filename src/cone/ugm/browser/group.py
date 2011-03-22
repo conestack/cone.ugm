@@ -62,7 +62,7 @@ class Principals(object):
             users = group
         else:
             users = obj.model.root['users'].ldap_users
-        
+
         col_1_attr, col_2_attr, col_3_attr, sort_attr = obj.user_attrs
         ret = list()
         try:
@@ -71,7 +71,7 @@ class Principals(object):
         except Exception, e:
             print 'Query Failed: ' + str(e)
             return []
-        
+
         # XXX: These should be the mapped attributes - lack of backend support
         for id, attrs in result:
             # XXX: resource was only set for alluserlisting
@@ -81,28 +81,28 @@ class Principals(object):
                 # XXX logging
                 print e
                 continue
-            
+
             item_target = make_url(obj.request, node=user, resource=id)
             action_query = make_query(id=id)
             action_target = make_url(obj.request,
                                      node=appgroup,
                                      query=action_query)
-            
+
             if not self.members_only:
                 related = id in member_ids
-            
+
             action_id = 'add_item'
             action_enabled = not bool(related)
             action_title = 'Add user to selected group'
             add_item_action = obj.create_action(
                 action_id, action_enabled, action_title, action_target)
-            
+
             action_id = 'remove_item'
             action_enabled = bool(related)
             action_title = 'Remove user from selected group'
             remove_item_action = obj.create_action(
                 action_id, action_enabled, action_title, action_target)
-            
+
             actions = [add_item_action, remove_item_action]
             val_1 = obj.extract_raw(attrs, col_1_attr)
             val_2 = obj.extract_raw(attrs, col_2_attr)
@@ -137,7 +137,7 @@ class AllUsersColumnListing(ColumnListing):
     # used to be a readonly property
     query_items = Principals()
     batchname = 'rightbatch'
-    
+
     @property
     def ajax_action(self):
         return 'allcolumnlisting'
@@ -160,6 +160,7 @@ class GroupForm(object):
             'label': 'Name',
             'required': 'No group id defined',
             'ascii': True,
+            'html5required': False,
         }
         if resource == 'edit':
             props['mode'] = 'display'
@@ -211,16 +212,17 @@ class GroupAddForm(GroupForm, Form):
         group = AttributedNode()
         id = data.fetch('groupform.name').extracted
         groups = self.model.__parent__.ldap_groups
-        self.next_resource = id
+        self.request.environ['next_resource'] = id
         groups[id] = group
         groups.context()
         self.model.__parent__.invalidate()
 
     def next(self, request):
-        if hasattr(self, 'next_resource'):
+        next_resource = self.request.environ.get('next_resource')
+        if next_resource:
             url = make_url(request.request,
                            node=self.model,
-                           resource=self.next_resource)
+                           resource=next_resource)
         else:
             url = make_url(request.request, node=self.model)
         if self.ajax_request:
