@@ -48,13 +48,9 @@ class UsersColumnListing(ColumnListing):
     def query_items(self):
         col_1_attr, col_2_attr, col_3_attr, sort_attr = self.user_attrs
         ret = list()
-        try:
-            attrlist = [col_1_attr, col_2_attr, col_3_attr]
-            users = self.model.ldap_users
-            result = users.search(criteria=None, attrlist=attrlist)
-        except Exception, e:
-            print 'Query Failed: ' + str(e)
-            return []
+        attrlist = [col_1_attr, col_2_attr, col_3_attr]
+        users = self.model.ldap_users
+        result = users.search(criteria=None, attrlist=attrlist)
         for key, attrs in result:
             target = make_url(self.request,
                               node=self.model,
