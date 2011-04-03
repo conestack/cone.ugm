@@ -11,10 +11,9 @@
     </div>
     
     <div class="column_limit">
-      <label>Related only</label>
-      <input id="related_filter"
+      <label>List all</label>
+      <input id="list_all"
              type="checkbox"
-             checked="checked"
              name="column_limit"
              ajax:target="${context.nodeurl}" />
     </div>

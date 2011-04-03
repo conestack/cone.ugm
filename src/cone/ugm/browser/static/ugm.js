@@ -266,9 +266,10 @@
             li.addClass('selected');
         },
         
-        // bind related items filter
+        // bind related items filter - XXX: changed to list_all, wait
+        // for group in group to fix naming
         listing_related_binder: function(context) {
-            $('#related_filter', context)
+            $('#list_all', context)
                 .unbind()
                 .bind('click', ugm.listing_related_cb);
         },
@@ -278,9 +279,9 @@
             var elem = $(this);
             var action;
             if (elem.attr('checked')) {
-                action = 'columnlisting';
-            } else {
                 action = 'allcolumnlisting';
+            } else {
+                action = 'columnlisting';
             }
             var target = bdajax.parsetarget(elem.attr('ajax:target'));
             bdajax.action({
