@@ -1,7 +1,9 @@
+import os
 import pyramid_zcml
 from pyramid.config import Configurator
 from cone.app import auth_tkt_factory, acl_factory
 from cone.ugm.model import get_root
+from cone.ugm.model.utils import APP_PATH
 
 def main(global_config, **settings):
     """Returns WSGI application.
@@ -24,5 +26,14 @@ def main(global_config, **settings):
     config.include(pyramid_zcml)
     config.begin()
     config.load_zcml(zcml_file)
+
+    theme_dir = os.path.join(APP_PATH, 'etc', 'theme', '')
+    theme_css = os.path.join(APP_PATH, 'etc', 'theme', 'theme.css')
+    if os.path.isdir(theme_dir):
+        config.add_static_view('theme', theme_dir)
+    if os.path.isfile(theme_css):
+        import cone.app.browser
+        cone.app.browser.ADDITIONAL_CSS.append('theme/theme.css')
+
     config.end()
     return config.make_wsgi_app()
