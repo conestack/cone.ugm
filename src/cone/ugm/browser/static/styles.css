@@ -248,15 +248,14 @@ div.columnitems div.head div {
     padding:4px;
 }
 div.columnlisting div.users div.head div.sort_col_1 {
-    width:240px;
+    width:120px;
 }
 div.columnlisting div.groups div.head div.sort_col_1 {
     width:500px;
 }
 div.columnitems div.head div.sort_col_2 {
-/*    width:120px; */
+    width:120px;
 /*    border-left:#ccc 1px solid; */
-    display:none;
 }
 div.columnitems div.head div.sort_col_3 {
     width:266px;
