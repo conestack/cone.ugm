@@ -70,11 +70,11 @@ class Groups(object):
 
         ret = list()
         col_1_attr = obj.group_attrs
-        
+
         # XXX: These should be the mapped attributes - lack of backend support
         for id in groups.keys():
             group = groups[id]
-            
+
             # XXX: resource was only set for alluserlisting
             item_target = make_url(obj.request, node=group, resource=id)
             action_query = make_query(id=id)
@@ -84,19 +84,19 @@ class Groups(object):
 
             if not self.related_only:
                 related = id in related_ids
-            
+
             action_id = 'add_item'
             action_enabled = not bool(related)
             action_title = 'Add user to selected group'
             add_item_action = obj.create_action(
                 action_id, action_enabled, action_title, action_target)
-            
+
             action_id = 'remove_item'
             action_enabled = bool(related)
             action_title = 'Remove user from selected group'
             remove_item_action = obj.create_action(
                 action_id, action_enabled, action_title, action_target)
-            
+
             actions = [add_item_action, remove_item_action]
             val_1 = group.attrs[col_1_attr]
             content = obj.item_content(val_1)
@@ -125,7 +125,7 @@ class AllGroupsColumnListing(ColumnListing):
     css = 'groups'
     query_items = Groups(related_only=False)
     batchname = 'rightbatch'
-    
+
     @property
     def ajax_action(self):
         return 'allcolumnlisting'
