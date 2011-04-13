@@ -52,11 +52,6 @@ h1#logo a {
     font-weight: normal;
     font-family:Times;
 }
-h1#site {
-    color: white;
-    position: absolute;
-    left: 552px;
-}
 #header a.logout {
     position:absolute;
     right:10px;

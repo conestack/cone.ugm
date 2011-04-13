@@ -63,10 +63,6 @@
              tal:content="model.root.metadata.title">Title</a>
         </h1>
         
-        <h1 id="site" tal:content="structure tile('site')">
-          SITE
-        </h1>
-
         <a href="${request.application_url}/logout"
            class="logout"
            tal:condition="util.authenticated(request)">logout</a>
