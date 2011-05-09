@@ -1,6 +1,5 @@
 from zope.interface import implements
 from node.ext.ldap.ugm import Users as LDAPUsers
-from cone.app.browser.utils import unquote_slash
 from cone.app.model import (
     BaseNode,
     Properties,
@@ -11,6 +10,7 @@ from cone.app.model import (
 from cone.ugm.model.interfaces import IUsers
 from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_settings
+from cone.ugm.browser.utils import unquote_slash
 
 
 class Users(BaseNode):

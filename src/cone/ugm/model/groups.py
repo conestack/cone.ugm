@@ -1,6 +1,5 @@
 from zope.interface import implements
 from node.ext.ldap.ugm import Groups as LDAPGroups
-from cone.app.browser.utils import unquote_slash
 from cone.app.model import (
     BaseNode,
     Properties,
@@ -11,6 +10,7 @@ from cone.app.model import (
 from cone.ugm.model.interfaces import IGroups
 from cone.ugm.model.group import Group
 from cone.ugm.model.utils import ugm_settings
+from cone.ugm.browser.utils import unquote_slash
 
 
 class Groups(BaseNode):
