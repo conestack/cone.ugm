@@ -1,6 +1,5 @@
 from zope.interface import implements
 from node.ext.ldap.ugm import Users as LDAPUsers
-from cone.app.browser.utils import unquote_slash
 from cone.app.model import (
     BaseNode,
     Properties,
@@ -10,6 +9,8 @@ from cone.app.model import (
 )
 from cone.ugm.model.interfaces import IUsers
 from cone.ugm.model.user import User
+from cone.ugm.model.utils import ugm_settings
+from cone.ugm.browser.utils import unquote_slash
 
 
 class Users(BaseNode):
@@ -38,17 +39,15 @@ class Users(BaseNode):
         return metadata
 
     @property
-    def settings(self):
-        return self.__parent__['settings']
-
-    @property
     def ldap_users(self):
+        """XXX: this property should be named model
+        """
         if self._ldap_users is None:
             if self._testenv is not None:
                 props = self._testenv['props']
                 ucfg = self._testenv['ucfg']
             else:
-                settings = self.settings
+                settings = ugm_settings(self)
                 props = settings.ldap_props
                 ucfg = settings.ldap_ucfg
             self._ldap_users = LDAPUsers(props, ucfg)

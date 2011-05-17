@@ -13,10 +13,10 @@ App path for testing.
 Import and create Settings application node.
 ::
     
-    >>> from cone.ugm.model.settings import Settings
-    >>> settings = Settings(_app_path=_app_path)
+    >>> from cone.ugm.model.settings import UgmSettings
+    >>> settings = UgmSettings(_app_path=_app_path)
     >>> settings
-    <Settings object 'None' at ...>
+    <UgmSettings object 'None' at ...>
 
 Check default LDAP attributes.
 ::

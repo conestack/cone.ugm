@@ -11,10 +11,8 @@ from yafowil.base import (
 )
 from cone.tile import tile
 from cone.app.browser.layout import ProtectedContentTile
-from cone.app.browser.form import (
-    Form,
-    EditPart,
-)
+from cone.app.browser.form import Form
+from cone.app.browser.settings import SettingsPart
 from cone.ugm.model.interfaces import ISettings
 
 
@@ -63,7 +61,7 @@ class Settings(ProtectedContentTile):
 @tile('editform', interface=ISettings, permission='manage')
 class LDAPSettingsForm(Form):
     __metaclass__ = plumber
-    __plumbing__ = EditPart
+    __plumbing__ = SettingsPart
 
     def prepare(self):
         model = self.model
@@ -229,16 +227,6 @@ class LDAPSettingsForm(Form):
                 'handler': self.save,
                 'next': self.next,
                 'label': 'Save',
-            })
-        form['cancel'] = factory(
-            'submit',
-            props = {
-                'action': 'cancel',
-                'expression': True,
-                'handler': None,
-                'next': self.next,
-                'label': 'Cancel',
-                'skip': True,
             })
         self.form = form
 

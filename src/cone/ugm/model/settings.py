@@ -7,7 +7,6 @@ from node.ext.ldap.ugm import UsersConfig as LDAPUsersConfig
 from node.ext.ldap.ugm import GroupsConfig as LDAPGroupsConfig
 from cone.app.model import (
     BaseNode,
-    Properties,
     XMLProperties,
     BaseMetadata,
 )
@@ -15,7 +14,7 @@ from cone.ugm.model.interfaces import ISettings
 from cone.ugm.model.utils import APP_PATH
 
 
-class Settings(BaseNode):
+class UgmSettings(BaseNode):
 
     implements(ISettings)
 

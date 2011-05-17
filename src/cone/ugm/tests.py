@@ -18,8 +18,7 @@ class Base(Layer):
 BASE = Base()
 
 DOCFILES = [
-    ('model/ugm.txt', BASE),
-    ('model/setting.txt', BASE),
+    ('model/settings.txt', BASE),
     ('model/users.txt', LDIF_groupOfNames_10_10),
     ('model/user.txt', LDIF_groupOfNames_10_10),
     ('model/groups.txt', LDIF_groupOfNames_10_10),

@@ -1,5 +1,4 @@
 from cone.tile import (
-    tile,
     Tile,
     registerTile,
     render_tile,

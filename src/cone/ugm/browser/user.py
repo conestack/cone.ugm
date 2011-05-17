@@ -15,13 +15,14 @@ from cone.app.browser.utils import (
     make_url,
     make_query,
 )
-from cone.app.browser.form import (
-    Form,
+from cone.app.browser.form import Form
+from cone.app.browser.authoring import (
     AddPart,
     EditPart,
 )
 from cone.app.browser.ajax import AjaxAction
 from cone.ugm.model.interfaces import IUser
+from cone.ugm.model.utils import ugm_settings
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.browser.listing import ColumnListing
@@ -185,9 +186,8 @@ class UserForm(object):
             name='userform',
             props={
                 'action': action,
-                'class': 'ajax',
             })
-        settings = self.model.root['settings']
+        settings = ugm_settings(self.model)
         attrmap = settings.attrs.users_form_attrmap
         if not attrmap:
             return form
@@ -252,7 +252,7 @@ class UserAddForm(UserForm, Form):
     __plumbing__ = AddPart
 
     def save(self, widget, data):
-        settings = self.model.root['settings']
+        settings = ugm_settings(self.model)
         attrmap = settings.attrs.users_form_attrmap
         user = AttributedNode()
         for key, val in attrmap.items():
@@ -278,7 +278,7 @@ class UserAddForm(UserForm, Form):
                            resource=next_resource)
         else:
             url = make_url(request.request, node=self.model)
-        if request.get('ajax'):
+        if self.ajax_request:
             return [
                 AjaxAction(url, 'leftcolumn', 'replace', '.left_column'),
                 AjaxAction(url, 'rightcolumn', 'replace', '.right_column'),
@@ -292,7 +292,7 @@ class UserEditForm(UserForm, Form):
     __plumbing__ = EditPart
 
     def save(self, widget, data):
-        settings = self.model.root['settings']
+        settings = ugm_settings(self.model)
         attrmap = settings.attrs.users_form_attrmap
         for key, val in attrmap.items():
             if key in ['id', 'login', 'userPassword']:
@@ -307,7 +307,7 @@ class UserEditForm(UserForm, Form):
 
     def next(self, request):
         url = make_url(request.request, node=self.model)
-        if request.get('ajax'):
+        if self.ajax_request:
             return [
                 AjaxAction(url, 'leftcolumn', 'replace', '.left_column'),
                 AjaxAction(url, 'rightcolumn', 'replace', '.right_column'),
