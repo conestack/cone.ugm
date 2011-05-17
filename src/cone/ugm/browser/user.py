@@ -250,6 +250,8 @@ class UserForm(object):
 class UserAddForm(UserForm, Form):
     __metaclass__ = plumber
     __plumbing__ = AddPart
+    
+    show_heading = False
 
     def save(self, widget, data):
         settings = ugm_settings(self.model)
@@ -290,6 +292,8 @@ class UserAddForm(UserForm, Form):
 class UserEditForm(UserForm, Form):
     __metaclass__ = plumber
     __plumbing__ = EditPart
+    
+    show_heading = False
 
     def save(self, widget, data):
         settings = ugm_settings(self.model)

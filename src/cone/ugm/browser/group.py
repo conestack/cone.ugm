@@ -207,6 +207,8 @@ class GroupForm(object):
 class GroupAddForm(GroupForm, Form):
     __metaclass__ = plumber
     __plumbing__ = AddPart
+    
+    show_heading = False
 
     def save(self, widget, data):
         group = AttributedNode()
@@ -237,6 +239,8 @@ class GroupAddForm(GroupForm, Form):
 class GroupEditForm(GroupForm, Form):
     __metaclass__ = plumber
     __plumbing__ = EditPart
+    
+    show_heading = False
 
     def save(self, widget, data):
         pass
