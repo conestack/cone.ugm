@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.9before_plugging_merge'
+version = '0.9dev'
 shortdesc = 'cone.ugm'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
