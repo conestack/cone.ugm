@@ -3,10 +3,6 @@ from cone.ugm.model.settings import UgmSettings
 from cone.ugm.model.users import Users
 from cone.ugm.model.groups import Groups
 
-# custom main template
-# XXX: generalize, only hurdle ATM is the SITE hack
-cone.app.cfg.main_template = 'cone.ugm.browser:templates/main.pt'
-
 # custom UGM styles
 cone.app.cfg.css.protected.append('cone.ugm.static/styles.css')
 

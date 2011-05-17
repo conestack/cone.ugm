@@ -12,13 +12,6 @@ ul#mainmenu li.node-groups a.current_page_item {
     background: url('/cone.ugm.static/images/menu_groups_selected.png') top left no-repeat;
 }
 
-/* box background */
-#form-userform,
-#form-groupform {
-    background: url('/static/images/box.gif') top left no-repeat;
-    padding:12px;
-}
-
 /* content */
 div#content {
     float:left;
