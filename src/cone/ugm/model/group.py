@@ -13,6 +13,8 @@ class Group(AdapterNode):
     
     implements(IGroup)
     
+    node_info_name = 'group'
+    
     @property
     def properties(self):
         props = Properties()
