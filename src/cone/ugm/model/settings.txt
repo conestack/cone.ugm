@@ -5,16 +5,18 @@ App path for testing.
 ::
 
     >>> import os
-    >>> import sys
-    >>> _app_path = os.path.sep.join(sys.path[0].split(os.path.sep)[:-3])
-    >>> _app_path
+    >>> import pkg_resources
+    >>> path = pkg_resources.resource_filename('cone.ugm', '')
+    >>> path = os.path.sep.join(path.split(os.path.sep)[:-3])
+    >>> path
     '...cone.ugm'
 
 Import and create Settings application node.
 ::
     
     >>> from cone.ugm.model.settings import UgmSettings
-    >>> settings = UgmSettings(_app_path=_app_path)
+
+    >>> settings = UgmSettings(_app_path=path)
     >>> settings
     <UgmSettings object 'None' at ...>
 
