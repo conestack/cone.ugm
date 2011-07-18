@@ -83,3 +83,16 @@ The attributes of the user are wrapped::
     >>> del user0.attrs['mail']
     >>> user0.attrs['mail'] = 'uid0@users300.my-domain.com'
     >>> user0.model.context()
+
+Test invalidation::
+
+    >>> model = users.model
+    >>> model
+    <Users object 'users' at ...>
+    
+    >>> model is users.model
+    True
+    
+    >>> users.invalidate()
+    >>> model is users.model
+    False

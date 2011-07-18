@@ -83,3 +83,19 @@ The attributes of the group are wrapped::
 
     >>> del group0.attrs['businessCategory']
     >>> group0.model.context()
+
+Test invalidation::
+
+    >>> model = groups.model
+    >>> model
+    <Groups object 'groups' at ...>
+    
+    >>> model is groups.model
+    True
+    
+    >>> groups.invalidate()
+    >>> model is groups.model
+    False
+
+    
+    

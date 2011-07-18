@@ -43,16 +43,8 @@ class Users(BaseNode):
         return self._model.users
 
     def invalidate(self):
-        """
-        - get rid of ldap_users
-        - get new ldap_users
-        - tell it about ldap_groups
-        - tell ldap_groups about new ldap_users
-        """
-        self._model = None
+        del self.model.parent.storage['users']
         self.clear()
-        #self.ldap_users.groups = self.__parent__['groups'].ldap_groups
-        #self.__parent__['groups'].ldap_groups.users = self.ldap_users
 
     def __iter__(self):
         try:

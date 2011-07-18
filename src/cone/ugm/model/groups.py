@@ -44,16 +44,8 @@ class Groups(BaseNode):
         return self._model.groups
 
     def invalidate(self):
-        """
-        - get rid of ldap_groups
-        - get new ldap_groups
-        - tell it about ldap_users
-        - tell ldap_users about new ldap_groups
-        """
-        self._model = None
+        del self.model.parent.storage['groups']
         self.clear()
-        #self.ldap_groups.users = self.__parent__['users'].ldap_users
-        #self.__parent__['users'].ldap_users.groups = self.ldap_groups
 
     def __iter__(self):
         try:
@@ -61,7 +53,8 @@ class Groups(BaseNode):
                 yield key
         except Exception, e:
             # XXX: explicit exception
-            print e
+            #print e
+            raise e
 
     iterkeys = __iter__
 
