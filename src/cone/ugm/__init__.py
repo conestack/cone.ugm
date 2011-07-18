@@ -22,3 +22,7 @@ cone.app.register_plugin('users', Users)
 
 # Groups container
 cone.app.register_plugin('groups', Groups)
+
+# The node.ext.ugm implementation to use for user and group management
+# currently only LDAP
+backend = None

@@ -2,21 +2,22 @@ Users Application Node
 =======================
 
     >>> from cone.ugm.model.users import Users
-    >>> users = Users(layer['props'], layer['ucfg'])
+    >>> users = Users()
+    >>> users._testenv = dict()
+    >>> users._testenv['props'] = layer['props']
+    >>> users._testenv['ucfg'] = layer['ucfg']
+    >>> users._testenv['gcfg'] = layer['gcfg']
 
-Check Properties.
-::
+Check Properties::
 
     >>> props = users.properties
 
-Users object is not editable.
-::
+Users object is not editable::
 
     >>> props.editable
     False
 
-Check Metadata.
-::
+Check Metadata::
 
     >>> md = users.metadata
     >>> md.title
@@ -25,22 +26,29 @@ Check Metadata.
     >>> md.description
     'Container for Users'
 
-Check for test users.
-::
+Check for test users::
 
     >>> len([x for x in users])
     10
 
-The children are user application nodes.
-::
+Access inexistent child::
+
+    >>> users['inexistent']
+    Traceback (most recent call last):
+      ...
+    KeyError: 'inexistent'
+
+The children are user application nodes::
+    
     >>> user0 = users[users.keys()[0]]
     >>> user0
     <User object 'uid0' at ...>
 
-The real user objects are available via .model.
-::
+The real user objects are available via .model::
+
     >>> user0.model
-    <User 'uid0'>
+    <User object 'uid0' at ...>
+    
     >>> user0.model.__class__
     <class 'node.ext.ldap.ugm.User'>
 
@@ -50,8 +58,8 @@ otherwise more specific.
 XXX: should all this below work on the application model user or on the data
 model behind?
 
-The attributes of the user are wrapped.
-::
+The attributes of the user are wrapped::
+
     >>> user0.attrs.items()
     [('cn', u'cn0'), 
     ('sn', u'sn0'), 
@@ -64,6 +72,7 @@ The attributes of the user are wrapped.
 
     >>> user0.attrs.changed
     True
+    
     >>> user0.model.context()
     >>> user0.attrs.changed
     False

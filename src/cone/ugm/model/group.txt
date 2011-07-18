@@ -9,19 +9,16 @@ Group Adapter Application Node
     >>> group
     <Group object 'group0' at ...>
 
-Check Properties.
-::
+Check Properties::
 
     >>> props = group.properties
 
-Group object is editable.
-::
+Group object is editable::
 
     >>> props.editable
     True
 
-Check Metadata.
-::
+Check Metadata::
 
     >>> md = group.metadata
     >>> md.title

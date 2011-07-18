@@ -2,7 +2,7 @@ import os
 from zope.interface import implements
 from node.ext.ldap import LDAPProps
 from node.ext.ldap.base import testLDAPConnectivity
-from node.ext.ldap.bbb import queryNode
+from node.ext.ldap._node import queryNode
 from node.ext.ldap.ugm import UsersConfig as LDAPUsersConfig
 from node.ext.ldap.ugm import GroupsConfig as LDAPGroupsConfig
 from cone.app.model import (
@@ -122,3 +122,8 @@ class UgmSettings(BaseNode):
                 member_relation=config.groups_relation,
                 )
         return self._ldap_gcfg
+    
+    @property
+    def ldap_rcfg(self):
+        # XXX: later
+        return None

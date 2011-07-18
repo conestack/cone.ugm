@@ -3,20 +3,21 @@ Groups Application Node
 
     >>> from cone.ugm.model.groups import Groups
     >>> groups = Groups()
+    >>> groups._testenv = dict()
+    >>> groups._testenv['props'] = layer['props']
+    >>> groups._testenv['ucfg'] = layer['ucfg']
+    >>> groups._testenv['gcfg'] = layer['gcfg']
 
-Check Properties.
-::
+Check Properties::
 
     >>> props = groups.properties
 
-Groups object is not editable.
-::
+Groups object is not editable::
 
     >>> props.editable
     False
 
-Check Metadata.
-::
+Check Metadata::
 
     >>> md = groups.metadata
     >>> md.title
@@ -24,3 +25,61 @@ Check Metadata.
     
     >>> md.description
     'Container for Groups'
+
+Check for test groups::
+
+    >>> len([x for x in groups])
+    10
+
+Access inexistent child::
+
+    >>> groups['inexistent']
+    Traceback (most recent call last):
+      ...
+    KeyError: 'inexistent'
+
+The children are group application nodes::
+    
+    >>> groups.keys()
+    [u'group0', u'group1', u'group2', u'group3', u'group4', u'group5', 
+    u'group6', u'group7', u'group8', u'group9']
+    
+    >>> group0 = groups[groups.keys()[0]]
+    >>> group0
+    <Group object 'group0' at ...>
+
+The real group objects are available via .model::
+
+    >>> group0.model
+    <Group object 'group0' at ...>
+    
+    >>> group0.model.__class__
+    <class 'node.ext.ldap.ugm.Group'>
+
+XXX: model is too generic, needs discussion. If so generic I'd say .context,
+otherwise more specific.
+
+XXX: should all this below work on the application model user or on the data
+model behind?
+
+The attributes of the group are wrapped::
+
+    >>> group0.attrs.items()
+    [('member', [u'cn=nobody']), ('rdn', u'group0')]
+
+    >>> group0.attrs['businessCategory'] = 'Cat0'
+
+# XXX: changed/__call__ should be available on the group object
+
+    >>> group0.attrs.changed
+    True
+    
+    >>> group0.model.context()
+    >>> group0.attrs.changed
+    False
+
+    >>> group0.attrs['businessCategory']
+    u'Cat0'
+
+    >>> del group0.attrs['businessCategory']
+    >>> group0.model.context()

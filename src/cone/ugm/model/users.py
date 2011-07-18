@@ -9,7 +9,10 @@ from cone.app.model import (
 )
 from cone.ugm.model.interfaces import IUsers
 from cone.ugm.model.user import User
-from cone.ugm.model.utils import ugm_settings
+from cone.ugm.model.utils import (
+    ugm_settings,
+    ugm_backend,
+)
 from cone.ugm.browser.utils import unquote_slash
 
 
@@ -18,40 +21,26 @@ class Users(BaseNode):
 
     node_info_name = 'users'
 
-    def __init__(self, props=None, ucfg=None):
-        """``props`` and `ucfg`` just needed for testing. never used in
-        application code.
-        """
-        super(Users, self).__init__()
-        self._testenv = None
-        if props or ucfg:
-            self._testenv = {
-                'props': props,
-                'ucfg': ucfg,
-            }
-        self._ldap_users = None
-
     @property
     def metadata(self):
         metadata = BaseMetadata()
         metadata.title = "Users"
         metadata.description = "Container for Users"
         return metadata
-
+    
     @property
-    def ldap_users(self):
-        """XXX: this property should be named model
-        """
-        if self._ldap_users is None:
-            if self._testenv is not None:
-                props = self._testenv['props']
-                ucfg = self._testenv['ucfg']
-            else:
-                settings = ugm_settings(self)
-                props = settings.ldap_props
-                ucfg = settings.ldap_ucfg
-            self._ldap_users = LDAPUsers(props, ucfg)
-        return self._ldap_users
+    def model(self):
+        if hasattr(self, '_model'):
+            return self._model.users
+        if hasattr(self, '_testenv'):
+            props = self._testenv['props']
+            ucfg = self._testenv['ucfg']
+            gcfg = self._testenv['gcfg']
+            rcfg = None
+            self._model = ugm_backend(self, props, ucfg, gcfg, rcfg)
+        else:
+            self._model = ugm_backend(self)
+        return self._model.users
 
     def invalidate(self):
         """
@@ -60,14 +49,14 @@ class Users(BaseNode):
         - tell it about ldap_groups
         - tell ldap_groups about new ldap_users
         """
-        self._ldap_users = None
+        self._model = None
         self.clear()
-        self.ldap_users.groups = self.__parent__['groups'].ldap_groups
-        self.__parent__['groups'].ldap_groups.users = self.ldap_users
+        #self.ldap_users.groups = self.__parent__['groups'].ldap_groups
+        #self.__parent__['groups'].ldap_groups.users = self.ldap_users
 
     def __iter__(self):
         try:
-            for key in self.ldap_users:
+            for key in self.model:
                 yield key
         except Exception, e:
             # XXX: explicit exception
@@ -84,7 +73,7 @@ class Users(BaseNode):
         except KeyError:
             if not name in self.iterkeys():
                 raise KeyError(name)
-            user = User(self.ldap_users[name], name, self)
+            user = User(self.model[name], name, self)
             self[name] = user
             return user
 

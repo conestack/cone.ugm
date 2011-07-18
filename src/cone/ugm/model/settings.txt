@@ -1,8 +1,7 @@
 LDAP Settings Application Node
 ==============================
 
-App path for testing.
-::
+App path for testing::
 
     >>> import os
     >>> import pkg_resources
@@ -11,8 +10,7 @@ App path for testing.
     >>> path
     '...cone.ugm'
 
-Import and create Settings application node.
-::
+Import and create Settings application node::
     
     >>> from cone.ugm.model.settings import UgmSettings
 
@@ -20,8 +18,7 @@ Import and create Settings application node.
     >>> settings
     <UgmSettings object 'None' at ...>
 
-Check default LDAP attributes.
-::
+Check default LDAP attributes::
 
     >>> attrs = settings.attrs
     
@@ -46,3 +43,22 @@ Check default LDAP attributes.
     
     >>> md.description
     'LDAP Connection Settings'
+
+Config objects::
+
+    >>> settings.ldap_props
+    <node.ext.ldap.properties.LDAPServerProperties object at ...>
+    
+    >>> settings.ldap_ucfg
+    <node.ext.ldap.ugm.UsersConfig object at ...>
+    
+    >>> settings.ldap_gcfg
+    <node.ext.ldap.ugm.GroupsConfig object at ...>
+
+XXX later::
+    >>> settings.ldap_rcfg is None
+    True
+
+Settings are written on ``__call__``::
+
+    >>> settings()

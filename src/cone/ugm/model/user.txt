@@ -7,19 +7,16 @@ User Adapter Application Node
     >>> user
     <User object 'uid0' at ...>
 
-Check Properties.
-::
+Check Properties::
 
     >>> props = user.properties
 
-User object is editable.
-::
+User object is editable::
 
     >>> props.editable
     True
 
-Check Metadata.
-::
+Check Metadata::
 
     >>> md = user.metadata
     >>> md.title
