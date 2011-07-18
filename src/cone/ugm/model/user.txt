@@ -25,6 +25,41 @@ Check Metadata::
     >>> md.description
     'User'
 
-User object is callable::
+The real user objects are available via .model::
 
+    >>> user.model
+    <User object 'uid0' at ...>
+    
+    >>> user.model.__class__
+    <class 'node.ext.ldap.ugm.User'>
+
+XXX: model is too generic, needs discussion. If so generic I'd say .context,
+otherwise more specific.
+
+XXX: should all this below work on the application model user or on the data
+model behind?
+
+The attributes of the user are wrapped::
+
+    >>> user.attrs.items()
+    [('cn', u'cn0'), 
+    ('sn', u'sn0'), 
+    ('mail', u'uid0@groupOfNames_10_10.com'), 
+    ('login', u'uid0')]
+
+    >>> user.attrs['mail'] = 'foo'
+
+# XXX: changed should be available on the user object
+    >>> user.attrs.changed
+    True
+    
+    >>> user()
+    >>> user.attrs.changed
+    False
+
+    >>> user.attrs['mail']
+    u'foo'
+
+    >>> del user.attrs['mail']
+    >>> user.attrs['mail'] = 'uid0@users300.my-domain.com'
     >>> user()

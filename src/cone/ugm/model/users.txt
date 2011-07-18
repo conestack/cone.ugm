@@ -42,48 +42,16 @@ Access inexistent child::
 
 The children are user application nodes::
     
-    >>> user0 = users[users.keys()[0]]
-    >>> user0
+    >>> user = users['uid0']
+    >>> user
     <User object 'uid0' at ...>
 
-The real user objects are available via .model::
+If we delete a user, it's not deleted from the underlying backend, this is
+needed for invalidation::
 
-    >>> user0.model
+    >>> del users['uid0']
+    >>> users['uid0']
     <User object 'uid0' at ...>
-    
-    >>> user0.model.__class__
-    <class 'node.ext.ldap.ugm.User'>
-
-XXX: model is too generic, needs discussion. If so generic I'd say .context,
-otherwise more specific.
-
-XXX: should all this below work on the application model user or on the data
-model behind?
-
-The attributes of the user are wrapped::
-
-    >>> user0.attrs.items()
-    [('cn', u'cn0'), 
-    ('sn', u'sn0'), 
-    ('mail', u'uid0@groupOfNames_10_10.com'), 
-    ('login', u'uid0')]
-
-    >>> user0.attrs['mail'] = 'foo'
-
-# XXX: changed/__call__ should be available on the user object
-    >>> user0.attrs.changed
-    True
-    
-    >>> user0.model.context()
-    >>> user0.attrs.changed
-    False
-
-    >>> user0.attrs['mail']
-    u'foo'
-
-    >>> del user0.attrs['mail']
-    >>> user0.attrs['mail'] = 'uid0@users300.my-domain.com'
-    >>> user0.model.context()
 
 Test invalidation::
 
