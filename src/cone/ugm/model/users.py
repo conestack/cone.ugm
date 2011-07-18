@@ -30,22 +30,19 @@ class Users(BaseNode):
     
     @property
     def backend(self):
-        if hasattr(self, '_backend'):
-            return self._backend.users
-        self._backend = ugm_backend(self)
-        return self._backend.users
+        return ugm_backend(self).users
 
     def invalidate(self):
-        del self.backend.parent.storage['users']
         self.clear()
+        del self.backend.parent.storage['users']
 
     def __iter__(self):
         try:
             for key in self.backend:
                 yield key
         except Exception, e:
-            # XXX: explicit exception
-            print e
+            # XXX: explicit exception, define in node.ext.ugm
+            raise e
 
     iterkeys = __iter__
 

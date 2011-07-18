@@ -1,11 +1,15 @@
 User Adapter Application Node
 =============================
 
-    >>> from cone.ugm.model.users import Users
-    >>> users = Users(layer['props'], layer['ucfg'])
+    >>> from cone.ugm.model.user import User
+    >>> from cone.app import root 
+    >>> users = root['users']
     >>> user = users['uid0']
     >>> user
     <User object 'uid0' at ...>
+    
+    >>> isinstance(user, User)
+    True
 
 Check Properties::
 

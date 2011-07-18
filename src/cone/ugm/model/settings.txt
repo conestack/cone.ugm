@@ -91,7 +91,8 @@ LDAP connectivity tests::
     >>> settings.attrs.users_dn = \
     ...     u'ou=users,ou=groupOfNames_10_10,dc=my-domain,dc=com'
     
-    >>> old_groups_dn = settings.attrs.groups_dn = \
+    >>> old_groups_dn = settings.attrs.groups_dn
+    >>> settings.attrs.groups_dn = \
     ...     u'ou=groups,ou=groupOfNames_10_10,dc=my-domain,dc=com'
     
     >>> settings.ldap_users_container_valid
@@ -154,7 +155,7 @@ Test invalidate::
     >>> gcfg is settings.ldap_gcfg
     False
 
-Reset backend and prepare settings for followinf tests for following tests::
+Reset backend and prepare settings for following tests::
 
     >>> cone.ugm.backend = None
     >>> settings._ldap_props = layer['props']

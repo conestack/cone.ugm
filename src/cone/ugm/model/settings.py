@@ -24,8 +24,8 @@ class UgmSettings(BaseNode):
         for testing purposes only
         """
         BaseNode.__init__(self, name)
-        path = os.path.join(_app_path or APP_PATH, 'etc', 'ldap.xml')
-        self._config = XMLProperties(path)
+        self._file_path = os.path.join(_app_path or APP_PATH, 'etc', 'ldap.xml')
+        self._config = XMLProperties(self._file_path)
         self.invalidate()
 
     def __call__(self):
@@ -52,7 +52,6 @@ class UgmSettings(BaseNode):
 
     @property
     def ldap_connectivity(self):
-        config = self._config
         return testLDAPConnectivity(props=self.ldap_props)
 
     @property

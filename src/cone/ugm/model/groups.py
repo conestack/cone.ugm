@@ -31,22 +31,18 @@ class Groups(BaseNode):
 
     @property
     def backend(self):
-        if hasattr(self, '_backend'):
-            return self._backend.groups
-        self._backend = ugm_backend(self)
-        return self._backend.groups
+        return ugm_backend(self).groups
 
     def invalidate(self):
-        del self.backend.parent.storage['groups']
         self.clear()
+        del self.backend.parent.storage['groups']
 
     def __iter__(self):
         try:
             for key in self.backend:
                 yield key
         except Exception, e:
-            # XXX: explicit exception
-            #print e
+            # XXX: explicit exception, define in node.ext.ugm
             raise e
 
     iterkeys = __iter__

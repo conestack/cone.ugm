@@ -65,3 +65,19 @@ Test invalidation::
     >>> groups.invalidate()
     >>> backend is groups.backend
     False
+
+Check for errors if ugm is not configured properly::
+
+    >>> settings = root['settings']['ugm']
+    >>> settings.invalidate()
+    >>> [k for k in groups]
+    Traceback (most recent call last):
+      ...
+    NO_SUCH_OBJECT: {'matched': 'dc=my-domain,dc=com', 'desc': 'No such object'}
+
+Reset settings for following tests::
+
+    >>> settings.invalidate()
+    >>> settings._ldap_props = layer['props']
+    >>> settings._ldap_ucfg = layer['ucfg']
+    >>> settings._ldap_gcfg = layer['gcfg']
