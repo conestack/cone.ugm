@@ -29,26 +29,19 @@ class Users(BaseNode):
         return metadata
     
     @property
-    def model(self):
-        if hasattr(self, '_model'):
-            return self._model.users
-        if hasattr(self, '_testenv'):
-            props = self._testenv['props']
-            ucfg = self._testenv['ucfg']
-            gcfg = self._testenv['gcfg']
-            rcfg = None
-            self._model = ugm_backend(self, props, ucfg, gcfg, rcfg)
-        else:
-            self._model = ugm_backend(self)
-        return self._model.users
+    def backend(self):
+        if hasattr(self, '_backend'):
+            return self._backend.users
+        self._backend = ugm_backend(self)
+        return self._backend.users
 
     def invalidate(self):
-        del self.model.parent.storage['users']
+        del self.backend.parent.storage['users']
         self.clear()
 
     def __iter__(self):
         try:
-            for key in self.model:
+            for key in self.backend:
                 yield key
         except Exception, e:
             # XXX: explicit exception
@@ -65,7 +58,7 @@ class Users(BaseNode):
         except KeyError:
             if not name in self.iterkeys():
                 raise KeyError(name)
-            user = User(self.model[name], name, self)
+            user = User(self.backend[name], name, self)
             self[name] = user
             return user
 

@@ -24,3 +24,7 @@ Check Metadata::
     
     >>> md.description
     'User'
+
+User object is callable::
+
+    >>> user()

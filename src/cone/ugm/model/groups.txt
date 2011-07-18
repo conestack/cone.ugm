@@ -2,11 +2,13 @@ Groups Application Node
 =======================
 
     >>> from cone.ugm.model.groups import Groups
-    >>> groups = Groups()
-    >>> groups._testenv = dict()
-    >>> groups._testenv['props'] = layer['props']
-    >>> groups._testenv['ucfg'] = layer['ucfg']
-    >>> groups._testenv['gcfg'] = layer['gcfg']
+    >>> from cone.app import root 
+    >>> groups = root['groups']
+    >>> groups
+    <Groups object 'groups' at ...>
+    
+    >>> isinstance(groups, Groups)
+    True
 
 Check Properties::
 
@@ -70,7 +72,6 @@ The attributes of the group are wrapped::
     >>> group0.attrs['businessCategory'] = 'Cat0'
 
 # XXX: changed/__call__ should be available on the group object
-
     >>> group0.attrs.changed
     True
     
@@ -86,16 +87,13 @@ The attributes of the group are wrapped::
 
 Test invalidation::
 
-    >>> model = groups.model
-    >>> model
+    >>> backend = groups.backend
+    >>> backend
     <Groups object 'groups' at ...>
     
-    >>> model is groups.model
+    >>> backend is groups.backend
     True
     
     >>> groups.invalidate()
-    >>> model is groups.model
+    >>> backend is groups.backend
     False
-
-    
-    

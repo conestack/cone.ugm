@@ -1,5 +1,5 @@
 Group Adapter Application Node
-=======================
+==============================
 
     >>> from cone.ugm.model.groups import Groups
     
@@ -26,3 +26,8 @@ Check Metadata::
     
     >>> md.description
     'Group'
+
+
+Group object is callable::
+
+    >>> group()

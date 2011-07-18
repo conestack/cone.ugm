@@ -1,12 +1,14 @@
 Users Application Node
-=======================
+======================
 
     >>> from cone.ugm.model.users import Users
-    >>> users = Users()
-    >>> users._testenv = dict()
-    >>> users._testenv['props'] = layer['props']
-    >>> users._testenv['ucfg'] = layer['ucfg']
-    >>> users._testenv['gcfg'] = layer['gcfg']
+    >>> from cone.app import root 
+    >>> users = root['users']
+    >>> users
+    <Users object 'users' at ...>
+    
+    >>> isinstance(users, Users)
+    True
 
 Check Properties::
 
@@ -69,7 +71,6 @@ The attributes of the user are wrapped::
     >>> user0.attrs['mail'] = 'foo'
 
 # XXX: changed/__call__ should be available on the user object
-
     >>> user0.attrs.changed
     True
     
@@ -86,13 +87,13 @@ The attributes of the user are wrapped::
 
 Test invalidation::
 
-    >>> model = users.model
-    >>> model
+    >>> backend = users.backend
+    >>> backend
     <Users object 'users' at ...>
     
-    >>> model is users.model
+    >>> backend is users.backend
     True
     
     >>> users.invalidate()
-    >>> model is users.model
+    >>> backend is users.backend
     False

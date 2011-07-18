@@ -11,14 +11,15 @@ from plone.testing import layered, Layer
 from node.ext.ldap.testing import LDIF_groupOfNames_10_10
 
 
-class Base(Layer):
-    """a stub for now
-    """
+#class Base(Layer):
+#    """a stub for now
+#    """
 
-BASE = Base()
+#BASE = Base()
 
 DOCFILES = [
-    ('model/settings.txt', BASE),
+    ('model/settings.txt', LDIF_groupOfNames_10_10),
+    ('model/utils.txt', LDIF_groupOfNames_10_10),
     ('model/users.txt', LDIF_groupOfNames_10_10),
     ('model/user.txt', LDIF_groupOfNames_10_10),
     ('model/groups.txt', LDIF_groupOfNames_10_10),

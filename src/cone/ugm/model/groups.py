@@ -30,26 +30,19 @@ class Groups(BaseNode):
         return metadata
 
     @property
-    def model(self):
-        if hasattr(self, '_model'):
-            return self._model.groups
-        if hasattr(self, '_testenv'):
-            props = self._testenv['props']
-            ucfg = self._testenv['ucfg']
-            gcfg = self._testenv['gcfg']
-            rcfg = None
-            self._model = ugm_backend(self, props, ucfg, gcfg, rcfg)
-        else:
-            self._model = ugm_backend(self)
-        return self._model.groups
+    def backend(self):
+        if hasattr(self, '_backend'):
+            return self._backend.groups
+        self._backend = ugm_backend(self)
+        return self._backend.groups
 
     def invalidate(self):
-        del self.model.parent.storage['groups']
+        del self.backend.parent.storage['groups']
         self.clear()
 
     def __iter__(self):
         try:
-            for key in self.model:
+            for key in self.backend:
                 yield key
         except Exception, e:
             # XXX: explicit exception
@@ -67,7 +60,7 @@ class Groups(BaseNode):
         except KeyError:
             if not name in self.iterkeys():
                 raise KeyError(name)
-            group = Group(self.model[name], name, self)
+            group = Group(self.backend[name], name, self)
             self[name] = group
             return group
 

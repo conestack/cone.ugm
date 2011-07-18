@@ -1,0 +1,29 @@
+cone.ugm.model.utils
+====================
+
+    >>> from cone.app import root
+    >>> from cone.ugm.model.utils import ugm_settings, ugm_backend
+
+    >>> ugm_settings(root['users'])
+    <UgmSettings object 'ugm' at ...>
+    
+    >>> ugm_settings(root['settings']['ugm'])
+    <UgmSettings object 'ugm' at ...>
+    
+    >>> ugm_settings(root['users']) is ugm_settings(root['settings']['ugm'])
+    True
+    
+    >>> import cone.app
+    >>> cone.app.backend = None
+    
+    >>> backend = ugm_backend(root)
+    >>> backend
+    <Ugm object 'ugm' at ...>
+    
+    >>> backend is ugm_backend(root)
+    True
+    
+    >>> import cone.ugm
+    >>> cone.ugm.backend = None
+    >>> backend is ugm_backend(root)
+    False

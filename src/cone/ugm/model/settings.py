@@ -1,4 +1,5 @@
 import os
+import ldap
 from zope.interface import implements
 from node.ext.ldap import LDAPProps
 from node.ext.ldap.base import testLDAPConnectivity
@@ -45,10 +46,9 @@ class UgmSettings(BaseNode):
         self._ldap_props = None
         self._ldap_ucfg = None
         self._ldap_gcfg = None
-        if self.__parent__:
-            pass
-            # XXX: tell whole ugm to invalidate
-            # XXX: send an event that settings have been changed
+        if self.parent:
+            import cone.ugm
+            cone.ugm.backend = None
 
     @property
     def ldap_connectivity(self):
@@ -60,8 +60,7 @@ class UgmSettings(BaseNode):
         try:
             queryNode(self.ldap_props, self._config.users_dn)
             return True
-        except Exception:
-            # XXX: ldap no such object
+        except ldap.LDAPError, e:
             return False
 
     @property
@@ -69,8 +68,7 @@ class UgmSettings(BaseNode):
         try:
             queryNode(self.ldap_props, self._config.groups_dn)
             return True
-        except Exception:
-            # XXX: ldap no such object
+        except ldap.LDAPError, e:
             return False
 
     @property
