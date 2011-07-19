@@ -5,10 +5,6 @@ from zope.interface import Interface
 # Application Node markers
 ###############################################################################
 
-class IUgm(Interface):
-    """Marker for UGM root application model node.
-    """
-
 
 class ISettings(Interface):
     """Marker for settings model node.

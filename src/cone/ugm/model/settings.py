@@ -106,6 +106,7 @@ class UgmSettings(BaseNode):
             # XXX: each criteria is expected in attrmap. is this what we want?
             self._ldap_gcfg = LDAPGroupsConfig(
                 baseDN=config.groups_dn,
+                # XXX: from config
                 attrmap={
                     'id': 'cn',
                     'rdn': 'cn',

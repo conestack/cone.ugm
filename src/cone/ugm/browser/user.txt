@@ -1,0 +1,79 @@
+cone.ugm.browser.user
+=====================
+
+::
+
+    >>> from cone.app import root
+    >>> from cone.tile import render_tile
+    
+    >>> import cone.app.browser.login
+    >>> import cone.ugm.browser.columns
+    >>> import cone.ugm.browser.users
+    >>> users = root['users']
+    >>> user = users['uid2']
+    
+    >>> request = layer.new_request()
+
+Unauthenticated content tile renders login form::
+
+    >>> expected = \
+    ...     '<form action="http://example.com/users/uid2/login"'
+    >>> res = render_tile(user, request, 'content')
+    >>> res.find(expected) > -1
+    True
+
+Other tiles raise if unauthenticated::
+    
+    >>> render_tile(user, request, 'leftcolumn')
+    Traceback (most recent call last):
+      ...
+    Forbidden: Unauthorized: 
+    tile <cone.ugm.browser.user.UserLeftColumn object at ...> 
+    failed permission check
+    
+    >>> render_tile(user, request, 'rightcolumn')
+    Traceback (most recent call last):
+      ...
+    Forbidden: Unauthorized: 
+    tile <cone.ugm.browser.user.UserRightColumn object at ...> 
+    failed permission check
+    
+    >>> render_tile(user, request, 'columnlisting')
+    Traceback (most recent call last):
+      ...
+    Forbidden: Unauthorized: 
+    tile <cone.ugm.browser.user.GroupsOfUserColumnListing object at ...> 
+    failed permission check
+    
+    >>> render_tile(user, request, 'allcolumnlisting')
+    Traceback (most recent call last):
+      ...
+    Forbidden: Unauthorized: 
+    tile <cone.ugm.browser.user.AllGroupsColumnListing object at ...> 
+    failed permission check
+
+Authenticate and render tiles::
+
+    >>> layer.login('manager')
+    
+    >>> res = render_tile(user, request, 'leftcolumn')
+    >>> res.find('<div class="column left_column box">') > -1
+    True
+    
+    >>> res = render_tile(user, request, 'rightcolumn')
+    >>> res.find('<div class="column right_column">') > -1
+    True
+    
+    >>> res = render_tile(user, request, 'columnlisting')
+    >>> expected = \
+    ...     '<li ajax:target="http://example.com/ugm/groups/group2">'
+    >>> res.find(expected) > -1
+    True
+    
+    >>> res = render_tile(user, request, 'allcolumnlisting')
+    >>> expected = \
+    ...     '<li ajax:target="http://example.com/ugm/groups/group1">'
+    >>> res.find(expected) > -1
+    True
+    
+    >>> layer.logout()

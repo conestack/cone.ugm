@@ -20,6 +20,9 @@ class UGMLayer(Layer):
     defaultBases = (LDIF_groupOfNames_10_10, security)
     
     def setUp(self, args=None):
+        # XXX: hack
+        LDIF_groupOfNames_10_10.gcfg.attrmap['cn'] = 'cn'
+        
         self.new_request()
     
     # XXX: better way of providing stuff from base layer below
@@ -50,9 +53,11 @@ DOCFILES = [
     ('model/groups.txt', ugm_layer),
     ('model/user.txt', ugm_layer),
     ('model/group.txt', ugm_layer),
+    ('browser/__init__.txt', ugm_layer),
     ('browser/utils.txt', ugm_layer),
     ('browser/users.txt', ugm_layer),
     ('browser/groups.txt', ugm_layer),
+    ('browser/user.txt', ugm_layer),
 ]
 
 

@@ -11,8 +11,6 @@ cone.ugm.browser.groups
     >>> groups = root['groups']
     
     >>> request = layer.new_request()
-    >>> request
-    <pyramid.testing.DummyRequest object at ...>
 
 Unauthenticated content tile renders login form::
 
@@ -45,7 +43,7 @@ Other tiles raise if unauthenticated::
     tile <cone.ugm.browser.groups.GroupsColumnListing object at ...> 
     failed permission check
 
-Authenticated view shows active revision::
+Authenticate and render tiles::
 
     >>> layer.login('manager')
     

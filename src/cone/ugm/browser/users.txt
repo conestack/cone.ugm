@@ -12,8 +12,6 @@ cone.ugm.browser.users
     >>> users = root['users']
     
     >>> request = layer.new_request()
-    >>> request
-    <pyramid.testing.DummyRequest object at ...>
 
 Unauthenticated content tile renders login form::
 
@@ -46,7 +44,7 @@ Other tiles raise if unauthenticated::
     tile <cone.ugm.browser.users.UsersColumnListing object at ...> 
     failed permission check
 
-Authenticated view shows active revision::
+Authenticate and render tiles::
 
     >>> layer.login('manager')
     
