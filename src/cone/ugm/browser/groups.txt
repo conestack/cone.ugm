@@ -1,5 +1,5 @@
-cone.ugm.browser.users
-======================
+cone.ugm.browser.groups
+=======================
 
 ::
 
@@ -7,9 +7,8 @@ cone.ugm.browser.users
     >>> from cone.tile import render_tile
     
     >>> import cone.app.browser.login
-    >>> import cone.ugm.browser.columns
-    >>> import cone.ugm.browser.users
-    >>> users = root['users']
+    >>> import cone.ugm.browser.groups
+    >>> groups = root['groups']
     
     >>> request = layer.new_request()
     >>> request
@@ -18,47 +17,47 @@ cone.ugm.browser.users
 Unauthenticated content tile renders login form::
 
     >>> expected = \
-    ...     '<form action="http://example.com/users/login"'
-    >>> res = render_tile(users, request, 'content')
+    ...     '<form action="http://example.com/groups/login"'
+    >>> res = render_tile(groups, request, 'content')
     >>> res.find(expected) > -1
     True
 
 Other tiles raise if unauthenticated::
     
-    >>> render_tile(users, request, 'leftcolumn')
+    >>> render_tile(groups, request, 'leftcolumn')
     Traceback (most recent call last):
       ...
     Forbidden: Unauthorized: 
-    tile <cone.ugm.browser.users.UsersLeftColumn object at ...> 
+    tile <cone.ugm.browser.groups.GroupsLeftColumn object at ...> 
     failed permission check
     
-    >>> render_tile(users, request, 'rightcolumn')
+    >>> render_tile(groups, request, 'rightcolumn')
     Traceback (most recent call last):
       ...
     Forbidden: Unauthorized: 
-    tile <cone.ugm.browser.users.UsersRightColumn object at ...> 
+    tile <cone.ugm.browser.groups.GroupsRightColumn object at ...> 
     failed permission check
     
-    >>> render_tile(users, request, 'columnlisting')
+    >>> render_tile(groups, request, 'columnlisting')
     Traceback (most recent call last):
       ...
     Forbidden: Unauthorized: 
-    tile <cone.ugm.browser.users.UsersColumnListing object at ...> 
+    tile <cone.ugm.browser.groups.GroupsColumnListing object at ...> 
     failed permission check
 
 Authenticated view shows active revision::
 
     >>> layer.login('manager')
     
-    >>> res = render_tile(users, request, 'leftcolumn')
+    >>> res = render_tile(groups, request, 'leftcolumn')
     >>> res.find('<div class="column left_column box">') > -1
     True
     
-    >>> res = render_tile(users, request, 'rightcolumn')
+    >>> res = render_tile(groups, request, 'rightcolumn')
     >>> res == u'<div class="column right_column">&nbsp;</div>'
     True
     
-    >>> res = render_tile(users, request, 'columnlisting')
+    >>> res = render_tile(groups, request, 'columnlisting')
     >>> res.find('<div class="columnlisting leftbatchsensitiv"') > -1
     True
     

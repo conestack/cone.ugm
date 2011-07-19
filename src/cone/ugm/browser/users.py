@@ -6,7 +6,6 @@ from cone.app.browser.utils import (
     make_url,
     make_query,
 )
-from cone.ugm.model.utils import map_users_and_groups
 from cone.ugm.model.interfaces import IUsers
 from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.browser.listing import ColumnListing
@@ -43,20 +42,14 @@ class UsersColumnListing(ColumnListing):
 
     @property
     def current_id(self):
-        return self.request.get('_curr_listing_id')
+        return getattr(self.request, '_curr_listing_id', None)
 
     @property
     def query_items(self):
-        # XXX: move this out
-        # XXX: currently the ldap users and groups need to know
-        # mutually about themselves. Feels like node.ext.ugm should
-        # present us the combo.
-        map_users_and_groups(self.model)
-        
         col_1_attr, col_2_attr, col_3_attr, sort_attr = self.user_attrs
         ret = list()
         attrlist = [col_1_attr, col_2_attr, col_3_attr]
-        users = self.model.ldap_users
+        users = self.model.backend
         result = users.search(criteria=None, attrlist=attrlist)
         for key, attrs in result:
             target = make_url(self.request,

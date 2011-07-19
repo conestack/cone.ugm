@@ -35,8 +35,8 @@ class UserLeftColumn(Column):
     add_label = u"Add User"
 
     def render(self):
-        self.request['_curr_listing_id'] = self.model.__name__
-        return self._render(self.model.__parent__, 'leftcolumn')
+        setattr(self.request, '_curr_listing_id', self.model.name)
+        return self._render(self.model.parent, 'leftcolumn')
 
 
 @tile('rightcolumn', 'templates/right_column.pt',

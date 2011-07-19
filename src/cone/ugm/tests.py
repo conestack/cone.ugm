@@ -47,11 +47,12 @@ DOCFILES = [
     ('model/settings.txt', ugm_layer),
     ('model/utils.txt', ugm_layer),
     ('model/users.txt', ugm_layer),
-    ('model/user.txt', ugm_layer),
     ('model/groups.txt', ugm_layer),
+    ('model/user.txt', ugm_layer),
     ('model/group.txt', ugm_layer),
     ('browser/utils.txt', ugm_layer),
     ('browser/users.txt', ugm_layer),
+    ('browser/groups.txt', ugm_layer),
 ]
 
 
@@ -73,10 +74,11 @@ def test_suite():
         layered(
             doctest.DocFileSuite(
                 docfile,
-                globs={'interact': interlude.interact,
-                           'pprint': pprint.pprint,
-                           'pp': pprint.pprint,
-                           },
+                globs={
+                    'interact': interlude.interact,
+                    'pprint': pprint.pprint,
+                    'pp': pprint.pprint,
+                    },
                 optionflags=optionflags,
                 ),
             layer=layer,

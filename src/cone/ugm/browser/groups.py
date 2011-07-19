@@ -41,14 +41,16 @@ class GroupsColumnListing(ColumnListing):
 
     @property
     def current_id(self):
-        return self.request.get('_curr_listing_id')
+        return getattr(self.request, '_curr_listing_id', None)
 
     @property
     def query_items(self):
         col_1_attr = self.group_attrs
         ret = list()
-        result = self.model.ldap_groups.search(criteria=None,
-                                               attrlist=[col_1_attr])
+        # XXX: groups attrmap
+        #result = self.model.backend.search(criteria=None, attrlist=[col_1_attr])
+        result = self.model.backend.context.search(
+            criteria=None, attrlist=[col_1_attr])
         for key, attrs in result:
             target = make_url(self.request,
                               node=self.model,
