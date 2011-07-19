@@ -1,4 +1,3 @@
-from zope.interface import implements
 from node.utils import instance_property
 from node.ext.ldap.ugm import Groups as LDAPGroups
 from cone.app.model import (
@@ -8,7 +7,6 @@ from cone.app.model import (
     BaseNodeInfo,
     registerNodeInfo,
 )
-from cone.ugm.model.interfaces import IGroups
 from cone.ugm.model.group import Group
 from cone.ugm.model.utils import (
     ugm_settings,
@@ -18,8 +16,6 @@ from cone.ugm.browser.utils import unquote_slash
 
 
 class Groups(BaseNode):
-
-    implements(IGroups)
 
     node_info_name = 'groups'
 

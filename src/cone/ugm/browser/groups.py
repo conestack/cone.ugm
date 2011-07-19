@@ -6,12 +6,12 @@ from cone.app.browser.utils import (
     make_url,
     make_query,
 )
-from cone.ugm.model.interfaces import IGroups
+from cone.ugm.model.groups import Groups
 from cone.ugm.browser.listing import ColumnListing
 
 
 @tile('leftcolumn', 'templates/left_column.pt',
-      interface=IGroups, permission='view')
+      interface=Groups, permission='view')
 class GroupsLeftColumn(Tile):
 
     add_label = u"Add Group"
@@ -23,7 +23,7 @@ class GroupsLeftColumn(Tile):
                         query=make_query(factory=u'group'))
 
 
-@tile('rightcolumn', interface=IGroups, permission='view')
+@tile('rightcolumn', interface=Groups, permission='view')
 class GroupsRightColumn(Tile):
 
     def render(self):
@@ -31,7 +31,7 @@ class GroupsRightColumn(Tile):
 
 
 @tile('columnlisting', 'templates/column_listing.pt',
-      interface=IGroups, permission='view')
+      interface=Groups, permission='view')
 class GroupsColumnListing(ColumnListing):
 
     slot = 'leftlisting'

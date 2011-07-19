@@ -77,3 +77,76 @@ Authenticate and render tiles::
     True
     
     >>> layer.logout()
+
+Add::
+    
+    >>> layer.login('viewer')
+    
+    >>> request = layer.new_request()
+    >>> request.params['factory'] = 'user'
+    
+    >>> res = render_tile(users, request, 'add')
+    
+    >> res
+    
+    Traceback (most recent call last):
+      ...
+    Forbidden: Unauthorized: tile 
+    <cone.app.browser.authoring.AddTile object at ...> 
+    failed permission check
+    
+    >> layer.login('manager')
+    >> res = render_tile(users, request, 'add')
+    >> expected = '<form action="http://example.com/users/add"'
+    >> res.find(expected) > -1
+    True
+    
+    >> request.params['userform.cn'] = 'cn99'
+    >> request.params['userform.sn'] = 'sn99'
+    >> request.params['userform.mail'] = 'uid99@example.com'
+    >> request.params['userform.userPassword'] = 'secret99'
+    
+    >> res = render_tile(users, request, 'add')
+    >> res
+    
+    >> res.find('No media title given') > -1
+    True
+    
+    >> request.params['userform.id'] = 'uid99'
+    
+    >> res = render_tile(users, request, 'add')
+    >> res
+    u''
+    
+    >> request.environ['redirect']
+    <HTTPFound at ... 302 Found>
+    
+    >> users.keys()
+    []
+    
+    >> user = repository['uid99']
+    >> user.attrs.items()
+
+
+Edit::
+
+    >> request = layer.new_request()
+    >> res = render_tile(media, request, 'edit')
+    >> expected = '<form action="http://example.com/repositories/repo1/d/edit"'
+    >> res.find(expected) > -1
+    True
+    
+    >> request.params['mediaform.title'] = u'Other media title'
+    >> request.params['mediaform.description'] = u'Media description'
+    >> request.params['action.mediaform.save'] = '1'
+    >> res = render_tile(media, request, 'edit')
+    >> res
+    u''
+    
+    >> media.metadata.title
+    u'Other media title'
+    
+    >> media.metadata.description
+    u'Media description'
+
+    >> layer.logout()

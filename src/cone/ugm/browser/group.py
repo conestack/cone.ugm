@@ -17,13 +17,13 @@ from cone.app.browser.authoring import (
     EditPart,
 )
 from cone.app.browser.ajax import AjaxAction
-from cone.ugm.model.interfaces import IGroup
+from cone.ugm.model.group import Group
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.listing import ColumnListing
 from webob.exc import HTTPFound
 
 
-@tile('leftcolumn', interface=IGroup, permission='view')
+@tile('leftcolumn', interface=Group, permission='view')
 class GroupLeftColumn(Column):
 
     add_label = u"Add Group"
@@ -34,7 +34,7 @@ class GroupLeftColumn(Column):
 
 
 @tile('rightcolumn', 'templates/right_column.pt',
-      interface=IGroup, permission='view')
+      interface=Group, permission='view')
 class GroupRightColumn(Tile):
     pass
 
@@ -116,7 +116,7 @@ class Principals(object):
 
 
 @tile('columnlisting', 'templates/column_listing.pt',
-      interface=IGroup, permission='view')
+      interface=Group, permission='view')
 class UsersOfGroupColumnListing(ColumnListing):
     css = 'users'
     slot = 'rightlisting'
@@ -128,7 +128,7 @@ class UsersOfGroupColumnListing(ColumnListing):
 
 
 @tile('allcolumnlisting', 'templates/column_listing.pt',
-      interface=IGroup, permission='view')
+      interface=Group, permission='view')
 class AllUsersColumnListing(ColumnListing):
     css = 'users'
     slot = 'rightlisting'
@@ -203,7 +203,7 @@ class GroupForm(object):
             raise ExtractionError(msg)
         return data.extracted
 
-@tile('addform', interface=IGroup, permission="add")
+@tile('addform', interface=Group, permission="add")
 class GroupAddForm(GroupForm, Form):
     __metaclass__ = plumber
     __plumbing__ = AddPart
@@ -235,7 +235,7 @@ class GroupAddForm(GroupForm, Form):
         return HTTPFound(location=url)
 
 
-@tile('editform', interface=IGroup, permission="edit")
+@tile('editform', interface=Group, permission="edit")
 class GroupEditForm(GroupForm, Form):
     __metaclass__ = plumber
     __plumbing__ = EditPart

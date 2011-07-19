@@ -1,6 +1,6 @@
 from pyramid.view import view_config
-from cone.ugm.model.interfaces import IUser
-from cone.ugm.model.interfaces import IGroup
+from cone.ugm.model.user import User
+from cone.ugm.model.group import Group
 
 
 class Action(object):
@@ -34,7 +34,7 @@ class Action(object):
 ###############################################################################
 
 @view_config(name='delete_item', accept='application/json',
-             renderer='json', context=IUser, permission='delete')
+             renderer='json', context=User, permission='delete')
 class DeleteUserAction(Action):
 
     def __call__(self):
@@ -58,7 +58,7 @@ class DeleteUserAction(Action):
 
 
 @view_config(name='add_item', accept='application/json',
-             renderer='json', context=IUser, permission='edit')
+             renderer='json', context=User, permission='edit')
 class UserAddToGroupAction(Action):
 
     def __call__(self):
@@ -76,7 +76,7 @@ class UserAddToGroupAction(Action):
 
 
 @view_config(name='remove_item', accept='application/json',
-             renderer='json', context=IUser, permission='edit')
+             renderer='json', context=User, permission='edit')
 class UserRemoveFromGroupAction(Action):
 
     def __call__(self):
@@ -99,7 +99,7 @@ class UserRemoveFromGroupAction(Action):
 ###############################################################################
 
 @view_config(name='delete_item', accept='application/json',
-             renderer='json', context=IGroup, permission='delete')
+             renderer='json', context=Group, permission='delete')
 class DeleteGroupAction(Action):
 
     def __call__(self):
@@ -123,7 +123,7 @@ class DeleteGroupAction(Action):
 
 
 @view_config(name='add_item', accept='application/json',
-             renderer='json', context=IGroup, permission='edit')
+             renderer='json', context=Group, permission='edit')
 class GroupAddUserAction(Action):
 
     def __call__(self):
@@ -140,7 +140,7 @@ class GroupAddUserAction(Action):
 
 
 @view_config(name='remove_item', accept='application/json',
-             renderer='json', context=IGroup, permission='edit')
+             renderer='json', context=Group, permission='edit')
 class GroupRemoveUserAction(Action):
 
     def __call__(self):

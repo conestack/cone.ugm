@@ -6,13 +6,13 @@ from cone.app.browser.utils import (
     make_url,
     make_query,
 )
-from cone.ugm.model.interfaces import IUsers
+from cone.ugm.model.users import Users
 from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.browser.listing import ColumnListing
 
 
 @tile('leftcolumn', 'templates/left_column.pt',
-      interface=IUsers, permission='view')
+      interface=Users, permission='view')
 class UsersLeftColumn(Tile):
 
     add_label = u"Add User"
@@ -24,7 +24,7 @@ class UsersLeftColumn(Tile):
                         query=make_query(factory=u'user'))
 
 
-@tile('rightcolumn', interface=IUsers, permission='view')
+@tile('rightcolumn', interface=Users, permission='view')
 class UsersRightColumn(Tile):
 
     def render(self):
@@ -32,7 +32,7 @@ class UsersRightColumn(Tile):
 
 
 @tile('columnlisting', 'templates/column_listing.pt',
-      interface=IUsers, permission='view')
+      interface=Users, permission='view')
 class UsersColumnListing(ColumnListing):
 
     slot = 'leftlisting'

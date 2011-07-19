@@ -13,7 +13,7 @@ from cone.tile import tile
 from cone.app.browser.layout import ProtectedContentTile
 from cone.app.browser.form import Form
 from cone.app.browser.settings import SettingsPart
-from cone.ugm.model.interfaces import ISettings
+from cone.ugm.model.settings import UgmSettings
 
 
 scope_vocab = [
@@ -29,7 +29,7 @@ sort_column_vocab = [
 ]
 
 
-@tile('content', 'templates/settings.pt', interface=ISettings,
+@tile('content', 'templates/settings.pt', interface=UgmSettings,
       permission='manage', strict=False)
 class Settings(ProtectedContentTile):
 
@@ -58,7 +58,7 @@ class Settings(ProtectedContentTile):
         return ''
 
 
-@tile('editform', interface=ISettings, permission='manage')
+@tile('editform', interface=UgmSettings, permission='manage')
 class LDAPSettingsForm(Form):
     __metaclass__ = plumber
     __plumbing__ = SettingsPart

@@ -21,7 +21,7 @@ from cone.app.browser.authoring import (
     EditPart,
 )
 from cone.app.browser.ajax import AjaxAction
-from cone.ugm.model.interfaces import IUser
+from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_settings
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.batch import ColumnBatch
@@ -29,7 +29,7 @@ from cone.ugm.browser.listing import ColumnListing
 from webob.exc import HTTPFound
 
 
-@tile('leftcolumn', interface=IUser, permission='view')
+@tile('leftcolumn', interface=User, permission='view')
 class UserLeftColumn(Column):
 
     add_label = u"Add User"
@@ -40,7 +40,7 @@ class UserLeftColumn(Column):
 
 
 @tile('rightcolumn', 'templates/right_column.pt',
-      interface=IUser, permission='view')
+      interface=User, permission='view')
 class UserRightColumn(Tile):
     pass
 
@@ -107,7 +107,7 @@ class Groups(object):
 
 
 @tile('columnlisting', 'templates/column_listing.pt',
-      interface=IUser, permission='view')
+      interface=User, permission='view')
 class GroupsOfUserColumnListing(ColumnListing):
 
     slot = 'rightlisting'
@@ -118,7 +118,7 @@ class GroupsOfUserColumnListing(ColumnListing):
 
 
 @tile('allcolumnlisting', 'templates/column_listing.pt',
-      interface=IUser, permission='view')
+      interface=User, permission='view')
 class AllGroupsColumnListing(ColumnListing):
 
     slot = 'rightlisting'
@@ -246,7 +246,7 @@ class UserForm(object):
         return data.extracted
 
 
-@tile('addform', interface=IUser, permission='add')
+@tile('addform', interface=User, permission='add')
 class UserAddForm(UserForm, Form):
     __metaclass__ = plumber
     __plumbing__ = AddPart
@@ -288,7 +288,7 @@ class UserAddForm(UserForm, Form):
         return HTTPFound(location=url)
 
 
-@tile('editform', interface=IUser, permission='edit')
+@tile('editform', interface=User, permission='edit')
 class UserEditForm(UserForm, Form):
     __metaclass__ = plumber
     __plumbing__ = EditPart

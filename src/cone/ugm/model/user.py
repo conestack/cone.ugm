@@ -1,4 +1,3 @@
-from zope.interface import implements
 from node.utils import instance_property
 from cone.app.model import (
     AdapterNode,
@@ -8,12 +7,9 @@ from cone.app.model import (
     registerNodeInfo,
 )
 from cone.app.security import DEFAULT_NODE_PROPERTY_PERMISSIONS
-from cone.ugm.model.interfaces import IUser
 
 
 class User(AdapterNode):
-    
-    implements(IUser)
     
     node_info_name = 'user'
     

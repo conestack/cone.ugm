@@ -1,4 +1,3 @@
-from zope.interface import implements
 from node.utils import instance_property
 from cone.app.model import (
     AdapterNode,
@@ -8,12 +7,9 @@ from cone.app.model import (
     registerNodeInfo,
 )
 from cone.app.security import DEFAULT_NODE_PROPERTY_PERMISSIONS
-from cone.ugm.model.interfaces import IGroup
 
 
 class Group(AdapterNode):
-    
-    implements(IGroup)
     
     node_info_name = 'group'
     

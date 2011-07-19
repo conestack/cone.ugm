@@ -1,4 +1,3 @@
-from zope.interface import implements
 from node.utils import instance_property
 from node.ext.ldap.ugm import Users as LDAPUsers
 from cone.app.model import (
@@ -8,7 +7,6 @@ from cone.app.model import (
     BaseNodeInfo,
     registerNodeInfo,
 )
-from cone.ugm.model.interfaces import IUsers
 from cone.ugm.model.user import User
 from cone.ugm.model.utils import (
     ugm_settings,
@@ -18,7 +16,6 @@ from cone.ugm.browser.utils import unquote_slash
 
 
 class Users(BaseNode):
-    implements(IUsers)
 
     node_info_name = 'users'
 

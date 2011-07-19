@@ -1,6 +1,5 @@
 import os
 import ldap
-from zope.interface import implements
 from node.ext.ldap import LDAPProps
 from node.ext.ldap.base import testLDAPConnectivity
 from node.ext.ldap._node import queryNode
@@ -11,13 +10,10 @@ from cone.app.model import (
     XMLProperties,
     BaseMetadata,
 )
-from cone.ugm.model.interfaces import ISettings
 from cone.ugm.model.utils import APP_PATH
 
 
 class UgmSettings(BaseNode):
-
-    implements(ISettings)
 
     def __init__(self, name=None, _app_path=None):
         """``_app_path`` defines an alternative path for app root and is
