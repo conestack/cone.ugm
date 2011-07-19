@@ -1,6 +1,5 @@
 from plumber import plumber
 from odict import odict
-from node.base import AttributedNode
 from yafowil.base import (
     ExtractionError,
     factory,
@@ -174,7 +173,7 @@ class UserForm(object):
 
     def prepare(self):
         resource = 'add'
-        if self.model.__name__ is not None:
+        if self.model.name is not None:
             resource = 'edit'
 
             # XXX: tmp - load props each time they are accessed.
@@ -240,7 +239,7 @@ class UserForm(object):
         id = data.extracted
         if id is UNSET:
             return data.extracted
-        if id in self.model.__parent__.ldap_users:
+        if id in self.model.parent.backend:
             msg = "User %s already exists." % (id,)
             raise ExtractionError(msg)
         return data.extracted
@@ -256,21 +255,21 @@ class UserAddForm(UserForm, Form):
     def save(self, widget, data):
         settings = ugm_settings(self.model)
         attrmap = settings.attrs.users_form_attrmap
-        user = AttributedNode()
+        extracted = dict()
         for key, val in attrmap.items():
             val = data.fetch('userform.%s' % key).extracted
             if not val:
                 continue
-            user.attrs[key] = val
-        users = self.model.__parent__.ldap_users
-        id = user.attrs['id']
+            extracted[key] = val
+        users = self.model.parent.backend
+        id = extracted.pop('id')
+        password = extracted.pop('userPassword')
+        user = users.create(id, **extracted)
         self.request.environ['next_resource'] = id
-        users[id] = user
-        users.context()
-        self.model.__parent__.invalidate()
-        password = data.fetch('userform.userPassword').extracted
+        users()
         if password is not UNSET:
             users.passwd(id, None, password)
+        self.model.parent.invalidate()
 
     def next(self, request):
         next_resource = self.request.environ.get('next_resource')
@@ -306,8 +305,8 @@ class UserEditForm(UserForm, Form):
         self.model.model.context()
         password = data.fetch('userform.userPassword').extracted
         if password is not UNSET:
-            id = self.model.__name__
-            self.model.__parent__.ldap_users.passwd(id, None, password)
+            id = self.model.name
+            self.model.parent.ldap_users.passwd(id, None, password)
 
     def next(self, request):
         url = make_url(request.request, node=self.model)

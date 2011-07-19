@@ -86,47 +86,48 @@ Add::
     >>> request.params['factory'] = 'user'
     
     >>> res = render_tile(users, request, 'add')
-    
-    >> res
-    
     Traceback (most recent call last):
       ...
     Forbidden: Unauthorized: tile 
     <cone.app.browser.authoring.AddTile object at ...> 
     failed permission check
     
-    >> layer.login('manager')
-    >> res = render_tile(users, request, 'add')
-    >> expected = '<form action="http://example.com/users/add"'
-    >> res.find(expected) > -1
+    >>> layer.login('manager')
+    >>> res = render_tile(users, request, 'add')
+    >>> expected = '<form action="http://example.com/users/add"'
+    >>> res.find(expected) > -1
     True
     
-    >> request.params['userform.cn'] = 'cn99'
-    >> request.params['userform.sn'] = 'sn99'
-    >> request.params['userform.mail'] = 'uid99@example.com'
-    >> request.params['userform.userPassword'] = 'secret99'
+    >>> request.params['userform.id'] = ''
+    >>> request.params['userform.cn'] = 'cn99'
+    >>> request.params['userform.sn'] = 'sn99'
+    >>> request.params['userform.mail'] = 'uid99@example.com'
+    >>> request.params['userform.userPassword'] = 'secret99'
+    >>> request.params['action.userform.save'] = '1'
     
-    >> res = render_tile(users, request, 'add')
-    >> res
-    
-    >> res.find('No media title given') > -1
+    >>> res = render_tile(users, request, 'add')
+    >>> res.find('class="errormessage">No Id defined') > -1
     True
     
-    >> request.params['userform.id'] = 'uid99'
+    >>> request.params['userform.id'] = 'uid99'
     
-    >> res = render_tile(users, request, 'add')
-    >> res
+    >>> res = render_tile(users, request, 'add')
+    >>> res
     u''
     
-    >> request.environ['redirect']
+    >>> request.environ['redirect']
     <HTTPFound at ... 302 Found>
     
-    >> users.keys()
-    []
+    >>> users.keys()
+    [u'uid0', u'uid1', u'uid2', u'uid3', u'uid4', u'uid5', u'uid6', u'uid7', 
+    u'uid8', u'uid9', u'uid99']
     
-    >> user = repository['uid99']
-    >> user.attrs.items()
-
+    >>> user = users['uid99']
+    >>> user.attrs.items()
+    [('login', u'uid99'), 
+    ('sn', u'sn99'), 
+    ('mail', u'uid99@example.com'), 
+    ('cn', u'cn99')]
 
 Edit::
 
