@@ -65,14 +65,23 @@ class UserAddToGroupAction(Action):
         """Add user to group.
         """
         group_id = self.request.params.get('id')
-        # XXX: self.model.model is weird naming
-        user = self.model.model
-        user.membership.add(group_id)
-        self.model.__parent__.invalidate()
-        return {
-            'success': True,
-            'message': "Added user '%s' to group '%s'." % (user.id, group_id),
-        }
+        try:
+            # XXX: self.model.model is weird naming
+            user = self.model.model
+            group = user.root.groups[group_id]
+            group[user.name] = user
+            self.model()
+            self.model.parent.invalidate()
+            return {
+                'success': True,
+                'message': "Added user '%s' to group '%s'." % \
+                    (user.id, group_id),
+            }
+        except Exception, e:
+            return {
+                'success': False,
+                'message': str(e),
+            }
 
 
 @view_config(name='remove_item', accept='application/json',
@@ -84,14 +93,24 @@ class UserRemoveFromGroupAction(Action):
         """
         # XXX: use mechanism from LDAP Groups
         group_id = self.request.params.get('id')
-        user = self.model.model
-        del user.membership[group_id]
-        # XXX: this feels bad and makes problems, see in invalidate()
-        self.model.__parent__.invalidate()
-        return {
-            'success': True,
-            'message': "Removed user '%s' from group '%s'." % (user.id, group_id),
-        }
+        try:
+            user = self.model.model
+            group = user.root.groups[group_id]
+            del group[user.name]
+            self.model()
+            # XXX: this feels bad and makes problems, see in invalidate()
+            #      Does it? Maybe not any longer.
+            self.model.parent.invalidate()
+            return {
+                'success': True,
+                'message': "Removed user '%s' from group '%s'." % \
+                    (user.id, group_id),
+            }
+        except Exception, e:
+            return {
+                'success': False,
+                'message': str(e),
+            }
 
 
 ###############################################################################
@@ -130,13 +149,22 @@ class GroupAddUserAction(Action):
         """Add user to group.
         """
         user_id = self.request.params.get('id')
-        group = self.model.model
-        group.add(user_id)
-        self.model.__parent__.invalidate()
-        return {
-            'success': True,
-            'message': 'Added user to group',
-        }
+        try:
+            user_id = self.request.params.get('id')
+            group = self.model.model
+            user = group.root.users[user_id]
+            group[user_id] = user
+            self.model()
+            self.model.parent.invalidate()
+            return {
+                'success': True,
+                'message': 'Added user to group',
+            }
+        except Exception, e:
+            return {
+                'success': False,
+                'message': str(e),
+            }
 
 
 @view_config(name='remove_item', accept='application/json',
@@ -147,10 +175,17 @@ class GroupRemoveUserAction(Action):
         """Remove user from group.
         """
         user_id = self.request.params.get('id')
-        group = self.model.model
-        del group[user_id]
-        self.model.__parent__.invalidate()
-        return {
-            'success': True,
-            'message': 'Removed user from group',
-        }
+        try:
+            group = self.model.model
+            del group[user_id]
+            self.model()
+            self.model.parent.invalidate()
+            return {
+                'success': True,
+                'message': 'Removed user from group',
+            }
+        except Exception, e:
+            return {
+                'success': False,
+                'message': str(e),
+            }
