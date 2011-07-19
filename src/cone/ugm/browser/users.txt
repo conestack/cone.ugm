@@ -1,0 +1,16 @@
+cone.ugm.browser.users
+======================
+
+::
+
+    >>> from cone.app import root
+    >>> from cone.tile import render_tile
+    
+    >> import cone.app.browser.login
+    >> import cone.app.browser.contents
+    >> import cone.mdb.browser.repository
+    >> repository = root['repositories']['repo1']
+    
+    >>> request = layer.new_request()
+    >>> request
+    <pyramid.testing.DummyRequest object at ...>

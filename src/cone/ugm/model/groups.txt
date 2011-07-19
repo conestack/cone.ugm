@@ -1,5 +1,9 @@
-Groups Application Node
-=======================
+cone.ugm.model.groups
+=====================
+
+::
+
+    >>> layer.login('manager')
 
     >>> from cone.ugm.model.groups import Groups
     >>> from cone.app import root 
@@ -81,3 +85,5 @@ Reset settings for following tests::
     >>> settings._ldap_props = layer['props']
     >>> settings._ldap_ucfg = layer['ucfg']
     >>> settings._ldap_gcfg = layer['gcfg']
+    
+    >>> layer.logout()

@@ -1,11 +1,13 @@
 from zope.interface import implements
+from node.utils import instance_property
 from cone.app.model import (
     AdapterNode,
-    Properties,
+    ProtectedProperties,
     BaseMetadata,
     BaseNodeInfo,
     registerNodeInfo,
 )
+from cone.app.security import DEFAULT_NODE_PROPERTY_PERMISSIONS
 from cone.ugm.model.interfaces import IUser
 
 
@@ -15,13 +17,13 @@ class User(AdapterNode):
     
     node_info_name = 'user'
     
-    @property
+    @instance_property
     def properties(self):
-        props = Properties()
+        props = ProtectedProperties(self, DEFAULT_NODE_PROPERTY_PERMISSIONS)
         props.editable = True
         return props
     
-    @property
+    @instance_property
     def metadata(self):
         metadata = BaseMetadata()
         metadata.title = "User"

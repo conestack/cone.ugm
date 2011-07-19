@@ -1,4 +1,5 @@
 from zope.interface import implements
+from node.utils import instance_property
 from node.ext.ldap.ugm import Groups as LDAPGroups
 from cone.app.model import (
     BaseNode,
@@ -22,7 +23,7 @@ class Groups(BaseNode):
 
     node_info_name = 'groups'
 
-    @property
+    @instance_property
     def metadata(self):
         metadata = BaseMetadata()
         metadata.title = "Groups"

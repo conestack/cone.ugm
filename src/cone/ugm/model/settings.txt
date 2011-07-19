@@ -1,5 +1,5 @@
-LDAP Settings Application Node
-==============================
+cone.ugm.model.settings
+=======================
 
 App path for testing::
 

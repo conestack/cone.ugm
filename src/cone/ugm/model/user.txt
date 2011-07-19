@@ -1,5 +1,9 @@
-User Adapter Application Node
-=============================
+cone.ugm.model.user
+===================
+
+::
+
+    >>> layer.login('manager')
 
     >>> from cone.ugm.model.user import User
     >>> from cone.app import root 
@@ -67,3 +71,5 @@ The attributes of the user are wrapped::
     >>> del user.attrs['mail']
     >>> user.attrs['mail'] = 'uid0@users300.my-domain.com'
     >>> user()
+    
+    >>> layer.logout()

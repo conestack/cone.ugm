@@ -1,4 +1,5 @@
 from zope.interface import implements
+from node.utils import instance_property
 from node.ext.ldap.ugm import Users as LDAPUsers
 from cone.app.model import (
     BaseNode,
@@ -21,7 +22,7 @@ class Users(BaseNode):
 
     node_info_name = 'users'
 
-    @property
+    @instance_property
     def metadata(self):
         metadata = BaseMetadata()
         metadata.title = "Users"

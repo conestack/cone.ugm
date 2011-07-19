@@ -1,5 +1,9 @@
-Group Adapter Application Node
-==============================
+cone.ugm.model.group
+====================
+
+::
+
+    >>> layer.login('manager')
 
     >>> from cone.ugm.model.group import Group
     >>> from cone.app import root 
@@ -63,3 +67,5 @@ The attributes of the group are wrapped::
 
     >>> del group.attrs['businessCategory']
     >>> group()
+    
+    >>> layer.logout()
