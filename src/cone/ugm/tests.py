@@ -1,6 +1,4 @@
-# Copyright 2008-2010, BlueDynamics Alliance, Austria - http://bluedynamics.com
-# GNU General Public Licence Version 2 or later
-
+import os
 import doctest
 import interlude
 import pprint
@@ -9,42 +7,25 @@ import unittest2 as unittest
 # XXX: get rid of plone.testing, use zope test layers directly
 from plone.testing import layered, Layer
 
-from cone.app.testing import security
+from cone.app.testing import Security, DATADIR
 from node.ext.ldap.testing import (
     LDAPLayer,
     LDIF_groupOfNames_10_10,
 )
 
 
-class UGMLayer(Layer):
-    defaultBases = (LDIF_groupOfNames_10_10, security)
+class UGMLayer(Security):
+    defaultBases = (LDIF_groupOfNames_10_10, )
     
-    def setUp(self, args=None):
-        # XXX: hack
+    def make_app(self):
+        super(UGMLayer, self).make_app(**{
+            'cone.plugins': 'node.ext.ugm\ncone.ugm',
+        })
         LDIF_groupOfNames_10_10.gcfg.attrmap['cn'] = 'cn'
-        
-        self.new_request()
-    
-    # XXX: better way of providing stuff from base layer below
-    
-    @property
-    def security(self):
-        return security
-    
-    def login(self, login):
-        security.login(login)
-    
-    def logout(self):
-        security.logout()
-    
-    def new_request(self):
-        return security.new_request()
-    
-    @property
-    def current_request(self):
-        return security.current_request
+
 
 ugm_layer = UGMLayer()
+
 
 DOCFILES = [
     ('model/settings.txt', ugm_layer),
@@ -59,6 +40,7 @@ DOCFILES = [
     ('browser/groups.txt', ugm_layer),
     ('browser/user.txt', ugm_layer),
     ('browser/group.txt', ugm_layer),
+    ('browser/actions.txt', ugm_layer),
 ]
 
 

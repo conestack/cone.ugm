@@ -1,0 +1,20 @@
+cone.ugm.browser.actions
+========================
+
+::
+
+    >>> from cone.app import root
+    >>> users = root['users']
+    >>> groups = root['groups']
+
+Test GroupAddUserAction::
+
+    >>> request = layer.new_request(type='json')
+    >>> group = groups['group99']
+    
+    >>> from pyramid.view import render_view_to_response
+    >>> render_view_to_response(group, request, name='add_item')
+    Traceback (most recent call last):
+      ...
+    Forbidden: Unauthorized: <function GroupAddUserAction at ...> failed 
+    permission check
