@@ -8,6 +8,14 @@ cone.ugm.browser.actions
     >>> users = root['users']
     >>> groups = root['groups']
 
+Abstract Action::
+
+    >>> from cone.ugm.browser.actions import Action
+    >>> Action(None, None)()
+    Traceback (most recent call last):
+      ...
+    NotImplementedError: Abstract action does not implement ``__call__``.
+
 Test GroupAddUserAction::
 
     >>> layer.login('viewer')
@@ -113,5 +121,68 @@ Test UserRemoveFromGroupAction::
     
     >>> user.model.groups
     []
+    
+    >>> layer.logout()
+
+Test DeleteUserAction::
+
+    >>> layer.login('viewer')
+    
+    >>> render_view_to_response(user, request, name='delete_item')
+    Traceback (most recent call last):
+      ...
+    Forbidden: Unauthorized: <function DeleteUserAction at ...> failed 
+    permission check
+    
+    >>> layer.login('owner')
+    
+    >>> request.params['id'] = 'group99'
+    >>> user = users['uid99']
+    >>> res = render_view_to_response(user, request, name='add_item')
+    >>> user.model.groups
+    [<Group object 'group99' at ...>]
+    
+    >>> res = render_view_to_response(user, request, name='delete_item')
+    >>> res.body
+    '{"message": "Deleted user \'uid99\' from database.", "success": true}'
+    
+    >>> res = render_view_to_response(user, request, name='delete_item')
+    >>> res.body
+    '{"message": "u\'Entry not existent: uid99\'", "success": false}'
+    
+    >>> users['uid99']
+    Traceback (most recent call last):
+      ...
+    KeyError: 'uid99'
+    
+    >>> groups['group99'].model.users
+    []
+    
+    >>> layer.logout()
+    
+Test DeleteGroupAction::
+
+    >>> layer.login('viewer')
+    
+    >>> group = groups['group99']
+    >>> render_view_to_response(group, request, name='delete_item')
+    Traceback (most recent call last):
+      ...
+    Forbidden: Unauthorized: <function DeleteGroupAction at ...> failed 
+    permission check
+    
+    >>> layer.login('owner')
+    
+    >>> res = render_view_to_response(group, request, name='delete_item')
+    >>> res.body
+    '{"message": "Deleted group from database", "success": true}'
+    
+    >>> res = render_view_to_response(group, request, name='delete_item')
+    >>> res.body
+    '{"message": "u\'Entry not existent: group99\'", "success": false}'
+    
+    >>> groups.keys()
+    [u'group0', u'group1', u'group2', u'group3', u'group4', u'group5', 
+    u'group6', u'group7', u'group8', u'group9']
     
     >>> layer.logout()

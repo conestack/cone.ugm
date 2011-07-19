@@ -40,21 +40,21 @@ class DeleteUserAction(Action):
     def __call__(self):
         """Delete user from database.
         """
-        users = self.model.__parent__.ldap_users
-        id = self.model.model.__name__
-        del users[id]
         try:
-            users.context()
-            users = self.model.__parent__.invalidate()
+            users = self.model.parent.backend
+            id = self.model.model.name
+            del users[id]
+            users()
+            self.model.parent.invalidate()
+            return {
+                'success': True,
+                'message': "Deleted user '%s' from database." % id,
+            }
         except Exception, e:
             return {
                 'success': False,
                 'message': str(e),
             }
-        return {
-            'success': True,
-            'message': "Deleted user '%s' from database." % id,
-        }
 
 
 @view_config(name='add_item', accept='application/json',
@@ -124,12 +124,12 @@ class DeleteGroupAction(Action):
     def __call__(self):
         """Delete group from database.
         """
-        groups = self.model.__parent__.ldap_groups
-        id = self.model.model.__name__
-        del groups[id]
         try:
-            groups.context()
-            groups = self.model.__parent__.invalidate()
+            groups = self.model.parent.backend
+            id = self.model.model.name
+            del groups[id]
+            self.model()
+            self.model.parent.invalidate()
         except Exception, e:
             return {
                 'success': False,
