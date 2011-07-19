@@ -6,8 +6,6 @@ cone.ugm.browser.groups
     >>> from cone.app import root
     >>> from cone.tile import render_tile
     
-    >>> import cone.app.browser.login
-    >>> import cone.ugm.browser.groups
     >>> groups = root['groups']
     
     >>> request = layer.new_request()

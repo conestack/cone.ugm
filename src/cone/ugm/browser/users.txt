@@ -6,9 +6,6 @@ cone.ugm.browser.users
     >>> from cone.app import root
     >>> from cone.tile import render_tile
     
-    >>> import cone.app.browser.login
-    >>> import cone.ugm.browser.columns
-    >>> import cone.ugm.browser.users
     >>> users = root['users']
     
     >>> request = layer.new_request()

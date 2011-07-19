@@ -52,37 +52,26 @@ class Principals(object):
         appgroup = obj.model
         group = appgroup.model
         member_ids = group.keys()
+        
         # always True if we list members only, otherwise will be set
         # in the loop below
         related = self.members_only
-
+        
         # XXX: so far only users as members of groups, for
         # group-in-group we need to prefix groups
         if self.members_only:
-            users = group
+            users = group.users
         else:
-            users = obj.model.root['users'].ldap_users
+            users = group.root.users.values()
 
         col_1_attr, col_2_attr, col_3_attr, sort_attr = obj.user_attrs
         ret = list()
-        try:
-            attrlist = [col_1_attr, col_2_attr, col_3_attr]
-            result = users.search(attrlist=attrlist)
-        except Exception, e:
-            print 'Query Failed: ' + str(e)
-            return []
-
-        # XXX: These should be the mapped attributes - lack of backend support
-        for id, attrs in result:
-            # XXX: resource was only set for alluserlisting
-            try:
-                user = users[id]
-            except KeyError, e:
-                # XXX logging
-                print e
-                continue
-
-            item_target = make_url(obj.request, node=user, resource=id)
+        for user in users:
+            id = user.name
+            attrs = user.attrs
+            
+            # XXX: path instead of node=user, (ugm)
+            item_target = make_url(obj.request, node=user)
             action_query = make_query(id=id)
             action_target = make_url(obj.request,
                                      node=appgroup,
@@ -147,7 +136,7 @@ class GroupForm(object):
 
     def prepare(self):
         resource = 'add'
-        if self.model.__name__ is not None:
+        if self.model.name is not None:
             resource = 'edit'
         action = make_url(self.request, node=self.model, resource=resource)
         form = factory(
@@ -166,7 +155,7 @@ class GroupForm(object):
             props['mode'] = 'display'
         form['name'] = factory(
             'field:*ascii:*exists:label:error:mode:text',
-            value=self.model.__name__,
+            value=self.model.name,
             props=props,
             custom= {
                 'ascii': ([ascii_extractor], [], [], []),
@@ -198,7 +187,7 @@ class GroupForm(object):
         group_id = data.extracted
         if group_id is UNSET:
             return data.extracted
-        if group_id in self.model.__parent__.ldap_groups:
+        if group_id in self.model.parent.backend:
             msg = "Group %s already exists." % (group_id,)
             raise ExtractionError(msg)
         return data.extracted
@@ -211,13 +200,23 @@ class GroupAddForm(GroupForm, Form):
     show_heading = False
 
     def save(self, widget, data):
-        group = AttributedNode()
-        id = data.fetch('groupform.name').extracted
-        groups = self.model.__parent__.ldap_groups
+        #settings = ugm_settings(self.model)
+        #attrmap = settings.attrs.groups_form_attrmap
+        attrmap = {
+            'name': 'cn',
+        }
+        extracted = dict()
+        for key, val in attrmap.items():
+            val = data.fetch('groupform.%s' % key).extracted
+            if not val:
+                continue
+            extracted[key] = val
+        groups = self.model.parent.backend
+        id = extracted.pop('name')
+        group = groups.create(id, **extracted)
         self.request.environ['next_resource'] = id
-        groups[id] = group
-        groups.context()
-        self.model.__parent__.invalidate()
+        groups()
+        self.model.parent.invalidate()
 
     def next(self, request):
         next_resource = self.request.environ.get('next_resource')
@@ -243,6 +242,8 @@ class GroupEditForm(GroupForm, Form):
     show_heading = False
 
     def save(self, widget, data):
+        # XXX
+        import pdb;pdb.set_trace()
         pass
 
     def next(self, request):

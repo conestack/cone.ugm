@@ -76,6 +76,7 @@ class Groups(object):
             id = group.name
 
             # XXX: resource was only set for alluserlisting
+            # XXX: path instead of node=user, (ugm)
             item_target = make_url(obj.request, node=group)
             action_query = make_query(id=id)
             action_target = make_url(obj.request,

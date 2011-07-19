@@ -6,9 +6,6 @@ cone.ugm.browser.user
     >>> from cone.app import root
     >>> from cone.tile import render_tile
     
-    >>> import cone.app.browser.login
-    >>> import cone.ugm.browser.columns
-    >>> import cone.ugm.browser.users
     >>> users = root['users']
     >>> user = users['uid2']
     
@@ -131,23 +128,25 @@ Add::
 
 Edit::
 
-    >> request = layer.new_request()
-    >> res = render_tile(media, request, 'edit')
-    >> expected = '<form action="http://example.com/repositories/repo1/d/edit"'
-    >> res.find(expected) > -1
+    >>> request = layer.new_request()
+    >>> res = render_tile(user, request, 'edit')
+    >>> expected = '<form action="http://example.com/users/uid99/edit"'
+    >>> res.find(expected) > -1
     True
     
-    >> request.params['mediaform.title'] = u'Other media title'
-    >> request.params['mediaform.description'] = u'Media description'
-    >> request.params['action.mediaform.save'] = '1'
-    >> res = render_tile(media, request, 'edit')
-    >> res
+    >>> request.params['userform.cn'] = 'cn99'
+    >>> request.params['userform.sn'] = 'sn changed'
+    >>> request.params['userform.mail'] = 'changed@example.com'
+    >>> request.params['userform.userPassword'] = '_NOCHANGE_'
+    >>> request.params['action.userform.save'] = '1'
+    >>> res = render_tile(user, request, 'edit')
+    >>> res
     u''
     
-    >> media.metadata.title
-    u'Other media title'
+    >>> user.attrs.items()
+    [('login', u'uid99'), 
+    ('sn', u'sn changed'), 
+    ('mail', u'changed@example.com'), 
+    ('cn', u'cn99')]
     
-    >> media.metadata.description
-    u'Media description'
-
-    >> layer.logout()
+    >>> layer.logout()
