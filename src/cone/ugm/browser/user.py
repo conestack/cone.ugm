@@ -21,7 +21,7 @@ from cone.app.browser.authoring import (
 )
 from cone.app.browser.ajax import AjaxAction
 from cone.ugm.model.user import User
-from cone.ugm.model.utils import ugm_settings
+from cone.ugm.model.utils import ugm_users
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.browser.listing import ColumnListing
@@ -187,7 +187,7 @@ class UserForm(object):
             props={
                 'action': action,
             })
-        settings = ugm_settings(self.model)
+        settings = ugm_users(self.model)
         attrmap = settings.attrs.users_form_attrmap
         if not attrmap:
             return form
@@ -254,7 +254,7 @@ class UserAddForm(UserForm, Form):
     show_heading = False
 
     def save(self, widget, data):
-        settings = ugm_settings(self.model)
+        settings = ugm_users(self.model)
         attrmap = settings.attrs.users_form_attrmap
         extracted = dict()
         for key, val in attrmap.items():
@@ -296,7 +296,7 @@ class UserEditForm(UserForm, Form):
     show_heading = False
 
     def save(self, widget, data):
-        settings = ugm_settings(self.model)
+        settings = ugm_users(self.model)
         attrmap = settings.attrs.users_form_attrmap
         for key, val in attrmap.items():
             if key in ['id', 'login', 'userPassword']:

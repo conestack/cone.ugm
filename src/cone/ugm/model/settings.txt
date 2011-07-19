@@ -9,55 +9,103 @@ App path for testing::
     >>> path = os.path.sep.join(path.split(os.path.sep)[:-3])
     >>> path
     '...cone.ugm'
-
-Import and create Settings application node::
     
-    >>> from cone.ugm.model.settings import UgmSettings
+    >>> import cone.ugm.model.settings
+    >>> old_ugm_config_path = cone.ugm.model.settings.ugm_config_path
+    >>> cone.ugm.model.settings.ugm_config_path = \
+    ...     os.path.join(path, 'etc', 'ldap.xml')
 
-    >>> settings = UgmSettings(_app_path=path)
-    >>> settings
-    <UgmSettings object 'None' at ...>
+Create dummy settings container::
 
-Check default LDAP attributes::
+    >>> from node.base import OrderedNode
+    >>> from cone.ugm.model.settings import (
+    ...     ServerSettings,
+    ...     UsersSettings,
+    ...     GroupsSettings,
+    ... )
+    >>> settings = OrderedNode()
+    >>> settings['ugm_server'] = ServerSettings()
+    >>> settings['ugm_users'] = UsersSettings()
+    >>> settings['ugm_groups'] = GroupsSettings()
 
-    >>> attrs = settings.attrs
-    
-    >>> attrs.uri
+LDAP props::
+
+    >>> props = settings['ugm_server'].ldap_props
+    >>> props.uri
     u'ldap://127.0.0.1:12345'
     
-    >>> attrs.user
+    >>> props.user
     u'cn=Manager,dc=my-domain,dc=com'
     
-    >>> attrs.password
+    >>> props.password
     u'secret'
     
-    >>> attrs.users_dn
-    u'ou=users,...
-    
-    >>> attrs.groups_dn
-    u'ou=groups,...
-    
-    >>> md = settings.metadata
+    >>> md = settings['ugm_server'].metadata
     >>> md.title
-    'LDAP Settings'
+    'LDAP Props'
     
     >>> md.description
-    'LDAP Connection Settings'
+    'LDAP properties'
 
-Config objects::
+LDAP users config::
 
-    >>> settings.ldap_props
-    <node.ext.ldap.properties.LDAPServerProperties object at ...>
+    >>> ucfg = settings['ugm_users'].ldap_ucfg
+    >>> ucfg.baseDN
+    u'ou=users,ou=groupOfNames_100_100,dc=my-domain,dc=com'
     
-    >>> settings.ldap_ucfg
-    <node.ext.ldap.ugm.UsersConfig object at ...>
+    >>> ucfg.attrmap
+    {'cn': 'cn', 
+    'userPassword': 'userPassword', 
+    'sn': 'sn', 
+    'mail': 'mail', 
+    'login': 'uid', 
+    'rdn': 'uid', 
+    'id': 'uid'}
     
-    >>> settings.ldap_gcfg
-    <node.ext.ldap.ugm.GroupsConfig object at ...>
+    >>> ucfg.scope
+    1
+    
+    >>> ucfg.queryFilter
+    u''
+    
+    >>> ucfg.objectClasses
+    [u'top', u'person', u'organizationalPerson', u'inetOrgPerson']
+    
+    >>> md = settings['ugm_users'].metadata
+    >>> md.title
+    'Users Settings'
+    
+    >>> md.description
+    'LDAP users settings'
 
-XXX later::
-    >>> settings.ldap_rcfg is None
-    True
+LDAP groups config::
+
+    >>> gcfg = settings['ugm_groups'].ldap_gcfg
+    >>> gcfg.baseDN
+    u'ou=groups,ou=groupOfNames_100_100,dc=my-domain,dc=com'
+    
+    >>> gcfg.attrmap
+    {'member': 'member', 
+    'uniqueMember': 'uniqueMember', 
+    'rdn': 'cn', 
+    'id': 'cn', 
+    'cn': 'cn'}
+    
+    >>> gcfg.scope
+    1
+    
+    >>> gcfg.queryFilter
+    u''
+    
+    >>> gcfg.objectClasses
+    [u'groupOfNames']
+    
+    >>> md = settings['ugm_groups'].metadata
+    >>> md.title
+    'Groups Settings'
+    
+    >>> md.description
+    'LDAP groups settings'
 
 LDAP connectivity tests::
 
@@ -69,44 +117,45 @@ LDAP connectivity tests::
     ...     cache=False,
     ... )
     
-    >>> settings._ldap_props = props
+    >>> settings['ugm_server']._ldap_props = props
     
-    >>> settings.ldap_connectivity
+    >>> settings['ugm_server'].ldap_connectivity
     SERVER_DOWN({'desc': "Can't contact LDAP server"},)
     
-    >>> settings.ldap_users_container_valid
+    >>> settings['ugm_users'].ldap_users_container_valid
     False
     
-    >>> settings.ldap_groups_container_valid
+    >>> settings['ugm_groups'].ldap_groups_container_valid
     False
     
-    >>> settings._ldap_props = layer['props']
-    >>> settings._ldap_ucfg = layer['ucfg']
-    >>> settings._ldap_gcfg = layer['gcfg']
+    >>> settings['ugm_server']._ldap_props = layer['props']
+    >>> settings['ugm_users']._ldap_ucfg = layer['ucfg']
+    >>> settings['ugm_groups']._ldap_gcfg = layer['gcfg']
     
-    >>> settings.ldap_connectivity
+    >>> settings['ugm_server'].ldap_connectivity
     'success'
     
-    >>> old_users_dn = settings.attrs.users_dn
-    >>> settings.attrs.users_dn = \
+    >>> old_users_dn = settings['ugm_users'].attrs.users_dn
+    >>> settings['ugm_users'].attrs.users_dn = \
     ...     u'ou=users,ou=groupOfNames_10_10,dc=my-domain,dc=com'
     
-    >>> old_groups_dn = settings.attrs.groups_dn
-    >>> settings.attrs.groups_dn = \
+    >>> old_groups_dn = settings['ugm_groups'].attrs.groups_dn
+    >>> settings['ugm_groups'].attrs.groups_dn = \
     ...     u'ou=groups,ou=groupOfNames_10_10,dc=my-domain,dc=com'
     
-    >>> settings.ldap_users_container_valid
+    >>> settings['ugm_users'].ldap_users_container_valid
     True
     
-    >>> settings.ldap_groups_container_valid
+    >>> settings['ugm_groups'].ldap_groups_container_valid
     True
 
-    >>> settings.attrs.users_dn = old_users_dn
-    >>> settings.attrs.groups_dn = old_groups_dn
+    >>> settings['ugm_users'].attrs.users_dn = old_users_dn
+    >>> settings['ugm_groups'].attrs.groups_dn = old_groups_dn
 
-Settings are written on ``__call__``::
+Settings are written on ``__call__``. At the moment all settings are in one
+file, so calling either ucfg, gcfg or props writes all of them::
 
-    >>> settings()
+    >>> settings['ugm_server']()
 
 Test invalidate::
 
@@ -125,40 +174,36 @@ Test invalidate::
     >>> backend is ugm_backend(root)
     True
     
-    >>> settings = root['settings']['ugm']
-    >>> settings
-    <UgmSettings object 'ugm' at ...>
+    >>> settings = root['settings']
+    >>> props = settings['ugm_server'].ldap_props
+    >>> ucfg = settings['ugm_users'].ldap_ucfg
+    >>> gcfg = settings['ugm_groups'].ldap_gcfg
     
-    >>> props = settings.ldap_props
-    >>> ucfg = settings.ldap_ucfg
-    >>> gcfg = settings.ldap_gcfg
-    
-    >>> props is settings.ldap_props
+    >>> props is settings['ugm_server'].ldap_props
     True
     
-    >>> ucfg is settings.ldap_ucfg
+    >>> ucfg is settings['ugm_users'].ldap_ucfg
     True
     
-    >>> gcfg is settings.ldap_gcfg
+    >>> gcfg is settings['ugm_groups'].ldap_gcfg
     True
     
-    >>> settings.invalidate()
+    >>> settings['ugm_server'].invalidate()
     >>> backend is ugm_backend(root)
     False
     
-    >>> props is settings.ldap_props
+    >>> props is settings['ugm_server'].ldap_props
     False
     
-    >>> ucfg is settings.ldap_ucfg
+    >>> ucfg is settings['ugm_users'].ldap_ucfg
     False
     
-    >>> gcfg is settings.ldap_gcfg
+    >>> gcfg is settings['ugm_groups'].ldap_gcfg
     False
 
 Reset backend and prepare settings for following tests::
 
     >>> cone.ugm.backend = None
-    >>> settings._ldap_props = layer['props']
-    >>> settings._ldap_ucfg = layer['ucfg']
-    >>> settings._ldap_gcfg = layer['gcfg']
-    
+    >>> settings['ugm_server']._ldap_props = layer['props']
+    >>> settings['ugm_users']._ldap_ucfg = layer['ucfg']
+    >>> settings['ugm_groups']._ldap_gcfg = layer['gcfg']

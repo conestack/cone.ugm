@@ -42,6 +42,7 @@ DOCFILES = [
     ('browser/user.txt', ugm_layer),
     ('browser/group.txt', ugm_layer),
     ('browser/actions.txt', ugm_layer),
+    ('browser/settings.txt', ugm_layer),
 ]
 
 

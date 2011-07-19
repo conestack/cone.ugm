@@ -22,6 +22,7 @@ scope_vocab = [
     (str(SUBTREE), 'SUBTREE'),
 ]
 
+
 sort_column_vocab = [
     ('col_1', 'col_1'),
     ('col_2', 'col_2'),

@@ -1,0 +1,7 @@
+cone.ugm.browser.settings
+=========================
+
+    >>> from cone.app import root
+    >>> from cone.tile import render_tile
+    
+    >>>

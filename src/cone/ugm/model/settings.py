@@ -1,5 +1,6 @@
 import os
 import ldap
+from node.utils import instance_property
 from node.ext.ldap import LDAPProps
 from node.ext.ldap.base import testLDAPConnectivity
 from node.ext.ldap._node import queryNode
@@ -13,71 +14,95 @@ from cone.app.model import (
 from cone.ugm.model.utils import APP_PATH
 
 
+class UgmConfig(object):
+    
+    @property
+    def config(self):
+        pass
+
+
+def _invalidate_ugm_settings(model):
+    settings = model.parent
+    settings['ugm_server']._ldap_props = None
+    settings['ugm_users']._ldap_ucfg = None
+    settings['ugm_groups']._ldap_gcfg = None
+    import cone.ugm
+    cone.ugm.backend = None
+
+
+ugm_config = None
+ugm_config_path = os.path.join(APP_PATH, 'etc', 'ldap.xml')
+
+def _get_ugm_config():
+    from cone.ugm.model import settings
+    if settings.ugm_config is not None:
+        return settings.ugm_config
+    settings.ugm_config = XMLProperties(settings.ugm_config_path)
+    return settings.ugm_config
+
+
 class UgmSettings(BaseNode):
-
-    def __init__(self, name=None, _app_path=None):
-        """``_app_path`` defines an alternative path for app root and is
-        for testing purposes only
-        """
-        BaseNode.__init__(self, name)
-        self._file_path = os.path.join(_app_path or APP_PATH, 'etc', 'ldap.xml')
-        self._config = XMLProperties(self._file_path)
-        self.invalidate()
-
+    
     def __call__(self):
         self.attrs()
+    
+    def invalidate(self):
+        _invalidate_ugm_settings(self)
 
     @property
     def attrs(self):
         return self._config
-
+    
     @property
+    def _config(self):
+        return _get_ugm_config()
+
+
+class ServerSettings(UgmSettings):
+    
+    @instance_property
     def metadata(self):
         metadata = BaseMetadata()
-        metadata.title = "LDAP Settings"
-        metadata.description = "LDAP Connection Settings"
+        metadata.title = "LDAP Props"
+        metadata.description = "LDAP properties"
         return metadata
-
-    def invalidate(self):
-        self._ldap_props = None
-        self._ldap_ucfg = None
-        self._ldap_gcfg = None
-        if self.parent:
-            import cone.ugm
-            cone.ugm.backend = None
-
+    
     @property
     def ldap_connectivity(self):
         return testLDAPConnectivity(props=self.ldap_props)
+    
+    @property
+    def ldap_props(self):
+        if not hasattr(self, '_ldap_props') or self._ldap_props is None:
+            config = self._config
+            self._ldap_props = LDAPProps(
+                uri=config.uri,
+                user=config.user,
+                password=config.password)
+        return self._ldap_props
 
+
+class UsersSettings(UgmSettings):
+    
+    @instance_property
+    def metadata(self):
+        metadata = BaseMetadata()
+        metadata.title = "Users Settings"
+        metadata.description = "LDAP users settings"
+        return metadata
+    
     @property
     def ldap_users_container_valid(self):
         try:
-            queryNode(self.ldap_props, self._config.users_dn)
+            queryNode(
+                self.parent['ugm_server'].ldap_props, self._config.users_dn)
             return True
         except ldap.LDAPError, e:
             return False
-
-    @property
-    def ldap_groups_container_valid(self):
-        try:
-            queryNode(self.ldap_props, self._config.groups_dn)
-            return True
-        except ldap.LDAPError, e:
-            return False
-
-    @property
-    def ldap_props(self):
-        if self._ldap_props is None:
-            config = self._config
-            self._ldap_props = LDAPProps(uri=config.uri,
-                                         user=config.user,
-                                         password=config.password)
-        return self._ldap_props
-
+    
     @property
     def ldap_ucfg(self):
-        if self._ldap_ucfg is None:
+        if not hasattr(self, '_ldap_ucfg') or self._ldap_ucfg is None:
             config = self._config
             map = dict()
             for key in config.users_attrmap.keys():
@@ -94,9 +119,28 @@ class UgmSettings(BaseNode):
                 objectClasses=config.users_object_classes)
         return self._ldap_ucfg
 
+
+class GroupsSettings(UgmSettings):
+    
+    @instance_property
+    def metadata(self):
+        metadata = BaseMetadata()
+        metadata.title = "Groups Settings"
+        metadata.description = "LDAP groups settings"
+        return metadata
+    
+    @property
+    def ldap_groups_container_valid(self):
+        try:
+            queryNode(
+                self.parent['ugm_server'].ldap_props, self._config.groups_dn)
+            return True
+        except ldap.LDAPError, e:
+            return False
+    
     @property
     def ldap_gcfg(self):
-        if self._ldap_gcfg is None:
+        if not hasattr(self, '_ldap_gcfg') or self._ldap_gcfg is None:
             config = self._config
             map = dict()
             # XXX: each criteria is expected in attrmap. is this what we want?
@@ -116,6 +160,16 @@ class UgmSettings(BaseNode):
                 member_relation=config.groups_relation,
                 )
         return self._ldap_gcfg
+
+
+class RolesSettings(BaseNode):
+    
+    @instance_property
+    def metadata(self):
+        metadata = BaseMetadata()
+        metadata.title = "Roles Settings"
+        metadata.description = "LDAP roles settings"
+        return metadata
     
     @property
     def ldap_rcfg(self):

@@ -1,5 +1,9 @@
 import cone.app
-from cone.ugm.model.settings import UgmSettings
+from cone.ugm.model.settings import (
+    ServerSettings,
+    UsersSettings,
+    GroupsSettings,
+)
 from cone.ugm.model.users import Users
 from cone.ugm.model.groups import Groups
 
@@ -15,7 +19,9 @@ cone.app.cfg.layout.pathbar = False
 cone.app.cfg.layout.sidebar_left = []
 
 # UGM settings
-cone.app.register_plugin_config('ugm', UgmSettings)
+cone.app.register_plugin_config('ugm_server', ServerSettings)
+cone.app.register_plugin_config('ugm_users', UsersSettings)
+cone.app.register_plugin_config('ugm_groups', GroupsSettings)
 
 # Users container
 cone.app.register_plugin('users', Users)

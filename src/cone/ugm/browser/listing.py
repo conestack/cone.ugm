@@ -1,7 +1,10 @@
 from yafowil.utils import Tag
 from cone.tile import Tile
+from cone.ugm.model.utils import (
+    ugm_users,
+    ugm_groups,
+)
 from cone.ugm.browser.batch import ColumnBatch
-from cone.ugm.model.utils import ugm_settings
 
 tag = Tag(lambda x: x)
 
@@ -108,7 +111,7 @@ class ColumnListing(Tile):
 
     @property
     def user_attrs(self):
-        settings = ugm_settings(self.model)
+        settings = ugm_users(self.model)
         column_config = settings.attrs.users_listing_columns
         ret = list()
         for i in range(3):
@@ -121,13 +124,13 @@ class ColumnListing(Tile):
 
     @property
     def group_attrs(self):
-        settings = ugm_settings(self.model)
+        settings = ugm_groups(self.model)
         column_config = settings.attrs.groups_listing_columns
         return column_config['col_1'].split(':')[0]
 
     @property
     def user_list_columns(self):
-        settings = ugm_settings(self.model)
+        settings = ugm_users(self.model)
         column_config = settings.attrs.users_listing_columns
         ret = list()
         for i in range(3):
@@ -137,7 +140,7 @@ class ColumnListing(Tile):
 
     @property
     def group_list_columns(self):
-        settings = ugm_settings(self.model)
+        settings = ugm_groups(self.model)
         column_config = settings.attrs.groups_listing_columns
         return [
             ('col_1', column_config['col_1'].split(':')[1]),

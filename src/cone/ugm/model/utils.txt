@@ -4,16 +4,21 @@ cone.ugm.model.utils
 ::
 
     >>> from cone.app import root
-    >>> from cone.ugm.model.utils import ugm_settings, ugm_backend
+    >>> from cone.ugm.model.utils import (
+    ...     ugm_server,
+    ...     ugm_users,
+    ...     ugm_groups,
+    ...     ugm_backend,
+    ... )
 
-    >>> ugm_settings(root['users'])
-    <UgmSettings object 'ugm' at ...>
+    >>> ugm_server(root)
+    <ServerSettings object 'ugm_server' at ...>
     
-    >>> ugm_settings(root['settings']['ugm'])
-    <UgmSettings object 'ugm' at ...>
+    >>> ugm_users(root)
+    <UsersSettings object 'ugm_users' at ...>
     
-    >>> ugm_settings(root['users']) is ugm_settings(root['settings']['ugm'])
-    True
+    >>> ugm_groups(root)
+    <GroupsSettings object 'ugm_groups' at ...>
     
     >>> import cone.app
     >>> cone.app.backend = None
