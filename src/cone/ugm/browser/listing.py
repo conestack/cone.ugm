@@ -73,8 +73,9 @@ class ColumnListing(Tile):
             ],
         }
         """
-        raise NotImplementedError(u"Abstract ``ColumnListing`` does not "
-                                  u"implement ``items`` property")
+        raise NotImplementedError(                          #pragma NO COVERAGE
+            u"Abstract ``ColumnListing`` does not "         #pragma NO COVERAGE
+            u"implement ``items`` property")                #pragma NO COVERAGE
 
     def item_content(self, *args):
         ret = u''
