@@ -85,11 +85,8 @@ LDAP groups config::
     u'ou=groups,ou=groupOfNames_100_100,dc=my-domain,dc=com'
     
     >>> gcfg.attrmap
-    {'member': 'member', 
-    'uniqueMember': 'uniqueMember', 
-    'rdn': 'cn', 
-    'id': 'cn', 
-    'cn': 'cn'}
+    {'rdn': 'cn', 
+    'id': 'cn'}
     
     >>> gcfg.scope
     1
