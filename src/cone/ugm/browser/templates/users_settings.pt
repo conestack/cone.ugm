@@ -1,0 +1,16 @@
+<div>
+  
+  <h1>Users Settings</h1>
+
+  <p>
+    <strong>Check Users DN:</strong>
+    <strong tal:define="status context.ldap_users"
+            tal:content="status"
+            tal:attributes="style status == 'OK' and 'color:green' or 'color:red'">
+      OK
+    </strong>
+  </p>
+
+  <tal:settings replace="structure tile('editform')" />
+
+</div>

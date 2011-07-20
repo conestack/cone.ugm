@@ -14,13 +14,6 @@ from cone.app.model import (
 from cone.ugm.model.utils import APP_PATH
 
 
-class UgmConfig(object):
-    
-    @property
-    def config(self):
-        pass
-
-
 def _invalidate_ugm_settings(model):
     settings = model.parent
     settings['ugm_server']._ldap_props = None
@@ -161,17 +154,17 @@ class GroupsSettings(UgmSettings):
                 )
         return self._ldap_gcfg
 
-
-class RolesSettings(BaseNode):
-    
-    @instance_property
-    def metadata(self):
-        metadata = BaseMetadata()
-        metadata.title = "Roles Settings"
-        metadata.description = "LDAP roles settings"
-        return metadata
-    
-    @property
-    def ldap_rcfg(self):
-        # XXX: later
-        return None
+# XXX: later
+#class RolesSettings(BaseNode):
+#    
+#    @instance_property
+#    def metadata(self):
+#        metadata = BaseMetadata()
+#        metadata.title = "Roles Settings"
+#        metadata.description = "LDAP roles settings"
+#        return metadata
+#    
+#    @property
+#    def ldap_rcfg(self):
+#        # XXX: later
+#        return None

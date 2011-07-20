@@ -1,0 +1,43 @@
+factory: form
+name: settings
+props:
+    action: context.form_action
+    class: ajax
+widgets:
+- groups_dn:
+    factory: field:label:error:text
+    value: expr:context.model.attrs.groups_dn
+    props:
+        label: Groups Base DN
+        required: No Groups DN defined
+- groups_scope:
+    factory: field:label:select
+    value: expr:context.model.attrs.groups_scope
+    props:
+        label: Groups scope
+        vocabulary: expr:context.scope_vocab
+- groups_query:
+    factory: field:label:text
+    value: expr:context.model.attrs.groups_query
+    props:
+        label: Groups query
+- groups_object_classes:
+    factory: field:label:text
+    value: expr:u', '.join(context.model.attrs.get('groups_object_classes', []))
+    props:
+        label: Groups object classes
+- groups_relation:
+    factory: field:label:text
+    value: expr:context.model.attrs.groups_relation
+    props:
+        label: Group-member-relation
+- groups_listing_columns:
+    factory: field:label:dict
+    value: expr:context.groups_listing_columns
+    props:
+        label: Column configuration for groups listings
+        required: Column configuration for group listings value is mandatory
+        static: True
+        head:
+            key: Listing Column
+            value: LDAP Attribute
