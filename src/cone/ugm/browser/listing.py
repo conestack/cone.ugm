@@ -1,3 +1,4 @@
+import types
 from yafowil.utils import Tag
 from cone.tile import Tile
 from cone.ugm.model.utils import (
@@ -7,6 +8,7 @@ from cone.ugm.model.utils import (
 from cone.ugm.browser.batch import ColumnBatch
 
 tag = Tag(lambda x: x)
+
 
 class ColumnListing(Tile):
     """Abstract column listing.
@@ -107,7 +109,9 @@ class ColumnListing(Tile):
 
     def extract_raw(self, attrs, name):
         raw = attrs.get(name)
-        return raw and raw[0] or ''
+        if type(raw) in [types.ListType, types.TupleType]:
+            return raw[0]
+        return raw and raw or ''
 
     @property
     def user_attrs(self):

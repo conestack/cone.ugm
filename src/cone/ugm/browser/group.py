@@ -20,6 +20,10 @@ from cone.app.browser.ajax import AjaxAction
 from cone.ugm.model.group import Group
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.listing import ColumnListing
+from cone.ugm.browser.authoring import (
+    AddFormFiddle,
+    EditFormFiddle,
+)
 from webob.exc import HTTPFound
 
 
@@ -70,8 +74,7 @@ class Principals(object):
             id = user.name
             attrs = user.attrs
             
-            # XXX: path instead of node=user, (ugm)
-            item_target = make_url(obj.request, node=user)
+            item_target = make_url(obj.request, path=user.path[1:])
             action_query = make_query(id=id)
             action_target = make_url(obj.request,
                                      node=appgroup,
@@ -192,10 +195,11 @@ class GroupForm(object):
             raise ExtractionError(msg)
         return data.extracted
 
+
 @tile('addform', interface=Group, permission="add")
 class GroupAddForm(GroupForm, Form):
     __metaclass__ = plumber
-    __plumbing__ = AddPart
+    __plumbing__ = AddPart, AddFormFiddle
     
     show_heading = False
 
@@ -217,6 +221,10 @@ class GroupAddForm(GroupForm, Form):
         self.request.environ['next_resource'] = id
         groups()
         self.model.parent.invalidate()
+        # XXX: access already added group after invalidation.
+        #      if not done, there's some kind of race condition with ajax
+        #      continuation. figure out why.
+        self.model.parent[id]
 
     def next(self, request):
         next_resource = self.request.environ.get('next_resource')
@@ -237,13 +245,12 @@ class GroupAddForm(GroupForm, Form):
 @tile('editform', interface=Group, permission="edit")
 class GroupEditForm(GroupForm, Form):
     __metaclass__ = plumber
-    __plumbing__ = EditPart
+    __plumbing__ = EditPart, EditFormFiddle
     
     show_heading = False
 
     def save(self, widget, data):
         # XXX
-        import pdb;pdb.set_trace()
         pass
 
     def next(self, request):

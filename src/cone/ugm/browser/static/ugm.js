@@ -9,7 +9,7 @@
     $(document).ready(function() {
         // initial binding
         ugm.left_listing_nav_binder();
-        //ugm.right_listing_nav_binder();
+        ugm.right_listing_nav_binder();
         ugm.listing_filter_binder();
         ugm.listing_sort_binder();
         ugm.listing_actions_binder();
@@ -19,7 +19,7 @@
         // add after ajax binding to bdajax
         $.extend(bdajax.binders, {
             left_listing_nav_binder: ugm.left_listing_nav_binder,
-            //right_listing_nav_binder: ugm.right_listing_nav_binder,
+            right_listing_nav_binder: ugm.right_listing_nav_binder,
             listing_filter_binder: ugm.listing_filter_binder,
             listing_sort_binder: ugm.listing_sort_binder,
             listing_actions_binder: ugm.listing_actions_binder,
@@ -357,7 +357,7 @@
                 var sorted = $('ul li', cont).sort(sortfunc);
                 $('ul', cont).empty().append(sorted);
                 ugm.left_listing_nav_binder(cont);
-                //ugm.right_listing_nav_binder(cont);
+                ugm.right_listing_nav_binder(cont);
                 ugm.listing_actions_binder(cont);
                 ugm.scroll_listings_to_selected();
                 bdajax.spinner.hide();

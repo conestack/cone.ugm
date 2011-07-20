@@ -25,6 +25,10 @@ from cone.ugm.model.utils import ugm_users
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.browser.listing import ColumnListing
+from cone.ugm.browser.authoring import (
+    AddFormFiddle,
+    EditFormFiddle,
+)
 from webob.exc import HTTPFound
 
 
@@ -77,7 +81,7 @@ class Groups(object):
 
             # XXX: resource was only set for alluserlisting
             # XXX: path instead of node=user, (ugm)
-            item_target = make_url(obj.request, node=group)
+            item_target = make_url(obj.request, path=group.path[1:])
             action_query = make_query(id=id)
             action_target = make_url(obj.request,
                                      node=appuser,
@@ -249,7 +253,7 @@ class UserForm(object):
 @tile('addform', interface=User, permission='add')
 class UserAddForm(UserForm, Form):
     __metaclass__ = plumber
-    __plumbing__ = AddPart
+    __plumbing__ = AddPart, AddFormFiddle
     
     show_heading = False
 
@@ -271,6 +275,10 @@ class UserAddForm(UserForm, Form):
         if password is not UNSET:
             users.passwd(id, None, password)
         self.model.parent.invalidate()
+        # XXX: access already added user after invalidation.
+        #      if not done, there's some kind of race condition with ajax
+        #      continuation. figure out why.
+        self.model.parent[id]
 
     def next(self, request):
         next_resource = self.request.environ.get('next_resource')
@@ -291,7 +299,7 @@ class UserAddForm(UserForm, Form):
 @tile('editform', interface=User, permission='edit')
 class UserEditForm(UserForm, Form):
     __metaclass__ = plumber
-    __plumbing__ = EditPart
+    __plumbing__ = EditPart, EditFormFiddle
     
     show_heading = False
 

@@ -27,6 +27,7 @@ from cone.ugm.model.utils import (
     ugm_groups,
 )
 
+
 class VocabMixin(object):
 
     scope_vocab = [
