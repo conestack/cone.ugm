@@ -35,12 +35,6 @@ class VocabMixin(object):
         (str(ONELEVEL), 'ONELEVEL'),
         (str(SUBTREE), 'SUBTREE'),
     ]
-    
-    sort_column_vocab = [
-        ('col_1', 'col_1'),
-        ('col_2', 'col_2'),
-        ('col_3', 'col_3'),
-    ]
 
 
 @tile('content', 'templates/server_settings.pt',
@@ -65,9 +59,9 @@ class ServerSettingsForm(Form):
     def save(self, widget, data):
         model = self.model
         for attr_name in ['uri', 'user']:
-            val = data.fetch('settingsform.%s' % attr_name).extracted
+            val = data.fetch('settings.%s' % attr_name).extracted
             setattr(model.attrs, attr_name, val)
-        password = data.fetch('settingsform.password').extracted
+        password = data.fetch('settings.password').extracted
         if password is not UNSET:
             setattr(model.attrs, 'password', password)
         model()
@@ -92,6 +86,13 @@ class UsersSettingsForm(Form, VocabMixin):
     
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/users_settings.yaml'
+    
+    # XXX: read from column config
+    sort_column_vocab = [
+        ('col_1', 'col_1'),
+        ('col_2', 'col_2'),
+        ('col_3', 'col_3'),
+    ]
     
     @property
     def users_attrmap(self):
@@ -132,7 +133,7 @@ class UsersSettingsForm(Form, VocabMixin):
                           'users_form_attrmap',
                           'users_listing_columns',
                           'users_listing_default_column']:
-            val = data.fetch('settingsform.%s' % attr_name).extracted
+            val = data.fetch('settings.%s' % attr_name).extracted
             if attr_name == 'users_object_classes':
                 val = [v.strip() for v in val.split(',') if v.strip()]
             setattr(model.attrs, attr_name, val)
@@ -159,13 +160,34 @@ class GroupsSettingsForm(Form, VocabMixin):
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/groups_settings.yaml'
     
+    # XXX: read from column config
+    sort_column_vocab = [
+        ('col_1', 'col_1'),
+    ]
+    
+    @property
+    def groups_attrmap(self):
+        attrs = self.model.attrs
+        groups_attrmap = odict()
+        groups_attrmap['rdn'] = attrs.groups_attrmap.get('rdn')
+        groups_attrmap['id'] = attrs.groups_attrmap.get('id')
+        return groups_attrmap
+    
     @property
     def groups_listing_columns(self):
         attrs = self.model.attrs
         groups_listing_columns = odict()
-        key_1 = attrs.groups_listing_columns.get('col_1', 'cn:Groupname')
+        key_1 = attrs.groups_listing_columns.get('col_1', 'id:Groupname')
         groups_listing_columns['col_1'] = key_1
         return groups_listing_columns
+    
+    @property
+    def groups_listing_default_column(self):
+        attrs = self.model.attrs
+        groups_listing_default_column = attrs.groups_listing_default_column
+        if not groups_listing_default_column:
+            groups_listing_default_column = 'col_1'
+        return groups_listing_default_column
     
     def save(self, widget, data):
         model = self.model
@@ -173,9 +195,12 @@ class GroupsSettingsForm(Form, VocabMixin):
                           'groups_scope',
                           'groups_query',
                           'groups_object_classes',
+                          'groups_attrmap',
+                          'groups_form_attrmap',
                           'groups_relation',
-                          'groups_listing_columns']:
-            val = data.fetch('settingsform.%s' % attr_name).extracted
+                          'groups_listing_columns',
+                          'groups_listing_default_column']:
+            val = data.fetch('settings.%s' % attr_name).extracted
             if attr_name == 'groups_object_classes':
                 val = [v.strip() for v in val.split(',') if v.strip()]
             setattr(model.attrs, attr_name, val)

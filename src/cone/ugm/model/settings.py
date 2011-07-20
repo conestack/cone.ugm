@@ -87,9 +87,9 @@ class UsersSettings(UgmSettings):
     @property
     def ldap_users_container_valid(self):
         try:
-            queryNode(
+            node = queryNode(
                 self.parent['ugm_server'].ldap_props, self._config.users_dn)
-            return True
+            return bool(node)
         except ldap.LDAPError, e:
             return False
     
@@ -125,9 +125,9 @@ class GroupsSettings(UgmSettings):
     @property
     def ldap_groups_container_valid(self):
         try:
-            queryNode(
+            node = queryNode(
                 self.parent['ugm_server'].ldap_props, self._config.groups_dn)
-            return True
+            return bool(node)
         except ldap.LDAPError, e:
             return False
     
@@ -136,17 +136,15 @@ class GroupsSettings(UgmSettings):
         if not hasattr(self, '_ldap_gcfg') or self._ldap_gcfg is None:
             config = self._config
             map = dict()
-            # XXX: each criteria is expected in attrmap. is this what we want?
+            for key in config.groups_attrmap.keys():
+                map[key] = config.groups_attrmap[key]
+            for key in config.groups_form_attrmap.keys():
+                if key in ['id']:
+                    continue
+                map[key] = key
             self._ldap_gcfg = LDAPGroupsConfig(
                 baseDN=config.groups_dn,
-                # XXX: from config
-                attrmap={
-                    'id': 'cn',
-                    'rdn': 'cn',
-                    'cn': 'cn',
-                    'member': 'member',
-                    'uniqueMember': 'uniqueMember',
-                },
+                attrmap=map,
                 scope=int(config.groups_scope),
                 queryFilter=config.groups_query,
                 objectClasses=config.groups_object_classes,

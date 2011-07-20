@@ -48,10 +48,10 @@ class GroupsColumnListing(ColumnListing):
         try:
             col_1_attr = self.group_attrs
             ret = list()
-            # XXX: groups attrmap
-            #result = self.model.backend.search(criteria=None, attrlist=[col_1_attr])
-            result = self.model.backend.context.search(
-                criteria=None, attrlist=[col_1_attr])
+            result = self.model.backend.search(
+                criteria=None,
+                attrlist=[col_1_attr],
+                )
             for key, attrs in result:
                 target = make_url(self.request,
                                   node=self.model,

@@ -73,6 +73,8 @@ class Groups(object):
             groups = obj.model.root['groups'].backend.values()
 
         ret = list()
+        
+        # XXX
         col_1_attr = obj.group_attrs
 
         # XXX: These should be the mapped attributes - lack of backend support

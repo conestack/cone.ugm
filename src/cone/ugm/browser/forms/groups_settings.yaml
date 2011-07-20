@@ -26,6 +26,24 @@ widgets:
     value: expr:u', '.join(context.model.attrs.get('groups_object_classes', []))
     props:
         label: Groups object classes
+- groups_attrmap:
+    factory: field:label:error:dict
+    value: expr:context.groups_attrmap
+    props:
+        label: Group attribute mapping
+        required: Group attribute mapping values are mandatory
+        static: True
+        head:
+            key: Reserved key
+            value: LDAP attr name
+- groups_form_attrmap:
+    factory: field:label:dict
+    value: expr:context.model.attrs.groups_form_attrmap
+    props:
+        label: Group form attribute mapping
+        head:
+            key: LDAP attr name
+            value: Form label
 - groups_relation:
     factory: field:label:text
     value: expr:context.model.attrs.groups_relation
@@ -41,3 +59,17 @@ widgets:
         head:
             key: Listing Column
             value: LDAP Attribute
+- groups_listing_default_column:
+    factory: field:label:select
+    value: expr:context.groups_listing_default_column
+    props:
+        label: Groups listing default columns
+        vocabulary: expr:context.sort_column_vocab
+- save:
+    factory: submit
+    props:
+        action: save
+        expression: True
+        handler: context.save
+        next: context.next
+        label: Save
