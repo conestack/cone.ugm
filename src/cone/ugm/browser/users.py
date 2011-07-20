@@ -46,28 +46,32 @@ class UsersColumnListing(ColumnListing):
 
     @property
     def query_items(self):
-        col_1_attr, col_2_attr, col_3_attr, sort_attr = self.user_attrs
-        ret = list()
-        attrlist = [col_1_attr, col_2_attr, col_3_attr]
-        users = self.model.backend
-        result = users.search(criteria=None, attrlist=attrlist)
-        for key, attrs in result:
-            target = make_url(self.request,
-                              node=self.model,
-                              resource=key)
-
-            action_id = 'delete_item'
-            action_title = 'Delete User'
-            delete_action = self.create_action(
-                action_id, True, action_title, target)
-
-            val_1 = self.extract_raw(attrs, col_1_attr)
-            val_2 = self.extract_raw(attrs, col_2_attr)
-            val_3 = self.extract_raw(attrs, col_3_attr)
-            sort = self.extract_raw(attrs, sort_attr)
-            content = self.item_content(val_1, val_2, val_3)
-            current = self.current_id == key
-            item = self.create_item(
-                sort, target, content, current, [delete_action])
-            ret.append(item)
-        return ret
+        try:
+            col_1_attr, col_2_attr, col_3_attr, sort_attr = self.user_attrs
+            ret = list()
+            attrlist = [col_1_attr, col_2_attr, col_3_attr]
+            users = self.model.backend
+            result = users.search(criteria=None, attrlist=attrlist)
+            for key, attrs in result:
+                target = make_url(self.request,
+                                  node=self.model,
+                                  resource=key)
+    
+                action_id = 'delete_item'
+                action_title = 'Delete User'
+                delete_action = self.create_action(
+                    action_id, True, action_title, target)
+    
+                val_1 = self.extract_raw(attrs, col_1_attr)
+                val_2 = self.extract_raw(attrs, col_2_attr)
+                val_3 = self.extract_raw(attrs, col_3_attr)
+                sort = self.extract_raw(attrs, sort_attr)
+                content = self.item_content(val_1, val_2, val_3)
+                current = self.current_id == key
+                item = self.create_item(
+                    sort, target, content, current, [delete_action])
+                ret.append(item)
+            return ret
+        except Exception, e:
+            print e
+        return list()
