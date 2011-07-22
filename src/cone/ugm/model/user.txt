@@ -39,7 +39,7 @@ The real user objects are available via .model::
     <User object 'uid0' at ...>
     
     >>> user.model.__class__
-    <class 'node.ext.ldap.ugm.User'>
+    <class 'node.ext.ldap.ugm._api.User'>
 
 XXX: model is too generic, needs discussion. If so generic I'd say .context,
 otherwise more specific.

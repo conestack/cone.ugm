@@ -39,7 +39,7 @@ The real group objects are available via .model::
     <Group object 'group0' at ...>
     
     >>> group.model.__class__
-    <class 'node.ext.ldap.ugm.Group'>
+    <class 'node.ext.ldap.ugm._api.Group'>
 
 XXX: model is too generic, needs discussion. If so generic I'd say .context,
 otherwise more specific.
