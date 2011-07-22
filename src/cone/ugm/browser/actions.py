@@ -69,8 +69,8 @@ class UserAddToGroupAction(Action):
             # XXX: self.model.model is weird naming
             user = self.model.model
             group = user.root.groups[group_id]
-            group[user.name] = user
-            self.model()
+            group.add(user.name)
+            group()
             self.model.parent.invalidate()
             return {
                 'success': True,
@@ -97,9 +97,7 @@ class UserRemoveFromGroupAction(Action):
             user = self.model.model
             group = user.root.groups[group_id]
             del group[user.name]
-            self.model()
-            # XXX: this feels bad and makes problems, see in invalidate()
-            #      Does it? Maybe not any longer.
+            group()
             self.model.parent.invalidate()
             return {
                 'success': True,
@@ -128,7 +126,7 @@ class DeleteGroupAction(Action):
             groups = self.model.parent.backend
             id = self.model.model.name
             del groups[id]
-            self.model()
+            groups()
             self.model.parent.invalidate()
         except Exception, e:
             return {
@@ -153,8 +151,8 @@ class GroupAddUserAction(Action):
             user_id = self.request.params.get('id')
             group = self.model.model
             user = group.root.users[user_id]
-            group[user_id] = user
-            self.model()
+            group.add(user_id)
+            group()
             self.model.parent.invalidate()
             return {
                 'success': True,
@@ -178,7 +176,7 @@ class GroupRemoveUserAction(Action):
         try:
             group = self.model.model
             del group[user_id]
-            self.model()
+            group()
             self.model.parent.invalidate()
             return {
                 'success': True,

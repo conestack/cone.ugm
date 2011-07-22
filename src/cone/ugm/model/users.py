@@ -31,6 +31,9 @@ class Users(BaseNode):
         self.clear()
         del self.backend.parent.storage['users']
 
+    def __call__(self):
+        self.backend()
+    
     def __iter__(self):
         try:
             for key in self.backend:
