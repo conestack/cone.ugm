@@ -68,11 +68,28 @@
   <groups_object_classes>
     <item>groupOfNames</item>
   </groups_object_classes>
+  <groups_attrmap>
+    <elem>
+      <key>rdn</key>
+      <value>cn</value>
+    </elem>
+    <elem>
+      <key>id</key>
+      <value>cn</value>
+    </elem>
+  </groups_attrmap>
+  <groups_form_attrmap>
+    <elem>
+      <key>id</key>
+      <value>Id</value>
+    </elem>
+  </groups_form_attrmap>
   <groups_relation></groups_relation>
   <groups_listing_columns>
     <elem>
       <key>col_1</key>
-      <value>cn:Groupname</value>
+      <value>id:Groupname</value>
     </elem>
   </groups_listing_columns>
+  <groups_listing_default_column>col_1</groups_listing_default_column>
 </properties>

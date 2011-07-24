@@ -1,4 +1,4 @@
-from zope.interface import implements
+from node.utils import instance_property
 from node.ext.ldap.ugm import Users as LDAPUsers
 from cone.app.model import (
     BaseNode,
@@ -7,71 +7,40 @@ from cone.app.model import (
     BaseNodeInfo,
     registerNodeInfo,
 )
-from cone.ugm.model.interfaces import IUsers
 from cone.ugm.model.user import User
-from cone.ugm.model.utils import ugm_settings
+from cone.ugm.model.utils import ugm_backend
 from cone.ugm.browser.utils import unquote_slash
 
 
 class Users(BaseNode):
-    implements(IUsers)
 
     node_info_name = 'users'
 
-    def __init__(self, props=None, ucfg=None):
-        """``props`` and `ucfg`` just needed for testing. never used in
-        application code.
-        """
-        super(Users, self).__init__()
-        self._testenv = None
-        if props or ucfg:
-            self._testenv = {
-                'props': props,
-                'ucfg': ucfg,
-            }
-        self._ldap_users = None
-
-    @property
+    @instance_property
     def metadata(self):
         metadata = BaseMetadata()
         metadata.title = "Users"
         metadata.description = "Container for Users"
         return metadata
-
+    
     @property
-    def ldap_users(self):
-        """XXX: this property should be named model
-        """
-        if self._ldap_users is None:
-            if self._testenv is not None:
-                props = self._testenv['props']
-                ucfg = self._testenv['ucfg']
-            else:
-                settings = ugm_settings(self)
-                props = settings.ldap_props
-                ucfg = settings.ldap_ucfg
-            self._ldap_users = LDAPUsers(props, ucfg)
-        return self._ldap_users
+    def backend(self):
+        return ugm_backend(self).users
 
     def invalidate(self):
-        """
-        - get rid of ldap_users
-        - get new ldap_users
-        - tell it about ldap_groups
-        - tell ldap_groups about new ldap_users
-        """
-        self._ldap_users = None
         self.clear()
-        self.ldap_users.groups = self.__parent__['groups'].ldap_groups
-        self.__parent__['groups'].ldap_groups.users = self.ldap_users
+        del self.backend.parent.storage['users']
 
+    def __call__(self):
+        self.backend()
+    
     def __iter__(self):
         try:
-            for key in self.ldap_users:
+            for key in self.backend:
                 yield key
         except Exception, e:
-            # XXX: explicit exception
-            print e
+            # XXX: explicit exception, define in node.ext.ugm
+            raise e
 
     iterkeys = __iter__
 
@@ -84,7 +53,7 @@ class Users(BaseNode):
         except KeyError:
             if not name in self.iterkeys():
                 raise KeyError(name)
-            user = User(self.ldap_users[name], name, self)
+            user = User(self.backend[name], name, self)
             self[name] = user
             return user
 

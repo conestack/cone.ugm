@@ -6,12 +6,12 @@ from cone.app.browser.utils import (
     make_url,
     make_query,
 )
-from cone.ugm.model.interfaces import IGroups
+from cone.ugm.model.groups import Groups
 from cone.ugm.browser.listing import ColumnListing
 
 
 @tile('leftcolumn', 'templates/left_column.pt',
-      interface=IGroups, permission='view')
+      interface=Groups, permission='view')
 class GroupsLeftColumn(Tile):
 
     add_label = u"Add Group"
@@ -23,7 +23,7 @@ class GroupsLeftColumn(Tile):
                         query=make_query(factory=u'group'))
 
 
-@tile('rightcolumn', interface=IGroups, permission='view')
+@tile('rightcolumn', interface=Groups, permission='view')
 class GroupsRightColumn(Tile):
 
     def render(self):
@@ -31,7 +31,7 @@ class GroupsRightColumn(Tile):
 
 
 @tile('columnlisting', 'templates/column_listing.pt',
-      interface=IGroups, permission='view')
+      interface=Groups, permission='view')
 class GroupsColumnListing(ColumnListing):
 
     slot = 'leftlisting'
@@ -41,27 +41,33 @@ class GroupsColumnListing(ColumnListing):
 
     @property
     def current_id(self):
-        return self.request.get('_curr_listing_id')
+        return getattr(self.request, '_curr_listing_id', None)
 
     @property
     def query_items(self):
-        col_1_attr = self.group_attrs
-        ret = list()
-        result = self.model.ldap_groups.search(criteria=None,
-                                               attrlist=[col_1_attr])
-        for key, attrs in result:
-            target = make_url(self.request,
-                              node=self.model,
-                              resource=key)
-            action_id = 'delete_item'
-            action_title = 'Delete Group'
-            delete_action = self.create_action(
-                action_id, True, action_title, target)
-            
-            val_1 = self.extract_raw(attrs, col_1_attr)
-            content = self.item_content(val_1)
-            current = self.current_id == key
-            item = self.create_item(
-                val_1, target, content, current, [delete_action])
-            ret.append(item)
-        return ret
+        try:
+            col_1_attr = self.group_attrs
+            ret = list()
+            result = self.model.backend.search(
+                criteria=None,
+                attrlist=[col_1_attr],
+                )
+            for key, attrs in result:
+                target = make_url(self.request,
+                                  node=self.model,
+                                  resource=key)
+                action_id = 'delete_item'
+                action_title = 'Delete Group'
+                delete_action = self.create_action(
+                    action_id, True, action_title, target)
+                
+                val_1 = self.extract_raw(attrs, col_1_attr)
+                content = self.item_content(val_1)
+                current = self.current_id == key
+                item = self.create_item(
+                    val_1, target, content, current, [delete_action])
+                ret.append(item)
+            return ret
+        except Exception, e:
+            print e
+        return list()

@@ -1,6 +1,5 @@
 from plumber import plumber
 from odict import odict
-from node.base import AttributedNode
 from yafowil.base import (
     ExtractionError,
     factory,
@@ -21,26 +20,30 @@ from cone.app.browser.authoring import (
     EditPart,
 )
 from cone.app.browser.ajax import AjaxAction
-from cone.ugm.model.interfaces import IUser
-from cone.ugm.model.utils import ugm_settings
+from cone.ugm.model.user import User
+from cone.ugm.model.utils import ugm_users
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.browser.listing import ColumnListing
+from cone.ugm.browser.authoring import (
+    AddFormFiddle,
+    EditFormFiddle,
+)
 from webob.exc import HTTPFound
 
 
-@tile('leftcolumn', interface=IUser, permission='view')
+@tile('leftcolumn', interface=User, permission='view')
 class UserLeftColumn(Column):
 
     add_label = u"Add User"
 
     def render(self):
-        self.request['_curr_listing_id'] = self.model.__name__
-        return self._render(self.model.__parent__, 'leftcolumn')
+        setattr(self.request, '_curr_listing_id', self.model.name)
+        return self._render(self.model.parent, 'leftcolumn')
 
 
 @tile('rightcolumn', 'templates/right_column.pt',
-      interface=IUser, permission='view')
+      interface=User, permission='view')
 class UserRightColumn(Tile):
     pass
 
@@ -59,25 +62,28 @@ class Groups(object):
 
         appuser = obj.model
         user = appuser.model
-        related_ids = user.membership.keys()
+        groups = user.groups
+        related_ids = [g.name for g in groups]
+        
         # always True if we list members only, otherwise will be set
         # in the loop below
         related = self.related_only
 
-        if self.related_only:
-            groups = user.membership
-        else:
-            groups = obj.model.root['groups'].ldap_groups
+        if not self.related_only:
+            groups = obj.model.root['groups'].backend.values()
 
         ret = list()
+        
+        # XXX
         col_1_attr = obj.group_attrs
 
         # XXX: These should be the mapped attributes - lack of backend support
-        for id in groups.keys():
-            group = groups[id]
+        for group in groups:
+            id = group.name
 
             # XXX: resource was only set for alluserlisting
-            item_target = make_url(obj.request, node=group, resource=id)
+            # XXX: path instead of node=user, (ugm)
+            item_target = make_url(obj.request, path=group.path[1:])
             action_query = make_query(id=id)
             action_target = make_url(obj.request,
                                      node=appuser,
@@ -107,7 +113,7 @@ class Groups(object):
 
 
 @tile('columnlisting', 'templates/column_listing.pt',
-      interface=IUser, permission='view')
+      interface=User, permission='view')
 class GroupsOfUserColumnListing(ColumnListing):
 
     slot = 'rightlisting'
@@ -118,7 +124,7 @@ class GroupsOfUserColumnListing(ColumnListing):
 
 
 @tile('allcolumnlisting', 'templates/column_listing.pt',
-      interface=IUser, permission='view')
+      interface=User, permission='view')
 class AllGroupsColumnListing(ColumnListing):
 
     slot = 'rightlisting'
@@ -174,7 +180,7 @@ class UserForm(object):
 
     def prepare(self):
         resource = 'add'
-        if self.model.__name__ is not None:
+        if self.model.name is not None:
             resource = 'edit'
 
             # XXX: tmp - load props each time they are accessed.
@@ -187,7 +193,7 @@ class UserForm(object):
             props={
                 'action': action,
             })
-        settings = ugm_settings(self.model)
+        settings = ugm_users(self.model)
         attrmap = settings.attrs.users_form_attrmap
         if not attrmap:
             return form
@@ -240,37 +246,41 @@ class UserForm(object):
         id = data.extracted
         if id is UNSET:
             return data.extracted
-        if id in self.model.__parent__.ldap_users:
+        if id in self.model.parent.backend:
             msg = "User %s already exists." % (id,)
             raise ExtractionError(msg)
         return data.extracted
 
 
-@tile('addform', interface=IUser, permission='add')
+@tile('addform', interface=User, permission='add')
 class UserAddForm(UserForm, Form):
     __metaclass__ = plumber
-    __plumbing__ = AddPart
+    __plumbing__ = AddPart, AddFormFiddle
     
     show_heading = False
 
     def save(self, widget, data):
-        settings = ugm_settings(self.model)
+        settings = ugm_users(self.model)
         attrmap = settings.attrs.users_form_attrmap
-        user = AttributedNode()
+        extracted = dict()
         for key, val in attrmap.items():
             val = data.fetch('userform.%s' % key).extracted
             if not val:
                 continue
-            user.attrs[key] = val
-        users = self.model.__parent__.ldap_users
-        id = user.attrs['id']
+            extracted[key] = val
+        users = self.model.parent.backend
+        id = extracted.pop('id')
+        password = extracted.pop('userPassword')
+        user = users.create(id, **extracted)
         self.request.environ['next_resource'] = id
-        users[id] = user
-        users.context()
-        self.model.__parent__.invalidate()
-        password = data.fetch('userform.userPassword').extracted
+        users()
         if password is not UNSET:
             users.passwd(id, None, password)
+        self.model.parent.invalidate()
+        # XXX: access already added user after invalidation.
+        #      if not done, there's some kind of race condition with ajax
+        #      continuation. figure out why.
+        self.model.parent[id]
 
     def next(self, request):
         next_resource = self.request.environ.get('next_resource')
@@ -288,15 +298,15 @@ class UserAddForm(UserForm, Form):
         return HTTPFound(location=url)
 
 
-@tile('editform', interface=IUser, permission='edit')
+@tile('editform', interface=User, permission='edit')
 class UserEditForm(UserForm, Form):
     __metaclass__ = plumber
-    __plumbing__ = EditPart
+    __plumbing__ = EditPart, EditFormFiddle
     
     show_heading = False
 
     def save(self, widget, data):
-        settings = ugm_settings(self.model)
+        settings = ugm_users(self.model)
         attrmap = settings.attrs.users_form_attrmap
         for key, val in attrmap.items():
             if key in ['id', 'login', 'userPassword']:
@@ -306,8 +316,8 @@ class UserEditForm(UserForm, Form):
         self.model.model.context()
         password = data.fetch('userform.userPassword').extracted
         if password is not UNSET:
-            id = self.model.__name__
-            self.model.__parent__.ldap_users.passwd(id, None, password)
+            id = self.model.name
+            self.model.parent.ldap_users.passwd(id, None, password)
 
     def next(self, request):
         url = make_url(request.request, node=self.model)

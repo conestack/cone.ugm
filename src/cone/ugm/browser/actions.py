@@ -1,6 +1,6 @@
 from pyramid.view import view_config
-from cone.ugm.model.interfaces import IUser
-from cone.ugm.model.interfaces import IGroup
+from cone.ugm.model.user import User
+from cone.ugm.model.group import Group
 
 
 class Action(object):
@@ -34,49 +34,58 @@ class Action(object):
 ###############################################################################
 
 @view_config(name='delete_item', accept='application/json',
-             renderer='json', context=IUser, permission='delete')
+             renderer='json', context=User, permission='delete')
 class DeleteUserAction(Action):
 
     def __call__(self):
         """Delete user from database.
         """
-        users = self.model.__parent__.ldap_users
-        id = self.model.model.__name__
-        del users[id]
         try:
-            users.context()
-            users = self.model.__parent__.invalidate()
+            users = self.model.parent.backend
+            id = self.model.model.name
+            del users[id]
+            users()
+            self.model.parent.invalidate()
+            return {
+                'success': True,
+                'message': "Deleted user '%s' from database." % id,
+            }
         except Exception, e:
             return {
                 'success': False,
                 'message': str(e),
             }
-        return {
-            'success': True,
-            'message': "Deleted user '%s' from database." % id,
-        }
 
 
 @view_config(name='add_item', accept='application/json',
-             renderer='json', context=IUser, permission='edit')
+             renderer='json', context=User, permission='edit')
 class UserAddToGroupAction(Action):
 
     def __call__(self):
         """Add user to group.
         """
         group_id = self.request.params.get('id')
-        # XXX: self.model.model is weird naming
-        user = self.model.model
-        user.membership.add(group_id)
-        self.model.__parent__.invalidate()
-        return {
-            'success': True,
-            'message': "Added user '%s' to group '%s'." % (user.id, group_id),
-        }
+        try:
+            # XXX: self.model.model is weird naming
+            user = self.model.model
+            group = user.root.groups[group_id]
+            group.add(user.name)
+            group()
+            self.model.parent.invalidate()
+            return {
+                'success': True,
+                'message': "Added user '%s' to group '%s'." % \
+                    (user.id, group_id),
+            }
+        except Exception, e:
+            return {
+                'success': False,
+                'message': str(e),
+            }
 
 
 @view_config(name='remove_item', accept='application/json',
-             renderer='json', context=IUser, permission='edit')
+             renderer='json', context=User, permission='edit')
 class UserRemoveFromGroupAction(Action):
 
     def __call__(self):
@@ -84,14 +93,22 @@ class UserRemoveFromGroupAction(Action):
         """
         # XXX: use mechanism from LDAP Groups
         group_id = self.request.params.get('id')
-        user = self.model.model
-        del user.membership[group_id]
-        # XXX: this feels bad and makes problems, see in invalidate()
-        self.model.__parent__.invalidate()
-        return {
-            'success': True,
-            'message': "Removed user '%s' from group '%s'." % (user.id, group_id),
-        }
+        try:
+            user = self.model.model
+            group = user.root.groups[group_id]
+            del group[user.name]
+            group()
+            self.model.parent.invalidate()
+            return {
+                'success': True,
+                'message': "Removed user '%s' from group '%s'." % \
+                    (user.id, group_id),
+            }
+        except Exception, e:
+            return {
+                'success': False,
+                'message': str(e),
+            }
 
 
 ###############################################################################
@@ -99,18 +116,18 @@ class UserRemoveFromGroupAction(Action):
 ###############################################################################
 
 @view_config(name='delete_item', accept='application/json',
-             renderer='json', context=IGroup, permission='delete')
+             renderer='json', context=Group, permission='delete')
 class DeleteGroupAction(Action):
 
     def __call__(self):
         """Delete group from database.
         """
-        groups = self.model.__parent__.ldap_groups
-        id = self.model.model.__name__
-        del groups[id]
         try:
-            groups.context()
-            groups = self.model.__parent__.invalidate()
+            groups = self.model.parent.backend
+            id = self.model.model.name
+            del groups[id]
+            groups()
+            self.model.parent.invalidate()
         except Exception, e:
             return {
                 'success': False,
@@ -123,34 +140,50 @@ class DeleteGroupAction(Action):
 
 
 @view_config(name='add_item', accept='application/json',
-             renderer='json', context=IGroup, permission='edit')
+             renderer='json', context=Group, permission='edit')
 class GroupAddUserAction(Action):
 
     def __call__(self):
         """Add user to group.
         """
         user_id = self.request.params.get('id')
-        group = self.model.model
-        group.add(user_id)
-        self.model.__parent__.invalidate()
-        return {
-            'success': True,
-            'message': 'Added user to group',
-        }
+        try:
+            user_id = self.request.params.get('id')
+            group = self.model.model
+            user = group.root.users[user_id]
+            group.add(user_id)
+            group()
+            self.model.parent.invalidate()
+            return {
+                'success': True,
+                'message': 'Added user to group',
+            }
+        except Exception, e:
+            return {
+                'success': False,
+                'message': str(e),
+            }
 
 
 @view_config(name='remove_item', accept='application/json',
-             renderer='json', context=IGroup, permission='edit')
+             renderer='json', context=Group, permission='edit')
 class GroupRemoveUserAction(Action):
 
     def __call__(self):
         """Remove user from group.
         """
         user_id = self.request.params.get('id')
-        group = self.model.model
-        del group[user_id]
-        self.model.__parent__.invalidate()
-        return {
-            'success': True,
-            'message': 'Removed user from group',
-        }
+        try:
+            group = self.model.model
+            del group[user_id]
+            group()
+            self.model.parent.invalidate()
+            return {
+                'success': True,
+                'message': 'Removed user from group',
+            }
+        except Exception, e:
+            return {
+                'success': False,
+                'message': str(e),
+            }

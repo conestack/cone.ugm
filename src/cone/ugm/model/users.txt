@@ -1,22 +1,29 @@
-Users Application Node
-=======================
+cone.ugm.model.users
+====================
+
+::
+
+    >>> layer.login('manager')
 
     >>> from cone.ugm.model.users import Users
-    >>> users = Users(layer['props'], layer['ucfg'])
+    >>> from cone.app import root 
+    >>> users = root['users']
+    >>> users
+    <Users object 'users' at ...>
+    
+    >>> isinstance(users, Users)
+    True
 
-Check Properties.
-::
+Check Properties::
 
     >>> props = users.properties
 
-Users object is not editable.
-::
+Users object is not editable::
 
     >>> props.editable
     False
 
-Check Metadata.
-::
+Check Metadata::
 
     >>> md = users.metadata
     >>> md.title
@@ -25,52 +32,61 @@ Check Metadata.
     >>> md.description
     'Container for Users'
 
-Check for test users.
-::
+Check for test users::
 
+    >>> from cone.ugm.model.utils import ugm_users
     >>> len([x for x in users])
     10
 
-The children are user application nodes.
-::
-    >>> user0 = users[users.keys()[0]]
-    >>> user0
+Access inexistent child::
+
+    >>> users['inexistent']
+    Traceback (most recent call last):
+      ...
+    KeyError: 'inexistent'
+
+The children are user application nodes::
+    
+    >>> user = users['uid0']
+    >>> user
     <User object 'uid0' at ...>
 
-The real user objects are available via .model.
-::
-    >>> user0.model
-    <User 'uid0'>
-    >>> user0.model.__class__
-    <class 'node.ext.ldap.ugm.User'>
+If we delete a user, it's not deleted from the underlying backend, this is
+needed for invalidation::
 
-XXX: model is too generic, needs discussion. If so generic I'd say .context,
-otherwise more specific.
+    >>> del users['uid0']
+    >>> users['uid0']
+    <User object 'uid0' at ...>
 
-XXX: should all this below work on the application model user or on the data
-model behind?
+Test invalidation::
 
-The attributes of the user are wrapped.
-::
-    >>> user0.attrs.items()
-    [('cn', u'cn0'), 
-    ('sn', u'sn0'), 
-    ('mail', u'uid0@groupOfNames_10_10.com'), 
-    ('login', u'uid0')]
-
-    >>> user0.attrs['mail'] = 'foo'
-
-# XXX: changed/__call__ should be available on the user object
-
-    >>> user0.attrs.changed
+    >>> backend = users.backend
+    >>> backend
+    <Users object 'users' at ...>
+    
+    >>> backend is users.backend
     True
-    >>> user0.model.context()
-    >>> user0.attrs.changed
+    
+    >>> users.invalidate()
+    >>> backend is users.backend
     False
 
-    >>> user0.attrs['mail']
-    u'foo'
+Check for errors if ugm is not configured properly::
 
-    >>> del user0.attrs['mail']
-    >>> user0.attrs['mail'] = 'uid0@users300.my-domain.com'
-    >>> user0.model.context()
+    >>> settings = root['settings']['ugm_server']
+    >>> settings.invalidate()
+    >>> [k for k in users]
+    Traceback (most recent call last):
+      ...
+    NO_SUCH_OBJECT: {'matched': 'dc=my-domain,dc=com', 'desc': 'No such object'}
+
+    >>> layer.logout()
+
+Reset settings for following tests::
+
+    >>> settings = root['settings']
+    >>> settings['ugm_server'].invalidate()
+    >>> settings['ugm_server']._ldap_props = layer['props']
+    >>> settings['ugm_users']._ldap_ucfg = layer['ucfg']
+    >>> settings['ugm_groups']._ldap_gcfg = layer['gcfg']
+

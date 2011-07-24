@@ -1,0 +1,70 @@
+factory: form
+name: settings
+props:
+    action: context.form_action
+    class: ajax
+widgets:
+- users_dn:
+    factory: field:label:error:text
+    value: expr:context.model.attrs.users_dn
+    props:
+        label: Users Base DN
+        required: No Users DN defined
+- users_scope:
+    factory: field:label:select
+    value: expr:context.model.attrs.users_scope
+    props:
+        label: Users scope
+        vocabulary: expr:context.scope_vocab
+- users_query:
+    factory: field:label:text
+    value: expr:context.model.attrs.users_query
+    props:
+        label: Users query
+- users_object_classes:
+    factory: field:label:text
+    value: expr:u', '.join(context.model.attrs.get('users_object_classes', []))
+    props:
+        label: Users object classes
+- users_attrmap:
+    factory: field:label:error:dict
+    value: expr:context.users_attrmap
+    props:
+        label: User attribute mapping
+        required: User attribute mapping values are mandatory
+        static: True
+        head:
+            key: Reserved key
+            value: LDAP attr name
+- users_form_attrmap:
+    factory: field:label:dict
+    value: expr:context.model.attrs.users_form_attrmap
+    props:
+        label: User form attribute mapping
+        head:
+            key: LDAP attr name
+            value: Form label
+- users_listing_columns:
+    factory: field:label:dict
+    value: expr:context.users_listing_columns
+    props:
+        label: Column configuration for user listings
+        required: Column configuration for user listings values are mandatory
+        static: True
+        head:
+            key: Listing column
+            value: LDAP Attribute
+- users_listing_default_column:
+    factory: field:label:select
+    value: expr:context.users_listing_default_column
+    props:
+        label: Users listing default columns
+        vocabulary: expr:context.sort_column_vocab
+- save:
+    factory: submit
+    props:
+        action: save
+        expression: True
+        handler: context.save
+        next: context.next
+        label: Save
