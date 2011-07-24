@@ -121,7 +121,7 @@ Add::
     
     >>> user = users['uid99']
     >>> user.attrs.items()
-    [('login', u'uid99'), 
+    [('rdn', u'uid99'), 
     ('sn', u'sn99'), 
     ('mail', u'uid99@example.com'), 
     ('cn', u'cn99')]
@@ -144,9 +144,12 @@ Edit::
     u''
     
     >>> user.attrs.items()
-    [('login', u'uid99'), 
+    [('rdn', u'uid99'), 
     ('sn', u'sn changed'), 
     ('mail', u'changed@example.com'), 
     ('cn', u'cn99')]
+    
+    >>> user.attrs['login']
+    u'cn99'
     
     >>> layer.logout()
