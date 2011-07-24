@@ -7,7 +7,7 @@ import unittest2 as unittest
 # XXX: get rid of plone.testing, use zope test layers directly
 from plone.testing import layered, Layer
 
-from cone.app.testing import Security, DATADIR
+from cone.app.testing import Security
 from node.ext.ldap.testing import (
     LDAPLayer,
     LDIF_groupOfNames_10_10,
