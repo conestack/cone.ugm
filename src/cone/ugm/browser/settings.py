@@ -95,13 +95,14 @@ class UsersSettingsForm(Form, VocabMixin):
     ]
     
     @property
-    def users_attrmap(self):
+    def users_aliases_attrmap(self):
         attrs = self.model.attrs
-        users_attrmap = odict()
-        users_attrmap['rdn'] = attrs.users_attrmap.get('rdn')
-        users_attrmap['id'] = attrs.users_attrmap.get('id')
-        users_attrmap['login'] = attrs.users_attrmap.get('login')
-        return users_attrmap
+        users_aliases_attrmap = odict()
+        users_aliases_attrmap['rdn'] = attrs.users_aliases_attrmap.get('rdn')
+        users_aliases_attrmap['id'] = attrs.users_aliases_attrmap.get('id')
+        users_aliases_attrmap['login'] = \
+            attrs.users_aliases_attrmap.get('login')
+        return users_aliases_attrmap
     
     @property
     def users_listing_columns(self):
@@ -129,7 +130,7 @@ class UsersSettingsForm(Form, VocabMixin):
                           'users_scope',
                           'users_query',
                           'users_object_classes',
-                          'users_attrmap',
+                          'users_aliases_attrmap',
                           'users_form_attrmap',
                           'users_listing_columns',
                           'users_listing_default_column']:
@@ -166,12 +167,12 @@ class GroupsSettingsForm(Form, VocabMixin):
     ]
     
     @property
-    def groups_attrmap(self):
+    def groups_aliases_attrmap(self):
         attrs = self.model.attrs
-        groups_attrmap = odict()
-        groups_attrmap['rdn'] = attrs.groups_attrmap.get('rdn')
-        groups_attrmap['id'] = attrs.groups_attrmap.get('id')
-        return groups_attrmap
+        groups_aliases_attrmap = odict()
+        groups_aliases_attrmap['rdn'] = attrs.groups_aliases_attrmap.get('rdn')
+        groups_aliases_attrmap['id'] = attrs.groups_aliases_attrmap.get('id')
+        return groups_aliases_attrmap
     
     @property
     def groups_listing_columns(self):
@@ -195,7 +196,7 @@ class GroupsSettingsForm(Form, VocabMixin):
                           'groups_scope',
                           'groups_query',
                           'groups_object_classes',
-                          'groups_attrmap',
+                          'groups_aliases_attrmap',
                           'groups_form_attrmap',
                           'groups_relation',
                           'groups_listing_columns',

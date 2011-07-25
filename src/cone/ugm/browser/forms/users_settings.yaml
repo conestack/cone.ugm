@@ -8,30 +8,30 @@ widgets:
     factory: field:label:error:text
     value: expr:context.model.attrs.users_dn
     props:
-        label: Users Base DN
+        label: Users container DN
         required: No Users DN defined
 - users_scope:
     factory: field:label:select
     value: expr:context.model.attrs.users_scope
     props:
-        label: Users scope
+        label: Users search scope
         vocabulary: expr:context.scope_vocab
 - users_query:
     factory: field:label:text
     value: expr:context.model.attrs.users_query
     props:
-        label: Users query
+        label: Users search query filter
 - users_object_classes:
     factory: field:label:text
     value: expr:u', '.join(context.model.attrs.get('users_object_classes', []))
     props:
         label: Users object classes
-- users_attrmap:
+- users_aliases_attrmap:
     factory: field:label:error:dict
-    value: expr:context.users_attrmap
+    value: expr:context.users_aliases_attrmap
     props:
-        label: User attribute mapping
-        required: User attribute mapping values are mandatory
+        label: User attribute aliases
+        required: User attribute aliases values are mandatory
         static: True
         head:
             key: Reserved key
@@ -40,7 +40,7 @@ widgets:
     factory: field:label:dict
     value: expr:context.model.attrs.users_form_attrmap
     props:
-        label: User form attribute mapping
+        label: User form attributes
         head:
             key: LDAP attr name
             value: Form label

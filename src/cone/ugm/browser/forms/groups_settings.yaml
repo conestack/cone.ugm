@@ -8,30 +8,30 @@ widgets:
     factory: field:label:error:text
     value: expr:context.model.attrs.groups_dn
     props:
-        label: Groups Base DN
+        label: Groups container DN
         required: No Groups DN defined
 - groups_scope:
     factory: field:label:select
     value: expr:context.model.attrs.groups_scope
     props:
-        label: Groups scope
+        label: Groups search scope
         vocabulary: expr:context.scope_vocab
 - groups_query:
     factory: field:label:text
     value: expr:context.model.attrs.groups_query
     props:
-        label: Groups query
+        label: Groups search query filter
 - groups_object_classes:
     factory: field:label:text
     value: expr:u', '.join(context.model.attrs.get('groups_object_classes', []))
     props:
         label: Groups object classes
-- groups_attrmap:
+- groups_aliases_attrmap:
     factory: field:label:error:dict
-    value: expr:context.groups_attrmap
+    value: expr:context.groups_aliases_attrmap
     props:
-        label: Group attribute mapping
-        required: Group attribute mapping values are mandatory
+        label: Group attribute aliases
+        required: Group attribute aliases values are mandatory
         static: True
         head:
             key: Reserved key
@@ -40,7 +40,7 @@ widgets:
     factory: field:label:dict
     value: expr:context.model.attrs.groups_form_attrmap
     props:
-        label: Group form attribute mapping
+        label: Group form attributes
         head:
             key: LDAP attr name
             value: Form label

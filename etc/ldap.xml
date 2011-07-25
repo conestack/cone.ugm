@@ -11,7 +11,7 @@
     <item>organizationalPerson</item>
     <item>inetOrgPerson</item>
   </users_object_classes>
-  <users_attrmap>
+  <users_aliases_attrmap>
     <elem>
       <key>rdn</key>
       <value>uid</value>
@@ -24,7 +24,7 @@
       <key>login</key>
       <value>uid</value>
     </elem>
-  </users_attrmap>
+  </users_aliases_attrmap>
   <users_form_attrmap>
     <elem>
       <key>id</key>
@@ -68,7 +68,7 @@
   <groups_object_classes>
     <item>groupOfNames</item>
   </groups_object_classes>
-  <groups_attrmap>
+  <groups_aliases_attrmap>
     <elem>
       <key>rdn</key>
       <value>cn</value>
@@ -77,7 +77,7 @@
       <key>id</key>
       <value>cn</value>
     </elem>
-  </groups_attrmap>
+  </groups_aliases_attrmap>
   <groups_form_attrmap>
     <elem>
       <key>id</key>

@@ -90,7 +90,7 @@ class UsersSettings(UgmSettings):
             node = queryNode(
                 self.parent['ugm_server'].ldap_props, self._config.users_dn)
             return bool(node)
-        except ldap.LDAPError, e:
+        except ldap.LDAPError:
             return False
     
     @property
@@ -98,8 +98,8 @@ class UsersSettings(UgmSettings):
         if not hasattr(self, '_ldap_ucfg') or self._ldap_ucfg is None:
             config = self._config
             map = dict()
-            for key in config.users_attrmap.keys():
-                map[key] = config.users_attrmap[key]
+            for key in config.users_aliases_attrmap.keys():
+                map[key] = config.users_aliases_attrmap[key]
             for key in config.users_form_attrmap.keys():
                 if key in ['id', 'login']:
                     continue
@@ -136,8 +136,8 @@ class GroupsSettings(UgmSettings):
         if not hasattr(self, '_ldap_gcfg') or self._ldap_gcfg is None:
             config = self._config
             map = dict()
-            for key in config.groups_attrmap.keys():
-                map[key] = config.groups_attrmap[key]
+            for key in config.groups_aliases_attrmap.keys():
+                map[key] = config.groups_aliases_attrmap[key]
             for key in config.groups_form_attrmap.keys():
                 if key in ['id']:
                     continue
