@@ -100,14 +100,14 @@ Add::
     >>> res.find(expected) > -1
     True
     
-    >>> request.params['groupform.name'] = ''
+    >>> request.params['groupform.id'] = ''
     >>> request.params['action.groupform.save'] = '1'
     
     >>> res = render_tile(groups, request, 'add')
-    >>> res.find('class="errormessage">No group id defined') > -1
+    >>> res.find('class="errormessage">No Id defined') > -1
     True
     
-    >>> request.params['groupform.name'] = 'group99'
+    >>> request.params['groupform.id'] = 'group99'
     
     >>> res = render_tile(groups, request, 'add')
     >>> res
@@ -132,7 +132,7 @@ Edit::
     >>> res.find(expected) > -1
     True
     
-    >> request.params['groupform.name'] = 'group99'
+    >> request.params['groupform.id'] = 'group99'
     >> request.params['action.groupform.save'] = '1'
     >> res = render_tile(group, request, 'edit')
     >> res

@@ -18,6 +18,7 @@ from cone.app.browser.authoring import (
 )
 from cone.app.browser.ajax import AjaxAction
 from cone.ugm.model.group import Group
+from cone.ugm.model.utils import ugm_groups
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.listing import ColumnListing
 from cone.ugm.browser.authoring import (
@@ -137,49 +138,84 @@ class AllUsersColumnListing(ColumnListing):
 
 class GroupForm(object):
 
+    @property
+    def schema(self):
+        # XXX: get info from config...
+        return {
+            'id': {
+                'chain': 'field:*ascii:*exists:label:error:text',
+                'props': {
+                    'ascii': True},
+                'custom': {
+                    'ascii': ([ascii_extractor], [], [], []),
+                    'exists': ([self.exists], [], [], [])
+                    },
+                }}
+
+    @property
+    def _protected_fields(self):
+        # XXX: get info from config...
+        return ['id']
+
+    @property
+    def _required_fields(self):
+        # XXX: get info from config...
+        return ['id']
+    
     def prepare(self):
-        resource = 'add'
-        if self.model.name is not None:
-            resource = 'edit'
+        resource = self.action_resource
         action = make_url(self.request, node=self.model, resource=resource)
+        # create group form
         form = factory(
             u'form',
             name='groupform',
             props={
                 'action': action,
             })
-        props = {
-            'label': 'Name',
-            'required': 'No group id defined',
-            'ascii': True,
-            'html5required': False,
-        }
-        if resource == 'edit':
-            props['mode'] = 'display'
-        form['name'] = factory(
-            'field:*ascii:*exists:label:error:mode:text',
-            value=self.model.name,
-            props=props,
-            custom= {
-                'ascii': ([ascii_extractor], [], [], []),
-                'exists': ([self.exists], [], [], []),
+        settings = ugm_groups(self.model)
+        attrmap = settings.attrs.groups_form_attrmap
+        if not attrmap:
+            return form
+        schema = self.schema
+        required = self._required_fields
+        protected = self._protected_fields
+        default_chain = 'field:label:error:text'
+        for key, val in attrmap.items():
+            field = schema.get(key, dict())
+            chain = field.get('chain', default_chain)
+            props = dict()
+            props['label'] = val
+            if key in required:
+                props['required'] = 'No %s defined' % val
+            props.update(field.get('props', dict()))
+            value = UNSET
+            mode = 'edit'
+            if resource == 'edit':
+                if key in protected:
+                    mode = 'display'
+                value = self.model.attrs.get(key, u'')
+            form[key] = factory(
+                chain,
+                value=value,
+                props=props,
+                custom=field.get('custom', dict()),
+                mode=mode)
+        form['save'] = factory(
+            'submit',
+            props = {
+                'action': 'save',
+                'expression': True,
+                'handler': self.save,
+                'next': self.next,
+                'label': 'Save',
             })
-        if resource =='add': # XXX: no fields to edit atm
-            form['save'] = factory(
-                'submit',
-                props={
-                    'action': 'save',
-                    'expression': True,
-                    'handler': self.save,
-                    'next': self.next,
-                    'label': 'Save',
-                })
-        if resource =='add':
+        if resource == 'add':
             form['cancel'] = factory(
                 'submit',
-                props={
+                props = {
                     'action': 'cancel',
                     'expression': True,
+                    'handler': None,
                     'next': self.next,
                     'label': 'Cancel',
                     'skip': True,
@@ -204,11 +240,8 @@ class GroupAddForm(GroupForm, Form):
     show_heading = False
 
     def save(self, widget, data):
-        #settings = ugm_settings(self.model)
-        #attrmap = settings.attrs.groups_form_attrmap
-        attrmap = {
-            'name': 'cn',
-        }
+        settings = ugm_groups(self.model)
+        attrmap = settings.attrs.groups_form_attrmap
         extracted = dict()
         for key, val in attrmap.items():
             val = data.fetch('groupform.%s' % key).extracted
@@ -216,12 +249,12 @@ class GroupAddForm(GroupForm, Form):
                 continue
             extracted[key] = val
         groups = self.model.parent.backend
-        id = extracted.pop('name')
+        id = extracted.pop('id')
         group = groups.create(id, **extracted)
         self.request.environ['next_resource'] = id
         groups()
         self.model.parent.invalidate()
-        # XXX: access already added group after invalidation.
+        # XXX: access already added user after invalidation.
         #      if not done, there's some kind of race condition with ajax
         #      continuation. figure out why.
         self.model.parent[id]
@@ -250,9 +283,15 @@ class GroupEditForm(GroupForm, Form):
     show_heading = False
 
     def save(self, widget, data):
-        # XXX
-        pass
-
+        settings = ugm_groups(self.model)
+        attrmap = settings.attrs.groups_form_attrmap
+        for key, val in attrmap.items():
+            if key in ['id']:
+                continue
+            extracted = data.fetch('groupform.%s' % key).extracted
+            self.model.attrs[key] = extracted
+        self.model.model.context()
+    
     def next(self, request):
         url = make_url(request.request, node=self.model)
         if self.ajax_request:

@@ -142,10 +142,10 @@ class UserForm(object):
 
     @property
     def schema(self):
-        # XXX: info from LDAP Schema.
+        # XXX: get info from config...
         return {
             'id': {
-                'chain': 'field:*ascii:*exists:label:error:mode:text',
+                'chain': 'field:*ascii:*exists:label:error:text',
                 'props': {
                     'ascii': True},
                 'custom': {
@@ -154,13 +154,13 @@ class UserForm(object):
                     },
                 },
             'login': {
-                'chain': 'field:*ascii:label:error:mode:text',
+                'chain': 'field:*ascii:label:error:text',
                 'props': {
                     'ascii': True},
                 'custom': {
                     'ascii': ([ascii_extractor], [], [], [])}},
             'mail': {
-                'chain': 'field:label:error:mode:email',
+                'chain': 'field:label:error:email',
                 'props': {
                     'html5type': False,
                 }},
@@ -172,21 +172,21 @@ class UserForm(object):
 
     @property
     def _protected_fields(self):
+        # XXX: get info from config...
         return ['id', 'login']
 
     @property
     def _required_fields(self):
+        # XXX: get info from config...
         return ['id', 'login', 'cn', 'sn', 'mail', 'userPassword']
 
     def prepare(self):
-        resource = 'add'
-        if self.model.name is not None:
-            resource = 'edit'
-
-            # XXX: tmp - load props each time they are accessed.
+        resource = self.action_resource
+        # XXX: tmp - load props each time they are accessed.
+        if resource == 'edit':
             self.model.attrs.context.load()
-
         action = make_url(self.request, node=self.model, resource=resource)
+        # create user form
         form = factory(
             u'form',
             name='userform',
@@ -200,26 +200,27 @@ class UserForm(object):
         schema = self.schema
         required = self._required_fields
         protected = self._protected_fields
-        default_chain = 'field:label:error:mode:text'
+        default_chain = 'field:label:error:text'
         for key, val in attrmap.items():
             field = schema.get(key, dict())
             chain = field.get('chain', default_chain)
             props = dict()
             props['label'] = val
-            props['html5required'] = False
             if key in required:
                 props['required'] = 'No %s defined' % val
             props.update(field.get('props', dict()))
             value = UNSET
+            mode = 'edit'
             if resource == 'edit':
                 if key in protected:
-                    props['mode'] = 'display'
+                    mode = 'display'
                 value = self.model.attrs.get(key, u'')
             form[key] = factory(
                 chain,
                 value=value,
                 props=props,
-                custom=field.get('custom', dict()))
+                custom=field.get('custom', dict()),
+                mode=mode)
         form['save'] = factory(
             'submit',
             props = {
