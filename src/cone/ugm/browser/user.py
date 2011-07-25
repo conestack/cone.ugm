@@ -325,6 +325,15 @@ class UserAddForm(UserForm, Form):
         password = extracted.pop('userPassword')
         user = users.create(id, **extracted)
         self.request.environ['next_resource'] = id
+        
+        # smb password hack
+        if 'sambaSamAccount' in settings.attrs.users_object_classes:
+            from node.ext.ldap.ugm.samba import \
+                sambaNTPassword, sambaLMPassword
+            # access LDAP node directly here, attrs not aliased, thus protected
+            user.context.attrs['sambaNTPassword'] = sambaNTPassword(password)
+            user.context.attrs['sambaLMPassword'] = sambaLMPassword(password)
+        
         users()
         if password is not UNSET:
             users.passwd(id, None, password)
@@ -365,11 +374,23 @@ class UserEditForm(UserForm, Form):
                 continue
             extracted = data.fetch('userform.%s' % key).extracted
             self.model.attrs[key] = extracted
-        self.model.model.context()
+        
         password = data.fetch('userform.userPassword').extracted
+        
+        # smb password hack
+        if 'sambaSamAccount' in settings.attrs.users_object_classes:
+            from node.ext.ldap.ugm.samba import \
+                sambaNTPassword, sambaLMPassword
+            # access LDAP node directly here, attrs not aliased, thus protected
+            user = self.model.model.context
+            user.attrs['sambaNTPassword'] = sambaNTPassword(password)
+            user.attrs['sambaLMPassword'] = sambaLMPassword(password)
+        
+        self.model.model.context()
         if password is not UNSET:
             id = self.model.name
-            self.model.parent.ldap_users.passwd(id, None, password)
+            # XXX: MD5 if samba? or always?
+            self.model.parent.backend.passwd(id, None, password)
 
     def next(self, request):
         url = make_url(request.request, node=self.model)
