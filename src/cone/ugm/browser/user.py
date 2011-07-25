@@ -5,7 +5,6 @@ from yafowil.base import (
     factory,
     UNSET,
 )
-from yafowil.common import ascii_extractor
 from cone.tile import (
     tile,
     Tile,
@@ -20,6 +19,7 @@ from cone.app.browser.authoring import (
     EditPart,
 )
 from cone.app.browser.ajax import AjaxAction
+from cone.ugm import form_field_definitions
 from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_users
 from cone.ugm.browser.columns import Column
@@ -137,6 +137,7 @@ class AllGroupsColumnListing(ColumnListing):
     def ajax_action(self):
         return 'allcolumnlisting'
 
+from yafowil.common import ascii_extractor
 
 class UserForm(object):
 
@@ -197,6 +198,55 @@ class UserForm(object):
         attrmap = settings.attrs.users_form_attrmap
         if not attrmap:
             return form
+        
+        # XXX: later
+        
+#        schema = form_field_definitions.user
+#        default = form_field_definitions.user['default']
+#        for key, val in attrmap.items():
+#            field = schema.get(key, default)
+#            chain = field['chain']
+#            props = dict()
+#            props['label'] = val
+#            if field.get('required'):
+#                props['required'] = 'No %s defined' % val
+#            props.update(field.get('props', dict()))
+#            value = UNSET
+#            mode = 'edit'
+#            if resource == 'edit':
+#                if field.get('protected'):
+#                    mode = 'display'
+#                value = self.model.attrs.get(key, u'')
+#            
+#            custom = field.get('custom', dict())
+#            custom_parsed = dict()
+#            if custom.keys():
+#                for key, val in custom.items():
+#                    val_parsed = list()
+#                    for chain in val:
+#                        chain_parsed = list()
+#                        for part in chain:
+#                            if isinstance(part, basestring):
+#                                if not part.startswith('context.'):
+#                                    raise Exception(
+#                                        u"chain callable definition invalid")
+#                                attrname = part[part.index('.') + 1:]
+#                                callable = getattr(self, attrname)
+#                            else:
+#                                callable = part
+#                            chain_parsed.append(callable)
+#                        val_parsed.append(chain_parsed)
+#                    custom_parsed[key] = tuple(val_parsed)
+#            
+#            import pdb;pdb.set_trace()
+#            
+#            form[key] = factory(
+#                chain,
+#                value=value,
+#                props=props,
+#                custom=custom_parsed,
+#                mode=mode)
+
         schema = self.schema
         required = self._required_fields
         protected = self._protected_fields
@@ -221,6 +271,7 @@ class UserForm(object):
                 props=props,
                 custom=field.get('custom', dict()),
                 mode=mode)
+
         form['save'] = factory(
             'submit',
             props = {

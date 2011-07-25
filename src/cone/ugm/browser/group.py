@@ -1,7 +1,6 @@
 from plumber import plumber
 from node.base import AttributedNode
 from yafowil.base import factory, ExtractionError
-from yafowil.common import ascii_extractor
 from yafowil.utils import UNSET
 from cone.tile import (
     tile,
@@ -17,6 +16,7 @@ from cone.app.browser.authoring import (
     EditPart,
 )
 from cone.app.browser.ajax import AjaxAction
+from cone.ugm import form_field_definitions
 from cone.ugm.model.group import Group
 from cone.ugm.model.utils import ugm_groups
 from cone.ugm.browser.columns import Column
@@ -135,6 +135,7 @@ class AllUsersColumnListing(ColumnListing):
     def ajax_action(self):
         return 'allcolumnlisting'
 
+from yafowil.common import ascii_extractor
 
 class GroupForm(object):
 
