@@ -1,5 +1,6 @@
 import os
 import ldap
+import cone.ugm
 from node.utils import instance_property
 from node.ext.ldap import LDAPProps
 from node.ext.ldap.base import testLDAPConnectivity
@@ -109,7 +110,8 @@ class UsersSettings(UgmSettings):
                 attrmap=map,
                 scope=int(config.users_scope),
                 queryFilter=config.users_query,
-                objectClasses=config.users_object_classes)
+                objectClasses=config.users_object_classes,
+                defaults=cone.ugm.factory_defaults.user)
         return self._ldap_ucfg
 
 
@@ -142,6 +144,7 @@ class GroupsSettings(UgmSettings):
                 if key in ['id']:
                     continue
                 map[key] = key
+            import cone.ugm
             self._ldap_gcfg = LDAPGroupsConfig(
                 baseDN=config.groups_dn,
                 attrmap=map,
@@ -149,6 +152,7 @@ class GroupsSettings(UgmSettings):
                 queryFilter=config.groups_query,
                 objectClasses=config.groups_object_classes,
                 member_relation=config.groups_relation,
+                defaults=cone.ugm.factory_defaults.group,
                 )
         return self._ldap_gcfg
 

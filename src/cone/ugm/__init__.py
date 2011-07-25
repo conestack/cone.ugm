@@ -35,9 +35,9 @@ cone.app.register_plugin('groups', Groups)
 backend = None
 
 # user and group factory defaults
-defaults = Properties()
-defaults.user = dict()
-defaults.group = dict()
+factory_defaults = Properties()
+factory_defaults.user = dict()
+factory_defaults.group = dict()
 
 # user and group form field definitions for yafowil
 # overwrite or extend in integration __init__
