@@ -15,9 +15,9 @@ from cone.app.browser.authoring import (
     EditPart,
 )
 from cone.app.browser.ajax import AjaxAction
-from cone.ugm import form_field_definitions
 from cone.ugm.model.group import Group
 from cone.ugm.model.utils import ugm_groups
+from cone.ugm.browser import form_field_definitions
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.listing import ColumnListing
 from cone.ugm.browser.authoring import (

@@ -17,9 +17,9 @@ from cone.app.browser.authoring import (
     EditPart,
 )
 from cone.app.browser.ajax import AjaxAction
-from cone.ugm import form_field_definitions
 from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_users
+from cone.ugm.browser import form_field_definitions
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.listing import ColumnListing
 from cone.ugm.browser.authoring import (
@@ -178,17 +178,9 @@ class UserAddForm(UserForm, Form):
         users = self.model.parent.backend
         id = extracted.pop('id')
         password = extracted.pop('userPassword')
-        user = users.create(id, **extracted)
+        #user = users.create(id, **extracted)
+        users.create(id, **extracted)
         self.request.environ['next_resource'] = id
-        
-        # smb password hack
-        if 'sambaSamAccount' in settings.attrs.users_object_classes:
-            from node.ext.ldap.ugm.samba import \
-                sambaNTPassword, sambaLMPassword
-            # access LDAP node directly here, attrs not aliased, thus protected
-            user.context.attrs['sambaNTPassword'] = sambaNTPassword(password)
-            user.context.attrs['sambaLMPassword'] = sambaLMPassword(password)
-        
         users()
         if password is not UNSET:
             users.passwd(id, None, password)
@@ -231,20 +223,9 @@ class UserEditForm(UserForm, Form):
             self.model.attrs[key] = extracted
         
         password = data.fetch('userform.userPassword').extracted
-        
-        # smb password hack
-        if 'sambaSamAccount' in settings.attrs.users_object_classes:
-            from node.ext.ldap.ugm.samba import \
-                sambaNTPassword, sambaLMPassword
-            # access LDAP node directly here, attrs not aliased, thus protected
-            user = self.model.model.context
-            user.attrs['sambaNTPassword'] = sambaNTPassword(password)
-            user.attrs['sambaLMPassword'] = sambaLMPassword(password)
-        
         self.model.model.context()
         if password is not UNSET:
             id = self.model.name
-            # XXX: MD5 if samba? or always?
             self.model.parent.backend.passwd(id, None, password)
 
     def next(self, request):

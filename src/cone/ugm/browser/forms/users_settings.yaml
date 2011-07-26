@@ -25,7 +25,7 @@ widgets:
     factory: field:label:text
     value: expr:u', '.join(context.model.attrs.get('users_object_classes', []))
     props:
-        label: Users object classes
+        label: Object classes for User creation
 - users_aliases_attrmap:
     factory: field:label:error:dict
     value: expr:context.users_aliases_attrmap

@@ -25,7 +25,7 @@ widgets:
     factory: field:label:text
     value: expr:u', '.join(context.model.attrs.get('groups_object_classes', []))
     props:
-        label: Groups object classes
+        label: Object classes for Group creation
 - groups_aliases_attrmap:
     factory: field:label:error:dict
     value: expr:context.groups_aliases_attrmap

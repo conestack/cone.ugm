@@ -105,13 +105,14 @@ class UsersSettings(UgmSettings):
                 if key in ['id', 'login']:
                     continue
                 map[key] = key
+            import cone.ugm.model
             self._ldap_ucfg = LDAPUsersConfig(
                 baseDN=config.users_dn,
                 attrmap=map,
                 scope=int(config.users_scope),
                 queryFilter=config.users_query,
                 objectClasses=config.users_object_classes,
-                defaults=cone.ugm.factory_defaults.user)
+                defaults=cone.ugm.model.factory_defaults.user)
         return self._ldap_ucfg
 
 
@@ -130,7 +131,7 @@ class GroupsSettings(UgmSettings):
             node = queryNode(
                 self.parent['ugm_server'].ldap_props, self._config.groups_dn)
             return bool(node)
-        except ldap.LDAPError, e:
+        except ldap.LDAPError:
             return False
     
     @property
@@ -144,7 +145,7 @@ class GroupsSettings(UgmSettings):
                 if key in ['id']:
                     continue
                 map[key] = key
-            import cone.ugm
+            import cone.ugm.model
             self._ldap_gcfg = LDAPGroupsConfig(
                 baseDN=config.groups_dn,
                 attrmap=map,
@@ -152,7 +153,7 @@ class GroupsSettings(UgmSettings):
                 queryFilter=config.groups_query,
                 objectClasses=config.groups_object_classes,
                 member_relation=config.groups_relation,
-                defaults=cone.ugm.factory_defaults.group,
+                defaults=cone.ugm.model.factory_defaults.group,
                 )
         return self._ldap_gcfg
 
