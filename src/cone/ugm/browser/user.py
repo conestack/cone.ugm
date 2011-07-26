@@ -1,8 +1,6 @@
 from plumber import plumber
-from odict import odict
 from yafowil.base import (
     ExtractionError,
-    factory,
     UNSET,
 )
 from cone.tile import (
@@ -23,12 +21,12 @@ from cone.ugm import form_field_definitions
 from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_users
 from cone.ugm.browser.columns import Column
-from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.browser.listing import ColumnListing
 from cone.ugm.browser.authoring import (
     AddFormFiddle,
     EditFormFiddle,
 )
+from cone.ugm.browser.principal import PrincipalForm
 from webob.exc import HTTPFound
 
 
@@ -137,162 +135,19 @@ class AllGroupsColumnListing(ColumnListing):
     def ajax_action(self):
         return 'allcolumnlisting'
 
-from yafowil.common import ascii_extractor
 
-class UserForm(object):
-
+class UserForm(PrincipalForm):
+    
+    form_name = 'userform'
+    
     @property
-    def schema(self):
-        # XXX: get info from config...
-        return {
-            'id': {
-                'chain': 'field:*ascii:*exists:label:error:text',
-                'props': {
-                    'ascii': True},
-                'custom': {
-                    'ascii': ([ascii_extractor], [], [], []),
-                    'exists': ([self.exists], [], [], [])
-                    },
-                },
-            'login': {
-                'chain': 'field:*ascii:label:error:text',
-                'props': {
-                    'ascii': True},
-                'custom': {
-                    'ascii': ([ascii_extractor], [], [], [])}},
-            'mail': {
-                'chain': 'field:label:error:email',
-                'props': {
-                    'html5type': False,
-                }},
-            'userPassword': {
-                'chain': 'field:label:error:password',
-                'props': {
-                    'minlength': 6,
-                    'ascii': True}}}
-
-    @property
-    def _protected_fields(self):
-        # XXX: get info from config...
-        return ['id', 'login']
-
-    @property
-    def _required_fields(self):
-        # XXX: get info from config...
-        return ['id', 'login', 'cn', 'sn', 'mail', 'userPassword']
-
-    def prepare(self):
-        resource = self.action_resource
-        # XXX: tmp - load props each time they are accessed.
-        if resource == 'edit':
-            self.model.attrs.context.load()
-        action = make_url(self.request, node=self.model, resource=resource)
-        # create user form
-        form = factory(
-            u'form',
-            name='userform',
-            props={
-                'action': action,
-            })
+    def form_attrmap(self):
         settings = ugm_users(self.model)
-        attrmap = settings.attrs.users_form_attrmap
-        if not attrmap:
-            return form
-        
-        # XXX: later
-        
-#        schema = form_field_definitions.user
-#        default = form_field_definitions.user['default']
-#        for key, val in attrmap.items():
-#            field = schema.get(key, default)
-#            chain = field['chain']
-#            props = dict()
-#            props['label'] = val
-#            if field.get('required'):
-#                props['required'] = 'No %s defined' % val
-#            props.update(field.get('props', dict()))
-#            value = UNSET
-#            mode = 'edit'
-#            if resource == 'edit':
-#                if field.get('protected'):
-#                    mode = 'display'
-#                value = self.model.attrs.get(key, u'')
-#            
-#            custom = field.get('custom', dict())
-#            custom_parsed = dict()
-#            if custom.keys():
-#                for key, val in custom.items():
-#                    val_parsed = list()
-#                    for chain in val:
-#                        chain_parsed = list()
-#                        for part in chain:
-#                            if isinstance(part, basestring):
-#                                if not part.startswith('context.'):
-#                                    raise Exception(
-#                                        u"chain callable definition invalid")
-#                                attrname = part[part.index('.') + 1:]
-#                                callable = getattr(self, attrname)
-#                            else:
-#                                callable = part
-#                            chain_parsed.append(callable)
-#                        val_parsed.append(chain_parsed)
-#                    custom_parsed[key] = tuple(val_parsed)
-#            
-#            import pdb;pdb.set_trace()
-#            
-#            form[key] = factory(
-#                chain,
-#                value=value,
-#                props=props,
-#                custom=custom_parsed,
-#                mode=mode)
-
-        schema = self.schema
-        required = self._required_fields
-        protected = self._protected_fields
-        default_chain = 'field:label:error:text'
-        for key, val in attrmap.items():
-            field = schema.get(key, dict())
-            chain = field.get('chain', default_chain)
-            props = dict()
-            props['label'] = val
-            if key in required:
-                props['required'] = 'No %s defined' % val
-            props.update(field.get('props', dict()))
-            value = UNSET
-            mode = 'edit'
-            if resource == 'edit':
-                if key in protected:
-                    mode = 'display'
-                value = self.model.attrs.get(key, u'')
-            form[key] = factory(
-                chain,
-                value=value,
-                props=props,
-                custom=field.get('custom', dict()),
-                mode=mode)
-
-        form['save'] = factory(
-            'submit',
-            props = {
-                'action': 'save',
-                'expression': True,
-                'handler': self.save,
-                'next': self.next,
-                'label': 'Save',
-            })
-        if resource =='add':
-            form['cancel'] = factory(
-                'submit',
-                props = {
-                    'action': 'cancel',
-                    'expression': True,
-                    'handler': None,
-                    'next': self.next,
-                    'label': 'Cancel',
-                    'skip': True,
-                })
-        self.form = form
+        return settings.attrs.users_form_attrmap
+    
+    @property
+    def form_field_definitions(self):
+        return form_field_definitions.user
 
     def exists(self, widget, data):
         id = data.extracted
@@ -369,7 +224,7 @@ class UserEditForm(UserForm, Form):
     def save(self, widget, data):
         settings = ugm_users(self.model)
         attrmap = settings.attrs.users_form_attrmap
-        for key, val in attrmap.items():
+        for key in attrmap:
             if key in ['id', 'login', 'userPassword']:
                 continue
             extracted = data.fetch('userform.%s' % key).extracted

@@ -7,6 +7,7 @@ from cone.ugm.model.settings import (
 )
 from cone.ugm.model.users import Users
 from cone.ugm.model.groups import Groups
+from yafowil.common import ascii_extractor
 
 # custom UGM styles
 cone.app.cfg.css.protected.append('cone.ugm.static/styles.css')
@@ -49,79 +50,55 @@ form_field_definitions = Properties()
 form_field_definitions.user = dict()
 form_field_definitions.group = dict()
 
-from yafowil.common import ascii_extractor
+# user default
+form_field_definitions.user['default'] = dict()
+form_field_definitions.user['default']['chain'] = 'field:label:error:text'
+form_field_definitions.user['default']['required'] = False
+form_field_definitions.user['default']['protected'] = False
 
-# known user field definitions
+# user id
+form_field_definitions.user['id'] = dict()
+form_field_definitions.user['id']['chain'] = \
+    'field:*ascii:*exists:label:error:text'
+form_field_definitions.user['id']['props'] = dict()
+form_field_definitions.user['id']['props']['ascii'] = True
+form_field_definitions.user['id']['custom'] = dict()
+form_field_definitions.user['id']['custom']['ascii'] = \
+    ([ascii_extractor], [], [], [], [])
+form_field_definitions.user['id']['custom']['exists'] = \
+    (['context.exists'], [], [], [], [])
+form_field_definitions.user['id']['required'] = True
+form_field_definitions.user['id']['protected'] = True
 
-form_field_definitions.user['default'] = {
-    'chain': 'field:label:error:text',
-    'required': False,
-    'protected': False,
-}
+# user login
+form_field_definitions.user['login'] = dict()
+form_field_definitions.user['login']['chain'] = 'field:*ascii:label:error:text'
+form_field_definitions.user['login']['props'] = dict()
+form_field_definitions.user['login']['props']['ascii'] = True
+form_field_definitions.user['login']['custom'] = dict()
+form_field_definitions.user['login']['custom']['ascii'] = \
+    ([ascii_extractor], [], [], [], [])
+form_field_definitions.user['login']['required'] = True
+form_field_definitions.user['login']['protected'] = True
 
-form_field_definitions.user['id'] = {
-    'chain': 'field:*ascii:*exists:label:error:text',
-    'props': {
-        'ascii': True,
-    },
-    'custom': {
-        'ascii': ([ascii_extractor], [], [], []),
-        'exists': (['context.exists'], [], [], []),
-        #'ascii': ([ascii_extractor], [], [], [], []),
-        #'exists': (['context.exists'], [], [], [], []),
-    },
-    'required': True,
-    'protected': True,
-}
+# user mail
+form_field_definitions.user['mail'] = dict()
+form_field_definitions.user['mail']['chain'] = 'field:label:error:email'
+form_field_definitions.user['mail']['required'] = False
+form_field_definitions.user['mail']['protected'] = False
 
-form_field_definitions.user['login'] = {
-    'chain': 'field:*ascii:label:error:text',
-    'props': {
-        'ascii': True,
-    },
-    'custom': {
-        'ascii': ([ascii_extractor], [], [], []),
-        #'ascii': ([ascii_extractor], [], [], [], []),
-    },
-    'required': True,
-    'protected': True,
-}
+# user userPassword
+form_field_definitions.user['userPassword'] = dict()
+form_field_definitions.user['userPassword']['chain'] = \
+    'field:label:error:password'
+form_field_definitions.user['userPassword']['props'] = dict()
+form_field_definitions.user['userPassword']['props']['minlength'] = 6
+form_field_definitions.user['userPassword']['props']['ascii'] = True
+form_field_definitions.user['userPassword']['required'] = True
+form_field_definitions.user['userPassword']['protected'] = False
 
-form_field_definitions.user['mail'] = {
-    'chain': 'field:label:error:email',
-    'required': False,
-    'protected': False,
-}
+# group default
+form_field_definitions.group['default'] = form_field_definitions.user['default']
 
-form_field_definitions.user['userPassword'] = {
-    'chain': 'field:label:error:password',
-    'props': {
-        'minlength': 6,
-        'ascii': True,
-    },
-    'required': True,
-    'protected': False,
-}
-
-# known group field definitions
-
-form_field_definitions.user['default'] = {
-    'chain': 'field:label:error:text',
-    'required': False,
-    'protected': False,
-}
-
-form_field_definitions.group['id'] = {
-    'chain': 'field:*ascii:*exists:label:error:text',
-    'props': {
-        'ascii': True,
-    },
-    'custom': {
-        'ascii': ([ascii_extractor], [], [], []),
-        'exists': (['context.exists'], [], [], []),
-        #'ascii': ([ascii_extractor], [], [], [], []),
-        #'exists': (['context.exists'], [], [], [], []),
-    },
-    'required': True,
-    'protected': True,
-}
+# group id
+form_field_definitions.group['id'] = form_field_definitions.user['id']

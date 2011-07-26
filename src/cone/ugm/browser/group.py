@@ -1,6 +1,5 @@
 from plumber import plumber
-from node.base import AttributedNode
-from yafowil.base import factory, ExtractionError
+from yafowil.base import ExtractionError
 from yafowil.utils import UNSET
 from cone.tile import (
     tile,
@@ -25,6 +24,7 @@ from cone.ugm.browser.authoring import (
     AddFormFiddle,
     EditFormFiddle,
 )
+from cone.ugm.browser.principal import PrincipalForm
 from webob.exc import HTTPFound
 
 
@@ -135,93 +135,19 @@ class AllUsersColumnListing(ColumnListing):
     def ajax_action(self):
         return 'allcolumnlisting'
 
-from yafowil.common import ascii_extractor
 
-class GroupForm(object):
-
-    @property
-    def schema(self):
-        # XXX: get info from config...
-        return {
-            'id': {
-                'chain': 'field:*ascii:*exists:label:error:text',
-                'props': {
-                    'ascii': True},
-                'custom': {
-                    'ascii': ([ascii_extractor], [], [], []),
-                    'exists': ([self.exists], [], [], [])
-                    },
-                }}
-
-    @property
-    def _protected_fields(self):
-        # XXX: get info from config...
-        return ['id']
-
-    @property
-    def _required_fields(self):
-        # XXX: get info from config...
-        return ['id']
+class GroupForm(PrincipalForm):
     
-    def prepare(self):
-        resource = self.action_resource
-        action = make_url(self.request, node=self.model, resource=resource)
-        # create group form
-        form = factory(
-            u'form',
-            name='groupform',
-            props={
-                'action': action,
-            })
+    form_name = 'groupform'
+    
+    @property
+    def form_attrmap(self):
         settings = ugm_groups(self.model)
-        attrmap = settings.attrs.groups_form_attrmap
-        if not attrmap:
-            return form
-        schema = self.schema
-        required = self._required_fields
-        protected = self._protected_fields
-        default_chain = 'field:label:error:text'
-        for key, val in attrmap.items():
-            field = schema.get(key, dict())
-            chain = field.get('chain', default_chain)
-            props = dict()
-            props['label'] = val
-            if key in required:
-                props['required'] = 'No %s defined' % val
-            props.update(field.get('props', dict()))
-            value = UNSET
-            mode = 'edit'
-            if resource == 'edit':
-                if key in protected:
-                    mode = 'display'
-                value = self.model.attrs.get(key, u'')
-            form[key] = factory(
-                chain,
-                value=value,
-                props=props,
-                custom=field.get('custom', dict()),
-                mode=mode)
-        form['save'] = factory(
-            'submit',
-            props = {
-                'action': 'save',
-                'expression': True,
-                'handler': self.save,
-                'next': self.next,
-                'label': 'Save',
-            })
-        if resource == 'add':
-            form['cancel'] = factory(
-                'submit',
-                props = {
-                    'action': 'cancel',
-                    'expression': True,
-                    'handler': None,
-                    'next': self.next,
-                    'label': 'Cancel',
-                    'skip': True,
-                })
-        self.form = form
+        return settings.attrs.groups_form_attrmap
+    
+    @property
+    def form_field_definitions(self):
+        return form_field_definitions.group
 
     def exists(self, widget, data):
         group_id = data.extracted
@@ -251,7 +177,8 @@ class GroupAddForm(GroupForm, Form):
             extracted[key] = val
         groups = self.model.parent.backend
         id = extracted.pop('id')
-        group = groups.create(id, **extracted)
+        #group = groups.create(id, **extracted)
+        groups.create(id, **extracted)
         self.request.environ['next_resource'] = id
         groups()
         self.model.parent.invalidate()
@@ -286,7 +213,7 @@ class GroupEditForm(GroupForm, Form):
     def save(self, widget, data):
         settings = ugm_groups(self.model)
         attrmap = settings.attrs.groups_form_attrmap
-        for key, val in attrmap.items():
+        for key in attrmap:
             if key in ['id']:
                 continue
             extracted = data.fetch('groupform.%s' % key).extracted
