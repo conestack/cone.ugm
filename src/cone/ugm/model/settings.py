@@ -152,7 +152,7 @@ class GroupsSettings(UgmSettings):
                 scope=int(config.groups_scope),
                 queryFilter=config.groups_query,
                 objectClasses=config.groups_object_classes,
-                member_relation=config.groups_relation,
+                #member_relation=config.groups_relation,
                 defaults=cone.ugm.model.factory_defaults.group,
                 )
         return self._ldap_gcfg

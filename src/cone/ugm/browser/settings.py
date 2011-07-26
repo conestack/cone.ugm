@@ -198,7 +198,7 @@ class GroupsSettingsForm(Form, VocabMixin):
                           'groups_object_classes',
                           'groups_aliases_attrmap',
                           'groups_form_attrmap',
-                          'groups_relation',
+                          #'groups_relation',
                           'groups_listing_columns',
                           'groups_listing_default_column']:
             val = data.fetch('settings.%s' % attr_name).extracted

@@ -44,11 +44,11 @@ widgets:
         head:
             key: LDAP attr name
             value: Form label
-- groups_relation:
-    factory: field:label:text
-    value: expr:context.model.attrs.groups_relation
-    props:
-        label: Group-member-relation
+#- groups_relation:
+#    factory: field:label:text
+#    value: expr:context.model.attrs.groups_relation
+#    props:
+#        label: Group-member-relation
 - groups_listing_columns:
     factory: field:label:dict
     value: expr:context.groups_listing_columns
