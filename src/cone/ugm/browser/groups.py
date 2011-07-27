@@ -1,3 +1,4 @@
+import logging
 from cone.tile import (
     tile,
     Tile,
@@ -8,6 +9,9 @@ from cone.app.browser.utils import (
 )
 from cone.ugm.model.groups import Groups
 from cone.ugm.browser.listing import ColumnListing
+
+
+logger = logging.getLogger('cone.ugm')
 
 
 @tile('leftcolumn', 'templates/left_column.pt',
@@ -69,5 +73,5 @@ class GroupsColumnListing(ColumnListing):
                 ret.append(item)
             return ret
         except Exception, e:
-            print e
+            logger.error(str(e))
         return list()

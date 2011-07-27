@@ -1,3 +1,4 @@
+import logging
 from node.utils import instance_property
 from node.ext.ldap.ugm import Users as LDAPUsers
 from cone.app.model import (
@@ -10,6 +11,9 @@ from cone.app.model import (
 from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_backend
 from cone.ugm.browser.utils import unquote_slash
+
+
+logger = logging.getLogger('cone.ugm')
 
 
 class Users(BaseNode):
@@ -39,8 +43,7 @@ class Users(BaseNode):
             for key in self.backend:
                 yield key
         except Exception, e:
-            # XXX: explicit exception, define in node.ext.ugm
-            raise e
+            logger.error(str(e))
 
     iterkeys = __iter__
 
