@@ -70,14 +70,12 @@ Test invalidation::
     >>> backend is groups.backend
     False
 
-Check for errors if ugm is not configured properly::
+Check if ugm is not configured properly::
 
     >>> settings = root['settings']['ugm_server']
     >>> settings.invalidate()
     >>> [k for k in groups]
-    Traceback (most recent call last):
-      ...
-    NO_SUCH_OBJECT: {'matched': 'dc=my-domain,dc=com', 'desc': 'No such object'}
+    []
 
     >>> layer.logout()
 
