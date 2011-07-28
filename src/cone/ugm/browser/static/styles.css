@@ -242,17 +242,6 @@ a.delete_item_disabled {
     background:url('/cone.ugm.static/images/icon_delete_disabled.png') 50% 50% no-repeat;
 }
 
-/* roles form extension */
-#field-userform-principal_roles div {
-	width:334px;
-}
-#field-userform-principal_roles div input {
-	float:left;
-}
-#field-userform-principal_roles div label {
-	margin-top:4px;
-}
-
 /* user form */
 #form-userform .error {
     width:334px;
@@ -273,6 +262,17 @@ a.delete_item_disabled {
     padding:2px;
 }
 
+/* roles form extension userform */
+#field-userform-principal_roles div {
+    width:334px;
+}
+#field-userform-principal_roles div input {
+    float:left;
+}
+#field-userform-principal_roles div label {
+    margin-top:4px;
+}
+
 /* group form */
 #form-groupform .error {
     width:334px;
@@ -285,7 +285,18 @@ a.delete_item_disabled {
 #form-groupform #input-groupform-cancel {
     width:100px;
 }
-#form-groupform #field-groupform-name input {
+#form-groupform #field-groupform-id div {
     width:330px;
     padding:2px;
+}
+
+/* roles form extension groupform */
+#field-groupform-principal_roles div {
+    width:334px;
+}
+#field-groupform-principal_roles div input {
+    float:left;
+}
+#field-groupform-principal_roles div label {
+    margin-top:4px;
 }
