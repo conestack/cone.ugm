@@ -242,6 +242,17 @@ a.delete_item_disabled {
     background:url('/cone.ugm.static/images/icon_delete_disabled.png') 50% 50% no-repeat;
 }
 
+/* roles form extension */
+#field-userform-principal_roles div {
+	width:334px;
+}
+#field-userform-principal_roles div input {
+	float:left;
+}
+#field-userform-principal_roles div label {
+	margin-top:4px;
+}
+
 /* user form */
 #form-userform .error {
     width:334px;
