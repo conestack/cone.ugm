@@ -3,6 +3,7 @@ from plumber import (
     default,
     plumb,
 )
+from pyramid.security import has_permission
 from yafowil.base import factory
 from cone.ugm.model.utils import ugm_roles
 
@@ -32,6 +33,9 @@ class PrincipalRolesForm(Part):
         _next(self)
         if not self.roles_support:
             return
+        if not has_permission('manage', self.model.parent, self.request):
+            # XXX: yafowil selection display renderer
+            return
         value = []
         if self.action_resource == 'edit':
             value = self.model.model.roles
@@ -53,6 +57,8 @@ class PrincipalRolesForm(Part):
     def save(_next, self, widget, data):
         _next(self, widget, data)
         if not self.roles_support:
+            return
+        if not has_permission('manage', self.model.parent, self.request):
             return
         existing_roles = list()
         if self.action_resource == 'edit':

@@ -216,7 +216,7 @@ class GroupAddForm(GroupForm, Form):
         return HTTPFound(location=url)
 
 
-@tile('editform', interface=Group, permission="edit")
+@tile('editform', interface=Group, permission="edit", strict=False)
 class GroupEditForm(GroupForm, Form):
     __metaclass__ = plumber
     __plumbing__ = EditPart, PrincipalRolesForm, EditFormFiddle

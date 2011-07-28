@@ -218,7 +218,7 @@ class UserAddForm(UserForm, Form):
         return HTTPFound(location=url)
 
 
-@tile('editform', interface=User, permission='edit')
+@tile('editform', interface=User, permission='edit', strict=False)
 class UserEditForm(UserForm, Form):
     __metaclass__ = plumber
     __plumbing__ = EditPart, PrincipalRolesForm, EditFormFiddle
