@@ -1,9 +1,11 @@
-from yafowil.base import factory
 from plumber import (
     Part,
     default,
     plumb,
 )
+from yafowil.base import factory
+from cone.ugm.model.utils import ugm_roles
+
 
 class PrincipalRolesForm(Part):
     
@@ -17,19 +19,28 @@ class PrincipalRolesForm(Part):
             ('manager', 'Manager'),
         ]
     
+    @default
+    @property
+    def roles_support(self):
+        return ugm_roles(self.model).ldap_roles_container_valid
+    
     @plumb
     def prepare(_next, self):
         """Hook after prepare and set 'principal_roles' as selection to 
         ``self.form``.
         """
         _next(self)
+        if not self.roles_support:
+            return
         value = []
+        if self.action_resource == 'edit':
+            value = self.model.model.roles
         roles_widget = factory(
             'field:label:select',
             name='principal_roles',
             value=value,
             props={
-                'label': 'User roles',
+                'label': 'Roles',
                 'multivalued': True,
                 'vocabulary': self.roles_vocab,
                 'format': 'checkbox',
@@ -41,3 +52,23 @@ class PrincipalRolesForm(Part):
     @plumb
     def save(_next, self, widget, data):
         _next(self, widget, data)
+        if not self.roles_support:
+            return
+        existing_roles = list()
+        if self.action_resource == 'edit':
+            principal = self.model.model
+            existing_roles = principal.roles
+        else:
+            id = data.fetch('%s.id' % self.form_name).extracted
+            principal = self.model.parent[id].model
+        new_roles = data.fetch('%s.principal_roles' % self.form_name).extracted
+        removed_roles = list()
+        for role in existing_roles:
+            if not role in new_roles:
+                principal.remove_role(role)
+                removed_roles.append(role)
+        for role in removed_roles:
+            existing_roles.remove(role)
+        for role in new_roles:
+            if not role in existing_roles:
+                principal.add_role(role)
