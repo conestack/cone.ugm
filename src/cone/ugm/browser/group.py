@@ -20,6 +20,7 @@ from cone.ugm.model.utils import ugm_groups
 from cone.ugm.browser import form_field_definitions
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.listing import ColumnListing
+from cone.ugm.browser.roles import PrincipalRolesForm
 from cone.ugm.browser.authoring import (
     AddFormFiddle,
     EditFormFiddle,
@@ -162,7 +163,7 @@ class GroupForm(PrincipalForm):
 @tile('addform', interface=Group, permission="add")
 class GroupAddForm(GroupForm, Form):
     __metaclass__ = plumber
-    __plumbing__ = AddPart, AddFormFiddle
+    __plumbing__ = AddPart, PrincipalRolesForm, AddFormFiddle
     
     show_heading = False
 
@@ -206,7 +207,7 @@ class GroupAddForm(GroupForm, Form):
 @tile('editform', interface=Group, permission="edit")
 class GroupEditForm(GroupForm, Form):
     __metaclass__ = plumber
-    __plumbing__ = EditPart, EditFormFiddle
+    __plumbing__ = EditPart, PrincipalRolesForm, EditFormFiddle
     
     show_heading = False
 

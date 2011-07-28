@@ -22,6 +22,7 @@ from cone.ugm.model.utils import ugm_users
 from cone.ugm.browser import form_field_definitions
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.listing import ColumnListing
+from cone.ugm.browser.roles import PrincipalRolesForm
 from cone.ugm.browser.authoring import (
     AddFormFiddle,
     EditFormFiddle,
@@ -162,7 +163,7 @@ class UserForm(PrincipalForm):
 @tile('addform', interface=User, permission='add')
 class UserAddForm(UserForm, Form):
     __metaclass__ = plumber
-    __plumbing__ = AddPart, AddFormFiddle
+    __plumbing__ = AddPart, PrincipalRolesForm, AddFormFiddle
     
     show_heading = False
 
@@ -209,7 +210,7 @@ class UserAddForm(UserForm, Form):
 @tile('editform', interface=User, permission='edit')
 class UserEditForm(UserForm, Form):
     __metaclass__ = plumber
-    __plumbing__ = EditPart, EditFormFiddle
+    __plumbing__ = EditPart, PrincipalRolesForm, EditFormFiddle
     
     show_heading = False
 
