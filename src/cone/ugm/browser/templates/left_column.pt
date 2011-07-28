@@ -1,7 +1,8 @@
 <tal:ajax xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax" omit-tag="True">
   <div class="column left_column box">
   
-    <div class="add_button">
+    <div class="add_button"
+         tal:condition="context.can_add">
       <form action="#">
         <input type="submit"
                name="add"

@@ -1,4 +1,5 @@
 import logging
+from pyramid.security import has_permission
 from cone.tile import (
     tile,
     Tile,
@@ -26,6 +27,10 @@ class UsersLeftColumn(Tile):
         return make_url(self.request,
                         node=self.model.root['users'],
                         query=make_query(factory=u'user'))
+    
+    @property
+    def can_add(self):
+        return has_permission('add', self.model, self.request)
 
 
 @tile('rightcolumn', interface=Users, permission='view')
@@ -50,6 +55,7 @@ class UsersColumnListing(ColumnListing):
 
     @property
     def query_items(self):
+        can_delete = has_permission('delete', self.model, self.request)
         try:
             col_1_attr, col_2_attr, col_3_attr, sort_attr = self.user_attrs
             ret = list()
@@ -60,12 +66,15 @@ class UsersColumnListing(ColumnListing):
                 target = make_url(self.request,
                                   node=self.model,
                                   resource=key)
-    
-                action_id = 'delete_item'
-                action_title = 'Delete User'
-                delete_action = self.create_action(
-                    action_id, True, action_title, target)
-    
+                
+                actions = list()
+                if can_delete:
+                    action_id = 'delete_item'
+                    action_title = 'Delete User'
+                    delete_action = self.create_action(
+                        action_id, True, action_title, target)
+                    actions = [delete_action]
+                
                 val_1 = self.extract_raw(attrs, col_1_attr)
                 val_2 = self.extract_raw(attrs, col_2_attr)
                 val_3 = self.extract_raw(attrs, col_3_attr)
@@ -73,7 +82,7 @@ class UsersColumnListing(ColumnListing):
                 content = self.item_content(val_1, val_2, val_3)
                 current = self.current_id == key
                 item = self.create_item(
-                    sort, target, content, current, [delete_action])
+                    sort, target, content, current, actions)
                 ret.append(item)
             return ret
         except Exception, e:

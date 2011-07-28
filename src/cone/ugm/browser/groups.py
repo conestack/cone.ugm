@@ -1,4 +1,5 @@
 import logging
+from pyramid.security import has_permission
 from cone.tile import (
     tile,
     Tile,
@@ -25,6 +26,10 @@ class GroupsLeftColumn(Tile):
         return make_url(self.request,
                         node=self.model.root['groups'],
                         query=make_query(factory=u'group'))
+    
+    @property
+    def can_add(self):
+        return has_permission('add', self.model, self.request)
 
 
 @tile('rightcolumn', interface=Groups, permission='view')
@@ -49,6 +54,7 @@ class GroupsColumnListing(ColumnListing):
 
     @property
     def query_items(self):
+        can_delete = has_permission('delete', self.model, self.request)
         try:
             col_1_attr = self.group_attrs
             ret = list()
@@ -60,16 +66,20 @@ class GroupsColumnListing(ColumnListing):
                 target = make_url(self.request,
                                   node=self.model,
                                   resource=key)
-                action_id = 'delete_item'
-                action_title = 'Delete Group'
-                delete_action = self.create_action(
-                    action_id, True, action_title, target)
+                
+                actions = list()
+                if can_delete:
+                    action_id = 'delete_item'
+                    action_title = 'Delete Group'
+                    delete_action = self.create_action(
+                        action_id, True, action_title, target)
+                    actions = [delete_action]
                 
                 val_1 = self.extract_raw(attrs, col_1_attr)
                 content = self.item_content(val_1)
                 current = self.current_id == key
                 item = self.create_item(
-                    val_1, target, content, current, [delete_action])
+                    val_1, target, content, current, actions)
                 ret.append(item)
             return ret
         except Exception, e:

@@ -1,4 +1,5 @@
 from plumber import plumber
+from pyramid.security import has_permission
 from yafowil.base import ExtractionError
 from yafowil.utils import UNSET
 from cone.tile import (
@@ -33,6 +34,10 @@ from webob.exc import HTTPFound
 class GroupLeftColumn(Column):
 
     add_label = u"Add Group"
+    
+    @property
+    def can_add(self):
+        return has_permission('add', self.model.parent, self.request)
 
     def render(self):
         setattr(self.request, '_curr_listing_id', self.model.name)
@@ -72,6 +77,10 @@ class Principals(object):
 
         col_1_attr, col_2_attr, col_3_attr, sort_attr = obj.user_attrs
         ret = list()
+        
+        # XXX: extend ACL by 'manage_membership' permission
+        can_change = has_permission('edit', obj.model.parent, obj.request)
+        
         for user in users:
             id = user.name
             attrs = user.attrs
@@ -85,19 +94,22 @@ class Principals(object):
             if not self.members_only:
                 related = id in member_ids
 
-            action_id = 'add_item'
-            action_enabled = not bool(related)
-            action_title = 'Add user to selected group'
-            add_item_action = obj.create_action(
-                action_id, action_enabled, action_title, action_target)
-
-            action_id = 'remove_item'
-            action_enabled = bool(related)
-            action_title = 'Remove user from selected group'
-            remove_item_action = obj.create_action(
-                action_id, action_enabled, action_title, action_target)
-
-            actions = [add_item_action, remove_item_action]
+            actions = list()
+            if can_change:
+                action_id = 'add_item'
+                action_enabled = not bool(related)
+                action_title = 'Add user to selected group'
+                add_item_action = obj.create_action(
+                    action_id, action_enabled, action_title, action_target)
+    
+                action_id = 'remove_item'
+                action_enabled = bool(related)
+                action_title = 'Remove user from selected group'
+                remove_item_action = obj.create_action(
+                    action_id, action_enabled, action_title, action_target)
+    
+                actions = [add_item_action, remove_item_action]
+            
             val_1 = obj.extract_raw(attrs, col_1_attr)
             val_2 = obj.extract_raw(attrs, col_2_attr)
             val_3 = obj.extract_raw(attrs, col_3_attr)

@@ -1,4 +1,5 @@
 from plumber import plumber
+from pyramid.security import has_permission
 from yafowil.base import (
     ExtractionError,
     UNSET,
@@ -35,6 +36,10 @@ from webob.exc import HTTPFound
 class UserLeftColumn(Column):
 
     add_label = u"Add User"
+    
+    @property
+    def can_add(self):
+        return has_permission('add', self.model.parent, self.request)
 
     def render(self):
         setattr(self.request, '_curr_listing_id', self.model.name)
@@ -73,6 +78,9 @@ class Groups(object):
 
         ret = list()
         
+        # XXX: extend ACL by 'manage_membership' permission
+        can_change = has_permission('edit', obj.model.parent, obj.request)
+        
         # XXX
         col_1_attr = obj.group_attrs
 
@@ -91,19 +99,22 @@ class Groups(object):
             if not self.related_only:
                 related = id in related_ids
 
-            action_id = 'add_item'
-            action_enabled = not bool(related)
-            action_title = 'Add user to selected group'
-            add_item_action = obj.create_action(
-                action_id, action_enabled, action_title, action_target)
-
-            action_id = 'remove_item'
-            action_enabled = bool(related)
-            action_title = 'Remove user from selected group'
-            remove_item_action = obj.create_action(
-                action_id, action_enabled, action_title, action_target)
-
-            actions = [add_item_action, remove_item_action]
+            actions = list()
+            if can_change:
+                action_id = 'add_item'
+                action_enabled = not bool(related)
+                action_title = 'Add user to selected group'
+                add_item_action = obj.create_action(
+                    action_id, action_enabled, action_title, action_target)
+    
+                action_id = 'remove_item'
+                action_enabled = bool(related)
+                action_title = 'Remove user from selected group'
+                remove_item_action = obj.create_action(
+                    action_id, action_enabled, action_title, action_target)
+    
+                actions = [add_item_action, remove_item_action]
+            
             val_1 = group.attrs[col_1_attr]
             content = obj.item_content(val_1)
             item = obj.create_item(val_1, item_target, content, False, actions)
