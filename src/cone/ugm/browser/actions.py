@@ -30,7 +30,7 @@ class Action(object):
 
 
 ###############################################################################
-# Actions for IUser application node
+# Actions for User application node
 ###############################################################################
 
 @view_config(name='delete_item', accept='application/json',
@@ -112,7 +112,7 @@ class UserRemoveFromGroupAction(Action):
 
 
 ###############################################################################
-# Actions for IGroup application node
+# Actions for Group application node
 ###############################################################################
 
 @view_config(name='delete_item', accept='application/json',
@@ -150,7 +150,10 @@ class GroupAddUserAction(Action):
         try:
             user_id = self.request.params.get('id')
             group = self.model.model
+            
             user = group.root.users[user_id]
+            #group.root.users[user_id]
+            
             group.add(user_id)
             group()
             self.model.parent.invalidate()

@@ -1,21 +1,36 @@
 from plumber import plumber
 from odict import odict
-from node.ext.ldap.scope import (
+from ldap.functions import explode_dn
+from node.ext.ldap import (
     BASE,
     ONELEVEL,
     SUBTREE,
+    queryNode,
+    LDAPNode,
 )
 from yafowil.base import (
     factory,
     UNSET,
 )
-from cone.tile import tile
+from cone.tile import (
+    tile,
+    Tile,
+)
 from cone.app.browser.layout import ProtectedContentTile
 from cone.app.browser.form import (
     Form,
     YAMLForm,
 )
 from cone.app.browser.settings import SettingsPart
+from cone.app.browser.ajax import (
+    ajax_continue,
+    ajax_message,
+    AjaxAction,
+)
+from cone.app.browser.utils import (
+    make_url,
+    make_query,
+)
 from cone.ugm.model.settings import (
     ServerSettings,
     UsersSettings,
@@ -37,6 +52,67 @@ class VocabMixin(object):
         (str(ONELEVEL), 'ONELEVEL'),
         (str(SUBTREE), 'SUBTREE'),
     ]
+
+
+def encode_dn(dn):
+    return dn.replace('=', '%%')
+
+
+def decode_dn(dn):
+    return dn.replace('%%', '=')
+
+
+class CreateContainerTrigger(Tile):
+    
+    @property
+    def creation_dn(self):
+        raise NotImplementedError(u"Abstract ``CreateContainerTrigger`` "
+                                  u"doe not implement ``creation_dn``")
+    
+    @property
+    def creation_target(self):
+        dn = encode_dn(self.creation_dn)
+        query = make_query(dn=dn)
+        return make_url(self.request, node=self.model, query=query)
+
+
+class CreateContainerAction(Tile):
+    
+    @property
+    def continuation(self):
+        raise NotImplementedError(u"Abstract ``CreateContainerAction`` "
+                                  u"doe not implement ``continuation``")
+    
+    def render(self):
+        try:
+            message = self.create_container()
+            ajax_message(self.request, message, 'info')
+            continuation = self.continuation
+            ajax_continue(self.request, continuation)
+        except Exception, e:
+            message = u"Cannor create container %s" % str(e)
+            ajax_message(self.request, message, 'error')
+        return u''
+    
+    def create_container(self):
+        dn = decode_dn(self.request.params.get('dn', ''))
+        if not dn:
+            raise Exception(u"No container DN defined.")
+        if not dn.startswith('ou='):
+            raise Exception(u"Expected 'ou' as RDN Attribute.")
+        props = self.model.parent['ugm_server'].ldap_props
+        try:
+            parent_dn = ','.join(explode_dn(dn)[1:])
+        except Exception:
+            raise Exception(u"Invalid DN.")
+        rdn = explode_dn(dn)[0]
+        node = queryNode(props, parent_dn)
+        if node is None:
+            raise Exception(u"Parent not found. Cannot continue.")
+        node[rdn] = LDAPNode()
+        node[rdn].attrs['objectClass'] = ['organizationalUnit']
+        node()
+        return u"Created '%s'" % rdn
 
 
 @tile('content', 'templates/server_settings.pt',
@@ -72,13 +148,26 @@ class ServerSettingsForm(Form):
 
 @tile('content', 'templates/users_settings.pt',
       interface=UsersSettings, permission='manage', strict=False)
-class UsersSettingsTile(ProtectedContentTile):
+class UsersSettingsTile(ProtectedContentTile, CreateContainerTrigger):
+    
+    @property
+    def creation_dn(self):
+        return self.model.attrs.users_dn
     
     @property
     def ldap_users(self):
         if self.model.ldap_users_container_valid:
             return 'OK'
         return 'Inexistent'
+
+
+@tile('create_container', interface=UsersSettings, permission='manage')
+class UsersCreateContainerAction(CreateContainerAction):
+
+    @property
+    def continuation(self):
+        url = make_url(self.request, node=self.model)
+        return AjaxAction(url, 'content', 'inner', '.ugm_users')
 
 
 @tile('editform', interface=UsersSettings, permission="manage")
@@ -146,13 +235,26 @@ class UsersSettingsForm(Form, VocabMixin):
 
 @tile('content', 'templates/groups_settings.pt',
       interface=GroupsSettings, permission='manage', strict=False)
-class GroupsSettingsTile(ProtectedContentTile):
+class GroupsSettingsTile(ProtectedContentTile, CreateContainerTrigger):
     
     @property
     def ldap_groups(self):
         if self.model.ldap_groups_container_valid:
             return 'OK'
         return 'Inexistent'
+
+
+@tile('create_container', interface=GroupsSettings, permission='manage')
+class GroupsCreateContainerAction(CreateContainerAction):
+
+    @property
+    def creation_dn(self):
+        return self.model.attrs.groups_dn
+    
+    @property
+    def continuation(self):
+        url = make_url(self.request, node=self.model)
+        return AjaxAction(url, 'content', 'inner', '.ugm_groups')
 
 
 @tile('editform', interface=GroupsSettings, permission="manage")
@@ -213,13 +315,26 @@ class GroupsSettingsForm(Form, VocabMixin):
 
 @tile('content', 'templates/roles_settings.pt',
       interface=RolesSettings, permission='manage', strict=False)
-class RolesSettingsTile(ProtectedContentTile):
+class RolesSettingsTile(ProtectedContentTile, CreateContainerTrigger):
+    
+    @property
+    def creation_dn(self):
+        return self.model.attrs.roles_dn
     
     @property
     def ldap_roles(self):
         if self.model.ldap_roles_container_valid:
             return 'OK'
         return 'Inexistent'
+
+
+@tile('create_container', interface=RolesSettings, permission='manage')
+class RolesCreateContainerAction(CreateContainerAction):
+
+    @property
+    def continuation(self):
+        url = make_url(self.request, node=self.model)
+        return AjaxAction(url, 'content', 'inner', '.ugm_roles')
 
 
 @tile('editform', interface=RolesSettings, permission="manage")
