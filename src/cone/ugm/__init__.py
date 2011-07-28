@@ -53,6 +53,19 @@ backend = None
 ldap_auth_enabled = False
 
 
+def reset_auth_impl():
+    if not ldap_auth_enabled:
+        return
+    auth = cone.app.cfg.auth
+    to_del = list()
+    for impl in auth:
+        if isinstance(impl, Ugm):
+            to_del.append(impl)
+    for impl in to_del:
+        auth.remove(impl)
+    cone.app.cfg.auth.append(backend)
+
+
 def initialize_auth_impl(config, global_config, local_config):
     """Initialize LDAP based UGM implementation for cone.app as
     authentication implementation.

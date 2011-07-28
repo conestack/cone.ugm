@@ -34,7 +34,8 @@ def ugm_backend(model):
     ucfg = ugm_users(model).ldap_ucfg
     gcfg = ugm_groups(model).ldap_gcfg
     # XXX: later
-    rcfg = None
+    rcfg = ugm_roles(model).ldap_rcfg
     cone.ugm.backend = Ugm(name='ugm', parent=None, props=props,
                            ucfg=ucfg, gcfg=gcfg, rcfg=rcfg)
+    cone.ugm.reset_auth_impl()
     return cone.ugm.backend
