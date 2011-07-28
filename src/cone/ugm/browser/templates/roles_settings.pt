@@ -6,12 +6,17 @@
     <p>
       <strong>Check Roles DN:</strong>
       <strong tal:content="status"
+              tal:condition="context.ldap_connectivity"
               tal:attributes="style status == 'OK' and 'color:green' or 'color:red'">
         OK
       </strong>
+      <strong style="color:red;"
+              tal:condition="not context.ldap_connectivity">
+        Server not reachable
+      </strong>
     </p>
   
-    <p tal:condition="status != 'OK'">
+    <p tal:condition="context.ldap_connectivity and status != 'OK'">
       <strong>Create roles container?</strong><br />
       The roles container DN does not exist. The Application can try to create 
       it. This only works if the parent entry of defined DN exists. The roles
@@ -23,7 +28,7 @@
          ajax:bind="click"
          ajax:action="create_container:NONE:NONE"
          ajax:target="${context.creation_target}">
-        Create role container now
+        Create roles container now
       </a>
     </p>
 

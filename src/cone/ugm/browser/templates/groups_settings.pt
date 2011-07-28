@@ -1,16 +1,38 @@
-<div>
+<tal:ajax xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax" omit-tag="True">
+  <div tal:define="status context.ldap_groups">
   
-  <h1>Groups Settings</h1>
+    <h1>Groups Settings</h1>
 
-  <p>
-    <strong>Check Groups DN:</strong>
-    <strong tal:define="status context.ldap_groups"
-            tal:content="status"
-            tal:attributes="style status == 'OK' and 'color:green' or 'color:red'">
-      OK
-    </strong>
-  </p>
+    <p>
+      <strong>Check Groups DN:</strong>
+      <strong tal:content="status"
+              tal:condition="context.ldap_connectivity"
+              tal:attributes="style status == 'OK' and 'color:green' or 'color:red'">
+        OK
+      </strong>
+      <strong style="color:red;"
+              tal:condition="not context.ldap_connectivity">
+        Server not reachable
+      </strong>
+    </p>
+    
+    <p tal:condition="context.ldap_connectivity and status != 'OK'">
+      <strong>Create groups container?</strong><br />
+      The groups container DN does not exist. The Application can try to create 
+      it. This only works if the parent entry of defined DN exists. The groups
+      container will be created with objectClass 'organizationalUnit'. Thus, 
+      the RDN name of DN must be 'ou'.
+      <br />
+      <a href="#"
+         title="Create Container"
+         ajax:bind="click"
+         ajax:action="create_container:NONE:NONE"
+         ajax:target="${context.creation_target}">
+        Create groups container now
+      </a>
+    </p>
 
-  <tal:settings replace="structure tile('editform')" />
+    <tal:settings replace="structure tile('editform')" />
 
-</div>
+  </div>
+</tal:ajax>

@@ -74,6 +74,10 @@ class CreateContainerTrigger(Tile):
         dn = encode_dn(self.creation_dn)
         query = make_query(dn=dn)
         return make_url(self.request, node=self.model, query=query)
+    
+    @property
+    def ldap_connectivity(self):
+        return self.model.parent['ugm_server'].ldap_connectivity
 
 
 class CreateContainerAction(Tile):
@@ -238,6 +242,10 @@ class UsersSettingsForm(Form, VocabMixin):
 class GroupsSettingsTile(ProtectedContentTile, CreateContainerTrigger):
     
     @property
+    def creation_dn(self):
+        return self.model.attrs.groups_dn
+    
+    @property
     def ldap_groups(self):
         if self.model.ldap_groups_container_valid:
             return 'OK'
@@ -246,10 +254,6 @@ class GroupsSettingsTile(ProtectedContentTile, CreateContainerTrigger):
 
 @tile('create_container', interface=GroupsSettings, permission='manage')
 class GroupsCreateContainerAction(CreateContainerAction):
-
-    @property
-    def creation_dn(self):
-        return self.model.attrs.groups_dn
     
     @property
     def continuation(self):
