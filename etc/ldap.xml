@@ -92,4 +92,27 @@
     </elem>
   </groups_listing_columns>
   <groups_listing_default_column>col_1</groups_listing_default_column>
+  <roles_dn>ou=roles,ou=groupOfNames_100_100,dc=my-domain,dc=com</roles_dn>
+  <roles_scope>1</roles_scope>
+  <roles_query></roles_query>
+  <roles_object_classes>
+    <item>groupOfUniqueNames</item>
+  </roles_object_classes>
+  <roles_aliases_attrmap>
+    <elem>
+      <key>rdn</key>
+      <value>cn</value>
+    </elem>
+    <elem>
+      <key>id</key>
+      <value>cn</value>
+    </elem>
+  </roles_aliases_attrmap>
+  <roles_form_attrmap>
+    <elem>
+      <key>id</key>
+      <value>Id</value>
+    </elem>
+  </roles_form_attrmap>
+  <roles_relation></roles_relation>
 </properties>

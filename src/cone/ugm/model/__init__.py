@@ -5,3 +5,4 @@ from cone.app.model import Properties
 factory_defaults = Properties()
 factory_defaults.user = dict()
 factory_defaults.group = dict()
+factory_defaults.role = dict()

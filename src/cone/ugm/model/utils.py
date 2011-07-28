@@ -21,6 +21,10 @@ def ugm_groups(model):
     return model.root['settings']['ugm_groups']
 
 
+def ugm_roles(model):
+    return model.root['settings']['ugm_roles']
+
+
 def ugm_backend(model):
     import cone.ugm
     if cone.ugm.backend is not None:

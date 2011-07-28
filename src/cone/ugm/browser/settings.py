@@ -20,11 +20,13 @@ from cone.ugm.model.settings import (
     ServerSettings,
     UsersSettings,
     GroupsSettings,
+    RolesSettings,
 )
 from cone.ugm.model.utils import (
     ugm_server,
     ugm_users,
     ugm_groups,
+    ugm_roles,
 )
 
 
@@ -43,7 +45,7 @@ class ServerSettingsTile(ProtectedContentTile):
     
     @property
     def ldap_status(self):
-        if self.model.ldap_connectivity == 'success':
+        if self.model.ldap_connectivity:
             return 'OK'
         return 'Down'
 
@@ -203,6 +205,51 @@ class GroupsSettingsForm(Form, VocabMixin):
                           'groups_listing_default_column']:
             val = data.fetch('settings.%s' % attr_name).extracted
             if attr_name == 'groups_object_classes':
+                val = [v.strip() for v in val.split(',') if v.strip()]
+            setattr(model.attrs, attr_name, val)
+        model()
+        model.invalidate()
+
+
+@tile('content', 'templates/roles_settings.pt',
+      interface=RolesSettings, permission='manage', strict=False)
+class RolesSettingsTile(ProtectedContentTile):
+    
+    @property
+    def ldap_roles(self):
+        if self.model.ldap_roles_container_valid:
+            return 'OK'
+        return 'Inexistent'
+
+
+@tile('editform', interface=RolesSettings, permission="manage")
+class RolesSettingsForm(Form, VocabMixin):
+    __metaclass__ = plumber
+    __plumbing__ = SettingsPart, YAMLForm
+    
+    action_resource = u'edit'
+    form_template = 'cone.ugm.browser:forms/roles_settings.yaml'
+    
+    @property
+    def roles_aliases_attrmap(self):
+        attrs = self.model.attrs
+        roles_aliases_attrmap = odict()
+        roles_aliases_attrmap['rdn'] = attrs.roles_aliases_attrmap.get('rdn')
+        roles_aliases_attrmap['id'] = attrs.roles_aliases_attrmap.get('id')
+        return roles_aliases_attrmap
+    
+    def save(self, widget, data):
+        model = self.model
+        for attr_name in ['roles_dn',
+                          'roles_scope',
+                          'roles_query',
+                          'roles_object_classes',
+                          'roles_aliases_attrmap',
+                          'roles_form_attrmap',
+                          #'roles_relation',
+                          ]:
+            val = data.fetch('settings.%s' % attr_name).extracted
+            if attr_name == 'roles_object_classes':
                 val = [v.strip() for v in val.split(',') if v.strip()]
             setattr(model.attrs, attr_name, val)
         model()

@@ -117,7 +117,7 @@ LDAP connectivity tests::
     >>> settings['ugm_server']._ldap_props = props
     
     >>> settings['ugm_server'].ldap_connectivity
-    SERVER_DOWN({'desc': "Can't contact LDAP server"},)
+    False
     
     >>> settings['ugm_users'].ldap_users_container_valid
     False
@@ -130,7 +130,7 @@ LDAP connectivity tests::
     >>> settings['ugm_groups']._ldap_gcfg = layer['gcfg']
     
     >>> settings['ugm_server'].ldap_connectivity
-    'success'
+    True
     
     >>> old_users_dn = settings['ugm_users'].attrs.users_dn
     >>> settings['ugm_users'].attrs.users_dn = \

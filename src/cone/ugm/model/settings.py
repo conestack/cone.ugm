@@ -5,8 +5,11 @@ from node.utils import instance_property
 from node.ext.ldap import LDAPProps
 from node.ext.ldap.base import testLDAPConnectivity
 from node.ext.ldap._node import queryNode
-from node.ext.ldap.ugm import UsersConfig as LDAPUsersConfig
-from node.ext.ldap.ugm import GroupsConfig as LDAPGroupsConfig
+from node.ext.ldap.ugm import (
+    UsersConfig as LDAPUsersConfig,
+    GroupsConfig as LDAPGroupsConfig,
+    RolesConfig as LDAPRolesConfig,
+)
 from cone.app.model import (
     BaseNode,
     XMLProperties,
@@ -63,7 +66,7 @@ class ServerSettings(UgmSettings):
     
     @property
     def ldap_connectivity(self):
-        return testLDAPConnectivity(props=self.ldap_props)
+        return testLDAPConnectivity(props=self.ldap_props) == 'success'
     
     @property
     def ldap_props(self):
@@ -157,17 +160,44 @@ class GroupsSettings(UgmSettings):
                 )
         return self._ldap_gcfg
 
-# XXX: later
-#class RolesSettings(BaseNode):
-#    
-#    @instance_property
-#    def metadata(self):
-#        metadata = BaseMetadata()
-#        metadata.title = "Roles Settings"
-#        metadata.description = "LDAP roles settings"
-#        return metadata
-#    
-#    @property
-#    def ldap_rcfg(self):
-#        # XXX: later
-#        return None
+
+class RolesSettings(UgmSettings):
+    
+    @instance_property
+    def metadata(self):
+        metadata = BaseMetadata()
+        metadata.title = "Roles Settings"
+        metadata.description = "LDAP roles settings"
+        return metadata
+    
+    @property
+    def ldap_roles_container_valid(self):
+        try:
+            node = queryNode(
+                self.parent['ugm_server'].ldap_props, self._config.roles_dn)
+            return bool(node)
+        except ldap.LDAPError:
+            return False
+    
+    @property
+    def ldap_rcfg(self):
+        if not hasattr(self, '_ldap_rcfg') or self._ldap_rcfg is None:
+            config = self._config
+            map = dict()
+            for key in config.roles_aliases_attrmap.keys():
+                map[key] = config.roles_aliases_attrmap[key]
+            for key in config.roles_form_attrmap.keys():
+                if key in ['id']:
+                    continue
+                map[key] = key
+            import cone.ugm.model
+            self._ldap_rcfg = LDAPRolesConfig(
+                baseDN=config.roles_dn,
+                attrmap=map,
+                scope=int(config.roles_scope),
+                queryFilter=config.roles_query,
+                objectClasses=config.roles_object_classes,
+                #member_relation=config.roles_relation,
+                defaults=cone.ugm.model.factory_defaults.role,
+                )
+        return self._ldap_rcfg

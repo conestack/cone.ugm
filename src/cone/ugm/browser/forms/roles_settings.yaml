@@ -1,0 +1,59 @@
+factory: form
+name: settings
+props:
+    action: context.form_action
+    class: ajax
+widgets:
+- roles_dn:
+    factory: field:label:error:text
+    value: expr:context.model.attrs.roles_dn
+    props:
+        label: Roles container DN
+        required: No Roles DN defined
+- roles_scope:
+    factory: field:label:select
+    value: expr:context.model.attrs.roles_scope
+    props:
+        label: Roles search scope
+        vocabulary: expr:context.scope_vocab
+- roles_query:
+    factory: field:label:text
+    value: expr:context.model.attrs.roles_query
+    props:
+        label: Roles search query filter
+- roles_object_classes:
+    factory: field:label:text
+    value: expr:u', '.join(context.model.attrs.get('roles_object_classes', []))
+    props:
+        label: Object classes for Role creation
+- roles_aliases_attrmap:
+    factory: field:label:error:dict
+    value: expr:context.roles_aliases_attrmap
+    props:
+        label: Role attribute aliases
+        required: Role attribute aliases values are mandatory
+        static: True
+        head:
+            key: Reserved key
+            value: LDAP attr name
+- roles_form_attrmap:
+    factory: field:label:dict
+    value: expr:context.model.attrs.roles_form_attrmap
+    props:
+        label: Role form attributes
+        head:
+            key: LDAP attr name
+            value: Form label
+#- roles_relation:
+#    factory: field:label:text
+#    value: expr:context.model.attrs.roles_relation
+#    props:
+#        label: Role-member-relation
+- save:
+    factory: submit
+    props:
+        action: save
+        expression: True
+        handler: context.save
+        next: context.next
+        label: Save
