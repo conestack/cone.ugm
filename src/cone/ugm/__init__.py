@@ -45,6 +45,7 @@ cone.app.register_plugin('groups', Groups)
 
 # The node.ext.ugm implementation to use for user and group management
 # currently only LDAP
+# XXX: take from cone.app.cfg.auth
 backend = None
 
 
@@ -54,7 +55,8 @@ ldap_auth_enabled = False
 
 
 def reset_auth_impl():
-    if not ldap_auth_enabled:
+    import cone.ugm
+    if not cone.ugm.ldap_auth_enabled:
         return
     auth = cone.app.cfg.auth
     to_del = list()
@@ -70,8 +72,9 @@ def initialize_auth_impl(config, global_config, local_config):
     """Initialize LDAP based UGM implementation for cone.app as
     authentication implementation.
     """
-    ldap_auth_enabled = local_config.get('cone.ugm.ldap_auth')
-    if not ldap_auth_enabled:
+    import cone.ugm
+    cone.ugm.ldap_auth_enabled = local_config.get('cone.ugm.ldap_auth')
+    if not cone.ugm.ldap_auth_enabled:
         return
     root = cone.app.get_root()
     settings = root['settings']
