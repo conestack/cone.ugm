@@ -124,8 +124,15 @@ div.columnitems li {
     border-top:#ccc 1px solid;
 /*    height:24px; */
 }
+div.columnitems li.first_item {
+    border-top: none;
+}
 div.columnitems li.hidden {
     display:none;
+}
+div.columnitems li.selected {
+    color:#fff;
+    background-color:#49539f !important;
 }
 div.columnitems li.selected div.head.li_trigger {
     color:#fff;
@@ -160,13 +167,13 @@ div.columnitems div.head div.sort_col_3 {
 div.columnitems div.actions {
     float:right;
     overflow:hidden;
-    padding:2px;
+    padding:4px;
 }
 div.right_column div.users {
     height:509px;
 }
 div.right_column div.groups {
-    height:226px;
+    height:178px;
 }
 
 /* left column */
@@ -180,6 +187,7 @@ div.right_column div.field {
     width:400px;
     clear:both;
     padding-bottom:20px;
+    line-height: 1.75em;
 }
 div.right_column div.field label {
     float:left;
@@ -211,6 +219,44 @@ div.right_column div.field div {
     width:160px;
 }
 
+
+#display-userform-id {
+	margin-top: -0.2em;
+}
+
+#field-userform-principal_roles div,
+#field-userform-principal_roles input,
+#field-userform-principal_roles label  {
+	float: none;
+	width: auto!important;
+}
+#field-userform-principal_roles div {
+	margin-left: 3em;
+	clear: both;
+}
+#field-userform-principal_roles label {
+	float: left;
+	display: block!important;
+	width: 6em!important;
+}
+#field-userform-principal_roles input {
+	float: left;
+	margin: 0.6em;
+	background: green;
+}
+#checkbox-userform-principal_roles-wrapper {
+	margin-top: -2.5em;
+	clear: none;	
+}
+#field-userform-principal_roles > label {
+	position: absolute;
+}
+#field-userform-principal_roles div label {
+	margin-top: 1px!important;
+}
+#input-userform-save {
+	margin-top: 2em;
+}
 /* action icons */
 a.action {
     line-height:16px;
@@ -260,6 +306,14 @@ a.delete_item_disabled {
 #form-userform #field-userform-id div {
     width:330px;
     padding:2px;
+}
+
+.principal_form .box {
+    background: none!important;
+	border-top: 1px solid #eee;
+}
+.column.right_column {
+	margin-top: 82px;
 }
 
 /* roles form extension userform */
