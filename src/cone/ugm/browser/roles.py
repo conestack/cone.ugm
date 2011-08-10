@@ -47,7 +47,8 @@ class PrincipalRolesForm(Part):
                 'label': 'Roles',
                 'multivalued': True,
                 'vocabulary': self.roles_vocab,
-                'format': 'checkbox',
+                'format': 'single',
+                'listing_tag': 'ul',
             },
         )
         save_widget = self.form['save']

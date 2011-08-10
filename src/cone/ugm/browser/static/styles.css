@@ -219,30 +219,9 @@ div.right_column div.field div {
     width:160px;
 }
 
-
+/* forms */
 #display-userform-id {
 	margin-top: -0.2em;
-}
-
-#field-userform-principal_roles div,
-#field-userform-principal_roles input,
-#field-userform-principal_roles label  {
-	float: none;
-	width: auto!important;
-}
-#field-userform-principal_roles div {
-	margin-left: 3em;
-	clear: both;
-}
-#field-userform-principal_roles label {
-	float: left;
-	display: block!important;
-	width: 6em!important;
-}
-#field-userform-principal_roles input {
-	float: left;
-	margin: 0.6em;
-	background: green;
 }
 #checkbox-userform-principal_roles-wrapper {
 	margin-top: -2.5em;
@@ -257,6 +236,7 @@ div.right_column div.field div {
 #input-userform-save {
 	margin-top: 2em;
 }
+
 /* action icons */
 a.action {
     line-height:16px;

@@ -63,13 +63,13 @@ Authenticate and render tiles::
     
     >>> res = render_tile(user, request, 'columnlisting')
     >>> expected = \
-    ...     '<li ajax:target="http://example.com/groups/group2">'
+    ...     '<li ajax:target="http://example.com/groups/group2"'
     >>> res.find(expected) > -1
     True
     
     >>> res = render_tile(user, request, 'allcolumnlisting')
     >>> expected = \
-    ...     '<li ajax:target="http://example.com/groups/group1">'
+    ...     '<li ajax:target="http://example.com/groups/group1"'
     >>> res.find(expected) > -1
     True
     
