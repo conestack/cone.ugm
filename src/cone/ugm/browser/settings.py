@@ -85,7 +85,7 @@ class CreateContainerAction(Tile):
     @property
     def continuation(self):
         raise NotImplementedError(u"Abstract ``CreateContainerAction`` "
-                                  u"doe not implement ``continuation``")
+                                  u"does not implement ``continuation``")
     
     def render(self):
         try:
@@ -94,7 +94,7 @@ class CreateContainerAction(Tile):
             continuation = self.continuation
             ajax_continue(self.request, continuation)
         except Exception, e:
-            message = u"Cannor create container %s" % str(e)
+            message = u"Can't create container %s" % str(e)
             ajax_message(self.request, message, 'error')
         return u''
     
@@ -112,7 +112,7 @@ class CreateContainerAction(Tile):
         rdn = explode_dn(dn)[0]
         node = queryNode(props, parent_dn)
         if node is None:
-            raise Exception(u"Parent not found. Cannot continue.")
+            raise Exception(u"Parent not found. Can't continue.")
         node[rdn] = LDAPNode()
         node[rdn].attrs['objectClass'] = ['organizationalUnit']
         node()
