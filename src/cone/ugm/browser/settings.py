@@ -5,7 +5,6 @@ from node.ext.ldap import (
     BASE,
     ONELEVEL,
     SUBTREE,
-    queryNode,
     LDAPNode,
 )
 from yafowil.base import (
@@ -110,7 +109,7 @@ class CreateContainerAction(Tile):
         except Exception:
             raise Exception(u"Invalid DN.")
         rdn = explode_dn(dn)[0]
-        node = queryNode(props, parent_dn)
+        node = LDAPNode(parent_dn, props)
         if node is None:
             raise Exception(u"Parent not found. Can't continue.")
         node[rdn] = LDAPNode()
