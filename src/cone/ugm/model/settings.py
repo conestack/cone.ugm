@@ -2,9 +2,13 @@ import os
 import ldap
 import cone.ugm
 from node.utils import instance_property
-from node.ext.ldap import LDAPProps
-from node.ext.ldap.base import testLDAPConnectivity
-from node.ext.ldap._node import queryNode
+from node.ext.ldap import (
+    LDAPProps,
+    LDAPNode,
+    testLDAPConnectivity,
+)
+#from node.ext.ldap.base import testLDAPConnectivity
+#from node.ext.ldap._node import queryNode
 from node.ext.ldap.ugm import (
     UsersConfig as LDAPUsersConfig,
     GroupsConfig as LDAPGroupsConfig,
@@ -91,9 +95,9 @@ class UsersSettings(UgmSettings):
     @property
     def ldap_users_container_valid(self):
         try:
-            node = queryNode(
-                self.parent['ugm_server'].ldap_props, self._config.users_dn)
-            return bool(node)
+            node = LDAPNode(self._config.users_dn,
+                            self.parent['ugm_server'].ldap_props)
+            return len(node) >= 0
         except ldap.LDAPError:
             return False
     
@@ -131,9 +135,9 @@ class GroupsSettings(UgmSettings):
     @property
     def ldap_groups_container_valid(self):
         try:
-            node = queryNode(
-                self.parent['ugm_server'].ldap_props, self._config.groups_dn)
-            return bool(node)
+            node = LDAPNode(self._config.groups_dn,
+                            self.parent['ugm_server'].ldap_props)
+            return len(node) >= 0
         except ldap.LDAPError:
             return False
     
@@ -173,9 +177,9 @@ class RolesSettings(UgmSettings):
     @property
     def ldap_roles_container_valid(self):
         try:
-            node = queryNode(
-                self.parent['ugm_server'].ldap_props, self._config.roles_dn)
-            return bool(node)
+            node = LDAPNode(self._config.roles_dn,
+                            self.parent['ugm_server'].ldap_props)
+            return len(node) >= 0
         except ldap.LDAPError:
             return False
     
