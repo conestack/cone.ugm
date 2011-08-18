@@ -5,7 +5,6 @@ from plumber import (
 )
 from pyramid.security import has_permission
 from yafowil.base import factory
-from cone.app.security import DEFAULT_ROLES
 from cone.ugm.model.utils import ugm_roles
 
 
@@ -14,6 +13,7 @@ class PrincipalRolesForm(Part):
     @default
     @property
     def roles_vocab(self):
+        from cone.app.security import DEFAULT_ROLES
         return DEFAULT_ROLES
     
     @default
