@@ -5,6 +5,7 @@ from plumber import (
 )
 from pyramid.security import has_permission
 from yafowil.base import factory
+from cone.app.security import DEFAULT_ROLES
 from cone.ugm.model.utils import ugm_roles
 
 
@@ -13,12 +14,7 @@ class PrincipalRolesForm(Part):
     @default
     @property
     def roles_vocab(self):
-        return [
-            ('viewer', 'Viewer'),
-            ('editor', 'Editor'),
-            ('owner', 'Owner'),
-            ('manager', 'Manager'),
-        ]
+        return DEFAULT_ROLES
     
     @default
     @property
@@ -49,6 +45,7 @@ class PrincipalRolesForm(Part):
                 'vocabulary': self.roles_vocab,
                 'format': 'single',
                 'listing_tag': 'ul',
+                'listing_label_position': 'after',
             },
         )
         save_widget = self.form['save']

@@ -186,7 +186,6 @@ div.right_column {
 div.right_column div.field {
     width:400px;
     clear:both;
-    padding-bottom:20px;
     line-height: 1.75em;
 }
 div.right_column div.field label {
@@ -217,24 +216,6 @@ div.right_column div.field div {
     float:right;
     font-size:80%;
     width:160px;
-}
-
-/* forms */
-#display-userform-id {
-	margin-top: -0.2em;
-}
-#checkbox-userform-principal_roles-wrapper {
-	margin-top: -2.5em;
-	clear: none;	
-}
-#field-userform-principal_roles > label {
-	position: absolute;
-}
-#field-userform-principal_roles div label {
-	margin-top: 1px!important;
-}
-#input-userform-save {
-	margin-top: 2em;
 }
 
 /* action icons */
@@ -268,69 +249,76 @@ a.delete_item_disabled {
     background:url('/cone.ugm.static/images/icon_delete_disabled.png') 50% 50% no-repeat;
 }
 
-/* user form */
+/* forms */
+.principal_form .box {
+    background: none!important;
+    border-top: 1px solid #eee;
+}
+.column.right_column {
+    margin-top: 82px;
+}
+#form-groupform .error,
 #form-userform .error {
-    width:334px;
+    width:336px;
     text-align:left;
+    font-size:100%;
+    margin-bottom:0.2em;
 }
+#form-groupform .errormessage,
 #form-userform .errormessage {
-    width:334px;
+    line-height:1.2em;
+    padding-left:0.2em;
+    float:left;
 }
+#form-groupform input,
 #form-userform input {
     width:330px;
 }
-#form-userform #input-userform-save,
-#form-userform #input-userform-cancel {
-    width:100px;
+#display-groupform-id,
+#display-userform-id {
+    margin-top: -0.2em;
 }
-#form-userform #field-userform-id div {
+#field-groupform-id div,
+#field-userform-id div {
     width:330px;
-    padding:2px;
 }
-
-.principal_form .box {
-    background: none!important;
-	border-top: 1px solid #eee;
+#field-groupform-principal_roles,
+#field-userform-principal_roles {
+    text-align:right;
 }
-.column.right_column {
-	margin-top: 82px;
+#field-groupform-principal_roles > label,
+#field-userform-principal_roles > label {
+    position: absolute;
 }
-
-/* roles form extension userform */
-#field-userform-principal_roles div {
-    width:334px;
-}
-#field-userform-principal_roles div input {
-    float:left;
-}
+#field-groupform-principal_roles div label,
 #field-userform-principal_roles div label {
-    margin-top:4px;
+    margin-top: 1px!important;
 }
-
-/* group form */
-#form-groupform .error {
-    width:334px;
-    text-align:left;
+#checkbox-groupform-principal_roles-wrapper,
+#checkbox-userform-principal_roles-wrapper {
+	margin-top:0;
+	margin-bottom:0;
+	width:340px;
+    list-style:none;
+    clear:none;
+    float:right;
 }
-#form-groupform .errormessage {
-    width:334px;
+#checkbox-groupform-principal_roles-wrapper li,
+#checkbox-userform-principal_roles-wrapper li {
+    clear:both;
 }
-#form-groupform #input-groupform-save,
-#form-groupform #input-groupform-cancel {
-    width:100px;
+#checkbox-groupform-principal_roles-wrapper li input,
+#checkbox-userform-principal_roles-wrapper li input {
+    float:left !important;
+    width:16px;
 }
-#form-groupform #field-groupform-id div {
-    width:330px;
-    padding:2px;
+#input-groupform-save,
+#input-userform-save {
+    margin-top:1em;
 }
-
-/* roles form extension groupform */
-#field-groupform-principal_roles div {
-    width:334px;
-}
-#field-groupform-principal_roles div input {
-    float:left;
-}
-#field-groupform-principal_roles div label {
-    margin-top:4px;
+#input-groupform-save,
+#input-groupform-cancel,
+#input-userform-save,
+#input-userform-cancel {
+    width:100px !important;
 }
