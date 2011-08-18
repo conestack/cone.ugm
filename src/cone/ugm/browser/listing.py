@@ -1,6 +1,9 @@
 import types
+import logging
+from pyramid.security import has_permission
 from yafowil.utils import Tag
 from cone.tile import Tile
+from cone.app.browser.utils import make_url
 from cone.ugm.model.utils import (
     ugm_users,
     ugm_groups,
@@ -8,6 +11,8 @@ from cone.ugm.model.utils import (
 from cone.ugm.browser.batch import ColumnBatch
 
 tag = Tag(lambda x: x)
+
+logger = logging.getLogger('cone.ugm')
 
 
 class ColumnListing(Tile):
@@ -112,40 +117,105 @@ class ColumnListing(Tile):
         if type(raw) in [types.ListType, types.TupleType]:
             return raw[0]
         return raw and raw or ''
-
+    
+    def calc_list_columns(self, defs):
+        ret = list()
+        i = 1
+        for val in defs.values():
+            ret.append(('col_%i' % i, val))
+            i += 1
+        return ret
+    
     @property
     def user_attrs(self):
+        """XXX: not generic, move
+        """
         settings = ugm_users(self.model)
-        column_config = settings.attrs.users_listing_columns
-        ret = list()
-        for i in range(3):
-            attr = column_config['col_%i' % (i + 1)].split(':')[0]
-            ret.append(attr)
-        sort_column = settings.attrs.users_listing_default_column
-        sort_attr = column_config[sort_column]
-        ret.append(sort_attr)
-        return ret
+        return settings.attrs.users_listing_columns.keys()
 
     @property
     def group_attrs(self):
+        """XXX: not generic, move
+        """
         settings = ugm_groups(self.model)
-        column_config = settings.attrs.groups_listing_columns
-        return column_config['col_1'].split(':')[0]
+        return settings.attrs.groups_listing_columns.keys()
 
     @property
     def user_list_columns(self):
+        """XXX: not generic, move
+        """
         settings = ugm_users(self.model)
-        column_config = settings.attrs.users_listing_columns
-        ret = list()
-        for i in range(3):
-            ret.append(('col_%i' % (i + 1),
-                        column_config['col_%i' % (i + 1)].split(':')[1]))
-        return ret
+        defs = settings.attrs.users_listing_columns
+        return self.calc_list_columns(defs)
 
     @property
     def group_list_columns(self):
+        """XXX: not generic, move
+        """
         settings = ugm_groups(self.model)
-        column_config = settings.attrs.groups_listing_columns
-        return [
-            ('col_1', column_config['col_1'].split(':')[1]),
-        ]
+        defs = settings.attrs.groups_listing_columns
+        return self.calc_list_columns(defs)
+    
+    @property
+    def user_default_sort_column(self):
+        """XXX: not generic, move
+        """
+        settings = ugm_users(self.model)
+        attrs = self.user_attrs
+        sort = settings.attrs.users_listing_default_column
+        if not sort in attrs:
+            return attrs[0]
+        return sort
+    
+    @property
+    def group_default_sort_column(self):
+        """XXX: not generic, move
+        """
+        settings = ugm_groups(self.model)
+        attrs = self.group_attrs
+        sort = settings.attrs.groups_listing_default_column
+        if not sort in attrs:
+            return attrs[0]
+        return sort
+
+
+class PrincipalsListing(ColumnListing):
+    """Column listing for principals.
+    """
+    delete_label = 'Delete Principal'
+    listing_attrs = []
+    sort_attr = None
+    
+    @property
+    def query_items(self):
+        can_delete = has_permission('delete', self.model, self.request)
+        try:
+            attrlist = self.listing_attrs
+            sort_attr = self.sort_attr
+            ret = list()
+            users = self.model.backend
+            result = users.search(criteria=None, attrlist=attrlist)
+            for key, attrs in result:
+                target = make_url(self.request,
+                                  node=self.model,
+                                  resource=key)
+                
+                actions = list()
+                if can_delete:
+                    action_id = 'delete_item'
+                    action_title = self.delete_label
+                    delete_action = self.create_action(
+                        action_id, True, action_title, target)
+                    actions = [delete_action]
+                
+                vals = [self.extract_raw(attrs, attr) for attr in attrlist]
+                sort = self.extract_raw(attrs, sort_attr)
+                content = self.item_content(*vals)
+                current = self.current_id == key
+                item = self.create_item(
+                    sort, target, content, current, actions)
+                ret.append(item)
+            return ret
+        except Exception, e:
+            logger.error(str(e))
+        return list()

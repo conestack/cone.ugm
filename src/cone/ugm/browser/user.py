@@ -81,15 +81,15 @@ class Groups(object):
         # XXX: extend ACL by 'manage_membership' permission
         can_change = has_permission('edit', obj.model.parent, obj.request)
         
-        # XXX
-        col_1_attr = obj.group_attrs
+        attrlist = obj.group_attrs
+        sort_attr = obj.group_default_sort_column
 
         # XXX: These should be the mapped attributes - lack of backend support
         for group in groups:
             id = group.name
+            attrs = group.attrs
 
             # XXX: resource was only set for alluserlisting
-            # XXX: path instead of node=user, (ugm)
             item_target = make_url(obj.request, path=group.path[1:])
             action_query = make_query(id=id)
             action_target = make_url(obj.request,
@@ -115,9 +115,11 @@ class Groups(object):
     
                 actions = [add_item_action, remove_item_action]
             
-            val_1 = group.attrs[col_1_attr]
-            content = obj.item_content(val_1)
-            item = obj.create_item(val_1, item_target, content, False, actions)
+            vals = [obj.extract_raw(attrs, attr) for attr in attrlist]
+            sort = obj.extract_raw(attrs, sort_attr)
+            content = obj.item_content(*vals)
+            current = False
+            item = obj.create_item(sort, item_target, content, current, actions)
             ret.append(item)
         return ret
 

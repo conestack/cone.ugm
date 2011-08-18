@@ -9,8 +9,7 @@ from cone.app.browser.utils import (
     make_query,
 )
 from cone.ugm.model.users import Users
-from cone.ugm.browser.batch import ColumnBatch
-from cone.ugm.browser.listing import ColumnListing
+from cone.ugm.browser.listing import PrincipalsListing
 
 
 logger = logging.getLogger('cone.ugm')
@@ -42,49 +41,16 @@ class UsersRightColumn(Tile):
 
 @tile('columnlisting', 'templates/column_listing.pt',
       interface=Users, permission='view')
-class UsersColumnListing(ColumnListing):
+class UsersColumnListing(PrincipalsListing):
 
     slot = 'leftlisting'
-    list_columns = ColumnListing.user_list_columns
+    list_columns = PrincipalsListing.user_list_columns
+    listing_attrs = PrincipalsListing.user_attrs
+    sort_attr = PrincipalsListing.user_default_sort_column
     css = 'users'
     batchname = 'leftbatch'
+    delete_label = 'Delete User'
 
     @property
     def current_id(self):
         return getattr(self.request, '_curr_listing_id', None)
-
-    @property
-    def query_items(self):
-        can_delete = has_permission('delete', self.model, self.request)
-        try:
-            col_1_attr, col_2_attr, col_3_attr, sort_attr = self.user_attrs
-            ret = list()
-            attrlist = [col_1_attr, col_2_attr, col_3_attr]
-            users = self.model.backend
-            result = users.search(criteria=None, attrlist=attrlist)
-            for key, attrs in result:
-                target = make_url(self.request,
-                                  node=self.model,
-                                  resource=key)
-                
-                actions = list()
-                if can_delete:
-                    action_id = 'delete_item'
-                    action_title = 'Delete User'
-                    delete_action = self.create_action(
-                        action_id, True, action_title, target)
-                    actions = [delete_action]
-                
-                val_1 = self.extract_raw(attrs, col_1_attr)
-                val_2 = self.extract_raw(attrs, col_2_attr)
-                val_3 = self.extract_raw(attrs, col_3_attr)
-                sort = self.extract_raw(attrs, sort_attr)
-                content = self.item_content(val_1, val_2, val_3)
-                current = self.current_id == key
-                item = self.create_item(
-                    sort, target, content, current, actions)
-                ret.append(item)
-            return ret
-        except Exception, e:
-            logger.error(str(e))
-        return list()

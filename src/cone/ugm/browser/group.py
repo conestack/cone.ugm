@@ -75,7 +75,9 @@ class Principals(object):
         else:
             users = group.root.users.values()
 
-        col_1_attr, col_2_attr, col_3_attr, sort_attr = obj.user_attrs
+        attrlist = obj.user_attrs
+        sort_attr = obj.user_default_sort_column
+        
         ret = list()
         
         # XXX: extend ACL by 'manage_membership' permission
@@ -110,11 +112,9 @@ class Principals(object):
     
                 actions = [add_item_action, remove_item_action]
             
-            val_1 = obj.extract_raw(attrs, col_1_attr)
-            val_2 = obj.extract_raw(attrs, col_2_attr)
-            val_3 = obj.extract_raw(attrs, col_3_attr)
-            content = obj.item_content(val_1, val_2, val_3)
+            vals = [obj.extract_raw(attrs, attr) for attr in attrlist]
             sort = obj.extract_raw(attrs, sort_attr)
+            content = obj.item_content(*vals)
             current = False
             item = obj.create_item(sort, item_target, content, current, actions)
             ret.append(item)

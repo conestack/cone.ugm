@@ -49,19 +49,19 @@
   </users_form_attrmap>
   <users_listing_columns>
     <elem>
-      <key>col_1</key>
-      <value>cn:Fullname</value>
+      <key>cn</key>
+      <value>Fullname</value>
     </elem>
     <elem>
-      <key>col_2</key>
-      <value>sn:Surname</value>
+      <key>sn</key>
+      <value>Surname</value>
     </elem>
     <elem>
-      <key>col_3</key>
-      <value>mail:Email</value>
+      <key>mail</key>
+      <value>Email</value>
     </elem>
   </users_listing_columns>
-  <users_listing_default_column>col_1</users_listing_default_column>
+  <users_listing_default_column>cn</users_listing_default_column>
   <groups_dn>ou=groups,ou=groupOfNames_100_100,dc=my-domain,dc=com</groups_dn>
   <groups_scope>1</groups_scope>
   <groups_query></groups_query>
@@ -87,11 +87,11 @@
   <groups_relation></groups_relation>
   <groups_listing_columns>
     <elem>
-      <key>col_1</key>
-      <value>id:Groupname</value>
+      <key>id</key>
+      <value>Groupname</value>
     </elem>
   </groups_listing_columns>
-  <groups_listing_default_column>col_1</groups_listing_default_column>
+  <groups_listing_default_column>id</groups_listing_default_column>
   <roles_dn>ou=roles,ou=groupOfNames_100_100,dc=my-domain,dc=com</roles_dn>
   <roles_scope>1</roles_scope>
   <roles_query></roles_query>

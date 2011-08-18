@@ -46,20 +46,18 @@ widgets:
             value: Form label
 - users_listing_columns:
     factory: field:label:dict
-    value: expr:context.users_listing_columns
+    value: expr:context.model.attrs.users_listing_columns
     props:
         label: Column configuration for user listings
         required: Column configuration for user listings values are mandatory
-        static: True
         head:
-            key: Listing column
-            value: LDAP Attribute
+            key: Attr name
+            value: Display name
 - users_listing_default_column:
-    factory: field:label:select
-    value: expr:context.users_listing_default_column
+    factory: field:label:text
+    value: expr:context.model.attrs.users_listing_default_column
     props:
-        label: Users listing default columns
-        vocabulary: expr:context.sort_column_vocab
+        label: Users listing default column
 - save:
     factory: submit
     props:

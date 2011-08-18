@@ -51,20 +51,18 @@ widgets:
 #        label: Group-member-relation
 - groups_listing_columns:
     factory: field:label:dict
-    value: expr:context.groups_listing_columns
+    value: expr:context.model.attrs.groups_listing_columns
     props:
         label: Column configuration for groups listings
         required: Column configuration for group listings value is mandatory
-        static: True
         head:
-            key: Listing Column
-            value: LDAP Attribute
+            key: Attr name
+            value: Display name
 - groups_listing_default_column:
-    factory: field:label:select
-    value: expr:context.groups_listing_default_column
+    factory: field:label:text
+    value: expr:context.model.attrs.groups_listing_default_column
     props:
-        label: Groups listing default columns
-        vocabulary: expr:context.sort_column_vocab
+        label: Groups listing default column
 - save:
     factory: submit
     props:

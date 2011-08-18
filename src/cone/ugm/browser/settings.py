@@ -181,13 +181,6 @@ class UsersSettingsForm(Form, VocabMixin):
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/users_settings.yaml'
     
-    # XXX: read from column config
-    sort_column_vocab = [
-        ('col_1', 'col_1'),
-        ('col_2', 'col_2'),
-        ('col_3', 'col_3'),
-    ]
-    
     @property
     def users_aliases_attrmap(self):
         attrs = self.model.attrs
@@ -197,26 +190,6 @@ class UsersSettingsForm(Form, VocabMixin):
         users_aliases_attrmap['login'] = \
             attrs.users_aliases_attrmap.get('login')
         return users_aliases_attrmap
-    
-    @property
-    def users_listing_columns(self):
-        attrs = self.model.attrs
-        users_listing_columns = odict()
-        key_1 = attrs.users_listing_columns.get('col_1', 'cn:Fullname')
-        key_2 = attrs.users_listing_columns.get('col_2', 'sn:Surname')
-        key_3 = attrs.users_listing_columns.get('col_3', 'mail:Email')
-        users_listing_columns['col_1'] = key_1
-        users_listing_columns['col_2'] = key_2
-        users_listing_columns['col_3'] = key_3
-        return users_listing_columns
-    
-    @property
-    def users_listing_default_column(self):
-        attrs = self.model.attrs
-        users_listing_default_column = attrs.users_listing_default_column
-        if not users_listing_default_column:
-            users_listing_default_column = 'col_1'
-        return users_listing_default_column
     
     def save(self, widget, data):
         model = self.model
@@ -268,11 +241,6 @@ class GroupsSettingsForm(Form, VocabMixin):
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/groups_settings.yaml'
     
-    # XXX: read from column config
-    sort_column_vocab = [
-        ('col_1', 'col_1'),
-    ]
-    
     @property
     def groups_aliases_attrmap(self):
         attrs = self.model.attrs
@@ -280,22 +248,6 @@ class GroupsSettingsForm(Form, VocabMixin):
         groups_aliases_attrmap['rdn'] = attrs.groups_aliases_attrmap.get('rdn')
         groups_aliases_attrmap['id'] = attrs.groups_aliases_attrmap.get('id')
         return groups_aliases_attrmap
-    
-    @property
-    def groups_listing_columns(self):
-        attrs = self.model.attrs
-        groups_listing_columns = odict()
-        key_1 = attrs.groups_listing_columns.get('col_1', 'id:Groupname')
-        groups_listing_columns['col_1'] = key_1
-        return groups_listing_columns
-    
-    @property
-    def groups_listing_default_column(self):
-        attrs = self.model.attrs
-        groups_listing_default_column = attrs.groups_listing_default_column
-        if not groups_listing_default_column:
-            groups_listing_default_column = 'col_1'
-        return groups_listing_default_column
     
     def save(self, widget, data):
         model = self.model
