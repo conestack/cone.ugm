@@ -58,7 +58,7 @@ class DeleteUserAction(Action):
 
 
 @view_config(name='add_item', accept='application/json',
-             renderer='json', context=User, permission='edit')
+             renderer='json', context=User, permission='manage_membership')
 class UserAddToGroupAction(Action):
 
     def __call__(self):
@@ -85,7 +85,7 @@ class UserAddToGroupAction(Action):
 
 
 @view_config(name='remove_item', accept='application/json',
-             renderer='json', context=User, permission='edit')
+             renderer='json', context=User, permission='manage_membership')
 class UserRemoveFromGroupAction(Action):
 
     def __call__(self):
@@ -140,7 +140,7 @@ class DeleteGroupAction(Action):
 
 
 @view_config(name='add_item', accept='application/json',
-             renderer='json', context=Group, permission='edit')
+             renderer='json', context=Group, permission='manage_membership')
 class GroupAddUserAction(Action):
 
     def __call__(self):
@@ -151,8 +151,8 @@ class GroupAddUserAction(Action):
             user_id = self.request.params.get('id')
             group = self.model.model
             
-            user = group.root.users[user_id]
-            #group.root.users[user_id]
+            #user = group.root.users[user_id]
+            group.root.users[user_id]
             
             group.add(user_id)
             group()
@@ -169,7 +169,7 @@ class GroupAddUserAction(Action):
 
 
 @view_config(name='remove_item', accept='application/json',
-             renderer='json', context=Group, permission='edit')
+             renderer='json', context=Group, permission='manage_membership')
 class GroupRemoveUserAction(Action):
 
     def __call__(self):

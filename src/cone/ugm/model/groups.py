@@ -8,6 +8,7 @@ from cone.app.model import (
     BaseNodeInfo,
     registerNodeInfo,
 )
+from cone.ugm.model import UGM_DEFAULT_ACL
 from cone.ugm.model.group import Group
 from cone.ugm.model.utils import ugm_backend
 from cone.ugm.browser.utils import unquote_slash
@@ -17,6 +18,8 @@ logger = logging.getLogger('cone.ugm')
 
 
 class Groups(BaseNode):
+    
+    __acl__ = UGM_DEFAULT_ACL
 
     node_info_name = 'groups'
 

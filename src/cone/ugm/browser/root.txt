@@ -32,7 +32,7 @@ Other tiles raise if unauthenticated::
 
 Authenticate and render tiles::
 
-    >>> layer.login('viewer')
+    >>> layer.login('editor')
     
     >>> res = render_tile(root, request, 'leftcolumn')
     >>> res.find('<div class="column left_column box">') > -1

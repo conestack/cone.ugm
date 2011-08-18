@@ -80,8 +80,8 @@ class Principals(object):
         
         ret = list()
         
-        # XXX: extend ACL by 'manage_membership' permission
-        can_change = has_permission('edit', obj.model.parent, obj.request)
+        can_change = has_permission(
+            'manage_membership', obj.model.parent, obj.request)
         
         for user in users:
             id = user.name

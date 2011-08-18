@@ -78,8 +78,8 @@ class Groups(object):
 
         ret = list()
         
-        # XXX: extend ACL by 'manage_membership' permission
-        can_change = has_permission('edit', obj.model.parent, obj.request)
+        can_change = has_permission(
+            'manage_membership', obj.model.parent, obj.request)
         
         attrlist = obj.group_attrs
         sort_attr = obj.group_default_sort_column

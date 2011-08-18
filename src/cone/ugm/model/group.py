@@ -7,9 +7,12 @@ from cone.app.model import (
     registerNodeInfo,
 )
 from cone.app.security import DEFAULT_NODE_PROPERTY_PERMISSIONS
+from cone.ugm.model import UGM_DEFAULT_ACL
 
 
 class Group(AdapterNode):
+    
+    __acl__ = UGM_DEFAULT_ACL
     
     node_info_name = 'group'
     
