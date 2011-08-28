@@ -76,3 +76,4 @@ class PrincipalRolesForm(Part):
         for role in new_roles:
             if not role in existing_roles:
                 principal.add_role(role)
+        principal.parent.parent()
