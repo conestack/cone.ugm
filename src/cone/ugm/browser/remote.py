@@ -72,6 +72,7 @@ def remote_add_user(model, request):
     settings = ugm_users(model)
     attrmap = settings.attrs.users_form_attrmap
     checked_attrs = dict()
+    
     for key in attrmap.keys():
         val = attrs.get(key)
         if not val:
@@ -102,8 +103,6 @@ def remote_add_user(model, request):
         if password is not None:
             users.passwd(id, None, password)
         
-        model.root.invalidate()
-        
         message += u"Created user with ID '%s'." % id
         return {
             'success': True,
@@ -114,6 +113,8 @@ def remote_add_user(model, request):
             'success': False,
             'message': str(e),
         }
+    finally:
+        model.invalidate()
 
 
 @view_config('remote_delete_user', accept='application/json',
@@ -153,7 +154,6 @@ def remote_delete_user(model, request):
     try:
         del users[id]
         users.parent()
-        model.root.invalidate()
         
         message = u"Deleted user with ID '%s'." % id
         return {
@@ -165,3 +165,5 @@ def remote_delete_user(model, request):
             'success': False,
             'message': str(e),
         }
+    finally:
+        model.invalidate()
