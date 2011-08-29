@@ -43,6 +43,7 @@ DOCFILES = [
     ('browser/group.rst', ugm_layer),
     ('browser/actions.rst', ugm_layer),
     ('browser/settings.rst', ugm_layer),
+    ('browser/remote.rst', ugm_layer),
 ]
 
 
