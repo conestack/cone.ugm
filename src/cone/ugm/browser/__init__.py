@@ -1,9 +1,9 @@
-from pyramid.view import static
+from pyramid.static import static_view
 from yafowil.common import ascii_extractor
 from cone.app.model import Properties
 
 
-static_view = static('static')
+static_resources = static_view('static', use_subpath=True)
 
 
 # user and group form field definitions for yafowil
