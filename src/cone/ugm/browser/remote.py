@@ -1,10 +1,10 @@
-import json
 from pyramid.view import view_config
 from cone.ugm.model.users import Users
 from cone.ugm.model.utils import ugm_users
 
 
-@view_config('remote_add_user', context=Users, permission='manage')
+@view_config('remote_add_user', accept='application/json',
+             renderer='json', context=Users, permission='add')
 def remote_add_user(model, request):
     """Add user via remote service.
     
@@ -42,17 +42,17 @@ def remote_add_user(model, request):
     id = params.get('id')
     
     if not id:
-        return json.dumps({
+        return {
             'success': False,
             'message': u"No user ID given.",
-        })
+        }
     
-    users = model.root['users'].backend
+    users = model.backend
     if id in users:
-        return json.dumps({
+        return {
             'success': False,
             'message': u"User with given ID already exists.",
-        })
+        }
     
     password = params.get('password')
     
@@ -105,18 +105,19 @@ def remote_add_user(model, request):
         model.root.invalidate()
         
         message += u"Created user with ID '%s'." % id
-        return json.dumps({
+        return {
             'success': True,
             'message': message,
-        })
+        }
     except Exception, e:
-        return json.dumps({
+        return {
             'success': False,
             'message': str(e),
-        })
+        }
 
 
-@view_config('remote_delete_user', context=Users, permission='manage')
+@view_config('remote_delete_user', accept='application/json',
+             renderer='json', context=Users, permission='delete')
 def remote_delete_user(model, request):
     """Remove user via remote service.
     
@@ -137,17 +138,17 @@ def remote_delete_user(model, request):
     id = params.get('id')
     
     if not id:
-        return json.dumps({
+        return {
             'success': False,
             'message': u"No user ID given.",
-        })
+        }
     
-    users = model.root['users'].backend
+    users = model.backend
     if not id in users:
-        return json.dumps({
+        return {
             'success': False,
             'message': u"User with given ID not exists.",
-        })
+        }
     
     try:
         del users[id]
@@ -155,12 +156,12 @@ def remote_delete_user(model, request):
         model.root.invalidate()
         
         message = u"Deleted user with ID '%s'." % id
-        return json.dumps({
+        return {
             'success': True,
             'message': message,
-        })
+        }
     except Exception, e:
-        return json.dumps({
+        return {
             'success': False,
             'message': str(e),
-        })
+        }
