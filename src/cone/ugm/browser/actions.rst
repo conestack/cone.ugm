@@ -27,7 +27,7 @@ Test GroupAddUserAction::
     >>> render_view_to_response(group, request, name='add_item')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: <function GroupAddUserAction at ...> failed 
+    HTTPForbidden: Unauthorized: <function GroupAddUserAction at ...> failed 
     permission check
     
     >>> layer.login('editor')
@@ -55,7 +55,7 @@ Test GroupRemoveUserAction::
     >>> render_view_to_response(group, request, name='remove_item')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: <function GroupRemoveUserAction at ...> failed 
+    HTTPForbidden: Unauthorized: <function GroupRemoveUserAction at ...> failed 
     permission check
     
     >>> layer.login('editor')
@@ -81,7 +81,7 @@ Test UserAddToGroupAction::
     >>> render_view_to_response(user, request, name='add_item')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: <function UserAddToGroupAction at ...> failed 
+    HTTPForbidden: Unauthorized: <function UserAddToGroupAction at ...> failed 
     permission check
     
     >>> layer.login('editor')
@@ -106,7 +106,7 @@ Test UserRemoveFromGroupAction::
     >>> render_view_to_response(user, request, name='remove_item')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: <function UserRemoveFromGroupAction at ...> failed 
+    HTTPForbidden: Unauthorized: <function UserRemoveFromGroupAction at ...> failed 
     permission check
     
     >>> layer.login('editor')
@@ -131,7 +131,7 @@ Test DeleteUserAction::
     >>> render_view_to_response(user, request, name='delete_item')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: <function DeleteUserAction at ...> failed 
+    HTTPForbidden: Unauthorized: <function DeleteUserAction at ...> failed 
     permission check
     
     >>> layer.login('owner')
@@ -168,7 +168,7 @@ Test DeleteGroupAction::
     >>> render_view_to_response(group, request, name='delete_item')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: <function DeleteGroupAction at ...> failed 
+    HTTPForbidden: Unauthorized: <function DeleteGroupAction at ...> failed 
     permission check
     
     >>> layer.login('owner')

@@ -1,6 +1,8 @@
 cone.ugm.browser.settings
 =========================
 
+::
+
     >>> from cone.app import root
     >>> from cone.tile import render_tile
     
@@ -28,21 +30,21 @@ Form tiles raise if not manager::
     >>> render_tile(server_settings, request, 'editform')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: tile 
+    HTTPForbidden: Unauthorized: tile 
     <cone.ugm.browser.settings.ServerSettingsForm object at ...> 
     failed permission check
     
     >>> render_tile(users_settings, request, 'editform')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: tile 
+    HTTPForbidden: Unauthorized: tile 
     <cone.ugm.browser.settings.UsersSettingsForm object at ...> 
     failed permission check
     
     >>> render_tile(groups_settings, request, 'editform')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: tile 
+    HTTPForbidden: Unauthorized: tile 
     <cone.ugm.browser.settings.GroupsSettingsForm object at ...> 
     failed permission check
     

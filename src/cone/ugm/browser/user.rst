@@ -24,28 +24,28 @@ Other tiles raise if unauthenticated::
     >>> render_tile(user, request, 'leftcolumn')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: 
+    HTTPForbidden: Unauthorized: 
     tile <cone.ugm.browser.user.UserLeftColumn object at ...> 
     failed permission check
     
     >>> render_tile(user, request, 'rightcolumn')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: 
+    HTTPForbidden: Unauthorized: 
     tile <cone.ugm.browser.user.UserRightColumn object at ...> 
     failed permission check
     
     >>> render_tile(user, request, 'columnlisting')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: 
+    HTTPForbidden: Unauthorized: 
     tile <cone.ugm.browser.user.GroupsOfUserColumnListing object at ...> 
     failed permission check
     
     >>> render_tile(user, request, 'allcolumnlisting')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: 
+    HTTPForbidden: Unauthorized: 
     tile <cone.ugm.browser.user.AllGroupsColumnListing object at ...> 
     failed permission check
 
@@ -85,7 +85,7 @@ Add::
     >>> res = render_tile(users, request, 'add')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: tile 
+    HTTPForbidden: Unauthorized: tile 
     <cone.app.browser.authoring.AddTile object at ...> 
     failed permission check
     

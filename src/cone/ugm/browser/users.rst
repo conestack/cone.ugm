@@ -23,21 +23,21 @@ Other tiles raise if unauthenticated::
     >>> render_tile(users, request, 'leftcolumn')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: 
+    HTTPForbidden: Unauthorized: 
     tile <cone.ugm.browser.users.UsersLeftColumn object at ...> 
     failed permission check
     
     >>> render_tile(users, request, 'rightcolumn')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: 
+    HTTPForbidden: Unauthorized: 
     tile <cone.ugm.browser.users.UsersRightColumn object at ...> 
     failed permission check
     
     >>> render_tile(users, request, 'columnlisting')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: 
+    HTTPForbidden: Unauthorized: 
     tile <cone.ugm.browser.users.UsersColumnListing object at ...> 
     failed permission check
 

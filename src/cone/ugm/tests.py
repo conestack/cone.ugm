@@ -28,21 +28,21 @@ ugm_layer = UGMLayer()
 
 
 DOCFILES = [
-    ('model/settings.txt', ugm_layer),
-    ('model/utils.txt', ugm_layer),
-    ('model/users.txt', ugm_layer),
-    ('model/groups.txt', ugm_layer),
-    ('model/user.txt', ugm_layer),
-    ('model/group.txt', ugm_layer),
-    ('browser/__init__.txt', ugm_layer),
-    ('browser/utils.txt', ugm_layer),
-    ('browser/users.txt', ugm_layer),
-    ('browser/groups.txt', ugm_layer),
-    ('browser/root.txt', ugm_layer),
-    ('browser/user.txt', ugm_layer),
-    ('browser/group.txt', ugm_layer),
-    ('browser/actions.txt', ugm_layer),
-    ('browser/settings.txt', ugm_layer),
+    ('model/settings.rst', ugm_layer),
+    ('model/utils.rst', ugm_layer),
+    ('model/users.rst', ugm_layer),
+    ('model/groups.rst', ugm_layer),
+    ('model/user.rst', ugm_layer),
+    ('model/group.rst', ugm_layer),
+    ('browser/__init__.rst', ugm_layer),
+    ('browser/utils.rst', ugm_layer),
+    ('browser/users.rst', ugm_layer),
+    ('browser/groups.rst', ugm_layer),
+    ('browser/root.rst', ugm_layer),
+    ('browser/user.rst', ugm_layer),
+    ('browser/group.rst', ugm_layer),
+    ('browser/actions.rst', ugm_layer),
+    ('browser/settings.rst', ugm_layer),
 ]
 
 

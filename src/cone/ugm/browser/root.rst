@@ -1,6 +1,8 @@
 cone.ugm.browser.root
 =====================
 
+::
+
     >>> from cone.app import root
     >>> from cone.tile import render_tile
     
@@ -19,14 +21,14 @@ Other tiles raise if unauthenticated::
     >>> render_tile(root, request, 'leftcolumn')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: tile 
+    HTTPForbidden: Unauthorized: tile 
     <cone.ugm.browser.root.RootLeftColumn object at ...> 
     failed permission check
     
     >>> render_tile(root, request, 'rightcolumn')
     Traceback (most recent call last):
       ...
-    Forbidden: Unauthorized: tile 
+    HTTPForbidden: Unauthorized: tile 
     <cone.ugm.browser.root.RootRightColumn object at ...> 
     failed permission check
 
