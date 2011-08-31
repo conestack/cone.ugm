@@ -317,7 +317,8 @@
                             'ul.inoutrightlisting', to_move.parent().parent());
                         to_move = to_move.detach();
                         new_container.append(to_move);
-                        //ugm.scroll_to_selected('.selected', new_container);
+                        ugm.inout_scroll_to_selected(
+                            '.selected', new_container);
                     }
                 });
                 ugm.actions.perform(options);
@@ -350,7 +351,8 @@
                             'ul.inoutleftlisting', to_move.parent().parent());
                         to_move = to_move.detach();
                         new_container.append(to_move);
-                        //ugm.scroll_to_selected('.selected', new_container);
+                        ugm.inout_scroll_to_selected(
+                            '.selected', new_container);
                     }
                 });
                 ugm.actions.perform(options);
@@ -448,12 +450,12 @@
         
         // scroll column listings to selected items
         scroll_listings_to_selected: function() {
-            ugm.scroll_to_selected('.selected', $('ul.leftlisting'));
-            ugm.scroll_to_selected('.selected', $('ul.rightlisting'));
+            ugm.listing_scroll_to_selected('.selected', $('ul.leftlisting'));
+            ugm.listing_scroll_to_selected('.selected', $('ul.rightlisting'));
         },
         
         // scroll listing parent to element found by selector
-        scroll_to_selected: function(selector, listing) {
+        listing_scroll_to_selected: function(selector, listing) {
             var elem = $(selector, listing);
             if (elem.length) {
                 var container = listing.parent();
@@ -461,12 +463,25 @@
                 var container_h = container.height();
                 container.scrollTop(0);
                 if (listing_h > container_h) {
-                    var range_y = listing_h - container_h;
                     var sel_y = elem.position().top - container_h;
                     var sel_h = elem.height();
                     if (sel_y > 0) {
                         container.scrollTop(sel_y + sel_h);
                     }
+                }
+            }
+        },
+        
+        // scroll listing parent to element found by selector
+        inout_scroll_to_selected: function(selector, container) {
+            var elem = $(selector, container);
+            if (elem.length) {
+                var h = container.height();
+                container.scrollTop(0);
+                var sel_y = elem.position().top - h;
+                var sel_h = elem.height();
+                if (sel_y > 0) {
+                     container.scrollTop(sel_y + sel_h);
                 }
             }
         },
