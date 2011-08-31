@@ -1,10 +1,12 @@
 <tal:ajax xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax" omit-tag="True">
 
   <div class="left_column_filter">
+    <strong>Available</strong>
     <input type="text" name="left_column_filter" value="filter listing" />
   </div>
   
   <div class="right_column_filter">
+    <strong>Recent</strong>
     <input type="text" name="right_column_filter" value="filter listing" />
   </div>
   

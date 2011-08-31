@@ -182,21 +182,35 @@ div.right_column div.groups {
 
 /* inout listing */
 div.inoutlisting {
-	clear:both;
+    clear:both;
     margin-top:1em;
 }
 div.left_column_filter,
 div.right_column_filter {
-	width:299px;
+    width:299px;
     float:left;
-    text-align:right;
+}
+div.left_column_filter strong,
+div.right_column_filter strong {
+    color:#333;
+    text-decoration:none;
+    font-size:80%;
+    padding-top:4px;
+    padding-left:11px;
+    float:left;
 }
 div.left_column_filter input,
 div.right_column_filter input {
     color:#ccc;
     font-size:80%;
-    margin-right:1em;
     margin-bottom:1em;
+    float:right;
+}
+div.right_column_filter strong {
+    padding-left:31px;
+}
+div.left_column_filter input {
+    margin-right:20px;
 }
 div.inoutlisting ul {
     margin:0;
@@ -243,14 +257,14 @@ div.inoutlisting div.actions {
     padding:4px;
 }
 div.inoutlisting div.actions a.hidden {
-	display:none;
+    display:none;
 }
 div.inoutlisting div.head div.sort_col_1 {
     width:230px;
 }
 div.inoutbuttons {
-	width:38px;
-	float:left;
+    width:38px;
+    float:left;
 }
 div.inoutbuttons input {
     width:38px;
@@ -376,9 +390,9 @@ a.delete_item_disabled {
 }
 #checkbox-groupform-principal_roles-wrapper,
 #checkbox-userform-principal_roles-wrapper {
-	margin-top:0;
-	margin-bottom:0;
-	width:340px;
+    margin-top:0;
+    margin-bottom:0;
+    width:340px;
     list-style:none;
     clear:none;
     float:right;

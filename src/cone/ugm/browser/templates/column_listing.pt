@@ -25,31 +25,31 @@
          tal:attributes="class 'columnitems ' + context.css">
       <ul class="${context.slot}">
         <tal:item repeat="item context.items">
-	      <li ajax:target="${item['target']}"
-	          tal:define="current_item item['current'] and 'selected' or '';
-	                      first_item repeat.item.start and 'first_item' or '';
-	                      item_class '%s %s' %(current_item, first_item)"
-	          tal:attributes="class item_class">
-	        <div class="head li_trigger"
-	             tal:content="structure item['content']">head</div>
-	        <div class="actions">
-	          <tal:action repeat="action item['actions']">
-	            <tal:enabled condition="action['enabled']">
-	              <a href=""
-	                 title="${action['title']}"
-	                 class="${'action %s enabled' % action['id']}"
-	                 ajax:target="${action['target']}">&nbsp;</a>
-	            </tal:enabled>
-	            <tal:disabled condition="not action['enabled']">
-	              <a href=""
-	                 title="${action['title']}"
-	                 class="${'action %s_disabled' % action['id']}"
-	                 ajax:target="${action['target']}">&nbsp;</a>
-	            </tal:disabled>
-	          </tal:action>
-	        </div>
-	        <div style="clear: both;"></div>
-	      </li>
+          <li ajax:target="${item['target']}"
+              tal:define="current_item item['current'] and 'selected' or '';
+                          first_item repeat.item.start and 'first_item' or '';
+                          item_class '%s %s' %(current_item, first_item)"
+              tal:attributes="class item_class">
+            <div class="head li_trigger"
+                 tal:content="structure item['content']">head</div>
+            <div class="actions">
+              <tal:action repeat="action item['actions']">
+                <tal:enabled condition="action['enabled']">
+                  <a href=""
+                     title="${action['title']}"
+                     class="${'action %s enabled' % action['id']}"
+                     ajax:target="${action['target']}">&nbsp;</a>
+                </tal:enabled>
+                <tal:disabled condition="not action['enabled']">
+                  <a href=""
+                     title="${action['title']}"
+                     class="${'action %s_disabled' % action['id']}"
+                     ajax:target="${action['target']}">&nbsp;</a>
+                </tal:disabled>
+              </tal:action>
+            </div>
+            <div style="clear: both;"></div>
+          </li>
         </tal:item>
       </ul>
     </div>
