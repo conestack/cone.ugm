@@ -315,12 +315,7 @@
                         var to_move = elem.parent().parent();
                         var new_container = $(
                             'ul.inoutrightlisting', to_move.parent().parent());
-                        to_move = to_move.detach();
-                        new_container.append(to_move);
-                        ugm.inout_scroll_to_selected(
-                            '.selected', new_container);
-                        $('li', to_move.parent().parent()).removeClass('selected');
-                        to_move.addClass('selected');
+                        ugm.inout_move_item(to_move, new_container);
                     }
                 });
                 ugm.actions.perform(options);
@@ -351,12 +346,7 @@
                         var to_move = elem.parent().parent();
                         var new_container = $(
                             'ul.inoutleftlisting', to_move.parent().parent());
-                        to_move = to_move.detach();
-                        new_container.append(to_move);
-                        ugm.inout_scroll_to_selected(
-                            '.selected', new_container);
-                        $('li', to_move.parent().parent()).removeClass('selected');
-                        to_move.addClass('selected');
+                        ugm.inout_move_item(to_move, new_container);
                     }
                 });
                 ugm.actions.perform(options);
@@ -490,32 +480,31 @@
             }
         },
         
-        // asc / desc sorting of listings
-        listing_sort_func: function(name, inv) {
-            var sel = '.' + name;
-            var inverse = inv;
-            var func = function(a, b) {
-                var a_val = $(sel, a)
-                    .text()
-                    .toLowerCase()
-                    .replace(/ö/g, 'ozzz')
-                    .replace(/ü/g, 'uzzz')
-                    .replace(/ä/g, 'azzz')
-                    .replace(/ß/g, 'szzz');
-                var b_val = $(sel, b)
-                    .text()
-                    .toLowerCase()
-                    .replace(/ö/g, 'ozzz')
-                    .replace(/ü/g, 'uzzz')
-                    .replace(/ä/g, 'azzz')
-                    .replace(/ß/g, 'szzz');
-                if (inverse) {
-                    return a_val < b_val ? 1 : -1;
-                } else {
-                    return b_val < a_val ? 1 : -1;
-                }
-            }
-            return func;
+        // toggle inout widget item
+        inout_move_item: function(to_move, new_container) {
+            to_move = to_move.detach();
+            new_container.append(to_move);
+            $('li', new_container).sortElements(function(a, b) {
+                var sel = 'div.sort_col_1';
+                a = ugm.listing_sort_value(sel, a);
+                b = ugm.listing_sort_value(sel, b);
+                return a > b ? 1 : -1;
+            });
+            ugm.inout_scroll_to_selected(
+                '.selected', new_container);
+            $('li', to_move.parent().parent()).removeClass('selected');
+            to_move.addClass('selected');
+        },
+        
+        listing_sort_value: function(selector, context) {
+            var val = $(selector, context)
+                .text()
+                .toLowerCase()
+                .replace(/ö/g, 'ozzz')
+                .replace(/ü/g, 'uzzz')
+                .replace(/ä/g, 'azzz')
+                .replace(/ß/g, 'szzz');
+            return val;
         },
         
         // sort listings binder
@@ -537,12 +526,16 @@
                     elem.addClass('inv').addClass('desc');
                 }
                 var sortname = elem.attr('href');
-                var sortfunc = ugm.listing_sort_func(sortname, inv);
-                var sorted = $('ul li', cont).sort(sortfunc);
-                $('ul', cont).empty().append(sorted);
-                ugm.left_listing_nav_binder(cont);
-                ugm.right_listing_nav_binder(cont);
-                ugm.listing_actions_binder(cont);
+                var sel = '.' + sortname;
+                $('ul li', cont).sortElements(function(a, b) {
+                    a = ugm.listing_sort_value(sel, a);
+                    b = ugm.listing_sort_value(sel, b);
+                    if (inv) {
+                        return a < b ? 1 : -1;
+                    } else {
+                        return b < a ? 1 : -1;
+                    }
+                });
                 ugm.scroll_listings_to_selected();
                 bdajax.spinner.hide();
             });
