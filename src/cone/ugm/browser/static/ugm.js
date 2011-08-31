@@ -243,13 +243,65 @@
             // add item as member in inout widget
             inout_add_item: function(event) {
                 event.preventDefault();
-                alert('inout add');
+                var elem = $(event.currentTarget);
+                var target = elem.attr('ajax:target');
+                var options = bdajax.parsetarget(target);
+                $.extend(options, {
+                    action_id: 'add_item',
+                    success: function(data) {
+                        if (!data) {
+                            bdajax.error('Empty response');
+                            return;
+                        }
+                        if (!data.success) {
+                            bdajax.error(data.message);
+                            return;
+                        }
+                        elem.removeClass('enabled')
+                            .addClass('hidden');
+                        $('.remove_item', elem.parent())
+                            .removeClass('hidden')
+                            .addClass('enabled');
+                        var to_move = elem.parent().parent();
+                        var new_container = $(
+                            'ul.inoutleftlisting', to_move.parent().parent());
+                        to_move = to_move.detach();
+                        new_container.append(to_move);
+                    }
+                });
+                ugm.actions.perform(options);
             },
             
             // remove item from member in inout widget
             inout_remove_item: function(event) {
                 event.preventDefault();
-                alert('inout remove');
+                var elem = $(event.currentTarget);
+                var target = elem.attr('ajax:target');
+                var options = bdajax.parsetarget(target);
+                $.extend(options, {
+                    action_id: 'remove_item',
+                    success: function(data) {
+                        if (!data) {
+                            bdajax.error('Empty response');
+                            return;
+                        }
+                        if (!data.success) {
+                            bdajax.error(data.message);
+                            return;
+                        }
+                        elem.removeClass('enabled')
+                            .addClass('hidden');
+                        $('.add_item', elem.parent())
+                            .removeClass('hidden')
+                            .addClass('enabled');
+                        var to_move = elem.parent().parent();
+                        var new_container = $(
+                            'ul.inoutrightlisting', to_move.parent().parent());
+                        to_move = to_move.detach();
+                        new_container.append(to_move);
+                    }
+                });
+                ugm.actions.perform(options);
             },
             
             // perform listing item action

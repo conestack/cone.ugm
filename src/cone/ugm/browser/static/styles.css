@@ -218,6 +218,9 @@ div.inoutlisting div.actions {
     overflow:hidden;
     padding:4px;
 }
+div.inoutlisting div.actions a.hidden {
+	display:none;
+}
 
 /* left column */
 div.left_column {

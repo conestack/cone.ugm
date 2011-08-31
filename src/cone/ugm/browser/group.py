@@ -55,13 +55,9 @@ class Principals(object):
     """
     def __init__(self,
                  members_only=False,
-                 available_only=False,
-                 add_action=True,
-                 remove_action=True):
+                 available_only=False):
         self.members_only = members_only
         self.available_only = available_only
-        self.add_action = add_action
-        self.remove_action = remove_action
 
     def __get__(self, obj, objtype=None):
         if obj is None:
@@ -113,21 +109,19 @@ class Principals(object):
 
             actions = list()
             if can_change:
-                if self.add_action:
-                    action_id = 'add_item'
-                    action_enabled = not bool(related)
-                    action_title = 'Add user to selected group'
-                    add_item_action = obj.create_action(
-                        action_id, action_enabled, action_title, action_target)
-                    actions.append(add_item_action)
-                
-                if self.remove_action:
-                    action_id = 'remove_item'
-                    action_enabled = bool(related)
-                    action_title = 'Remove user from selected group'
-                    remove_item_action = obj.create_action(
-                        action_id, action_enabled, action_title, action_target)
-                    actions.append(remove_item_action)
+                action_id = 'add_item'
+                action_enabled = not bool(related)
+                action_title = 'Add user to selected group'
+                add_item_action = obj.create_action(
+                    action_id, action_enabled, action_title, action_target)
+                actions.append(add_item_action)
+            
+                action_id = 'remove_item'
+                action_enabled = bool(related)
+                action_title = 'Remove user from selected group'
+                remove_item_action = obj.create_action(
+                    action_id, action_enabled, action_title, action_target)
+                actions.append(remove_item_action)
             
             vals = [obj.extract_raw(attrs, attr) for attr in attrlist]
             sort = obj.extract_raw(attrs, sort_attr)
@@ -170,8 +164,8 @@ class AllUsersColumnListing(ColumnListing):
       interface=Group, permission='view')
 class InOutListing(ColumnListing):
     
-    selected_items = Principals(members_only=True, add_action=False)
-    available_items = Principals(available_only=True, remove_action=False)
+    selected_items = Principals(members_only=True)
+    available_items = Principals(available_only=True)
     user_attrs = ['id']
     user_default_sort_column = 'id'
 
