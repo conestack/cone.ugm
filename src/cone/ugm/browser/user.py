@@ -177,6 +177,12 @@ class InOutListing(ColumnListing):
     available_items = Groups(available_only=True)
     group_attrs = ['id']
     group_default_sort_column = 'id'
+    
+    @property
+    def display_control_buttons(self):
+        return True
+        #settings = ugm_general(self.model)
+        #return settings.attrs['controls_membership_assignment_widget']
 
 
 class UserForm(PrincipalForm):

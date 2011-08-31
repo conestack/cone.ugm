@@ -8,7 +8,8 @@
     <input type="text" name="right_column_filter" value="filter listing" />
   </div>
   
-  <div class="inoutlisting">
+  <div class="inoutlisting"
+       tal:define="display_control_buttons context.display_control_buttons">
     
     <ul class="inoutleftlisting">
       <tal:item repeat="item context.available_items">
@@ -39,7 +40,13 @@
         </li>
       </tal:item>
     </ul>
-      
+    
+    <div class="inoutbuttons"
+         tal:condition="display_control_buttons">
+      <input type="button" class="inout_add_item" value=">>" />
+      <input type="button" class="inout_remove_item" value="<<" />
+    </div>
+    
     <ul class="inoutrightlisting">
       <tal:item repeat="item context.selected_items">
         <li ajax:target="${item['target']}"

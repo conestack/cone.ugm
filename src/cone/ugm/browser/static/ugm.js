@@ -17,6 +17,7 @@
         ugm.scroll_listings_to_selected();
         ugm.inout_actions_binder();
         ugm.inout_filter_binder();
+        ugm.inout_select_binder();
         
         // add after ajax binding to bdajax
         $.extend(bdajax.binders, {
@@ -27,7 +28,8 @@
             listing_actions_binder: ugm.listing_actions_binder,
             listing_related_binder: ugm.listing_related_binder,
             inout_actions_binder: ugm.inout_actions_binder,
-            inout_filter_binder: ugm.inout_filter_binder
+            inout_filter_binder: ugm.inout_filter_binder,
+            inout_select_binder: ugm.inout_select_binder
         });
     });
     
@@ -116,6 +118,13 @@
                 });
         },
         
+        // bind inout item selection
+        inout_select_binder: function(context) {
+            $('div.inoutlisting div.li_trigger', context)
+                .unbind()
+                .bind('click', ugm.actions.inout_select_item);
+        },
+        
         // bind inout item actions
         inout_actions_binder: function(context) {
             
@@ -128,6 +137,16 @@
             $('div.inoutlisting div.actions a.remove_item', context)
                 .unbind()
                 .bind('click', ugm.actions.inout_remove_item);
+            
+            // bind button add action
+            $('div.inoutlisting input.inout_add_item', context)
+                .unbind()
+                .bind('click', ugm.actions.inout_button_add_item);
+            
+            // bind button remove action
+            $('div.inoutlisting input.inout_remove_item', context)
+                .unbind()
+                .bind('click', ugm.actions.inout_button_remove_item);
         },
         
         // object containing ugm action callbacks
@@ -242,6 +261,35 @@
                 ugm.actions.perform(options);
             },
             
+            // select item in inout widget
+            inout_select_item: function(event) {
+                event.preventDefault();
+                var elem = $(event.currentTarget);
+                var li = elem.parent();
+                $('li', li.parent().parent()).removeClass('selected');
+                li.addClass('selected');
+            },
+            
+            // add item as member in inout widget via button
+            inout_button_add_item: function(event) {
+                event.preventDefault();
+                var elem = $('ul.inoutleftlisting li.selected');
+                if (!elem.length) {
+                    return;
+                }
+                $('a.add_item', elem).click();
+            },
+            
+            // remove item from member in inout widget via button
+            inout_button_remove_item: function(event) {
+                event.preventDefault();
+                var elem = $('ul.inoutrightlisting li.selected');
+                if (!elem.length) {
+                    return;
+                }
+                $('a.remove_item', elem).click();
+            },
+            
             // add item as member in inout widget
             inout_add_item: function(event) {
                 event.preventDefault();
@@ -269,6 +317,7 @@
                             'ul.inoutrightlisting', to_move.parent().parent());
                         to_move = to_move.detach();
                         new_container.append(to_move);
+                        //ugm.scroll_to_selected('.selected', new_container);
                     }
                 });
                 ugm.actions.perform(options);
@@ -301,6 +350,7 @@
                             'ul.inoutleftlisting', to_move.parent().parent());
                         to_move = to_move.detach();
                         new_container.append(to_move);
+                        //ugm.scroll_to_selected('.selected', new_container);
                     }
                 });
                 ugm.actions.perform(options);
