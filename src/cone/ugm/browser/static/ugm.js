@@ -264,7 +264,7 @@
                             .addClass('enabled');
                         var to_move = elem.parent().parent();
                         var new_container = $(
-                            'ul.inoutleftlisting', to_move.parent().parent());
+                            'ul.inoutrightlisting', to_move.parent().parent());
                         to_move = to_move.detach();
                         new_container.append(to_move);
                     }
@@ -296,7 +296,7 @@
                             .addClass('enabled');
                         var to_move = elem.parent().parent();
                         var new_container = $(
-                            'ul.inoutrightlisting', to_move.parent().parent());
+                            'ul.inoutleftlisting', to_move.parent().parent());
                         to_move = to_move.detach();
                         new_container.append(to_move);
                     }

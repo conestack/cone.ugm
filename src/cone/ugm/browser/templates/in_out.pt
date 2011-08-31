@@ -1,8 +1,17 @@
 <tal:ajax xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax" omit-tag="True">
 
+  <div class="left_column_filter">
+    <input type="text" name="left_column_filter" value="filter listing" />
+  </div>
+  
+  <div class="right_column_filter">
+    <input type="text" name="right_column_filter" value="filter listing" />
+  </div>
+  
   <div class="inoutlisting">
+    
     <ul class="inoutleftlisting">
-      <tal:item repeat="item context.selected_items">
+      <tal:item repeat="item context.available_items">
         <li ajax:target="${item['target']}"
             tal:define="current_item item['current'] and 'selected' or '';
                         first_item repeat.item.start and 'first_item' or '';
@@ -32,7 +41,7 @@
     </ul>
       
     <ul class="inoutrightlisting">
-      <tal:item repeat="item context.available_items">
+      <tal:item repeat="item context.selected_items">
         <li ajax:target="${item['target']}"
             tal:define="current_item item['current'] and 'selected' or '';
                         first_item repeat.item.start and 'first_item' or '';

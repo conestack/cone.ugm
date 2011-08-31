@@ -115,5 +115,5 @@
     </elem>
   </roles_form_attrmap>
   <roles_relation></roles_relation>
-  <default_membership_assignment_widget>listing</default_membership_assignment_widget>
+  <default_membership_assignment_widget>inout</default_membership_assignment_widget>
 </properties>
