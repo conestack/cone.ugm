@@ -319,6 +319,8 @@
                         new_container.append(to_move);
                         ugm.inout_scroll_to_selected(
                             '.selected', new_container);
+                        $('li', to_move.parent().parent()).removeClass('selected');
+                        to_move.addClass('selected');
                     }
                 });
                 ugm.actions.perform(options);
@@ -353,6 +355,8 @@
                         new_container.append(to_move);
                         ugm.inout_scroll_to_selected(
                             '.selected', new_container);
+                        $('li', to_move.parent().parent()).removeClass('selected');
+                        to_move.addClass('selected');
                     }
                 });
                 ugm.actions.perform(options);
