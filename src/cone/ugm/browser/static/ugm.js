@@ -15,6 +15,7 @@
         ugm.listing_actions_binder();
         ugm.listing_related_binder();
         ugm.scroll_listings_to_selected();
+        ugm.inout_actions_binder();
         
         // add after ajax binding to bdajax
         $.extend(bdajax.binders, {
@@ -23,7 +24,8 @@
             listing_filter_binder: ugm.listing_filter_binder,
             listing_sort_binder: ugm.listing_sort_binder,
             listing_actions_binder: ugm.listing_actions_binder,
-            listing_related_binder: ugm.listing_related_binder
+            listing_related_binder: ugm.listing_related_binder,
+            inout_actions_binder: ugm.inout_actions_binder
         });
     });
     
@@ -76,40 +78,54 @@
         listing_actions_binder: function(context) {
             
             // bind delete actions
-            $('div.actions a.delete_item', context)
+            $('div.columnitems div.actions a.delete_item', context)
                 .unbind()
                 .bind('click', ugm.actions.delete_item);
             
             // bind disabled delete actions
-            $('div.actions a.delete_item_disabled', context)
+            $('div.columnitems div.actions a.delete_item_disabled', context)
                 .unbind()
                 .bind('click', function(event) {
                     event.preventDefault();
                 });
             
             // bind add actions
-            $('div.actions a.add_item', context)
+            $('div.columnitems div.actions a.add_item', context)
                 .unbind()
-                .bind('click', ugm.actions.add_item);
+                .bind('click', ugm.actions.listing_add_item);
             
             // bind disabled add actions
-            $('div.actions a.add_item_disabled', context)
+            $('div.columnitems div.actions a.add_item_disabled', context)
                 .unbind()
                 .bind('click', function(event) {
                     event.preventDefault();
                 });
             
             // bind remove actions
-            $('div.actions a.remove_item', context)
+            $('div.columnitems div.actions a.remove_item', context)
                 .unbind()
-                .bind('click', ugm.actions.remove_item);
+                .bind('click', ugm.actions.listing_remove_item);
             
             // bind disabled remove actions
-            $('div.actions a.remove_item_disabled', context)
+            $('div.columnitems div.actions a.remove_item_disabled', context)
                 .unbind()
                 .bind('click', function(event) {
                     event.preventDefault();
                 });
+        },
+        
+        // bind inout item actions
+        inout_actions_binder: function(context) {
+            
+            // bind add actions
+            $('div.inoutlisting div.actions a.add_item', context)
+                .unbind()
+                .bind('click', ugm.actions.inout_add_item);
+            
+            // bind remove actions
+            $('div.inoutlisting div.actions a.remove_item', context)
+                .unbind()
+                .bind('click', ugm.actions.inout_remove_item);
         },
         
         // object containing ugm action callbacks
@@ -158,8 +174,8 @@
                 });
             },
             
-            // add item as member
-            add_item: function(event) {
+            // add item as member in listing
+            listing_add_item: function(event) {
                 event.preventDefault();
                 var elem = $(event.currentTarget);
                 var target = elem.attr('ajax:target');
@@ -185,14 +201,14 @@
                             .unbind()
                             .removeClass('remove_item_disabled')
                             .addClass('remove_item')
-                            .bind('click', ugm.actions.remove_item);
+                            .bind('click', ugm.actions.listing_remove_item);
                     }
                 });
                 ugm.actions.perform(options);
             },
             
-            // remove item from member
-            remove_item: function(event) {
+            // remove item from member in listing
+            listing_remove_item: function(event) {
                 event.preventDefault();
                 var elem = $(event.currentTarget);
                 var target = elem.attr('ajax:target');
@@ -218,10 +234,22 @@
                             .unbind()
                             .removeClass('add_item_disabled')
                             .addClass('add_item')
-                            .bind('click', ugm.actions.add_item);
+                            .bind('click', ugm.actions.listing_add_item);
                     }
                 });
                 ugm.actions.perform(options);
+            },
+            
+            // add item as member in inout widget
+            inout_add_item: function(event) {
+                event.preventDefault();
+                alert('inout add');
+            },
+            
+            // remove item from member in inout widget
+            inout_remove_item: function(event) {
+                event.preventDefault();
+                alert('inout remove');
             },
             
             // perform listing item action
@@ -323,8 +351,20 @@
             var sel = '.' + name;
             var inverse = inv;
             var func = function(a, b) {
-                var a_val = $(sel, a).text().toLowerCase().replace(/ö/g, 'ozzz').replace(/ü/g, 'uzzz').replace(/ä/g, 'azzz').replace(/ß/g, 'szzz');
-                var b_val = $(sel, b).text().toLowerCase().replace(/ö/g, 'ozzz').replace(/ü/g, 'uzzz').replace(/ä/g, 'azzz').replace(/ß/g, 'szzz');
+                var a_val = $(sel, a)
+                    .text()
+                    .toLowerCase()
+                    .replace(/ö/g, 'ozzz')
+                    .replace(/ü/g, 'uzzz')
+                    .replace(/ä/g, 'azzz')
+                    .replace(/ß/g, 'szzz');
+                var b_val = $(sel, b)
+                    .text()
+                    .toLowerCase()
+                    .replace(/ö/g, 'ozzz')
+                    .replace(/ü/g, 'uzzz')
+                    .replace(/ä/g, 'azzz')
+                    .replace(/ß/g, 'szzz');
                 if (inverse) {
                     return a_val < b_val ? 1 : -1;
                 } else {
