@@ -16,6 +16,7 @@
         ugm.listing_related_binder();
         ugm.scroll_listings_to_selected();
         ugm.inout_actions_binder();
+        ugm.inout_filter_binder();
         
         // add after ajax binding to bdajax
         $.extend(bdajax.binders, {
@@ -25,7 +26,8 @@
             listing_sort_binder: ugm.listing_sort_binder,
             listing_actions_binder: ugm.listing_actions_binder,
             listing_related_binder: ugm.listing_related_binder,
-            inout_actions_binder: ugm.inout_actions_binder
+            inout_actions_binder: ugm.inout_actions_binder,
+            inout_filter_binder: ugm.inout_filter_binder
         });
     });
     
@@ -315,19 +317,19 @@
             }
         },
         
-        // bind listing filter
-        listing_filter_binder: function(context) {
+        // bind filter
+        filter_binder: function(context, input_selector, listing_selector) {
             
             // reset filter input field
-            $('div.column_filter input', context).bind('focus', function() {
+            $(input_selector, context).bind('focus', function() {
                 this.value = '';
                 $(this).css('color', '#000');
             });
             
-            // refresh focused column with filtered listing
-            $('div.column_filter input', context).bind('keyup', function() {
+            // refresh related column with filtered listing
+            $(input_selector, context).bind('keyup', function() {
                 var current_filter = this.value.toLowerCase();
-                $('div.columnitems li', $(this).parent().parent())
+                $(listing_selector, $(this).parent().parent())
                     .each(function() {
                         var li = $(this);
                         var val = $('div.head', li).html().toLowerCase();
@@ -338,6 +340,27 @@
                         }
                     });
             });
+        },
+        
+        // bind listing filter
+        listing_filter_binder: function(context) {
+            ugm.filter_binder(context,
+                              'div.column_filter input',
+                              'div.columnitems li');
+        },
+        
+        // bind inout filter
+        inout_filter_binder: function(context) {
+            
+            // left listing
+            ugm.filter_binder(context,
+                              'div.left_column_filter input',
+                              'ul.inoutleftlisting li');
+            
+            // right listing
+            ugm.filter_binder(context,
+                              'div.right_column_filter input',
+                              'ul.inoutrightlisting li');
         },
         
         // reset selcted item in listing
