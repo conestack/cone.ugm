@@ -493,6 +493,10 @@
             ugm.inout_scroll_to_selected(
                 '.selected', new_container);
             $('li', to_move.parent().parent()).removeClass('selected');
+            $('li', new_container)
+                .removeClass('first_item')
+                .first()
+                .addClass('first_item');
             to_move.addClass('selected');
         },
         
@@ -527,7 +531,7 @@
                 }
                 var sortname = elem.attr('href');
                 var sel = '.' + sortname;
-                $('ul li', cont).sortElements(function(a, b) {
+                $('li', cont).sortElements(function(a, b) {
                     a = ugm.listing_sort_value(sel, a);
                     b = ugm.listing_sort_value(sel, b);
                     if (inv) {
@@ -536,6 +540,10 @@
                         return b < a ? 1 : -1;
                     }
                 });
+                $('li', cont)
+                    .removeClass('first_item')
+                    .first()
+                    .addClass('first_item');
                 ugm.scroll_listings_to_selected();
                 bdajax.spinner.hide();
             });
