@@ -1,5 +1,6 @@
 <tal:ajax xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax" omit-tag="True">
-  <div class="column right_column">
+  <div class="column right_column"
+       tal:define="default_widget context.default_widget">
     
     <div class="principal_form">
       <tal:batch replace="structure tile('editform')" />
@@ -7,11 +8,19 @@
     
     <hr />
     
-    <div class="column_filter">
+    <div class="column_filter"
+         tal:define="css default_widget == 'listing' \
+                         and 'column_filter' \
+                         or 'column_filter hidden'"
+         tal:attributes="class css">
       <input type="text" name="column_filter" value="filter listing" />
     </div>
     
-    <div class="column_limit">
+    <div class="column_limit"
+         tal:define="css default_widget == 'listing' \
+                         and 'column_limit' \
+                         or 'column_limit hidden'"
+         tal:attributes="class css">
       <label>List all</label>
       <input id="list_all"
              type="checkbox"
@@ -21,11 +30,13 @@
     
     <div class="clear"></div>
     
-    <tal:listing replace="structure tile('columnlisting')" />
+    <tal:default condition="default_widget == 'listing'">
+      <tal:listing replace="structure tile('columnlisting')" />
+    </tal:default>
     
-    <tal:block condition="None">
+    <tal:default condition="default_widget == 'inout'">
       <tal:listing replace="structure tile('inoutlisting')" />
-    </tal:block>
+    </tal:default>
   
   </div>
 </tal:ajax>

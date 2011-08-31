@@ -14,6 +14,7 @@ from yafowil.base import (
 from cone.tile import (
     tile,
     Tile,
+    registerTile,
 )
 from cone.app.browser.layout import ProtectedContentTile
 from cone.app.browser.form import (
@@ -31,6 +32,7 @@ from cone.app.browser.utils import (
     make_query,
 )
 from cone.ugm.model.settings import (
+    GeneralSettings,
     ServerSettings,
     UsersSettings,
     GroupsSettings,
@@ -116,6 +118,31 @@ class CreateContainerAction(Tile):
         node[rdn].attrs['objectClass'] = ['organizationalUnit']
         node()
         return u"Created '%s'" % rdn
+
+
+registerTile('content',
+             'cone.ugm:browser/templates/general_settings.pt',
+             class_=ProtectedContentTile,
+             interface=GeneralSettings,
+             permission='login',
+             strict=False)
+
+
+@tile('editform', interface=GeneralSettings, permission="manage")
+class GeneralSettingsForm(Form):
+    __metaclass__ = plumber
+    __plumbing__ = SettingsPart, YAMLForm
+    
+    action_resource = u'edit'
+    form_template = 'cone.ugm.browser:forms/general_settings.yaml'
+    
+    def save(self, widget, data):
+        model = self.model
+        for attr_name in ['default_membership_assignment_widget']:
+            val = data.fetch('general.%s' % attr_name).extracted
+            setattr(model.attrs, attr_name, val)
+        model()
+        model.invalidate()
 
 
 @tile('content', 'templates/server_settings.pt',

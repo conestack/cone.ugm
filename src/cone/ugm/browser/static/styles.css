@@ -1,3 +1,7 @@
+.hidden {
+    display:none;
+}
+
 /* main menu icons */
 ul#mainmenu li.node-users a {
     background: url('/cone.ugm.static/images/menu_users.png') top left no-repeat;

@@ -1,0 +1,20 @@
+factory: form
+name: general
+props:
+    action: context.form_action
+    class: ajax
+widgets:
+- default_membership_assignment_widget:
+    factory: field:label:select
+    value: expr:context.model.attrs.default_membership_assignment_widget
+    props:
+        label: Default membership assignment widget
+        vocabulary: expr:[('listing', 'Listing'), ('inout', 'In-Out')]
+- save:
+    factory: submit
+    props:
+        action: save
+        expression: True
+        handler: context.save
+        next: context.next
+        label: Save

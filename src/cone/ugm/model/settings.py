@@ -59,6 +59,16 @@ class UgmSettings(BaseNode):
         return _get_ugm_config()
 
 
+class GeneralSettings(UgmSettings):
+    
+    @instance_property
+    def metadata(self):
+        metadata = BaseMetadata()
+        metadata.title = "UGM Settings"
+        metadata.description = "General user and group management settings"
+        return metadata
+
+
 class ServerSettings(UgmSettings):
     
     @instance_property

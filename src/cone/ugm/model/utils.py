@@ -8,6 +8,9 @@ import cone.ugm
 
 APP_PATH = os.environ['APP_PATH']
 
+def ugm_general(model):
+    return model.root['settings']['ugm_general']
+
 
 def ugm_server(model):
     return model.root['settings']['ugm_server']

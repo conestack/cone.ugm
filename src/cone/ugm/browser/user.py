@@ -19,7 +19,10 @@ from cone.app.browser.authoring import (
 )
 from cone.app.browser.ajax import AjaxAction
 from cone.ugm.model.user import User
-from cone.ugm.model.utils import ugm_users
+from cone.ugm.model.utils import (
+    ugm_general,
+    ugm_users,
+)
 from cone.ugm.browser import form_field_definitions
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.listing import ColumnListing
@@ -49,7 +52,11 @@ class UserLeftColumn(Column):
 @tile('rightcolumn', 'templates/right_column.pt',
       interface=User, permission='view')
 class UserRightColumn(Tile):
-    pass
+    
+    @property
+    def default_widget(self):
+        settings = ugm_general(self.model)
+        return settings.attrs['default_membership_assignment_widget']
 
 
 class Groups(object):

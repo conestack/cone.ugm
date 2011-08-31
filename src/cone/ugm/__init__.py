@@ -2,6 +2,7 @@ import logging
 import cone.app
 from cone.app.model import Properties
 from cone.ugm.model.settings import (
+    GeneralSettings,
     ServerSettings,
     UsersSettings,
     GroupsSettings,
@@ -30,6 +31,7 @@ cone.app.cfg.layout.sidebar_left = []
 
 
 # UGM settings
+cone.app.register_plugin_config('ugm_general', GeneralSettings)
 cone.app.register_plugin_config('ugm_server', ServerSettings)
 cone.app.register_plugin_config('ugm_users', UsersSettings)
 cone.app.register_plugin_config('ugm_groups', GroupsSettings)
