@@ -56,9 +56,17 @@ class Groups(object):
     """Descriptor to return principal items for listing
 
     XXX: check also group.Principals, naming here is sometimes newer
+    XXX: speedup!
     """
-    def __init__(self, related_only=False):
+    def __init__(self,
+                 related_only=False,
+                 available_only=False,
+                 add_action=True,
+                 remove_action=True):
         self.related_only = related_only
+        self.available_only = available_only
+        self.add_action = add_action
+        self.remove_action = remove_action
 
     def __get__(self, obj, objtype=None):
         if obj is None:
@@ -72,10 +80,18 @@ class Groups(object):
         # always True if we list members only, otherwise will be set
         # in the loop below
         related = self.related_only
+        
+        available_only = self.available_only
+        
+        if related and available_only:
+            raise Exception(u"Invalid object settings.")
 
-        if not self.related_only:
+        if not related:
+            # XXX: LDAP query here.
             groups = obj.model.root['groups'].backend.values()
-
+            if available_only:
+                groups = [g for g in groups if not g.name in related_ids]
+        
         ret = list()
         
         can_change = has_permission(
@@ -101,19 +117,21 @@ class Groups(object):
 
             actions = list()
             if can_change:
-                action_id = 'add_item'
-                action_enabled = not bool(related)
-                action_title = 'Add user to selected group'
-                add_item_action = obj.create_action(
-                    action_id, action_enabled, action_title, action_target)
+                if self.add_action:
+                    action_id = 'add_item'
+                    action_enabled = not bool(related)
+                    action_title = 'Add user to selected group'
+                    add_item_action = obj.create_action(
+                        action_id, action_enabled, action_title, action_target)
+                    actions.append(add_item_action)
     
-                action_id = 'remove_item'
-                action_enabled = bool(related)
-                action_title = 'Remove user from selected group'
-                remove_item_action = obj.create_action(
-                    action_id, action_enabled, action_title, action_target)
-    
-                actions = [add_item_action, remove_item_action]
+                if self.remove_action:
+                    action_id = 'remove_item'
+                    action_enabled = bool(related)
+                    action_title = 'Remove user from selected group'
+                    remove_item_action = obj.create_action(
+                        action_id, action_enabled, action_title, action_target)
+                    actions.append(remove_item_action)
             
             vals = [obj.extract_raw(attrs, attr) for attr in attrlist]
             sort = obj.extract_raw(attrs, sort_attr)
@@ -148,6 +166,16 @@ class AllGroupsColumnListing(ColumnListing):
     @property
     def ajax_action(self):
         return 'allcolumnlisting'
+
+
+@tile('inoutlisting', 'templates/in_out.pt',
+      interface=User, permission='view')
+class InOutListing(ColumnListing):
+    
+    selected_items = Groups(related_only=True, add_action=False)
+    available_items = Groups(available_only=True, remove_action=False)
+    group_attrs = ['id']
+    group_default_sort_column = 'id'
 
 
 class UserForm(PrincipalForm):

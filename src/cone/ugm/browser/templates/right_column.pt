@@ -22,6 +22,10 @@
     <div class="clear"></div>
     
     <tal:listing replace="structure tile('columnlisting')" />
+    
+    <tal:block condition="None">
+      <tal:listing replace="structure tile('inoutlisting')" />
+    </tal:block>
   
   </div>
 </tal:ajax>
