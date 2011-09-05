@@ -7,7 +7,9 @@
 (function($) {
     
     $(document).ready(function() {
+        
         // initial binding
+        ugm.ctrl_key_binder();
         ugm.left_listing_nav_binder();
         ugm.right_listing_nav_binder();
         ugm.listing_filter_binder();
@@ -34,6 +36,27 @@
     });
     
     ugm = {
+        
+        // flag whether control key is currently pressed
+        _ctrl_down: false,
+        
+        // keydown / keyup for setting ugm._crtl_down
+        ctrl_key_binder: function(context) {
+            $(document).unbind('keydown')
+                       .bind('keydown', function(event) {
+                event.preventDefault();
+                if (event.keyCode || event.which == 17) {
+                    ugm._ctrl_down = true;
+                }
+            });
+            $(document).unbind('keyup')
+                       .bind('keyup', function(event) {
+                event.preventDefault();
+                if (event.keyCode || event.which == 17) {
+                    ugm._ctrl_down = false;
+                }
+            });
+        },
         
         // bind left listing trigger
         left_listing_nav_binder: function(context) {
@@ -266,8 +289,13 @@
                 event.preventDefault();
                 var elem = $(event.currentTarget);
                 var li = elem.parent();
-                $('li', li.parent().parent()).removeClass('selected');
-                li.addClass('selected');
+                if (!ugm._ctrl_down) {
+                    $('li', li.parent().parent()).removeClass('selected');
+                    li.addClass('selected');
+                } else {
+                    // XXX: unselect items of other column
+                    li.toggleClass('selected');
+                }
             },
             
             // add item as member in inout widget via button
