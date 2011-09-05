@@ -44,14 +44,12 @@
         ctrl_key_binder: function(context) {
             $(document).unbind('keydown')
                        .bind('keydown', function(event) {
-                event.preventDefault();
                 if (event.keyCode || event.which == 17) {
                     ugm._ctrl_down = true;
                 }
             });
             $(document).unbind('keyup')
                        .bind('keyup', function(event) {
-                event.preventDefault();
                 if (event.keyCode || event.which == 17) {
                     ugm._ctrl_down = false;
                 }
@@ -293,6 +291,13 @@
                     $('li', li.parent().parent()).removeClass('selected');
                     li.addClass('selected');
                 } else {
+                    if (li.parent().hasClass('inoutleftlisting')) {
+                        $('.inoutrightlisting li',
+                          li.parent().parent()).removeClass('selected');
+                    } else {
+                        $('.inoutleftlisting li',
+                          li.parent().parent()).removeClass('selected');
+                    }
                     // XXX: unselect items of other column
                     li.toggleClass('selected');
                 }
@@ -496,14 +501,15 @@
         
         // scroll listing parent to element found by selector
         inout_scroll_to_selected: function(selector, container) {
-            var elem = $(selector, container);
+            var elem = $(selector, container).first();
             if (elem.length) {
-                var h = container.height();
                 container.scrollTop(0);
-                var sel_y = elem.position().top - h;
-                var sel_h = elem.height();
-                if (sel_y > 0) {
-                     container.scrollTop(sel_y + sel_h);
+                var container_top = container.position().top;
+                var container_height = container.height();
+                var elem_top = elem.position().top;
+                if (elem_top > container_top + container_height) {
+                    var delta = elem_top - container_top;
+                    container.scrollTop(delta);
                 }
             }
         },
