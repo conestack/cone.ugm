@@ -43,7 +43,7 @@ Access inexistent child::
     >>> users['inexistent']
     Traceback (most recent call last):
       ...
-    KeyError: u'Entry not existent: inexistent'
+    KeyError: u'inexistent'
 
 The children are user application nodes::
     

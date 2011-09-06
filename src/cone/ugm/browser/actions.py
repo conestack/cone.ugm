@@ -42,13 +42,13 @@ class DeleteUserAction(Action):
         """
         try:
             users = self.model.parent.backend
-            id = self.model.model.name
-            del users[id]
+            uid = self.model.model.name
+            del users[uid]
             users()
             self.model.parent.invalidate()
             return {
                 'success': True,
-                'message': "Deleted user '%s' from database." % id,
+                'message': "Deleted user '%s' from database." % uid,
             }
         except Exception, e:
             return {
@@ -124,8 +124,8 @@ class DeleteGroupAction(Action):
         """
         try:
             groups = self.model.parent.backend
-            id = self.model.model.name
-            del groups[id]
+            uid = self.model.model.name
+            del groups[uid]
             groups()
             self.model.parent.invalidate()
         except Exception, e:

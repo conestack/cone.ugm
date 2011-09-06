@@ -41,7 +41,7 @@ Test GroupAddUserAction::
     >>> request.params['id'] = 'uid100'
     >>> res = render_view_to_response(group, request, name='add_item')
     >>> res.body
-    '{"message": "u\'Entry not existent: uid100\'", "success": false}'
+    '{"message": "u\'uid100\'", "success": false}'
     
     >>> group.model.users
     [<User object 'uid99' at ...>]
@@ -93,7 +93,7 @@ Test UserAddToGroupAction::
     >>> request.params['id'] = 'group100'
     >>> res = render_view_to_response(user, request, name='add_item')
     >>> res.body
-    '{"message": "u\'Entry not existent: group100\'", "success": false}'
+    '{"message": "u\'group100\'", "success": false}'
     
     >>> user.model.groups
     [<Group object 'group99' at ...>]
@@ -112,7 +112,7 @@ Test UserRemoveFromGroupAction::
     >>> layer.login('editor')
     >>> res = render_view_to_response(user, request, name='remove_item')
     >>> res.body
-    '{"message": "u\'Entry not existent: group100\'", "success": false}'
+    '{"message": "u\'group100\'", "success": false}'
     
     >>> request.params['id'] = 'group99'
     >>> res = render_view_to_response(user, request, name='remove_item')
@@ -148,12 +148,12 @@ Test DeleteUserAction::
     
     >>> res = render_view_to_response(user, request, name='delete_item')
     >>> res.body
-    '{"message": "u\'Entry not existent: uid99\'", "success": false}'
+    '{"message": "u\'uid99\'", "success": false}'
     
     >>> users['uid99']
     Traceback (most recent call last):
       ...
-    KeyError: u'Entry not existent: uid99'
+    KeyError: u'uid99'
     
     >>> groups['group99'].model.users
     []
@@ -179,7 +179,7 @@ Test DeleteGroupAction::
     
     >>> res = render_view_to_response(group, request, name='delete_item')
     >>> res.body
-    '{"message": "u\'Entry not existent: group99\'", "success": false}'
+    '{"message": "u\'group99\'", "success": false}'
     
     >>> groups.keys()
     [u'group0', u'group1', u'group2', u'group3', u'group4', u'group5', 

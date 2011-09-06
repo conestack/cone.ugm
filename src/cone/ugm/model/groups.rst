@@ -42,7 +42,7 @@ Access inexistent child::
     >>> groups['inexistent']
     Traceback (most recent call last):
       ...
-    KeyError: u'Entry not existent: inexistent'
+    KeyError: u'inexistent'
 
 The children are group application nodes::
     
