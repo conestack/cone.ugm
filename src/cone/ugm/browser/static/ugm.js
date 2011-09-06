@@ -177,10 +177,7 @@
             delete_item: function(event) {
                 event.preventDefault();
                 var elem = $(event.currentTarget);
-                var col = $('.head div.sort_col_3', elem.parent().parent());
-                if (!col.length) {
-                    col = $('.head .sort_col_1', elem.parent().parent());
-                }
+                var col = $('.head .sort_col_1', elem.parent().parent());
                 var id = col.text();
                 id = id.replace('<', '&lt;');
                 id = id.replace('>', '&gt;');
