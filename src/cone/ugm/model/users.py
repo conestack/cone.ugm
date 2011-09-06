@@ -47,10 +47,10 @@ class Users(BaseNode):
     @locktree
     def __iter__(self):
         try:
-            for key in self.backend:
-                yield key
+            return self.backend.__iter__()
         except Exception, e:
             logger.error(str(e))
+            return iter(list())
 
     iterkeys = __iter__
 
@@ -62,9 +62,8 @@ class Users(BaseNode):
         try:
             return BaseNode.__getitem__(self, name)
         except KeyError:
-            if not name in self.iterkeys():
-                raise KeyError(name)
-            user = User(self.backend[name], name, self)
+            model = self.backend[name]
+            user = User(model, name, self)
             self[name] = user
             return user
 

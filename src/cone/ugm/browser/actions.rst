@@ -153,7 +153,7 @@ Test DeleteUserAction::
     >>> users['uid99']
     Traceback (most recent call last):
       ...
-    KeyError: 'uid99'
+    KeyError: u'Entry not existent: uid99'
     
     >>> groups['group99'].model.users
     []
