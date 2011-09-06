@@ -1,3 +1,4 @@
+from node.locking import locktree
 from node.utils import instance_property
 from cone.app.model import (
     AdapterNode,
@@ -29,6 +30,7 @@ class Group(AdapterNode):
         metadata.description = "Group"
         return metadata
     
+    @locktree
     def __call__(self):
         self.model()
 

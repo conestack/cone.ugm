@@ -1,4 +1,5 @@
 import logging
+from node.locking import locktree
 from node.utils import instance_property
 from node.ext.ldap.ugm import Users as LDAPUsers
 from cone.app.model import (
@@ -34,13 +35,16 @@ class Users(BaseNode):
     def backend(self):
         return ugm_backend(self).users
 
+    @locktree
     def invalidate(self):
         self.clear()
         del self.backend.parent.storage['users']
 
+    @locktree
     def __call__(self):
         self.backend()
     
+    @locktree
     def __iter__(self):
         try:
             for key in self.backend:
@@ -50,6 +54,7 @@ class Users(BaseNode):
 
     iterkeys = __iter__
 
+    @locktree
     def __getitem__(self, name):
         # XXX: temporary hack until paster/webob/pyramid handle urllib
         # quoted slashes in path components
