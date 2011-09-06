@@ -30,6 +30,7 @@ setup(name='cone.ugm',
           'setuptools',
           'cone.app',
           'node.ext.ldap',
+          'repoze.profile',
       ],
       extras_require = dict(
           test=[

@@ -17,3 +17,5 @@ parts
 downloads
 var
 .pydevproject.bak
+cachegrind.out.cone.ugm
+cone.ugm.profile
