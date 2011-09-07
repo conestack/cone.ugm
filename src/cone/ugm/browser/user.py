@@ -1,3 +1,4 @@
+import copy
 from plumber import plumber
 from pyramid.security import has_permission
 from yafowil.base import (
@@ -196,7 +197,21 @@ class UserForm(PrincipalForm):
     
     @property
     def form_field_definitions(self):
-        return form_field_definitions.user
+        """Hook optional_login extractor if necessary for form defaults.
+        """
+        schema = copy.deepcopy(form_field_definitions.user)
+        id, login = self._get_auth_attrs()
+        if id != login:
+            field = schema.get(login, schema['default'])
+            if field['chain'].find('*optional_login') == -1:
+                field['chain'] = '%s:%s' % (
+                    '*optional_login', field['chain'])
+                if not field.get('custom'):
+                    field['custom'] = dict()
+                field['custom']['optional_login'] = \
+                    (['context.optional_login'], [], [], [], [])
+            schema[login] = field
+        return schema
 
     def exists(self, widget, data):
         id = data.extracted
@@ -206,6 +221,24 @@ class UserForm(PrincipalForm):
             msg = "User %s already exists." % (id,)
             raise ExtractionError(msg)
         return data.extracted
+    
+    def optional_login(self, widget, data):
+        id, login = self._get_auth_attrs()
+        res = self.model.parent.backend.search(criteria={login: data.extracted})
+        # no entries found with same login attribute set.
+        if not res:
+            return data.extracted
+        # 1-lenght result, unchange login attribute
+        if len(res) == 1:
+            if res[0] == self.model.name:
+                return data.extracted
+        msg = "User login %s not unique." % data.extracted
+        raise ExtractionError(msg)
+    
+    def _get_auth_attrs(self):
+        config = ugm_users(self.model)
+        aliases = config.attrs.users_aliases_attrmap
+        return aliases['id'], aliases['login']
 
 
 @tile('addform', interface=User, permission='add')

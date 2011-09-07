@@ -36,16 +36,6 @@ _user['id']['required'] = True
 _user['id']['protected'] = True
 
 
-_user['login'] = dict()
-_user['login']['chain'] = 'field:*ascii:label:error:text'
-_user['login']['props'] = dict()
-_user['login']['props']['ascii'] = True
-_user['login']['custom'] = dict()
-_user['login']['custom']['ascii'] = ([ascii_extractor], [], [], [], [])
-_user['login']['required'] = True
-_user['login']['protected'] = True
-
-
 _user['mail'] = dict()
 _user['mail']['chain'] = 'field:label:error:email'
 _user['mail']['required'] = False
@@ -65,6 +55,12 @@ _user['cn'] = dict()
 _user['cn']['chain'] = 'field:label:error:text'
 _user['cn']['required'] = True
 _user['cn']['protected'] = False
+
+
+_user['sn'] = dict()
+_user['sn']['chain'] = 'field:label:error:text'
+_user['sn']['required'] = True
+_user['sn']['protected'] = False
 
 
 _group['default'] = _user['default']
