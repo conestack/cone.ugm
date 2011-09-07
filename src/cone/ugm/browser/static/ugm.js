@@ -9,7 +9,7 @@
     $(document).ready(function() {
         
         // initial binding
-        ugm.ctrl_key_binder();
+        ugm.key_binder(17, 'ctrl_down');
         ugm.left_listing_nav_binder();
         ugm.right_listing_nav_binder();
         ugm.listing_filter_binder();
@@ -37,21 +37,22 @@
     
     ugm = {
         
-        // flag whether control key is currently pressed
-        _ctrl_down: false,
+        // keyboard control keys status
+        keys: {},
         
-        // keydown / keyup for setting ugm._crtl_down
-        ctrl_key_binder: function(context) {
+        // keydown / keyup binder
+        key_binder: function(keycode, attribute) {
+            var attrname = attribute;
             $(document).unbind('keydown')
                        .bind('keydown', function(event) {
-                if (event.keyCode || event.which == 17) {
-                    ugm._ctrl_down = true;
+                if (event.keyCode || event.which == keycode) {
+                    ugm.keys[attrname] = true;
                 }
             });
             $(document).unbind('keyup')
                        .bind('keyup', function(event) {
-                if (event.keyCode || event.which == 17) {
-                    ugm._ctrl_down = false;
+                if (event.keyCode || event.which == keycode) {
+                    ugm.keys[attrname] = false;
                 }
             });
         },
@@ -284,7 +285,7 @@
                 event.preventDefault();
                 var elem = $(event.currentTarget);
                 var li = elem.parent();
-                if (!ugm._ctrl_down) {
+                if (!ugm.keys['ctrl_down']) {
                     $('li', li.parent().parent()).removeClass('selected');
                     li.addClass('selected');
                 } else {
