@@ -64,14 +64,19 @@ class UserAddToGroupAction(Action):
     def __call__(self):
         """Add user to group.
         """
-        group_id = self.request.params.get('id')
+        params = self.request.params
+        group_id = params.get('id')
+        if not group_id:
+            group_ids = params.getall('id[]')
+        else:
+            group_ids = [group_id]
         try:
-            # XXX: self.model.model is weird naming
             user = self.model.model
-            group = user.root.groups[group_id]
-            group.add(user.name)
-            group()
-            self.model.parent.invalidate()
+            groups = user.root.groups
+            for group_id in group_ids:
+                groups[group_id].add(user.name)
+            groups()
+            self.model.parent.invalidate(user.name)
             return {
                 'success': True,
                 'message': "Added user '%s' to group '%s'." % \
@@ -91,14 +96,19 @@ class UserRemoveFromGroupAction(Action):
     def __call__(self):
         """Remove user from group.
         """
-        # XXX: use mechanism from LDAP Groups
-        group_id = self.request.params.get('id')
+        params = self.request.params
+        group_id = params.get('id')
+        if not group_id:
+            group_ids = params.getall('id[]')
+        else:
+            group_ids = [group_id]
         try:
             user = self.model.model
-            group = user.root.groups[group_id]
-            del group[user.name]
-            group()
-            self.model.parent.invalidate()
+            groups = user.root.groups
+            for group_id in group_ids:
+                del groups[group_id][user.name]
+            groups()
+            self.model.parent.invalidate(user.name)
             return {
                 'success': True,
                 'message': "Removed user '%s' from group '%s'." % \
@@ -146,17 +156,18 @@ class GroupAddUserAction(Action):
     def __call__(self):
         """Add user to group.
         """
-        user_id = self.request.params.get('id')
+        params = self.request.params
+        user_id = params.get('id')
+        if not user_id:
+            user_ids = params.getall('id[]')
+        else:
+            user_ids = [user_id]
         try:
-            user_id = self.request.params.get('id')
             group = self.model.model
-            
-            #user = group.root.users[user_id]
-            group.root.users[user_id]
-            
-            group.add(user_id)
+            for user_id in user_ids:
+                group.add(user_id)
             group()
-            self.model.parent.invalidate()
+            self.model.parent.invalidate(group.name)
             return {
                 'success': True,
                 'message': 'Added user to group',
@@ -175,12 +186,18 @@ class GroupRemoveUserAction(Action):
     def __call__(self):
         """Remove user from group.
         """
-        user_id = self.request.params.get('id')
+        params = self.request.params
+        user_id = params.get('id')
+        if not user_id:
+            user_ids = params.getall('id[]')
+        else:
+            user_ids = [user_id]
         try:
             group = self.model.model
-            del group[user_id]
+            for user_id in user_ids:
+                del group[user_id]
             group()
-            self.model.parent.invalidate()
+            self.model.parent.invalidate(group.name)
             return {
                 'success': True,
                 'message': 'Removed user from group',

@@ -303,21 +303,81 @@
             // add item as member in inout widget via button
             inout_button_add_item: function(event) {
                 event.preventDefault();
-                var elem = $('ul.inoutleftlisting li.selected');
-                if (!elem.length) {
+                var elems = $('ul.inoutleftlisting li.selected');
+                if (!elems.length) {
                     return;
                 }
-                $('a.add_item', elem).click();
+                // read selected item id's
+                var items = ugm.inout_extract_selected(elems);
+                // parse principal target from action link
+                var target = $('a.add_item', elems).first().attr('ajax:target');
+                var options = bdajax.parsetarget(target);
+                // overwrite id param
+                options.params['id'] = items;
+                $.extend(options, {
+                    action_id: 'add_item',
+                    success: function(data) {
+                        if (!data) {
+                            bdajax.error('Empty response');
+                            return;
+                        }
+                        if (!data.success) {
+                            bdajax.error(data.message);
+                            return;
+                        }
+                        $('.add_item', elems)
+                            .removeClass('enabled')
+                            .addClass('hidden');
+                        $('.remove_item', elems)
+                            .removeClass('hidden')
+                            .addClass('enabled');
+                        var new_container = $(
+                            'ul.inoutrightlisting',
+                            elems.first().parent().parent());
+                        ugm.inout_move_item(elems, new_container);
+                    }
+                });
+                ugm.actions.perform(options);
             },
             
             // remove item from member in inout widget via button
             inout_button_remove_item: function(event) {
                 event.preventDefault();
-                var elem = $('ul.inoutrightlisting li.selected');
-                if (!elem.length) {
+                var elems = $('ul.inoutrightlisting li.selected');
+                if (!elems.length) {
                     return;
                 }
-                $('a.remove_item', elem).click();
+                // read selected item id's
+                var items = ugm.inout_extract_selected(elems);
+                // parse principal target from action link
+                var target = $('a.add_item', elems).first().attr('ajax:target');
+                var options = bdajax.parsetarget(target);
+                // overwrite id param
+                options.params['id'] = items;
+                $.extend(options, {
+                    action_id: 'remove_item',
+                    success: function(data) {
+                        if (!data) {
+                            bdajax.error('Empty response');
+                            return;
+                        }
+                        if (!data.success) {
+                            bdajax.error(data.message);
+                            return;
+                        }
+                        $('.remove_item', elems)
+                            .removeClass('enabled')
+                            .addClass('hidden');
+                        $('.add_item', elems)
+                            .removeClass('hidden')
+                            .addClass('enabled');
+                        var new_container = $(
+                            'ul.inoutleftlisting',
+                            elems.first().parent().parent());
+                        ugm.inout_move_item(elems, new_container);
+                    }
+                });
+                ugm.actions.perform(options);
             },
             
             // add item as member in inout widget
@@ -512,9 +572,12 @@
         },
         
         // toggle inout widget item
-        inout_move_item: function(to_move, new_container) {
-            to_move = to_move.detach();
-            new_container.append(to_move);
+        inout_move_item: function(elems, new_container) {
+            var to_move;
+            $(elems).each(function() {
+                to_move = $(this).detach();
+                new_container.append(to_move);
+            });
             $('li', new_container).sortElements(function(a, b) {
                 var sel = 'div.sort_col_1';
                 a = ugm.listing_sort_value(sel, a);
@@ -523,12 +586,25 @@
             });
             ugm.inout_scroll_to_selected(
                 '.selected', new_container);
-            $('li', to_move.parent().parent()).removeClass('selected');
+            $('li', elems.first().parent().parent()).removeClass('selected');
             $('li', new_container)
                 .removeClass('first_item')
                 .first()
                 .addClass('first_item');
-            to_move.addClass('selected');
+            elems.addClass('selected');
+        },
+        
+        // inout listing extract selected ids
+        inout_extract_selected: function(elems) {
+            var items = new Array();
+            var item;
+            $(elems).each(function() {
+                target = $(this).attr('ajax:target');
+                item = target.substring(
+                    target.lastIndexOf('/') + 1, target.length);
+                items.push(item);
+            });
+            return items;
         },
         
         listing_sort_value: function(selector, context) {
