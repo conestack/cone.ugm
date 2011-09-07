@@ -35,8 +35,15 @@ class Groups(BaseNode):
 
     @locktree
     def invalidate(self, key=None):
-        self.clear()
-        del self.backend.parent.storage['groups']
+        if key is None:
+            del self.backend.parent.storage['groups']
+            self.clear()
+            return
+        self.backend.invalidate(key)
+        try:
+            del self[key]
+        except KeyError:
+            pass
 
     @locktree
     def __call__(self):
