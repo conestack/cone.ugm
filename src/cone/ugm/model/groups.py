@@ -1,10 +1,8 @@
 import logging
 from node.locking import locktree
 from node.utils import instance_property
-from node.ext.ldap.ugm import Groups as LDAPGroups
 from cone.app.model import (
     BaseNode,
-    Properties,
     BaseMetadata,
     BaseNodeInfo,
     registerNodeInfo,
@@ -36,7 +34,7 @@ class Groups(BaseNode):
         return ugm_backend(self).groups
 
     @locktree
-    def invalidate(self):
+    def invalidate(self, key=None):
         self.clear()
         del self.backend.parent.storage['groups']
 
