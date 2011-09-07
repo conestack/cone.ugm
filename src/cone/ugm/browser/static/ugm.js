@@ -582,7 +582,7 @@
                 var sel = 'div.sort_col_1';
                 a = ugm.listing_sort_value(sel, a);
                 b = ugm.listing_sort_value(sel, b);
-                return a > b ? 1 : -1;
+                return naturalSort(a, b);
             });
             ugm.inout_scroll_to_selected(
                 '.selected', new_container);
@@ -608,14 +608,7 @@
         },
         
         listing_sort_value: function(selector, context) {
-            var val = $(selector, context)
-                .text()
-                .toLowerCase()
-                .replace(/ö/g, 'ozzz')
-                .replace(/ü/g, 'uzzz')
-                .replace(/ä/g, 'azzz')
-                .replace(/ß/g, 'szzz');
-            return val;
+            return $(selector, context).text();
         },
         
         // sort listings binder
@@ -642,9 +635,9 @@
                     a = ugm.listing_sort_value(sel, a);
                     b = ugm.listing_sort_value(sel, b);
                     if (inv) {
-                        return a < b ? 1 : -1;
+                        return naturalSort(b, a);
                     } else {
-                        return b < a ? 1 : -1;
+                        return naturalSort(a, b);
                     }
                 });
                 $('li', cont)

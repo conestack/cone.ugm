@@ -22,6 +22,7 @@ cone.app.cfg.css.protected.append('cone.ugm.static/styles.css')
 
 # custom UGM javascript
 cone.app.cfg.js.protected.append('cone.ugm.static/jQuery.sortElements.js')
+cone.app.cfg.js.protected.append('cone.ugm.static/naturalSort.js')
 cone.app.cfg.js.protected.append('cone.ugm.static/ugm.js')
 
 
