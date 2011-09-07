@@ -573,6 +573,7 @@
         
         // toggle inout widget item
         inout_move_item: function(elems, new_container) {
+            var old_container = elems.first().parent();
             var to_move;
             $(elems).each(function() {
                 to_move = $(this).detach();
@@ -588,6 +589,10 @@
                 '.selected', new_container);
             $('li', elems.first().parent().parent()).removeClass('selected');
             $('li', new_container)
+                .removeClass('first_item')
+                .first()
+                .addClass('first_item');
+            $('li', old_container)
                 .removeClass('first_item')
                 .first()
                 .addClass('first_item');
