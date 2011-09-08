@@ -37,10 +37,13 @@
     
     ugm = {
         
+        // object to store global flags
+        flags: {},
+            
         // keyboard control keys status
         keys: {},
         
-        // keydown / keyup binder
+        // keydown / keyup binder for shift and ctrl keys
         key_binder: function() {
             $(document).unbind('keydown')
                        .bind('keydown', function(event) {
@@ -315,8 +318,14 @@
                             if (nearest == -1) {
                                 nearest = selected_index;
                             } else if (current_index > selected_index) {
-                                if (selected_index > nearest) {
-                                    nearest = selected_index;
+                                if (ugm.flags.select_direction > 0) {
+                                    if (selected_index < nearest) {
+                                        nearest = selected_index;
+                                    }
+                                } else {
+                                    if (selected_index > nearest) {
+                                        nearest = selected_index;
+                                    }
                                 }
                             } else if (current_index < selected_index) {
                                 if (selected_index < nearest) {
@@ -330,9 +339,11 @@
                             $('li', listing).removeClass('selected');
                             var start, end;
                             if (current_index < nearest) {
+                                ugm.flags.select_direction = -1;
                                 start = current_index;
                                 end = nearest;
                             } else {
+                                ugm.flags.select_direction = 1;
                                 start = nearest;
                                 end = current_index;
                             }
