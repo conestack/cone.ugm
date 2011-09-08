@@ -7,6 +7,8 @@ from node.ext.ldap.ugm import (
 import cone.ugm
 
 APP_PATH = os.environ['APP_PATH']
+LDAP_CFG_FILE = os.environ.get('LDAP_CFG_FILE', 
+                          os.path.join(APP_PATH, 'etc', 'ldap.xml'))
 
 def ugm_general(model):
     return model.root['settings']['ugm_general']

@@ -68,7 +68,7 @@ class CreateContainerTrigger(Tile):
     @property
     def creation_dn(self):
         raise NotImplementedError(u"Abstract ``CreateContainerTrigger`` "
-                                  u"doe not implement ``creation_dn``")
+                                  u"does not implement ``creation_dn``")
     
     @property
     def creation_target(self):
