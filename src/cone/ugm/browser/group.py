@@ -264,7 +264,11 @@ class GroupEditForm(GroupForm, Form):
             if key in ['id']:
                 continue
             extracted = data.fetch('groupform.%s' % key).extracted
-            self.model.attrs[key] = extracted
+            if not extracted:
+                if key in self.model.attrs:
+                    del self.model.attrs[key] 
+            else:
+                self.model.attrs[key] = extracted
         self.model.model.context()
     
     def next(self, request):
