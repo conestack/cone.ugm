@@ -238,6 +238,11 @@ div.inoutlisting ul.inoutrightlisting {
 div.inoutlisting li {
     clear:both;
     border-top:#ccc 1px solid;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 div.inoutlisting li.first_item {
     border-top: none;

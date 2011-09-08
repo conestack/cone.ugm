@@ -9,7 +9,7 @@
     $(document).ready(function() {
         
         // initial binding
-        ugm.key_binder(17, 'ctrl_down');
+        ugm.key_binder();
         ugm.left_listing_nav_binder();
         ugm.right_listing_nav_binder();
         ugm.listing_filter_binder();
@@ -41,18 +41,27 @@
         keys: {},
         
         // keydown / keyup binder
-        key_binder: function(keycode, attribute) {
-            var attrname = attribute;
+        key_binder: function() {
             $(document).unbind('keydown')
                        .bind('keydown', function(event) {
-                if (event.keyCode || event.which == keycode) {
-                    ugm.keys[attrname] = true;
+                switch (event.keyCode || event.which) {
+                    case 16:
+                        ugm.keys.shift_down = true;
+                        break;
+                    case 17:
+                        ugm.keys.ctrl_down = true;
+                        break;
                 }
             });
             $(document).unbind('keyup')
                        .bind('keyup', function(event) {
-                if (event.keyCode || event.which == keycode) {
-                    ugm.keys[attrname] = false;
+                switch (event.keyCode || event.which) {
+                    case 16:
+                        ugm.keys.shift_down = false;
+                           break;
+                    case 17:
+                        ugm.keys.ctrl_down = false;
+                        break;
                 }
             });
         },
@@ -285,10 +294,34 @@
                 event.preventDefault();
                 var elem = $(event.currentTarget);
                 var li = elem.parent();
-                if (!ugm.keys['ctrl_down']) {
+                if (!ugm.keys.ctrl_down && !ugm.keys.shift_down) {
                     $('li', li.parent().parent()).removeClass('selected');
                     li.addClass('selected');
                 } else {
+                    if (ugm.keys.ctrl_down) {
+                        li.toggleClass('selected');
+                    }
+                    if (ugm.keys.shift_down) {
+                        var listing = li.parent();
+                        var selected = $('li.selected', listing);
+                        if (selected.length == 1) {
+                            var current_index = li.index();
+                            var selected_index = selected.index();
+                            var start, end;
+                            if (current_index < selected_index) {
+                                start = current_index;
+                                end = selected_index;
+                            } else {
+                                start = selected_index;
+                                end = current_index;
+                            }
+                            $('li', listing).slice(start, end + 1)
+                                .removeClass('selected')
+                                .addClass('selected');
+                        } else {
+                            li.addClass('selected');
+                        }
+                    }
                     if (li.parent().hasClass('inoutleftlisting')) {
                         $('.inoutrightlisting li',
                           li.parent().parent()).removeClass('selected');
@@ -296,8 +329,6 @@
                         $('.inoutleftlisting li',
                           li.parent().parent()).removeClass('selected');
                     }
-                    // XXX: unselect items of other column
-                    li.toggleClass('selected');
                 }
             },
             
