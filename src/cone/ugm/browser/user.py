@@ -301,8 +301,12 @@ class UserEditForm(UserForm, Form):
         for key in attrmap:
             if key in ['id', 'login', 'userPassword']:
                 continue
-            extracted = data.fetch('userform.%s' % key).extracted
-            self.model.attrs[key] = extracted
+            extracted = data.fetch('userform.%s' % key).extracted            
+            if not extracted:
+                if key in self.model.attrs:
+                    del self.model.attrs[key] 
+            else:
+                self.model.attrs[key] = extracted
         
         password = data.fetch('userform.userPassword').extracted
         self.model.model.context()
