@@ -10,9 +10,9 @@ App path for testing::
     >>> path
     '...cone.ugm'
     
-    >>> import cone.ugm.model.settings
-    >>> old_ugm_config_path = cone.ugm.model.settings.ugm_config_path
-    >>> cone.ugm.model.settings.ugm_config_path = \
+    >>> import cone.ugm.model.utils
+    >>> old_ugm_config_path = cone.ugm.model.utils.LDAP_CFG_FILE
+    >>> cone.ugm.model.settings.LDAP_CFG_FILE = \
     ...     os.path.join(path, 'etc', 'ldap.xml')
 
 Create dummy settings container::
