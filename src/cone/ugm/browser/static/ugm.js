@@ -304,22 +304,42 @@
                     if (ugm.keys.shift_down) {
                         var listing = li.parent();
                         var selected = $('li.selected', listing);
-                        if (selected.length == 1) {
-                            var current_index = li.index();
-                            var selected_index = selected.index();
+                        // get nearest next selected item, disable others
+                        var current_index = li.index();
+                        // -1 means no other selected item
+                        var nearest = -1;
+                        var selected_index, selected_elem;
+                        $(selected).each(function() {
+                            selected_elem = $(this);
+                            selected_index = selected_elem.index();
+                            if (nearest == -1) {
+                                nearest = selected_index;
+                            } else if (current_index > selected_index) {
+                                if (selected_index > nearest) {
+                                    nearest = selected_index;
+                                }
+                            } else if (current_index < selected_index) {
+                                if (selected_index < nearest) {
+                                    nearest = selected_index;
+                                }
+                            }
+                        });
+                        if (nearest == -1) {
+                            li.addClass('selected');
+                        } else {
+                            $('li', listing).removeClass('selected');
                             var start, end;
-                            if (current_index < selected_index) {
+                            if (current_index < nearest) {
                                 start = current_index;
-                                end = selected_index;
+                                end = nearest;
                             } else {
-                                start = selected_index;
+                                start = nearest;
                                 end = current_index;
                             }
-                            $('li', listing).slice(start, end + 1)
-                                .removeClass('selected')
+                            $('li', listing)
+                                .slice(start, end + 1)
                                 .addClass('selected');
-                        } else {
-                            li.addClass('selected');
+                            
                         }
                     }
                     if (li.parent().hasClass('inoutleftlisting')) {
