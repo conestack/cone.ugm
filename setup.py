@@ -40,9 +40,5 @@ setup(name='cone.ugm',
       tests_require=[
           'interlude',
       ],
-      test_suite = "cone.ugm.tests.test_suite",
-      entry_points = """\
-      [paste.app_factory]
-      main = cone.ugm.run:main
-      """
+      test_suite = "cone.ugm.tests.test_suite"
       )
