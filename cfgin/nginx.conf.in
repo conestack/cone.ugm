@@ -9,8 +9,6 @@ http {
     server {
         listen localhost:${:port} default;
         location / {
-            auth_basic "Restricted";
-            auth_basic_user_file ${buildout:directory}/etc/htpasswd;
             proxy_pass http://localhost:8081/;
             include ${buildout:directory}/etc/proxy.conf;
         }
