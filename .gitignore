@@ -16,6 +16,7 @@ eggs
 parts
 downloads
 var
+dist
 paster.log
 .pydevproject.bak
 cachegrind.out.cone.ugm
