@@ -43,15 +43,12 @@ Start Test LDAP server with appropriate LDIF layer::
 
     cone.ugm$ ./bin/testldap start groupOfNames_100_100
 
-Start application and browse ``http://localhost:8080/``::
+Start application::
 
     cone.ugm$ ./bin/paster serve ugm.ini
 
-Default ``admin`` user password is ``admin``.
-
-Run the tests. Make shure test LDAP is not running::
-
-    cone.ugm$ ./bin/test
+and browse ``http://localhost:8080/``. Default ``admin`` user password is
+``admin``.
 
 Roles part in principal form is only displayed if roles configuration is sane.
 The LDIF imported for test layer does not provide the roles container by
