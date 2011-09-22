@@ -1,3 +1,9 @@
 include *.rst
+include demo.cfg
+include ugm.ini
+include bootstrap.py
+recursive-include etc *
+recursive-include cfgin *
+recursive-include patches *
 recursive-include src *
 recursive-exclude src *.pyc *.pyo
