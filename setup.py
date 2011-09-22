@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.9pre3'
+version = '0.9'
 shortdesc = 'cone.ugm'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
@@ -10,7 +10,6 @@ setup(name='cone.ugm',
       description=shortdesc,
       long_description=longdesc,
       classifiers=[
-            'Development Status :: 4 - Beta',
             'Environment :: Web Environment',
             'Operating System :: OS Independent',
             'Programming Language :: Python',
@@ -30,7 +29,7 @@ setup(name='cone.ugm',
           'setuptools',
           'cone.app',
           'node.ext.ldap',
-          'repoze.profile',
+          #'repoze.profile',
       ],
       extras_require = dict(
           test=[

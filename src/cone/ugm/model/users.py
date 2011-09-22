@@ -16,6 +16,10 @@ from cone.ugm.browser.utils import unquote_slash
 logger = logging.getLogger('cone.ugm')
 
 
+def users_factory():
+    return Users()
+
+
 class Users(BaseNode):
     
     __acl__ = UGM_DEFAULT_ACL

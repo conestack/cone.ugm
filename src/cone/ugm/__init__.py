@@ -8,8 +8,8 @@ from cone.ugm.model.settings import (
     GroupsSettings,
     RolesSettings,
 )
-from cone.ugm.model.users import Users
-from cone.ugm.model.groups import Groups
+from cone.ugm.model.users import users_factory
+from cone.ugm.model.groups import groups_factory
 from node.ext.ldap.ugm import Ugm
 
 
@@ -40,11 +40,11 @@ cone.app.register_plugin_config('ugm_groups', GroupsSettings)
 cone.app.register_plugin_config('ugm_roles', RolesSettings)
 
 # Users container
-cone.app.register_plugin('users', Users)
+cone.app.register_plugin('users', users_factory)
 
 
 # Groups container
-cone.app.register_plugin('groups', Groups)
+cone.app.register_plugin('groups', groups_factory)
 
 
 # The node.ext.ugm implementation to use for user and group management
