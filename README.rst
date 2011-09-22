@@ -1,7 +1,7 @@
 cone.ugm
 ========
 
-`here <http://packages.python.org/cone.app>`_. plugin for user and group
+`cone.app <http://packages.python.org/cone.app>`_. plugin for user and group
 management with LDAP as backend.
 
 .. image:: http://bluedynamics.com/ugm.png
