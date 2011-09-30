@@ -5,7 +5,7 @@ import pprint
 import unittest2 as unittest
 
 # XXX: get rid of plone.testing, use zope test layers directly
-from plone.testing import layered, Layer
+from plone.testing import layered
 
 from cone.app.testing import Security
 from node.ext.ldap.testing import (
