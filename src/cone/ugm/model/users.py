@@ -6,7 +6,9 @@ from cone.app.model import (
     BaseMetadata,
     BaseNodeInfo,
     registerNodeInfo,
+    ProtectedProperties,
 )
+from cone.app.security import DEFAULT_NODE_PROPERTY_PERMISSIONS
 from cone.ugm.model import UGM_DEFAULT_ACL
 from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_backend
@@ -26,6 +28,13 @@ class Users(BaseNode):
 
     node_info_name = 'users'
 
+    @instance_property
+    def properties(self):
+        props = ProtectedProperties(self, DEFAULT_NODE_PROPERTY_PERMISSIONS)
+        props.in_navtree = True
+        props.editable = False
+        return props
+    
     @instance_property
     def metadata(self):
         metadata = BaseMetadata()
@@ -81,4 +90,5 @@ info.title = 'Users'
 info.description = 'Users Container.'
 info.node = Users
 info.addables = ['user']
+info.icon = 'cone.ugm.static/images/users16_16.png'
 registerNodeInfo('users', info)
