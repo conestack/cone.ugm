@@ -180,6 +180,14 @@ Contributors
 History
 =======
 
+0.9.1dev
+--------
+
+- add node properties for users and groups to get displayed in navtree if
+  displayed.
+  [rnix, 2011-11-16]
+
+
 0.9
 ---
 
