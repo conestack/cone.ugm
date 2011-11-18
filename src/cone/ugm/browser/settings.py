@@ -139,7 +139,7 @@ class GeneralSettingsForm(Form):
     def save(self, widget, data):
         model = self.model
         for attr_name in ['default_membership_assignment_widget']:
-            val = data.fetch('general.%s' % attr_name).extracted
+            val = data.fetch('ugm_general.%s' % attr_name).extracted
             setattr(model.attrs, attr_name, val)
         model()
         model.invalidate()
@@ -167,9 +167,9 @@ class ServerSettingsForm(Form):
     def save(self, widget, data):
         model = self.model
         for attr_name in ['uri', 'user']:
-            val = data.fetch('settings.%s' % attr_name).extracted
+            val = data.fetch('ldap_server_settings.%s' % attr_name).extracted
             setattr(model.attrs, attr_name, val)
-        password = data.fetch('settings.password').extracted
+        password = data.fetch('ldap_server_settings.password').extracted
         if password is not UNSET:
             setattr(model.attrs, 'password', password)
         model()
@@ -228,7 +228,7 @@ class UsersSettingsForm(Form, VocabMixin):
                           'users_form_attrmap',
                           'users_listing_columns',
                           'users_listing_default_column']:
-            val = data.fetch('settings.%s' % attr_name).extracted
+            val = data.fetch('ldap_users_settings.%s' % attr_name).extracted
             if attr_name == 'users_object_classes':
                 val = [v.strip() for v in val.split(',') if v.strip()]
             setattr(model.attrs, attr_name, val)
@@ -287,7 +287,7 @@ class GroupsSettingsForm(Form, VocabMixin):
                           #'groups_relation',
                           'groups_listing_columns',
                           'groups_listing_default_column']:
-            val = data.fetch('settings.%s' % attr_name).extracted
+            val = data.fetch('ldap_groups_settings.%s' % attr_name).extracted
             if attr_name == 'groups_object_classes':
                 val = [v.strip() for v in val.split(',') if v.strip()]
             setattr(model.attrs, attr_name, val)
@@ -345,7 +345,7 @@ class RolesSettingsForm(Form, VocabMixin):
                           'roles_form_attrmap',
                           #'roles_relation',
                           ]:
-            val = data.fetch('settings.%s' % attr_name).extracted
+            val = data.fetch('ldap_roles_settings.%s' % attr_name).extracted
             if attr_name == 'roles_object_classes':
                 val = [v.strip() for v in val.split(',') if v.strip()]
             setattr(model.attrs, attr_name, val)

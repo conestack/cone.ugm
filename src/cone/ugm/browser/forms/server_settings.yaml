@@ -1,5 +1,5 @@
 factory: form
-name: settings
+name: ldap_server_settings
 props:
     action: context.form_action
     class: ajax

@@ -183,7 +183,10 @@ History
 0.9.1dev
 --------
 
-- add node properties for users and groups to get displayed in navtree if
+- Explicit names for settings forms.
+  [rnix, 2011-11-18]
+
+- Add node properties for users and groups to get displayed in navtree if
   displayed.
   [rnix, 2011-11-16]
 
@@ -191,4 +194,4 @@ History
 0.9
 ---
 
-- initial
+- Initial release.

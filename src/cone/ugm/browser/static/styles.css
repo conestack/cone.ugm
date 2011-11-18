@@ -421,3 +421,8 @@ a.delete_item_disabled {
 #input-userform-cancel {
     width:100px !important;
 }
+#form-ldap_users_settings table,
+#form-ldap_groups_settings table,
+#form-ldap_roles_settings table {
+    width:auto;
+}
