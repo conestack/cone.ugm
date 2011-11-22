@@ -7,8 +7,6 @@ from node.ext.ldap import (
     LDAPNode,
     testLDAPConnectivity,
 )
-#from node.ext.ldap.base import testLDAPConnectivity
-#from node.ext.ldap._node import queryNode
 from node.ext.ldap.ugm import (
     UsersConfig as LDAPUsersConfig,
     GroupsConfig as LDAPGroupsConfig,
@@ -22,27 +20,21 @@ from cone.app.model import (
 from cone.ugm.model.utils import ldap_cfg_file
 
 
-def _invalidate_ugm_settings(model):
-    settings = model.parent
-    settings['ugm_server']._ldap_props = None
-    settings['ugm_users']._ldap_ucfg = None
-    settings['ugm_groups']._ldap_gcfg = None
-    import cone.app
-    cone.app.cfg.auth = None
-
-
-ugm_config = None
-
-
-def _get_ugm_config():
-    global ugm_config
-    if ugm_config is not None:
-        return ugm_config
+def _read_ugm_config():
     cfg_file = ldap_cfg_file()
     if not os.path.isfile(cfg_file):
         raise ValueError('Configuration file %s does not exist.'% cfg_file)
     ugm_config = XMLProperties(cfg_file)
     return ugm_config
+
+
+def _invalidate_ugm_settings(model):
+    settings = model.root['settings']
+    settings['ugm_server']._ldap_props = None
+    settings['ugm_users']._ldap_ucfg = None
+    settings['ugm_groups']._ldap_gcfg = None
+    import cone.app
+    cone.app.cfg.auth = None
 
 
 class UgmSettings(BaseNode):
@@ -59,7 +51,7 @@ class UgmSettings(BaseNode):
     
     @property
     def _config(self):
-        return _get_ugm_config()
+        return _read_ugm_config()
 
 
 class GeneralSettings(UgmSettings):

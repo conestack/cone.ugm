@@ -19,11 +19,11 @@ class UGMLayer(Security):
     
     def setUp(self, args=None):
         super(UGMLayer, self).setUp(args)
-        import cone.app
-        ugm = cone.app.cfg.auth
         import cone.ugm
         path = pkg_resources.resource_filename('cone.ugm.tests', 'ldap.xml')
         cone.ugm.model.utils.LDAP_CFG_FILE = path
+        cone.ugm.model.settings._invalidate_ugm_settings(cone.app.get_root())
+        ugm = cone.ugm.model.utils.ugm_backend(cone.app.get_root())
         roles = ['viewer', 'editor', 'owner', 'manager']
         for uid in ['viewer', 'editor', 'owner', 'manager', 'max', 'sepp']:
             data = {

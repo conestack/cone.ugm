@@ -13,7 +13,8 @@ LDAP_CFG_FILE = os.environ.get('LDAP_CFG_FILE',
 
 
 def ldap_cfg_file():
-    return LDAP_CFG_FILE
+    import cone.ugm
+    return cone.ugm.model.utils.LDAP_CFG_FILE
 
 
 def ugm_general(model):
