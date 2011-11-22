@@ -22,6 +22,11 @@ widgets:
     props:
         label: LDAP Manager Password
         required: No password defined
+- cache:
+    factory: field:label:checkbox
+    value: expr:int(context.model.attrs.cache)
+    props:
+        label: Use cache for LDAP queries?
 - save:
     factory: submit
     props:

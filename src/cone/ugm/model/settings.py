@@ -94,8 +94,7 @@ class ServerSettings(UgmSettings):
                 uri=config.uri,
                 user=config.user,
                 password=config.password,
-                #cache=config.cache,
-                cache=False) # XXX
+                cache=int(config.cache))
         return self._ldap_props
 
 

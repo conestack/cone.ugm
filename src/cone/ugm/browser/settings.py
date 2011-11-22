@@ -169,6 +169,9 @@ class ServerSettingsForm(Form):
         for attr_name in ['uri', 'user']:
             val = data.fetch('ldap_server_settings.%s' % attr_name).extracted
             setattr(model.attrs, attr_name, val)
+        cache = data.fetch('ldap_server_settings.cache').extracted
+        cache = str(int(cache))
+        setattr(model.attrs, 'cache', cache)
         password = data.fetch('ldap_server_settings.password').extracted
         if password is not UNSET:
             setattr(model.attrs, 'password', password)
