@@ -31,8 +31,11 @@ def _read_ugm_config():
 def _invalidate_ugm_settings(model):
     settings = model.root['settings']
     settings['ugm_server']._ldap_props = None
+    settings['ugm_server']._xml_config = None
     settings['ugm_users']._ldap_ucfg = None
+    settings['ugm_users']._xml_config = None
     settings['ugm_groups']._ldap_gcfg = None
+    settings['ugm_groups']._xml_config = None
     import cone.app
     cone.app.cfg.auth = None
 
@@ -51,7 +54,9 @@ class UgmSettings(BaseNode):
     
     @property
     def _config(self):
-        return _read_ugm_config()
+        if not hasattr(self, '_xml_config') or self._xml_config is None:
+            self._xml_config = _read_ugm_config()
+        return self._xml_config
 
 
 class GeneralSettings(UgmSettings):
