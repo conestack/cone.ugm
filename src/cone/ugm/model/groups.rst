@@ -72,17 +72,4 @@ Test invalidation::
 
 Check if ugm is not configured properly::
 
-    >>> settings = root['settings']['ugm_server']
-    >>> settings.invalidate()
-    >>> [k for k in groups]
-    []
-
     >>> layer.logout()
-
-Reset settings for following tests::
-
-    >>> settings = root['settings']
-    >>> settings['ugm_server'].invalidate()
-    >>> settings['ugm_server']._ldap_props = layer['props']
-    >>> settings['ugm_users']._ldap_ucfg = layer['ucfg']
-    >>> settings['ugm_groups']._ldap_gcfg = layer['gcfg']

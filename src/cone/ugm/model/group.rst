@@ -54,7 +54,8 @@ The attributes of the group are wrapped::
 
     >>> group.attrs['businessCategory'] = 'Cat0'
 
-# XXX: changed should be available on the group object
+# XXX: changed should be available on the group object::
+
     >>> group.attrs.changed
     True
     

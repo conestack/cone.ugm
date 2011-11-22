@@ -100,6 +100,7 @@ Add::
     >>> request.params['userform.sn'] = 'sn99'
     >>> request.params['userform.mail'] = 'uid99@example.com'
     >>> request.params['userform.userPassword'] = 'secret99'
+    >>> request.params['userform.principal_roles'] = []
     >>> request.params['action.userform.save'] = '1'
     
     >>> res = render_tile(users, request, 'add')
@@ -117,7 +118,8 @@ Add::
     
     >>> users.keys()
     [u'uid0', u'uid1', u'uid2', u'uid3', u'uid4', u'uid5', u'uid6', u'uid7', 
-    u'uid8', u'uid9', u'uid99']
+    u'uid8', u'uid9', u'viewer', u'editor', u'owner', u'manager', u'max', 
+    u'sepp', u'uid99']
     
     >>> user = users['uid99']
     >>> user.attrs.items()
@@ -138,6 +140,7 @@ Edit::
     >>> request.params['userform.sn'] = 'sn changed'
     >>> request.params['userform.mail'] = 'changed@example.com'
     >>> request.params['userform.userPassword'] = '_NOCHANGE_'
+    >>> request.params['userform.principal_roles'] = []
     >>> request.params['action.userform.save'] = '1'
     >>> res = render_tile(user, request, 'edit')
     >>> res

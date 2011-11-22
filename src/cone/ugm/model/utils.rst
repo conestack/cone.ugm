@@ -25,12 +25,12 @@ cone.ugm.model.utils
     
     >>> backend = ugm_backend(root)
     >>> backend
-    <Ugm object 'ugm' at ...>
+    <Ugm object 'ldap_ugm' at ...>
     
     >>> backend is ugm_backend(root)
     True
     
-    >>> import cone.ugm
-    >>> cone.ugm.backend = None
+    >>> import cone.app
+    >>> cone.app.cfg.auth = None
     >>> backend is ugm_backend(root)
     False

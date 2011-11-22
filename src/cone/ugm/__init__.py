@@ -47,39 +47,31 @@ cone.app.register_plugin('users', users_factory)
 cone.app.register_plugin('groups', groups_factory)
 
 
-# The node.ext.ugm implementation to use for user and group management
-# currently only LDAP
-# XXX: take from cone.app.cfg.auth
-backend = None
-
-
-# Flag whether LDAP ugm implementation should be used for authentication
-# XXX: move to cone.ldap later
-ldap_auth_enabled = False
-
-
-def reset_auth_impl():
-    import cone.ugm
-    if not cone.ugm.ldap_auth_enabled:
-        return
-    auth = cone.app.cfg.auth
-    to_del = list()
-    for impl in auth:
-        if isinstance(impl, Ugm):
-            to_del.append(impl)
-    for impl in to_del:
-        auth.remove(impl)
-    cone.app.cfg.auth.append(backend)
-
-
 def initialize_auth_impl(config, global_config, local_config):
     """Initialize LDAP based UGM implementation for cone.app as
     authentication implementation.
+    
+    XXX: move to cone.ldap later
     """
     import cone.ugm
-    cone.ugm.ldap_auth_enabled = local_config.get('cone.ugm.ldap_auth')
-    if not cone.ugm.ldap_auth_enabled:
+    ldap_auth = local_config.get('cone.auth_impl') == 'node.ext.ldap'
+    if not ldap_auth:
         return
+    reset_ldap_auth_impl()
+
+cone.app.register_main_hook(initialize_auth_impl)
+
+
+def reset_auth_impl():
+    """LDAP only ATM.
+    """
+    return reset_ldap_auth_impl()
+
+
+def reset_ldap_auth_impl():
+    """XXX: Move to ``cone.ldap``.
+    """
+    import cone.app
     root = cone.app.get_root()
     settings = root['settings']
     server_settings = settings['ugm_server']
@@ -107,13 +99,5 @@ def initialize_auth_impl(config, global_config, local_config):
     else:
         logger.warning(u"Configured roles container invalid.")
     ugm = Ugm(name='ldap_ugm', props=props, ucfg=ucfg, gcfg=gcfg, rcfg=rcfg)
-    auth = cone.app.cfg.auth
-    to_del = list()
-    for impl in auth:
-        if isinstance(impl, Ugm):
-            to_del.append(impl)
-    for impl in to_del:
-        auth.remove(impl)
-    cone.app.cfg.auth.append(ugm)
-
-cone.app.register_main_hook(initialize_auth_impl)
+    cone.app.cfg.auth = ugm
+    return ugm

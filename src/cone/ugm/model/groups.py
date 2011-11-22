@@ -80,7 +80,10 @@ class Groups(BaseNode):
         try:
             return BaseNode.__getitem__(self, name)
         except KeyError:
-            model = self.backend[name]
+            try:
+                model = self.backend[name]
+            except AttributeError:
+                raise KeyError(name)
             group = Group(model, name, self)
             self[name] = group
             return group

@@ -57,7 +57,8 @@ The attributes of the user are wrapped::
 
     >>> user.attrs['mail'] = 'foo'
 
-# XXX: changed should be available on the user object
+# XXX: changed should be available on the user object::
+
     >>> user.attrs.changed
     True
     

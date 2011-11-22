@@ -51,7 +51,7 @@ LDAP users config::
 
     >>> ucfg = settings['ugm_users'].ldap_ucfg
     >>> ucfg.baseDN
-    u'ou=users,ou=groupOfNames_100_100,dc=my-domain,dc=com'
+    u'ou=users,ou=groupOfNames_10_10,dc=my-domain,dc=com'
     
     >>> ucfg.attrmap
     {'cn': 'cn', 
@@ -82,7 +82,7 @@ LDAP groups config::
 
     >>> gcfg = settings['ugm_groups'].ldap_gcfg
     >>> gcfg.baseDN
-    u'ou=groups,ou=groupOfNames_100_100,dc=my-domain,dc=com'
+    u'ou=groups,ou=groupOfNames_10_10,dc=my-domain,dc=com'
     
     >>> gcfg.attrmap
     {'rdn': 'cn', 
@@ -132,22 +132,11 @@ LDAP connectivity tests::
     >>> settings['ugm_server'].ldap_connectivity
     True
     
-    >>> old_users_dn = settings['ugm_users'].attrs.users_dn
-    >>> settings['ugm_users'].attrs.users_dn = \
-    ...     u'ou=users,ou=groupOfNames_10_10,dc=my-domain,dc=com'
-    
-    >>> old_groups_dn = settings['ugm_groups'].attrs.groups_dn
-    >>> settings['ugm_groups'].attrs.groups_dn = \
-    ...     u'ou=groups,ou=groupOfNames_10_10,dc=my-domain,dc=com'
-    
     >>> settings['ugm_users'].ldap_users_container_valid
     True
     
     >>> settings['ugm_groups'].ldap_groups_container_valid
     True
-
-    >>> settings['ugm_users'].attrs.users_dn = old_users_dn
-    >>> settings['ugm_groups'].attrs.groups_dn = old_groups_dn
 
 Settings are written on ``__call__``. At the moment all settings are in one
 file, so calling either ucfg, gcfg or props writes all of them::
@@ -158,15 +147,30 @@ Test invalidate::
 
     >>> import cone.app
     >>> import cone.ugm
-    >>> backend = cone.ugm.backend
-    >>> backend
     
     >>> root = cone.app.root
+    
+    >>> settings = root['settings']
+    >>> settings
+    <AppSettings object 'settings' at ...>
+    
+    >>> props = settings['ugm_server'].ldap_props
+    >>> props
+    <node.ext.ldap.properties.LDAPServerProperties object at ...>
+    
+    >>> ucfg = settings['ugm_users'].ldap_ucfg
+    >>> ucfg
+    <node.ext.ldap.ugm._api.UsersConfig object at ...>
+    
+    >>> gcfg = settings['ugm_groups'].ldap_gcfg
+    >>> gcfg
+    <node.ext.ldap.ugm._api.GroupsConfig object at ...>
+    
     >>> from cone.ugm.model.utils import ugm_backend
     >>> backend = ugm_backend(root)
     
     >>> backend
-    <Ugm object 'ugm' at ...>
+    <Ugm object 'ldap_ugm' at ...>
     
     >>> backend is ugm_backend(root)
     True

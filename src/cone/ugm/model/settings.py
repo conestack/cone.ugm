@@ -19,7 +19,7 @@ from cone.app.model import (
     XMLProperties,
     BaseMetadata,
 )
-from cone.ugm.model.utils import LDAP_CFG_FILE
+from cone.ugm.model.utils import ldap_cfg_file
 
 
 def _invalidate_ugm_settings(model):
@@ -27,19 +27,21 @@ def _invalidate_ugm_settings(model):
     settings['ugm_server']._ldap_props = None
     settings['ugm_users']._ldap_ucfg = None
     settings['ugm_groups']._ldap_gcfg = None
-    import cone.ugm
-    cone.ugm.backend = None
+    import cone.app
+    cone.app.cfg.auth = None
 
 
 ugm_config = None
+
 
 def _get_ugm_config():
     global ugm_config
     if ugm_config is not None:
         return ugm_config
-    if not os.path.isfile(LDAP_CFG_FILE):
-        raise ValueError('Configuration file %s does not exist.'% LDAP_CFG_FILE)
-    ugm_config = XMLProperties(LDAP_CFG_FILE)
+    cfg_file = ldap_cfg_file()
+    if not os.path.isfile(cfg_file):
+        raise ValueError('Configuration file %s does not exist.'% cfg_file)
+    ugm_config = XMLProperties(cfg_file)
     return ugm_config
 
 
@@ -94,7 +96,9 @@ class ServerSettings(UgmSettings):
             self._ldap_props = LDAPProps(
                 uri=config.uri,
                 user=config.user,
-                password=config.password)
+                password=config.password,
+                #cache=config.cache,
+                cache=False) # XXX
         return self._ldap_props
 
 

@@ -6,9 +6,15 @@ from node.ext.ldap.ugm import (
 )
 import cone.ugm
 
+# XXX: configure via ini file and move to ``cone.ugm.__init__``
 APP_PATH = os.environ['APP_PATH']
 LDAP_CFG_FILE = os.environ.get('LDAP_CFG_FILE', 
-                          os.path.join(APP_PATH, 'etc', 'ldap.xml'))
+                               os.path.join(APP_PATH, 'etc', 'ldap.xml'))
+
+
+def ldap_cfg_file():
+    return LDAP_CFG_FILE
+
 
 def ugm_general(model):
     return model.root['settings']['ugm_general']
@@ -31,16 +37,13 @@ def ugm_roles(model):
 
 
 def ugm_backend(model):
+    """Always access UGM backend via this function. Currently
+    ``cone.app.cfg.auth`` is returned. This might change in future if multiple
+    backend management get supported.
+    """
+    import cone.app
+    # return backend if already initialized
+    if cone.app.cfg.auth is not None:
+        return cone.app.cfg.auth
     import cone.ugm
-    if cone.ugm.backend is not None:
-        # return backend if already initialized
-        return cone.ugm.backend
-    props = ugm_server(model).ldap_props
-    ucfg = ugm_users(model).ldap_ucfg
-    gcfg = ugm_groups(model).ldap_gcfg
-    # XXX: later
-    rcfg = ugm_roles(model).ldap_rcfg
-    cone.ugm.backend = Ugm(name='ugm', parent=None, props=props,
-                           ucfg=ucfg, gcfg=gcfg, rcfg=rcfg)
-    cone.ugm.reset_auth_impl()
-    return cone.ugm.backend
+    return cone.ugm.reset_auth_impl()

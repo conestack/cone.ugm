@@ -183,6 +183,10 @@ History
 0.9.1dev
 --------
 
+- Get rid of global ``cone.ugm.backend``. ``cone.app.cfg.auth`` is returend
+  by ``cone.ugm.model.utils.ugm_backend``.
+  [rnix, 2011-11-22]
+
 - Explicit names for settings forms.
   [rnix, 2011-11-18]
 

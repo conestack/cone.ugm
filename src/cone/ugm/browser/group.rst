@@ -101,6 +101,7 @@ Add::
     True
     
     >>> request.params['groupform.id'] = ''
+    >>> request.params['groupform.principal_roles'] = []
     >>> request.params['action.groupform.save'] = '1'
     
     >>> res = render_tile(groups, request, 'add')
@@ -131,12 +132,6 @@ Edit::
     >>> expected = '<form action="http://example.com/groups/group99/edit"'
     >>> res.find(expected) > -1
     True
-    
-    >> request.params['groupform.id'] = 'group99'
-    >> request.params['action.groupform.save'] = '1'
-    >> res = render_tile(group, request, 'edit')
-    >> res
-    u''
     
     >>> layer.logout()
     

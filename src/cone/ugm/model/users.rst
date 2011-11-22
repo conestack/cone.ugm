@@ -16,9 +16,18 @@ cone.ugm.model.users
 
 Check Properties::
 
+    >>> users.__class__
+    <class 'cone.ugm.model.users.Users'>
+
     >>> props = users.properties
+    >>> props
+    <cone.app.model.ProtectedProperties object at ...>
 
 Users object is not editable::
+
+    >>> from pyramid.security import has_permission
+    >>> has_permission('manage', users, layer.current_request)
+    <ACLAllowed instance at ...
 
     >>> props.editable
     False
@@ -36,7 +45,7 @@ Check for test users::
 
     >>> from cone.ugm.model.utils import ugm_users
     >>> len([x for x in users])
-    10
+    16
 
 Access inexistent child::
 
@@ -48,11 +57,11 @@ Access inexistent child::
 The children are user application nodes::
     
     >>> user = users['uid0']
-    >>> user
-    <User object 'uid0' at ...>
+    >>> user.__class__
+    <class 'cone.ugm.model.user.User'>
 
-If we delete a user, it's not deleted from the underlying backend, this is
-needed for invalidation::
+If we delete a user, it's not deleted from the underlying backend, this behavior
+is expected for app model invalidation::
 
     >>> del users['uid0']
     >>> users['uid0']
@@ -61,11 +70,14 @@ needed for invalidation::
 Test invalidation::
 
     >>> backend = users.backend
-    >>> backend
-    <Users object 'users' at ...>
+    >>> backend.__class__
+    <class 'node.ext.ldap.ugm._api.Users'>
     
     >>> backend is users.backend
     True
+    
+    >>> users.__class__
+    <class 'cone.ugm.model.users.Users'>
     
     >>> users.invalidate()
     >>> backend is users.backend
@@ -73,18 +85,4 @@ Test invalidation::
 
 Check if ugm is not configured properly::
 
-    >>> settings = root['settings']['ugm_server']
-    >>> settings.invalidate()
-    >>> [k for k in users]
-    []
-
     >>> layer.logout()
-
-Reset settings for following tests::
-
-    >>> settings = root['settings']
-    >>> settings['ugm_server'].invalidate()
-    >>> settings['ugm_server']._ldap_props = layer['props']
-    >>> settings['ugm_users']._ldap_ucfg = layer['ucfg']
-    >>> settings['ugm_groups']._ldap_gcfg = layer['gcfg']
-
