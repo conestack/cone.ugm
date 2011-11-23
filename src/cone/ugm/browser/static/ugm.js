@@ -45,8 +45,7 @@
         
         // keydown / keyup binder for shift and ctrl keys
         key_binder: function() {
-            $(document).unbind('keydown')
-                       .bind('keydown', function(event) {
+            $(document).bind('keydown', function(event) {
                 switch (event.keyCode || event.which) {
                     case 16:
                         ugm.keys.shift_down = true;
@@ -56,8 +55,7 @@
                         break;
                 }
             });
-            $(document).unbind('keyup')
-                       .bind('keyup', function(event) {
+            $(document).bind('keyup', function(event) {
                 switch (event.keyCode || event.which) {
                     case 16:
                         ugm.keys.shift_down = false;
