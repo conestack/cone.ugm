@@ -29,6 +29,10 @@ On debian based systems install::
     $ apt-get install libxml2-dev libxslt1-dev
     $ apt-get install libsasl2-dev libssl-dev libdb-dev
 
+On ubuntu oneiric, you might need Berkeley v4.7 Database Libraries to make it
+work::
+
+    $  apt-get install libdb4.7-dev
 
 Installation
 ------------
@@ -36,23 +40,23 @@ Installation
 ``cone.ugm`` contains a buildout configuration. Download and extract package
 ZIP file, enter extraction location and run::
 
-    cone.ugm$ python2.6 bootstrap.py -c demo.cfg
-    cone.ugm$ ./bin/buildout -c demo.cfg
+    cone.ugm$ python2.6 bootstrap.py -c dev.cfg
+    cone.ugm$ ./bin/buildout -c dev.cfg
 
 Start Test LDAP server with appropriate LDIF layer::
 
-    cone.ugm$ ./bin/testldap start groupOfNames_100_100
+    cone.ugm$ ./bin/testldap start groupOfNames_10_10
 
-Start application::
+Start the application::
 
     cone.ugm$ ./bin/paster serve ugm.ini
 
-and browse ``http://localhost:8080/``. Default ``admin`` user password is
+and browse ``http://localhost:8081/``. Default ``admin`` user password is
 ``admin``.
 
-Roles part in principal form is only displayed if roles configuration is sane.
-The LDIF imported for test layer does not provide the roles container by
-default. Browse "Settings -> LDAP Roles" and perform "create roles container"
+The "roles" part in the principal form is only displayed if roles configuration
+is sane. The LDIF imported for test layer does not provide the roles container
+by default. Browse "Settings -> LDAP Roles" and perform "create roles container"
 action if you want to enable roles in the demo.
 
 
@@ -69,7 +73,7 @@ Roles
 ``cone.ugm`` internally uses 3 roles in order to permit user actions.
 
 ``editor`` is permitted to manage membership, ``admin`` additionally is
-permitted to add, edit and delete users and groups, and ``manager`` is
+permitted to add, edit and delete users and groups, and ``manager`` is a
 superuser. If UGM is the only plugin used, you can reduce the available roles
 to this three::
 
@@ -84,17 +88,17 @@ Default value callbacks
 -----------------------
 
 Depending on the LDAP object classes used for users and groups, more or less
-attributes are required for this entries. Maybe not all of this attributes
+attributes are required for the entries. Maybe not all of these attributes
 should be visible to the user of ``cone.ugm``. Some might even require to be
-computed. Therefor the plugin supports default value callbacks. This callbacks
+computed. Therefore the plugin supports default value callbacks. These callbacks
 get the principal node and id as attributes::
 
     >>> from cone.ugm import model
-    
+
     >>> def some_field_callback(node, id):
     ...     return 'some computed value'
 
-and are set to factory defaults for user respective group::
+and are set to factory defaults for users and groups respectively::
 
     >>> model.factory_defaults.user['someField'] = some_field_callback
 
@@ -130,13 +134,13 @@ Example configuration::
     ...     shadow,
     ...     samba,
     ... )
-    
+
     >>> samba.SAMBA_LOCAL_SID = 'S-1-5-21-1234567890-1234567890-1234567890'
     >>> samba.SAMBA_DEFAULT_DOMAIN = 'yourdomain'
     >>> samba.SAMBA_PRIMARY_GROUP_SID = 'S-1-5-21-1234567890-1234567890-1234567890-123'
-    
+
     >>> from cone.ugm import model
-    
+
     >>> user = model.factory_defaults.user
     >>> user['gidNumber'] = posix.memberGid
     >>> user['loginShell'] = posix.loginShell
@@ -152,7 +156,7 @@ Example configuration::
     >>> user['sambaPrimaryGroupSID'] = samba.sambaPrimaryGroupSID
     >>> user['sambaAcctFlags'] = samba.sambaAcctFlags
     >>> user['sambaPwdLastSet'] = samba.sambaPwdLastSet
-    
+
     >>> group = model.factory_defaults.group
     >>> model.factory_defaults.group['memberUid'] = posix.memberUid
 
