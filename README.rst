@@ -29,6 +29,10 @@ On debian based systems install::
     $ apt-get install libxml2-dev libxslt1-dev
     $ apt-get install libsasl2-dev libssl-dev libdb-dev
 
+On ubuntu oneiric, I also needed Berkeley v4.7 Database Libraries to make it 
+work::
+
+    $  apt-get install libdb4.7-dev
 
 Installation
 ------------
