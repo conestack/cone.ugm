@@ -6,10 +6,8 @@ from cone.app.model import (
     BaseMetadata,
     BaseNodeInfo,
     registerNodeInfo,
-    #ProtectedProperties,
     Properties,
 )
-from cone.app.security import DEFAULT_NODE_PROPERTY_PERMISSIONS
 from cone.ugm.model import UGM_DEFAULT_ACL
 from cone.ugm.model.group import Group
 from cone.ugm.model.utils import ugm_backend
@@ -31,8 +29,6 @@ class Groups(BaseNode):
 
     @instance_property
     def properties(self):
-        #props = ProtectedProperties(self, DEFAULT_NODE_PROPERTY_PERMISSIONS)
-        #props.editable = False
         props = Properties()
         props.in_navtree = True
         return props

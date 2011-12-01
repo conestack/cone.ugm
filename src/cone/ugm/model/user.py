@@ -2,13 +2,11 @@ from node.locking import locktree
 from node.utils import instance_property
 from cone.app.model import (
     AdapterNode,
-    #ProtectedProperties,
     Properties,
     BaseMetadata,
     BaseNodeInfo,
     registerNodeInfo,
 )
-from cone.app.security import DEFAULT_NODE_PROPERTY_PERMISSIONS
 from cone.ugm.model import UGM_DEFAULT_ACL
 
 
@@ -20,8 +18,6 @@ class User(AdapterNode):
     
     @instance_property
     def properties(self):
-        #props = ProtectedProperties(self, DEFAULT_NODE_PROPERTY_PERMISSIONS)
-        #props.editable = True
         props = Properties()
         return props
     
