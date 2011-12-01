@@ -6,7 +6,8 @@ from cone.app.model import (
     BaseMetadata,
     BaseNodeInfo,
     registerNodeInfo,
-    ProtectedProperties,
+    #ProtectedProperties,
+    Properties,
 )
 from cone.app.security import DEFAULT_NODE_PROPERTY_PERMISSIONS
 from cone.ugm.model import UGM_DEFAULT_ACL
@@ -30,9 +31,10 @@ class Users(BaseNode):
 
     @instance_property
     def properties(self):
-        props = ProtectedProperties(self, DEFAULT_NODE_PROPERTY_PERMISSIONS)
+        #props = ProtectedProperties(self, DEFAULT_NODE_PROPERTY_PERMISSIONS)
+        #props.editable = False
+        props = Properties()
         props.in_navtree = True
-        props.editable = False
         return props
     
     @instance_property

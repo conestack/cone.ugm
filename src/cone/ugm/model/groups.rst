@@ -14,14 +14,10 @@ cone.ugm.model.groups
     >>> isinstance(groups, Groups)
     True
 
-Check Properties::
+Properties::
 
-    >>> props = groups.properties
-
-Groups object is not editable::
-
-    >>> props.editable
-    False
+    >>> groups.properties
+    <cone.app.model.Properties object at ...>
 
 Check Metadata::
 

@@ -14,23 +14,13 @@ cone.ugm.model.users
     >>> isinstance(users, Users)
     True
 
-Check Properties::
-
     >>> users.__class__
     <class 'cone.ugm.model.users.Users'>
 
-    >>> props = users.properties
-    >>> props
-    <cone.app.model.ProtectedProperties object at ...>
+Properties::
 
-Users object is not editable::
-
-    >>> from pyramid.security import has_permission
-    >>> has_permission('manage', users, layer.current_request)
-    <ACLAllowed instance at ...
-
-    >>> props.editable
-    False
+    >>> users.properties
+    <cone.app.model.Properties object at ...>
 
 Check Metadata::
 

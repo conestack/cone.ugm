@@ -15,14 +15,10 @@ cone.ugm.model.user
     >>> isinstance(user, User)
     True
 
-Check Properties::
+Properties::
 
-    >>> props = user.properties
-
-User object is editable::
-
-    >>> props.editable
-    True
+    >>> user.properties
+    <cone.app.model.Properties object at ...>
 
 Check Metadata::
 

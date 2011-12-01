@@ -2,7 +2,8 @@ from node.locking import locktree
 from node.utils import instance_property
 from cone.app.model import (
     AdapterNode,
-    ProtectedProperties,
+    #ProtectedProperties,
+    Properties,
     BaseMetadata,
     BaseNodeInfo,
     registerNodeInfo,
@@ -19,8 +20,9 @@ class User(AdapterNode):
     
     @instance_property
     def properties(self):
-        props = ProtectedProperties(self, DEFAULT_NODE_PROPERTY_PERMISSIONS)
-        props.editable = True
+        #props = ProtectedProperties(self, DEFAULT_NODE_PROPERTY_PERMISSIONS)
+        #props.editable = True
+        props = Properties()
         return props
     
     @instance_property
