@@ -8,7 +8,6 @@ from cone.app.model import (
     registerNodeInfo,
     Properties,
 )
-from cone.ugm.model import UGM_DEFAULT_ACL
 from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_backend
 from cone.ugm.browser.utils import unquote_slash
@@ -22,9 +21,6 @@ def users_factory():
 
 
 class Users(BaseNode):
-    
-    __acl__ = UGM_DEFAULT_ACL
-
     node_info_name = 'users'
 
     @instance_property
@@ -85,6 +81,7 @@ class Users(BaseNode):
             user = User(model, name, self)
             self[name] = user
             return user
+
 
 info = BaseNodeInfo()
 info.title = 'Users'

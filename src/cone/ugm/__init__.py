@@ -1,6 +1,17 @@
 import logging
 import cone.app
+from pyramid.security import (
+    Everyone,
+    Allow,
+    Deny,
+    ALL_PERMISSIONS,
+)
+from cone.app.security import acl_registry
 from cone.app.model import Properties
+from cone.ugm.model.user import User
+from cone.ugm.model.users import Users
+from cone.ugm.model.group import Group
+from cone.ugm.model.groups import Groups
 from cone.ugm.model.settings import (
     GeneralSettings,
     ServerSettings,
@@ -39,6 +50,7 @@ cone.app.register_plugin_config('ugm_users', UsersSettings)
 cone.app.register_plugin_config('ugm_groups', GroupsSettings)
 cone.app.register_plugin_config('ugm_roles', RolesSettings)
 
+
 # Users container
 cone.app.register_plugin('users', users_factory)
 
@@ -47,6 +59,28 @@ cone.app.register_plugin('users', users_factory)
 cone.app.register_plugin('groups', groups_factory)
 
 
+# security
+admin_permissions = ['view', 'add', 'edit', 'delete', 'manage_membership']
+
+
+ugm_default_acl = [
+    (Allow, 'role:editor', ['view', 'manage_membership']),
+    (Allow, 'role:admin', admin_permissions),
+    (Allow, 'role:owner', admin_permissions),
+    (Allow, 'role:manager', admin_permissions + ['manage']),
+    (Allow, Everyone, ['login']),
+    (Deny, Everyone, ALL_PERMISSIONS),
+]
+
+
+# register default acl's
+acl_registry.register(ugm_default_acl, User, 'user')
+acl_registry.register(ugm_default_acl, Users, 'users')
+acl_registry.register(ugm_default_acl, Group, 'group')
+acl_registry.register(ugm_default_acl, Groups, 'groups')
+
+
+# application startup hook
 def initialize_auth_impl(config, global_config, local_config):
     """Initialize LDAP based UGM implementation for cone.app as
     authentication implementation.

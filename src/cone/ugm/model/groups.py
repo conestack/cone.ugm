@@ -8,7 +8,6 @@ from cone.app.model import (
     registerNodeInfo,
     Properties,
 )
-from cone.ugm.model import UGM_DEFAULT_ACL
 from cone.ugm.model.group import Group
 from cone.ugm.model.utils import ugm_backend
 from cone.ugm.browser.utils import unquote_slash
@@ -22,9 +21,6 @@ def groups_factory():
 
 
 class Groups(BaseNode):
-    
-    __acl__ = UGM_DEFAULT_ACL
-
     node_info_name = 'groups'
 
     @instance_property
@@ -85,6 +81,7 @@ class Groups(BaseNode):
             group = Group(model, name, self)
             self[name] = group
             return group
+
 
 info = BaseNodeInfo()
 info.title = 'Groups'
