@@ -118,7 +118,7 @@ Add::
     
     >>> users.keys()
     [u'uid0', u'uid1', u'uid2', u'uid3', u'uid4', u'uid5', u'uid6', u'uid7', 
-    u'uid8', u'uid9', u'viewer', u'editor', u'owner', u'manager', u'max', 
+    u'uid8', u'uid9', u'viewer', u'editor', u'admin', u'manager', u'max', 
     u'sepp', u'uid99']
     
     >>> user = users['uid99']

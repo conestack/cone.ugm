@@ -63,7 +63,7 @@ No id given::
     >>> users.keys()
     [u'uid0', u'uid1', u'uid2', u'uid3', u'uid4', u'uid5', 
     u'uid6', u'uid7', u'uid8', u'uid9', u'viewer', u'editor', 
-    u'owner', u'manager', u'max', u'sepp']
+    u'admin', u'manager', u'max', u'sepp']
 
 Existent id given::
 
@@ -200,7 +200,7 @@ No id given::
     
     >>> users.keys()
     [u'uid0', u'uid1', u'uid2', u'uid3', u'uid4', u'uid5', u'uid6', 
-    u'uid7', u'uid8', u'uid9', u'viewer', u'editor', u'owner', u'manager', 
+    u'uid7', u'uid8', u'uid9', u'viewer', u'editor', u'admin', u'manager', 
     u'max', u'sepp', u'uid99', u'uid100', u'uid101', u'uid102']
 
 Inexistent id given::
@@ -219,7 +219,7 @@ Valid deletions::
     
     >>> users.keys()
     [u'uid0', u'uid1', u'uid2', u'uid3', u'uid4', u'uid5', u'uid6', u'uid7', 
-    u'uid8', u'uid9', u'viewer', u'editor', u'owner', u'manager', u'max', 
+    u'uid8', u'uid9', u'viewer', u'editor', u'admin', u'manager', u'max', 
     u'sepp', u'uid99', u'uid100', u'uid101']
 
 Cleanup::

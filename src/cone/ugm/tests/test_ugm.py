@@ -24,8 +24,8 @@ class UGMLayer(Security):
         cone.ugm.model.utils.LDAP_CFG_FILE = path
         cone.ugm.model.settings._invalidate_ugm_settings(cone.app.get_root())
         ugm = cone.ugm.model.utils.ugm_backend(cone.app.get_root())
-        roles = ['viewer', 'editor', 'owner', 'manager']
-        for uid in ['viewer', 'editor', 'owner', 'manager', 'max', 'sepp']:
+        roles = ['viewer', 'editor', 'admin', 'manager']
+        for uid in ['viewer', 'editor', 'admin', 'manager', 'max', 'sepp']:
             data = {
                 'cn': uid,
                 'sn': uid,
@@ -42,7 +42,7 @@ class UGMLayer(Security):
         super(UGMLayer, self).tearDown()
         import cone.app
         ugm = cone.app.cfg.auth
-        for uid in ['viewer', 'editor', 'owner', 'manager', 'max', 'sepp']:
+        for uid in ['viewer', 'editor', 'admin', 'manager', 'max', 'sepp']:
             del ugm.users[uid]
         ugm.users()
     

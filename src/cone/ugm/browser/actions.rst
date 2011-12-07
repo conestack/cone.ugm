@@ -134,7 +134,7 @@ Test DeleteUserAction::
     HTTPForbidden: Unauthorized: <function DeleteUserAction at ...> failed 
     permission check
     
-    >>> layer.login('owner')
+    >>> layer.login('admin')
     
     >>> request.params['id'] = 'group99'
     >>> user = users['uid99']
@@ -171,7 +171,7 @@ Test DeleteGroupAction::
     HTTPForbidden: Unauthorized: <function DeleteGroupAction at ...> failed 
     permission check
     
-    >>> layer.login('owner')
+    >>> layer.login('admin')
     
     >>> res = render_view_to_response(group, request, name='delete_item')
     >>> res.body
