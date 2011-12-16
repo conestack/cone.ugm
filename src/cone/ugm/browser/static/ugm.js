@@ -696,6 +696,9 @@
                     elem.addClass('inv').addClass('desc');
                 }
                 var sortname = elem.attr('href');
+                if ($.browser.msie && ($.browser.version == 7)) {
+                    sortname = sortname.substr(sortname.lastIndexOf('/') + 1);
+                }
                 var sel = '.' + sortname;
                 $('li', cont).sortElements(function(a, b) {
                     a = ugm.listing_sort_value(sel, a);
