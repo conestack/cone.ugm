@@ -247,6 +247,7 @@ class UserAddForm(UserForm, Form):
     __plumbing__ = AddPart, PrincipalRolesForm, AddFormFiddle
     
     show_heading = False
+    show_contextmenu = False
 
     def save(self, widget, data):
         settings = ugm_users(self.model)
@@ -294,6 +295,7 @@ class UserEditForm(UserForm, Form):
     __plumbing__ = EditPart, PrincipalRolesForm, EditFormFiddle
     
     show_heading = False
+    show_contextmenu = False
 
     def save(self, widget, data):
         settings = ugm_users(self.model)

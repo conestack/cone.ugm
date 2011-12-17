@@ -212,6 +212,7 @@ class GroupAddForm(GroupForm, Form):
     __plumbing__ = AddPart, PrincipalRolesForm, AddFormFiddle
     
     show_heading = False
+    show_contextmenu = False
 
     def save(self, widget, data):
         settings = ugm_groups(self.model)
@@ -256,6 +257,7 @@ class GroupEditForm(GroupForm, Form):
     __plumbing__ = EditPart, PrincipalRolesForm, EditFormFiddle
     
     show_heading = False
+    show_contextmenu = False
 
     def save(self, widget, data):
         settings = ugm_groups(self.model)
