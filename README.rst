@@ -187,6 +187,9 @@ History
 0.9.1dev
 --------
 
+- Dynamic width CSS
+  [rnix, 2011-12-18]
+
 - Get rid of global ``cone.ugm.backend``. ``cone.app.cfg.auth`` is returend
   by ``cone.ugm.model.utils.ugm_backend``.
   [rnix, 2011-11-22]
