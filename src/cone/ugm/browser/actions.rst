@@ -61,7 +61,7 @@ Test GroupRemoveUserAction::
     >>> layer.login('editor')
     >>> res = render_view_to_response(group, request, name='remove_item')
     >>> res.body
-    '{"message": "\'uid100\'", "success": false}'
+    '{"message": "u\'uid100\'", "success": false}'
     
     >>> request.params['id'] = 'uid99'
     >>> res = render_view_to_response(group, request, name='remove_item')
