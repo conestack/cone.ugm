@@ -10,6 +10,16 @@ widgets:
     props:
         label: Default membership assignment widget
         vocabulary: expr:[('listing', 'Listing'), ('inout', 'In-Out')]
+- user_display_name_attr:
+    factory: field:label:text
+    value: expr:context.model.attrs.user_display_name_attr
+    props:
+        label: User display name attribute
+- group_display_name_attr:
+    factory: field:label:text
+    value: expr:context.model.attrs.group_display_name_attr
+    props:
+        label: Group display name attribute
 - save:
     factory: submit
     props:

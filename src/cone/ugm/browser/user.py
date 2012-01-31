@@ -176,8 +176,16 @@ class InOutListing(ColumnListing):
     
     selected_items = Groups(related_only=True)
     available_items = Groups(available_only=True)
-    group_attrs = ['id']
-    group_default_sort_column = 'id'
+    
+    @property
+    def group_attrs(self):
+        settings = ugm_general(self.model)
+        return [settings.attrs['group_display_name_attr']]
+    
+    @property
+    def group_default_sort_column(self):
+        settings = ugm_general(self.model)
+        return settings.attrs['group_display_name_attr']
     
     @property
     def display_control_buttons(self):

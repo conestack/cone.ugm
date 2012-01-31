@@ -138,7 +138,9 @@ class GeneralSettingsForm(Form):
     
     def save(self, widget, data):
         model = self.model
-        for attr_name in ['default_membership_assignment_widget']:
+        for attr_name in ['default_membership_assignment_widget',
+                          'user_display_name_attr',
+                          'group_display_name_attr']:
             val = data.fetch('ugm_general.%s' % attr_name).extracted
             setattr(model.attrs, attr_name, val)
         model()

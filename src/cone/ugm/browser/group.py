@@ -173,8 +173,16 @@ class InOutListing(ColumnListing):
     
     selected_items = Principals(members_only=True)
     available_items = Principals(available_only=True)
-    user_attrs = ['id']
-    user_default_sort_column = 'id'
+    
+    @property
+    def user_attrs(self):
+        settings = ugm_general(self.model)
+        return [settings.attrs['user_display_name_attr']]
+    
+    @property
+    def user_default_sort_column(self):
+        settings = ugm_general(self.model)
+        return settings.attrs['user_display_name_attr']
     
     @property
     def display_control_buttons(self):
