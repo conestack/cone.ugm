@@ -187,6 +187,9 @@ History
 0.9.1dev
 --------
 
+- Make display field of In-Out widget configurable
+  [rnix, 2011-01-31]
+
 - Dynamic width CSS
   [rnix, 2011-12-18]
 
