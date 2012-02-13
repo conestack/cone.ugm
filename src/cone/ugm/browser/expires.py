@@ -99,17 +99,31 @@ class ExpirationForm(Part):
         ``self.form``.
         """
         _next(self)
-        if not has_permission('edit', self.model.parent, self.request):
-            # XXX: yafowil expiration display renderer
+        ucfg = ugm_users(self.model)
+        enabled = ucfg.attrs['users_account_expiration'] == 'True'
+        if not enabled:
             return
+        mode = 'edit'
+        if not has_permission('edit', self.model.parent, self.request):
+            mode = 'display'
+        if self.action_resource == 'edit':
+            attr = ucfg.attrs['users_expires_attr']
+            unit = int(ucfg.attrs['users_expires_unit'])
+            value = int(self.model.attrs.get(attr, 0))
+            if unit == 0:
+                value /= 86400
+        else:
+            value = UNSET
         expires_widget = factory(
             'field:label:expires',
             name='expires',
+            value=value,
             props={
                 'label': 'Expires',
                 'datepicker': True,
                 'locale': 'de',
             },
+            mode=mode
         )
         save_widget = self.form['save']
         self.form.insertbefore(expires_widget, save_widget)
