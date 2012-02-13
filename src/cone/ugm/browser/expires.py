@@ -1,10 +1,18 @@
+import time
 from plumber import (
     Part,
     default,
     plumb,
 )
 from pyramid.security import has_permission
-from yafowil.base import factory
+from yafowil.base import (
+    factory,
+    UNSET,
+)
+from yafowil.common import (
+    generic_extractor,
+    generic_required_extractor,
+)
 from yafowil.widget.datetime.widget import (
     datetime_edit_renderer,
     datetime_display_renderer,
@@ -14,9 +22,21 @@ from cone.ugm.model.utils import ugm_users
 
 
 def expiration_extractor(widget, data):
+    """Extract expiration information.
+    
+    - If active flag not set, Account is disabled (value 0).
+    - If active flag set and value is UNSET, account never expires.
+    - If active flag set and datetime choosen, account expires at given
+      datetime.
+    - Timestamp in seconds since epoch is returned. 
+    """
     active = data.request.get('%s.active' % widget.name)
-    expires = datetime_extractor(widget, data)
-    return '12345'
+    if not active:
+        return 0
+    expires = data.extracted
+    if expires:
+        return time.mktime(expires.utctimetuple())
+    return UNSET
 
 
 def expiration_edit_renderer(widget, data):
@@ -46,7 +66,8 @@ def expiration_display_renderer(widget, data):
 
 factory.register(
     'expiration',
-    extractors=[expiration_extractor], 
+    extractors=[generic_extractor, generic_required_extractor,
+                datetime_extractor, expiration_extractor], 
     edit_renderers=[expiration_edit_renderer],
     display_renderers=[expiration_display_renderer])
 
