@@ -18,6 +18,33 @@ Edit renderer::
     u'<input checked="checked" name="expires.active" type="checkbox" value="1" 
     /><input class="datepicker expiration" id="input-expires" name="expires" 
     size="10" type="text" />'
+    
+    >>> widget = factory(
+    ...     'expiration',
+    ...     name='expires',
+    ...     value=0,
+    ...     props={
+    ...         'datepicker': True,
+    ...         'locale': 'de',
+    ...     })
+    >>> widget()
+    u'<input name="expires.active" type="checkbox" value="1" /><input 
+    class="datepicker expiration" id="input-expires" name="expires" size="10" 
+    type="text" />'
+    
+    >>> import datetime
+    >>> widget = factory(
+    ...     'expiration',
+    ...     name='expires',
+    ...     value=datetime.datetime(2012, 01, 01),
+    ...     props={
+    ...         'datepicker': True,
+    ...         'locale': 'de',
+    ...     })
+    >>> widget()
+    u'<input checked="checked" name="expires.active" type="checkbox" value="1" 
+    /><input class="datepicker expiration" id="input-expires" name="expires" 
+    size="10" type="text" value="1.1.2012" />'
 
 Extractor::
     

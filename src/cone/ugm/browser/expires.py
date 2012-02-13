@@ -8,6 +8,7 @@ from pyramid.security import has_permission
 from yafowil.base import (
     factory,
     UNSET,
+    fetch_value,
 )
 from yafowil.common import (
     generic_extractor,
@@ -45,7 +46,11 @@ def expiration_edit_renderer(widget, data):
     active_attrs['type'] = 'checkbox'
     active_attrs['name'] = '%s.active' % widget.name
     active_attrs['value'] = '1'
-    active_attrs['checked'] = 'checked'
+    value = fetch_value(widget, data)
+    if value != 0:
+        active_attrs['checked'] = 'checked'
+    else:
+        data.value = None
     active = tag('input', **active_attrs)
     expires = datetime_edit_renderer(widget, data)
     return active + expires
