@@ -379,6 +379,23 @@ div.right_column div.field div {
 #field-userform-id div {
     width:330px;
 }
+div.expiration-widget {
+    width:330px !important;
+}
+div.expiration-widget #input-userform-active {
+    width:120px;
+}
+div.expiration-widget #checkbox-userform-active {
+    margin-left:-5px;
+}
+div.expiration-widget #checkbox-userform-active,
+div.expiration-widget #input-userform-active {
+    float:left;
+}
+div.expiration-widget .ui-datepicker-trigger {
+    margin-top:2px;
+    margin-left:3px;
+}
 #field-groupform-principal_roles,
 #field-userform-principal_roles {
     text-align:right;

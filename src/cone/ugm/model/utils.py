@@ -9,7 +9,7 @@ import cone.ugm
 # XXX: configure via ini file and move to ``cone.ugm.__init__``
 APP_PATH = os.environ['APP_PATH']
 LDAP_CFG_FILE = os.environ.get('LDAP_CFG_FILE', 
-                               os.path.join(APP_PATH, 'etc', 'ldap.xml'))
+                               os.path.join(APP_PATH, 'etc', 'ldap_posix.xml'))
 
 
 def ldap_cfg_file():

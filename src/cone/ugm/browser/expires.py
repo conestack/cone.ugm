@@ -14,6 +14,7 @@ from yafowil.common import (
     generic_extractor,
     generic_required_extractor,
 )
+from yafowil.utils import cssid
 from yafowil.widget.datetime.widget import (
     datetime_edit_renderer,
     datetime_display_renderer,
@@ -43,6 +44,7 @@ def expiration_extractor(widget, data):
 def expiration_edit_renderer(widget, data):
     tag = data.tag
     active_attrs = dict()
+    active_attrs['id'] = cssid(widget, 'checkbox')
     active_attrs['type'] = 'checkbox'
     active_attrs['name'] = '%s.active' % widget.name
     active_attrs['value'] = '1'
@@ -53,12 +55,13 @@ def expiration_edit_renderer(widget, data):
         data.value = None
     active = tag('input', **active_attrs)
     expires = datetime_edit_renderer(widget, data)
-    return active + expires
+    return tag('div', active + expires, class_='expiration-widget')
 
 
 def expiration_display_renderer(widget, data):
     tag = data.tag
     active_attrs = dict()
+    active_attrs['id'] = cssid(widget, 'checkbox')
     active_attrs['type'] = 'checkbox'
     active_attrs['name'] = '%s.active' % widget.name
     active_attrs['value'] = '1'
@@ -66,7 +69,7 @@ def expiration_display_renderer(widget, data):
     active_attrs['disabled'] = 'disabled'
     active = tag('input', **active_attrs)
     expires = datetime_display_renderer(widget, data)
-    return active + expires
+    return tag('div', active + expires, class_='expiration-widget')
 
 
 factory.register(
@@ -115,11 +118,11 @@ class ExpirationForm(Part):
         else:
             value = UNSET
         expires_widget = factory(
-            'field:label:expires',
-            name='expires',
+            'field:label:expiration',
+            name='active',
             value=value,
             props={
-                'label': 'Expires',
+                'label': 'Active',
                 'datepicker': True,
                 'locale': 'de',
             },
