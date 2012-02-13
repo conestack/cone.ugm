@@ -232,7 +232,10 @@ class UsersSettingsForm(Form, VocabMixin):
                           'users_aliases_attrmap',
                           'users_form_attrmap',
                           'users_listing_columns',
-                          'users_listing_default_column']:
+                          'users_listing_default_column',
+                          'users_account_expiration',
+                          'users_expires_attr',
+                          'users_expires_unit']:
             val = data.fetch('ldap_users_settings.%s' % attr_name).extracted
             if attr_name == 'users_object_classes':
                 val = [v.strip() for v in val.split(',') if v.strip()]

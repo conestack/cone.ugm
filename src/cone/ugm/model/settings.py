@@ -12,6 +12,7 @@ from node.ext.ldap.ugm import (
     GroupsConfig as LDAPGroupsConfig,
     RolesConfig as LDAPRolesConfig,
 )
+from node.ext.ldap.ugm._api import EXPIRATION_DAYS
 from cone.app.model import (
     BaseNode,
     XMLProperties,
@@ -127,6 +128,11 @@ class UsersSettings(UgmSettings):
                 if key in ['id', 'login']:
                     continue
                 map[key] = key
+            expiresAttr = None
+            expiresUnit = EXPIRATION_DAYS
+            if config.users_account_expiration == 'True':
+                expiresAttr = config.users_expires_attr
+                expiresUnit = int(config.users_expires_unit)
             import cone.ugm.model
             self._ldap_ucfg = LDAPUsersConfig(
                 baseDN=config.users_dn,
@@ -134,7 +140,9 @@ class UsersSettings(UgmSettings):
                 scope=int(config.users_scope),
                 queryFilter=config.users_query,
                 objectClasses=config.users_object_classes,
-                defaults=cone.ugm.model.factory_defaults.user)
+                defaults=cone.ugm.model.factory_defaults.user,
+                expiresAttr=expiresAttr,
+                expiresUnit=expiresUnit)
         return self._ldap_ucfg
 
 

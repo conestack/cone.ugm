@@ -58,6 +58,22 @@ widgets:
     value: expr:context.model.attrs.users_listing_default_column
     props:
         label: Users listing default column
+- users_account_expiration:
+    factory: field:label:checkbox
+    value: expr:context.model.attrs.users_account_expiration == 'True'
+    props:
+        label: User Accounts expires?
+- users_expires_attr:
+    factory: field:label:text
+    value: expr:context.model.attrs.users_expires_attr
+    props:
+        label: Attribute containing expiration Time
+- users_expires_unit:
+    factory: field:label:select
+    value: expr:int(context.model.attrs.users_expires_unit)
+    props:
+        label: Account expiration unit
+        vocabulary: expr:((0, 'Days since Epoch'), (1, 'Seconds since epoch'))
 - save:
     factory: submit
     props:
