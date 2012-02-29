@@ -47,9 +47,11 @@ class UGMLayer(Security):
         ugm.users()
     
     def make_app(self):
+        ldap_config = os.path.join(os.path.split(__file__)[0], 'ldap.xml')
         super(UGMLayer, self).make_app(**{
             'cone.auth_impl': 'node.ext.ldap',
             'cone.plugins': 'node.ext.ugm\ncone.ugm',
+            'cone.ugm.ldap_config': ldap_config,
         })
         LDIF_groupOfNames_10_10.gcfg.attrmap['cn'] = 'cn'
 

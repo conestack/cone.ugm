@@ -1,3 +1,4 @@
+import os
 import logging
 import cone.app
 from pyramid.security import (
@@ -87,6 +88,7 @@ def initialize_auth_impl(config, global_config, local_config):
     
     XXX: move to cone.ldap later
     """
+    os.environ['LDAP_CFG_FILE'] = local_config.get('cone.ugm.ldap_config', '')
     import cone.ugm
     ldap_auth = local_config.get('cone.auth_impl') == 'node.ext.ldap'
     if not ldap_auth:

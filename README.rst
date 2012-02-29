@@ -59,12 +59,23 @@ is sane. The LDIF imported for test layer does not provide the roles container
 by default. Browse "Settings -> LDAP Roles" and perform "create roles container"
 action if you want to enable roles in the demo.
 
+**Note**: If ``python_ldap`` fails, don't use buildout offline mode!
+
 
 Customization
 =============
 
 For customizing the plugin, make an integration package and include it in
 buildout.
+
+
+LDAP configuration
+------------------
+
+To define the LDAP configuration location add ``cone.ugm.ldap_config`` property
+to application ini file, i.e.::
+
+    cone.ugm.ldap_config = %(here)s/etc/ldap.xml
 
 
 Roles
