@@ -2,11 +2,5 @@
 
   <include package="pyramid_zcml" />
   <scan package=".browser" />
-  
-  <view
-    for="*"
-    view=".browser.static_resources"
-    name="cone.ugm.static"
-  />
 
 </configure>

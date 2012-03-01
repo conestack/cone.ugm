@@ -81,7 +81,17 @@ acl_registry.register(ugm_default_acl, Group, 'group')
 acl_registry.register(ugm_default_acl, Groups, 'groups')
 
 
-# application startup hook
+# application startup hooks
+def initialize_ugm(config, global_config, local_config):
+    """Initialize UGM.
+    """
+    # static resources
+    config.add_view('cone.ugm.browser.static_resources', name='cone.ugm.static')
+
+
+cone.app.register_main_hook(initialize_ugm)
+
+
 def initialize_auth_impl(config, global_config, local_config):
     """Initialize LDAP based UGM implementation for cone.app as
     authentication implementation.
