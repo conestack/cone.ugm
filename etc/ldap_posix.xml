@@ -3,7 +3,7 @@
   <user>cn=Manager,dc=my-domain,dc=com</user>
   <password>secret</password>
   <cache>0</cache>
-  <users_dn>ou=users,ou=posixGroups_10_10,dc=my-domain,dc=com</users_dn>
+  <users_dn>ou=users,ou=posixGroups,dc=my-domain,dc=com</users_dn>
   <users_scope>1</users_scope>
   <users_query></users_query>
   <users_object_classes>
@@ -49,7 +49,7 @@
   <users_account_expiration>True</users_account_expiration>
   <users_expires_attr>shadowExpire</users_expires_attr>
   <users_expires_unit>0</users_expires_unit>
-  <groups_dn>ou=groups,ou=posixGroups_10_10,dc=my-domain,dc=com</groups_dn>
+  <groups_dn>ou=groups,ou=posixGroups,dc=my-domain,dc=com</groups_dn>
   <groups_scope>1</groups_scope>
   <groups_query></groups_query>
   <groups_object_classes>
@@ -79,7 +79,7 @@
     </elem>
   </groups_listing_columns>
   <groups_listing_default_column>id</groups_listing_default_column>
-  <roles_dn>ou=roles,ou=posixGroups_10_10,dc=my-domain,dc=com</roles_dn>
+  <roles_dn>ou=roles,ou=posixGroups,dc=my-domain,dc=com</roles_dn>
   <roles_scope>1</roles_scope>
   <roles_query></roles_query>
   <roles_object_classes>

@@ -380,13 +380,14 @@ div.right_column div.field div {
     width:330px;
 }
 div.expiration-widget {
+	font-size:90% !important;
     width:330px !important;
 }
 div.expiration-widget #input-userform-active {
     width:120px;
 }
 div.expiration-widget #checkbox-userform-active {
-    margin-left:-5px;
+    margin-left:-6px;
 }
 div.expiration-widget #checkbox-userform-active,
 div.expiration-widget #input-userform-active {
