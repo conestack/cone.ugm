@@ -198,6 +198,9 @@ History
 0.9.1dev
 --------
 
+- Add account expiration functionality.
+  [rnix, 2011-03-06]
+
 - Make display field of In-Out widget configurable
   [rnix, 2011-01-31]
 
