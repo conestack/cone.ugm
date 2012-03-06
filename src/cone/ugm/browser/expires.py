@@ -1,7 +1,7 @@
 import time
+from datetime import datetime
 from plumber import (
     Part,
-    default,
     plumb,
 )
 from pyramid.security import has_permission
@@ -16,8 +16,10 @@ from yafowil.common import (
 )
 from yafowil.utils import cssid
 from yafowil.widget.datetime.widget import (
-    datetime_edit_renderer,
-    datetime_display_renderer,
+    format_date,
+    format_time,
+    render_datetime_input,
+    render_datetime_display,
     datetime_extractor,
 )
 from cone.ugm.model.utils import ugm_users
@@ -32,7 +34,7 @@ def expiration_extractor(widget, data):
       datetime.
     - Timestamp in seconds since epoch is returned. 
     """
-    active = data.request.get('%s.active' % widget.name)
+    active = int(data.request.get('%s.active' % widget.name, '0'))
     if not active:
         return 0
     expires = data.extracted
@@ -49,12 +51,24 @@ def expiration_edit_renderer(widget, data):
     active_attrs['name'] = '%s.active' % widget.name
     active_attrs['value'] = '1'
     value = fetch_value(widget, data)
+    if value == 8639913600:
+        value = UNSET
     if value != 0:
         active_attrs['checked'] = 'checked'
-    else:
-        data.value = None
     active = tag('input', **active_attrs)
-    expires = datetime_edit_renderer(widget, data)
+    locale = widget.attrs.get('locale', 'iso')
+    if callable(locale):
+        locale = locale(widget, data)
+    date = None
+    time = widget.attrs.get('time')
+    if value in [0, UNSET]:
+        date = ''
+    else:
+        date = datetime.fromtimestamp(value)
+        if time:
+            time = format_time(date)
+        date = format_date(date, locale)
+    expires = render_datetime_input(widget, data, date, time)
     return tag('div', active + expires, class_='expiration-widget')
 
 
@@ -63,12 +77,14 @@ def expiration_display_renderer(widget, data):
     active_attrs = dict()
     active_attrs['id'] = cssid(widget, 'checkbox')
     active_attrs['type'] = 'checkbox'
-    active_attrs['name'] = '%s.active' % widget.name
-    active_attrs['value'] = '1'
-    active_attrs['checked'] = 'checked'
     active_attrs['disabled'] = 'disabled'
+    value = data.value
+    if value != 0:
+        active_attrs['checked'] = 'checked'
     active = tag('input', **active_attrs)
-    expires = datetime_display_renderer(widget, data)
+    if value not in [0, UNSET]:
+        value = datetime.fromtimestamp(value)
+    expires = render_datetime_display(widget, data, value)
     return tag('div', active + expires, class_='expiration-widget')
 
 
@@ -88,13 +104,15 @@ factory.defaults['expiration.class'] = 'expiration'
 
 factory.defaults['expiration.datepicker_class'] = 'datepicker'
 
-factory.defaults['expiration.format'] = '%Y.%m.%d - %H:%M'
+factory.defaults['expiration.format'] = '%Y.%m.%d'
 factory.doc['props']['expiration.format'] = \
 """Pattern accepted by ``datetime.strftime``.
 """
 
 
 class ExpirationForm(Part):
+    """Expiration field plumbing part for user forms.
+    """
     
     @plumb
     def prepare(_next, self):
@@ -103,8 +121,7 @@ class ExpirationForm(Part):
         """
         _next(self)
         ucfg = ugm_users(self.model)
-        enabled = ucfg.attrs['users_account_expiration'] == 'True'
-        if not enabled:
+        if ucfg.attrs['users_account_expiration'] != 'True':
             return
         mode = 'edit'
         if not has_permission('edit', self.model.parent, self.request):
@@ -113,8 +130,9 @@ class ExpirationForm(Part):
             attr = ucfg.attrs['users_expires_attr']
             unit = int(ucfg.attrs['users_expires_unit'])
             value = int(self.model.attrs.get(attr, 0))
+            # if format days, convert to seconds
             if unit == 0:
-                value /= 86400
+                value *= 86400
         else:
             value = UNSET
         expires_widget = factory(
@@ -133,6 +151,24 @@ class ExpirationForm(Part):
     
     @plumb
     def save(_next, self, widget, data):
+        if has_permission('edit', self.model.parent, self.request):
+            ucfg = ugm_users(self.model)
+            if ucfg.attrs['users_account_expiration'] == 'True':
+                attr = ucfg.attrs['users_expires_attr']
+                unit = int(ucfg.attrs['users_expires_unit'])
+                value = data.fetch('userform.active').extracted
+                if value is UNSET:
+                    if unit == 0:
+                        value = 99999
+                    else:
+                        value = 8639913600
+                elif value != 0:
+                    if unit == 0:
+                        add = 0
+                        if value % 86400 != 0:
+                            add = 1
+                        value /= 86400
+                        value += add
+                    value = int(value)
+                self.model.attrs[attr] = str(value)
         _next(self, widget, data)
-        if not has_permission('manage', self.model.parent, self.request):
-            return

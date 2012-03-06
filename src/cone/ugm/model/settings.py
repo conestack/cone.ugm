@@ -133,6 +133,7 @@ class UsersSettings(UgmSettings):
             if config.users_account_expiration == 'True':
                 expiresAttr = config.users_expires_attr
                 expiresUnit = int(config.users_expires_unit)
+                map[expiresAttr] = expiresAttr
             import cone.ugm.model
             self._ldap_ucfg = LDAPUsersConfig(
                 baseDN=config.users_dn,
