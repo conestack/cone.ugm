@@ -195,6 +195,13 @@ Contributors
 History
 =======
 
+0.9.2
+-----
+
+- Account expiration widget improvements
+  [rnix, 2012-03-20]
+
+
 0.9.1
 -----
 

@@ -56,6 +56,7 @@ def expiration_edit_renderer(widget, data):
     if value != 0:
         active_attrs['checked'] = 'checked'
     active = tag('input', **active_attrs)
+    until = tag('label', u'until')
     locale = widget.attrs.get('locale', 'iso')
     if callable(locale):
         locale = locale(widget, data)
@@ -69,7 +70,7 @@ def expiration_edit_renderer(widget, data):
             time = format_time(date)
         date = format_date(date, locale)
     expires = render_datetime_input(widget, data, date, time)
-    return tag('div', active + expires, class_='expiration-widget')
+    return tag('div', active + until + expires, class_='expiration-widget')
 
 
 def expiration_display_renderer(widget, data):
@@ -82,9 +83,12 @@ def expiration_display_renderer(widget, data):
     if value != 0:
         active_attrs['checked'] = 'checked'
     active = tag('input', **active_attrs)
+    until = tag('label', u'until')
     if value not in [0, UNSET]:
         value = datetime.fromtimestamp(value)
     expires = render_datetime_display(widget, data, value)
+    if expires:
+        expires = until + expires
     return tag('div', active + expires, class_='expiration-widget')
 
 
