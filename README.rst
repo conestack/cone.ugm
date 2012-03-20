@@ -195,8 +195,8 @@ Contributors
 History
 =======
 
-0.9.1dev
---------
+0.9.1
+-----
 
 - Add account expiration functionality.
   [rnix, 2011-03-06]
