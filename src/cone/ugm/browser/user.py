@@ -34,6 +34,7 @@ from cone.ugm.browser.authoring import (
 )
 from cone.ugm.browser.principal import PrincipalForm
 from cone.ugm.browser.expires import ExpirationForm
+from cone.ugm.browser.autoincrement import AutoIncrementForm
 from webob.exc import HTTPFound
 
 
@@ -253,7 +254,13 @@ class UserForm(PrincipalForm):
 @tile('addform', interface=User, permission='add')
 class UserAddForm(UserForm, Form):
     __metaclass__ = plumber
-    __plumbing__ = AddPart, PrincipalRolesForm, ExpirationForm, AddFormFiddle
+    __plumbing__ = (
+        AddPart,
+        PrincipalRolesForm,
+        ExpirationForm,
+        AutoIncrementForm,
+        AddFormFiddle,
+    )
     
     show_heading = False
     show_contextmenu = False
@@ -301,7 +308,13 @@ class UserAddForm(UserForm, Form):
 @tile('editform', interface=User, permission='edit', strict=False)
 class UserEditForm(UserForm, Form):
     __metaclass__ = plumber
-    __plumbing__ = EditPart, PrincipalRolesForm, ExpirationForm, EditFormFiddle
+    __plumbing__ = (
+        EditPart,
+        PrincipalRolesForm,
+        ExpirationForm,
+        AutoIncrementForm,
+        EditFormFiddle,
+    )
     
     show_heading = False
     show_contextmenu = False

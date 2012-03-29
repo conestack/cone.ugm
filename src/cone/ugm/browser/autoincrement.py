@@ -4,7 +4,6 @@ from plumber import (
     plumb,
 )
 from pyramid.security import has_permission
-from yafowil.base import factory
 from cone.ugm.model.utils import ugm_users
 
 
