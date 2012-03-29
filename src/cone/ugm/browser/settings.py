@@ -235,7 +235,10 @@ class UsersSettingsForm(Form, VocabMixin):
                           'users_listing_default_column',
                           'users_account_expiration',
                           'users_expires_attr',
-                          'users_expires_unit']:
+                          'users_expires_unit',
+                          'user_id_autoincrement',
+                          'user_id_autoincrement_prefix',
+                          'user_id_autoincrement_start']:
             val = data.fetch('ldap_users_settings.%s' % attr_name).extracted
             if attr_name == 'users_object_classes':
                 val = [v.strip() for v in val.split(',') if v.strip()]

@@ -277,7 +277,6 @@ class UserAddForm(UserForm, Form):
         users = self.model.parent.backend
         id = extracted.pop('id')
         password = extracted.pop('userPassword')
-        #user = users.create(id, **extracted)
         users.create(id, **extracted)
         self.request.environ['next_resource'] = id
         users()
@@ -312,7 +311,6 @@ class UserEditForm(UserForm, Form):
         EditPart,
         PrincipalRolesForm,
         ExpirationForm,
-        AutoIncrementForm,
         EditFormFiddle,
     )
     

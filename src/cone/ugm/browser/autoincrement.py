@@ -3,11 +3,14 @@ from plumber import (
     default,
     plumb,
 )
-from pyramid.security import has_permission
 from cone.ugm.model.utils import ugm_users
 
 
 class AutoIncrementForm(Part):
+    """Plumbing part for setting user id by auto increment logic.
+    
+    For user add form.
+    """
     
     @default
     @property
@@ -15,42 +18,47 @@ class AutoIncrementForm(Part):
         ucfg = ugm_users(self.model)
         return ucfg.attrs['user_id_autoincrement'] == 'True'
     
+    @default
+    @property
+    def next_principal_id(self):
+        ucfg = ugm_users(self.model)
+        prefix = ucfg.attrs['user_id_autoincrement_prefix']
+        default = int(ucfg.attrs['user_id_autoincrement_start'])
+        search = u'%s*' % prefix
+        backend = self.model.parent.backend
+        backend.invalidate()
+        result = backend.search(attrlist=['id'], criteria={'id': search})
+        principlal_ids = [_[1]['id'][0] for _ in result]
+        matching = list()
+        for principal_id in principlal_ids:
+            if prefix:
+                principal_id = principal_id[len(prefix):]
+            try:
+                principal_id = int(principal_id)
+            except ValueError:
+                continue
+            matching.append(principal_id)
+        if not matching:
+            principal_id = default
+        else:
+            principal_id = sorted(matching)[-1] + 1
+        if principal_id < default:
+            principal_id = default
+        return u'%s%i' % (prefix, principal_id)
+    
     @plumb
     def prepare(_next, self):
-        """Hook after prepare and set 'principal_roles' as selection to 
-        ``self.form``.
+        """Hook after prepare and set 'id' disabled.
         """
         _next(self)
         if not self.autoincrement_support:
             return
-        if not has_permission('manage', self.model.parent, self.request):
-            return
-        import pdb;pdb.set_trace()
-        
+        id_field = self.form['id']
+        del id_field.attrs['required']
+        id_field.attrs['disabled'] = 'disabled'
     
     @plumb
     def save(_next, self, widget, data):
+        if self.autoincrement_support:
+            data['id'].extracted = self.next_principal_id
         _next(self, widget, data)
-        if not self.autoincrement_support:
-            return
-        if not has_permission('manage', self.model.parent, self.request):
-            return
-
-
-#    def uidNumber(node, uid):
-#        """Default function gets called twice, second time without node.
-#        
-#        Bug. fix me.
-#        
-#        XXX: gets called by samba defaults
-#        """
-#        from node.ext.ldap.ugm import posix
-#        if not node:
-#            return posix.UID_NUMBER
-#        existing = node.search(criteria={'uidNumber': '*'}, attrlist=['uidNumber'])
-#        uidNumbers = [int(item[1]['uidNumber'][0]) for item in existing]
-#        uidNumbers.sort()
-#        if not len(uidNumbers):
-#            return '100'
-#        posix.UID_NUMBER = str(uidNumbers[-1] + 1)
-#        return posix.UID_NUMBER

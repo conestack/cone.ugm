@@ -77,6 +77,7 @@ DOCFILES = [
     ('../browser/settings.rst', ugm_layer),
     ('../browser/remote.rst', ugm_layer),
     ('../browser/expires.rst', ugm_layer),
+    ('../browser/roles.rst', ugm_layer),
     ('../browser/autoincrement.rst', ugm_layer),
 ]
 
