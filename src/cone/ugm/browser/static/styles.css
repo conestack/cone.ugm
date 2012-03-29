@@ -312,6 +312,12 @@ div.inoutlisting div.head div.sort_col_1 {
 }
 
 /* forms */
+div.help {
+    font-weight:normal;
+}
+.tabpanes form .field {
+    padding:6px;
+}
 div.right_column div.field {
     width:400px;
     clear:both;

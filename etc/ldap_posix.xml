@@ -49,6 +49,8 @@
   <users_account_expiration>True</users_account_expiration>
   <users_expires_attr>shadowExpire</users_expires_attr>
   <users_expires_unit>0</users_expires_unit>
+  <user_id_autoincrement>False</user_id_autoincrement>
+  <user_id_autoincrement_prefix></user_id_autoincrement_prefix>
   <groups_dn>ou=groups,ou=posixGroups,dc=my-domain,dc=com</groups_dn>
   <groups_scope>1</groups_scope>
   <groups_query></groups_query>
