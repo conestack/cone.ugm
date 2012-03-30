@@ -172,16 +172,6 @@ Example configuration::
     >>> model.factory_defaults.group['memberUid'] = posix.memberUid
 
 
-TODO
-====
-
-- move LDAP related code to ``cone.ldap``
-- make UI work with any kind of ``node.ext.ugm`` based implementations.
-- provide application model for ``node.ext.ugm.file`` implementation as default.
-- Listing batches.
-- DnD membership assignment
-
-
 Contributors
 ============
 
@@ -195,10 +185,17 @@ Contributors
 History
 =======
 
+0.9.3
+-----
+
+- Add Autoincrement Feature for user ids.
+  [rnix, 2012-03-30]
+
+
 0.9.2
 -----
 
-- Account expiration widget improvements
+- Account expiration widget improvements.
   [rnix, 2012-03-20]
 
 
@@ -208,10 +205,10 @@ History
 - Add account expiration functionality.
   [rnix, 2011-03-06]
 
-- Make display field of In-Out widget configurable
+- Make display field of In-Out widget configurable.
   [rnix, 2011-01-31]
 
-- Dynamic width CSS
+- Dynamic width CSS.
   [rnix, 2011-12-18]
 
 - Get rid of global ``cone.ugm.backend``. ``cone.app.cfg.auth`` is returend
