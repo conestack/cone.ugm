@@ -91,6 +91,7 @@ widgets:
     value: expr:int(context.model.attrs.user_id_autoincrement_start)
     props:
         label: Autoincrement initial user number
+        datatype: integer
 - save:
     factory: submit
     props:

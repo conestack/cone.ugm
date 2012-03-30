@@ -56,6 +56,7 @@ class AutoIncrementForm(Part):
         id_field = self.form['id']
         del id_field.attrs['required']
         id_field.attrs['disabled'] = 'disabled'
+        id_field.getter = 'auto incremented'
     
     @plumb
     def save(_next, self, widget, data):
