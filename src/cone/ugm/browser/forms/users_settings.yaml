@@ -70,12 +70,16 @@ widgets:
     factory: field:label:array
     value: expr:context.model.attrs.users_exposed_attributes
     props:
-        label.label: Exposed user Attributes
+        label.label: User attributes exposed to attribute map
         array.label: Click '+' to add attributes
-        help: Attributes which can be modified via remote API
+        help: Attributes which can be set via remote API
+        sort: False
     widgets:
     - exposed:
-        factory: text
+        factory: error:text
+        props:
+            label: Attribute
+            required: No attribute given
 - users_account_expiration:
     factory: field:label:checkbox
     value: expr:context.model.attrs.users_account_expiration == 'True'

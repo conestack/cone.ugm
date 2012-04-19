@@ -128,6 +128,9 @@ class UsersSettings(UgmSettings):
                 if key in ['id', 'login']:
                     continue
                 map[key] = key
+            if config.users_exposed_attributes:
+                for key in config.users_exposed_attributes:
+                    map[key] = key
             expiresAttr = None
             expiresUnit = EXPIRATION_DAYS
             if config.users_account_expiration == 'True':

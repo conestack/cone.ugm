@@ -12,16 +12,22 @@ cone.ugm.browser.settings
     
     >>> request = layer.new_request()
 
-Unauthenticated content tile renders empty string::
+Unauthenticated content tile raises error::
 
     >>> render_tile(server_settings, request, 'content')
-    u''
+    Traceback (most recent call last):
+      ...
+    HTTPForbidden: Unauthorized: ... failed permission check
     
     >>> render_tile(users_settings, request, 'content')
-    u''
+    Traceback (most recent call last):
+      ...
+    HTTPForbidden: Unauthorized: ... failed permission check
     
     >>> render_tile(groups_settings, request, 'content')
-    u''
+    Traceback (most recent call last):
+      ...
+    HTTPForbidden: Unauthorized: ... failed permission check
 
 Form tiles raise if not manager::
 

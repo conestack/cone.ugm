@@ -117,6 +117,7 @@ class CreateContainerAction(Tile):
         node[rdn] = LDAPNode()
         node[rdn].attrs['objectClass'] = ['organizationalUnit']
         node()
+        self.model.invalidate()
         return u"Created '%s'" % rdn
 
 
@@ -124,8 +125,7 @@ registerTile('content',
              'cone.ugm:browser/templates/general_settings.pt',
              class_=ProtectedContentTile,
              interface=GeneralSettings,
-             permission='login',
-             strict=False)
+             permission='manage')
 
 
 @tile('editform', interface=GeneralSettings, permission="manage")
@@ -148,7 +148,7 @@ class GeneralSettingsForm(Form):
 
 
 @tile('content', 'templates/server_settings.pt',
-      interface=ServerSettings, permission='manage', strict=False)
+      interface=ServerSettings, permission='manage')
 class ServerSettingsTile(ProtectedContentTile):
     
     @property
@@ -182,7 +182,7 @@ class ServerSettingsForm(Form):
 
 
 @tile('content', 'templates/users_settings.pt',
-      interface=UsersSettings, permission='manage', strict=False)
+      interface=UsersSettings, permission='manage')
 class UsersSettingsTile(ProtectedContentTile, CreateContainerTrigger):
     
     @property
@@ -249,7 +249,7 @@ class UsersSettingsForm(Form, VocabMixin):
 
 
 @tile('content', 'templates/groups_settings.pt',
-      interface=GroupsSettings, permission='manage', strict=False)
+      interface=GroupsSettings, permission='manage')
 class GroupsSettingsTile(ProtectedContentTile, CreateContainerTrigger):
     
     @property
@@ -308,7 +308,7 @@ class GroupsSettingsForm(Form, VocabMixin):
 
 
 @tile('content', 'templates/roles_settings.pt',
-      interface=RolesSettings, permission='manage', strict=False)
+      interface=RolesSettings, permission='manage')
 class RolesSettingsTile(ProtectedContentTile, CreateContainerTrigger):
     
     @property

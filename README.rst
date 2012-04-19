@@ -188,6 +188,12 @@ History
 0.9.4dev
 --------
 
+- Configuration for attributes exposed to attribute map.
+  [rnix, 2012-04-19]
+
+- Invalidate after creating principal or roles container.
+  [rnix, 2012-04-19]
+
 - Adopt ``expires`` blueprint to ``yafowil.widget.datetime`` 1.3.
   [rnix, 2012-04-19]
 
