@@ -57,18 +57,18 @@ def expiration_edit_renderer(widget, data):
         active_attrs['checked'] = 'checked'
     active = tag('input', **active_attrs)
     until = tag('label', u'until')
-    locale = widget.attrs.get('locale', 'iso')
+    locale = widget.attrs['locale']
     if callable(locale):
         locale = locale(widget, data)
     date = None
-    time = widget.attrs.get('time')
+    time = widget.attrs['time']
     if value in [0, UNSET]:
         date = ''
     else:
         date = datetime.fromtimestamp(value)
         if time:
             time = format_time(date)
-        date = format_date(date, locale)
+        date = format_date(date, locale, widget.attrs['delimiter'])
     expires = render_datetime_input(widget, data, date, time)
     return tag('div', active + until + expires, class_='expiration-widget')
 
@@ -108,6 +108,16 @@ factory.defaults['expiration.class'] = 'expiration'
 
 factory.defaults['expiration.datepicker_class'] = 'datepicker'
 
+factory.defaults['expiration.datepicker'] = True
+
+factory.defaults['expiration.time'] = False
+
+factory.defaults['expiration.tzinfo'] = None
+
+factory.defaults['expiration.delimiter'] = '.'
+
+factory.defaults['expiration.locale'] = 'de'
+
 factory.defaults['expiration.format'] = '%Y.%m.%d'
 factory.doc['props']['expiration.format'] = \
 """Pattern accepted by ``datetime.strftime``.
@@ -145,8 +155,6 @@ class ExpirationForm(Part):
             value=value,
             props={
                 'label': 'Active',
-                'datepicker': True,
-                'locale': 'de',
             },
             mode=mode
         )

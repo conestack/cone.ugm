@@ -185,6 +185,13 @@ Contributors
 History
 =======
 
+0.9.4dev
+--------
+
+- Adopt ``expires`` blueprint to ``yafowil.widget.datetime`` 1.3.
+  [rnix, 2012-04-19]
+
+
 0.9.3
 -----
 

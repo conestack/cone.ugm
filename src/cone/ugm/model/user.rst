@@ -45,11 +45,11 @@ model behind?
 
 The attributes of the user are wrapped::
 
-    >>> user.attrs.items()
+    >>> sorted(user.attrs.items())
     [('cn', u'cn0'), 
-    ('sn', u'sn0'), 
     ('mail', u'uid0@groupOfNames_10_10.com'), 
-    ('rdn', u'uid0')]
+    ('rdn', u'uid0'), 
+    ('sn', u'sn0')]
 
     >>> user.attrs['mail'] = 'foo'
 

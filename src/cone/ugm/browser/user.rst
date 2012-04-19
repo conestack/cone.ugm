@@ -122,11 +122,11 @@ Add::
     u'sepp', u'uid99']
     
     >>> user = users['uid99']
-    >>> user.attrs.items()
-    [('rdn', u'uid99'), 
-    ('sn', u'sn99'), 
+    >>> sorted(user.attrs.items())
+    [('cn', u'cn99'), 
     ('mail', u'uid99@example.com'), 
-    ('cn', u'cn99')]
+    ('rdn', u'uid99'), 
+    ('sn', u'sn99')]
 
 Edit::
 
@@ -146,11 +146,11 @@ Edit::
     >>> res
     u''
     
-    >>> user.attrs.items()
-    [('rdn', u'uid99'), 
-    ('sn', u'sn changed'), 
+    >>> sorted(user.attrs.items())
+    [('cn', u'cn99'), 
     ('mail', u'changed@example.com'), 
-    ('cn', u'cn99')]
+    ('rdn', u'uid99'), 
+    ('sn', u'sn changed')]
     
     >>> user.attrs['login']
     u'cn99'
