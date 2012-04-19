@@ -386,7 +386,7 @@ div.right_column div.field div {
     width:330px;
 }
 div.expiration-widget {
-	font-size:90% !important;
+    font-size:90% !important;
     width:336px !important;
 }
 div.expiration-widget #input-userform-active {
@@ -452,4 +452,18 @@ div.expiration-widget .ui-datepicker-trigger {
 #form-ldap_groups_settings table,
 #form-ldap_roles_settings table {
     width:auto;
+}
+#form-ldap_users_settings .array table {
+    width:340px;
+    border:none;
+}
+#form-ldap_users_settings .array thead tr:first-child {
+    text-align:left;
+}
+#form-ldap_users_settings .array table th {
+    background-color:transparent;
+    font-weight:normal;
+}
+#form-ldap_users_settings .array table tr {
+    border:none;
 }

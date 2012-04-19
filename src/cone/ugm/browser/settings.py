@@ -233,6 +233,7 @@ class UsersSettingsForm(Form, VocabMixin):
                           'users_form_attrmap',
                           'users_listing_columns',
                           'users_listing_default_column',
+                          'users_exposed_attributes',
                           'users_account_expiration',
                           'users_expires_attr',
                           'users_expires_unit',

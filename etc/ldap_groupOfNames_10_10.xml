@@ -54,15 +54,12 @@
       <value>Fullname</value>
     </elem>
     <elem>
-      <key>sn</key>
-      <value>Surname</value>
-    </elem>
-    <elem>
       <key>mail</key>
       <value>Email</value>
     </elem>
   </users_listing_columns>
   <users_listing_default_column>cn</users_listing_default_column>
+  <users_exposed_attributes></users_exposed_attributes>
   <users_account_expiration>False</users_account_expiration>
   <users_expires_attr>shadowExpire</users_expires_attr>
   <users_expires_unit>0</users_expires_unit>

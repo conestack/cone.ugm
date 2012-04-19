@@ -9,28 +9,33 @@ widgets:
     value: expr:context.model.attrs.users_dn
     props:
         label: Users container DN
+        help: LDAP DN of container with users
         required: No Users DN defined
 - users_scope:
     factory: field:label:select
     value: expr:context.model.attrs.users_scope
     props:
         label: Users search scope
+        help: LDAP Search scope for users
         vocabulary: expr:context.scope_vocab
 - users_query:
     factory: field:label:text
     value: expr:context.model.attrs.users_query
     props:
         label: Users search query filter
+        help: Custom LDAP query for user objects
 - users_object_classes:
     factory: field:label:text
     value: expr:u', '.join(context.model.attrs.get('users_object_classes', []))
     props:
         label: Object classes for User creation
+        help: LDAP object classes
 - users_aliases_attrmap:
     factory: field:label:error:dict
     value: expr:context.users_aliases_attrmap
     props:
         label: User attribute aliases
+        help: Aliases for reserved attribute keys
         required: User attribute aliases values are mandatory
         static: True
         head:
@@ -41,6 +46,7 @@ widgets:
     value: expr:context.model.attrs.users_form_attrmap
     props:
         label: User form attributes
+        help: Attributes exposed in user form
         head:
             key: LDAP attr name
             value: Form label
@@ -49,6 +55,7 @@ widgets:
     value: expr:context.model.attrs.users_listing_columns
     props:
         label: Column configuration for user listings
+        help: Attributes shown in user listing
         required: Column configuration for user listings values are mandatory
         head:
             key: Attr name
@@ -58,27 +65,42 @@ widgets:
     value: expr:context.model.attrs.users_listing_default_column
     props:
         label: Users listing default column
+        help: Default sort column in user listing
+- users_exposed_attributes:
+    factory: field:label:array
+    value: expr:context.model.attrs.users_exposed_attributes
+    props:
+        label.label: Exposed user Attributes
+        array.label: Click '+' to add attributes
+        help: Attributes which can be modified via remote API
+    widgets:
+    - exposed:
+        factory: text
 - users_account_expiration:
     factory: field:label:checkbox
     value: expr:context.model.attrs.users_account_expiration == 'True'
     props:
         label: User Accounts expires?
+        help: Flag whether to consider user expiration
 - users_expires_attr:
     factory: field:label:text
     value: expr:context.model.attrs.users_expires_attr
     props:
         label: Attribute containing expiration Time
+        help: LDAP attribute name containing expires information
 - users_expires_unit:
     factory: field:label:select
     value: expr:int(context.model.attrs.users_expires_unit)
     props:
         label: Account expiration unit
+        help: Unit of expiration value
         vocabulary: expr:((0, 'Days since Epoch'), (1, 'Seconds since epoch'))
 - user_id_autoincrement:
     factory: field:label:checkbox
     value: expr:context.model.attrs.user_id_autoincrement == 'True'
     props:
         label: Autoincrement user id
+        help: Flag whether to autoincrement user ids at user creation time
         help: This feature only works for systems using numeric user ID's
 - user_id_autoincrement_prefix:
     factory: field:label:text
@@ -91,6 +113,7 @@ widgets:
     value: expr:int(context.model.attrs.user_id_autoincrement_start)
     props:
         label: Autoincrement initial user number
+        help: User number to start from
         datatype: integer
 - save:
     factory: submit
