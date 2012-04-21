@@ -53,6 +53,8 @@
   <user_id_autoincrement>False</user_id_autoincrement>
   <user_id_autoincrement_prefix></user_id_autoincrement_prefix>
   <user_id_autoincrement_start>100</user_id_autoincrement_start>
+  <users_portrait>True</users_portrait>
+  <users_portrait_attr>jpegPhoto</users_portrait_attr>
   <groups_dn>ou=groups,ou=posixGroups,dc=my-domain,dc=com</groups_dn>
   <groups_scope>1</groups_scope>
   <groups_query></groups_query>

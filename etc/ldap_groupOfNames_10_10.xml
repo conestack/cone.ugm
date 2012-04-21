@@ -59,13 +59,15 @@
     </elem>
   </users_listing_columns>
   <users_listing_default_column>cn</users_listing_default_column>
-  <users_exposed_attributes></users_exposed_attributes>
+  <users_exposed_attributes/>
   <users_account_expiration>False</users_account_expiration>
   <users_expires_attr>shadowExpire</users_expires_attr>
   <users_expires_unit>0</users_expires_unit>
   <user_id_autoincrement>False</user_id_autoincrement>
   <user_id_autoincrement_prefix></user_id_autoincrement_prefix>
   <user_id_autoincrement_start>100</user_id_autoincrement_start>
+  <users_portrait>True</users_portrait>
+  <users_portrait_attr>jpegPhoto</users_portrait_attr>
   <groups_dn>ou=groups,ou=groupOfNames_10_10,dc=my-domain,dc=com</groups_dn>
   <groups_scope>1</groups_scope>
   <groups_query></groups_query>

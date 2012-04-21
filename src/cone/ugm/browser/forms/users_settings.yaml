@@ -104,8 +104,8 @@ widgets:
     value: expr:context.model.attrs.user_id_autoincrement == 'True'
     props:
         label: Autoincrement user id
-        help: Flag whether to autoincrement user ids at user creation time
-        help: This feature only works for systems using numeric user ID's
+        help: "Flag whether to autoincrement user ids at user creation time. 
+               This feature only works for systems using numeric user ID's"
 - user_id_autoincrement_prefix:
     factory: field:label:text
     value: expr:context.model.attrs.user_id_autoincrement_prefix
@@ -119,6 +119,18 @@ widgets:
         label: Autoincrement initial user number
         help: User number to start from
         datatype: integer
+- users_portrait:
+    factory: field:label:checkbox
+    value: expr:context.model.attrs.users_portrait == 'True'
+    props:
+        label: Portrait Support
+        help: Flag whether users can have a portrait
+- users_portrait_attr:
+    factory: field:label:text
+    value: expr:context.model.attrs.users_portrait_attr
+    props:
+        label: Attribute containing portrait image
+        help: LDAP attribute name containing portrait image
 - save:
     factory: submit
     props:

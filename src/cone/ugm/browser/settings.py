@@ -239,7 +239,9 @@ class UsersSettingsForm(Form, VocabMixin):
                           'users_expires_unit',
                           'user_id_autoincrement',
                           'user_id_autoincrement_prefix',
-                          'user_id_autoincrement_start']:
+                          'user_id_autoincrement_start',
+                          'users_portrait',
+                          'users_portrait_attr']:
             val = data.fetch('ldap_users_settings.%s' % attr_name).extracted
             if attr_name == 'users_object_classes':
                 val = [v.strip() for v in val.split(',') if v.strip()]
