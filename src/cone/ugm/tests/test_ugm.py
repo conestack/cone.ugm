@@ -79,6 +79,7 @@ DOCFILES = [
     ('../browser/expires.rst', ugm_layer),
     ('../browser/roles.rst', ugm_layer),
     ('../browser/autoincrement.rst', ugm_layer),
+    ('../browser/portrait.rst', ugm_layer),
 ]
 
 

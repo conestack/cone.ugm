@@ -137,6 +137,9 @@ class UsersSettings(UgmSettings):
                 expiresAttr = config.users_expires_attr
                 expiresUnit = int(config.users_expires_unit)
                 map[expiresAttr] = expiresAttr
+            if config.users_portrait == 'True':
+                imageAttr = config.users_portrait_attr
+                map[imageAttr] = imageAttr
             import cone.ugm.model
             self._ldap_ucfg = LDAPUsersConfig(
                 baseDN=config.users_dn,

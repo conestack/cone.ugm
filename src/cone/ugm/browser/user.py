@@ -28,6 +28,7 @@ from cone.ugm.browser import form_field_definitions
 from cone.ugm.browser.columns import Column
 from cone.ugm.browser.listing import ColumnListing
 from cone.ugm.browser.roles import PrincipalRolesForm
+from cone.ugm.browser.portrait import PortraitForm
 from cone.ugm.browser.authoring import (
     AddFormFiddle,
     EditFormFiddle,
@@ -257,6 +258,7 @@ class UserAddForm(UserForm, Form):
     __plumbing__ = (
         AddPart,
         PrincipalRolesForm,
+        PortraitForm,
         ExpirationForm,
         AutoIncrementForm,
         AddFormFiddle,
@@ -310,6 +312,7 @@ class UserEditForm(UserForm, Form):
     __plumbing__ = (
         EditPart,
         PrincipalRolesForm,
+        PortraitForm,
         ExpirationForm,
         EditFormFiddle,
     )
