@@ -1,8 +1,10 @@
+from StringIO import StringIO
 from plumber import (
     Part,
     default,
     plumb,
 )
+from pyramid.response import Response
 from pyramid.security import has_permission
 from pyramid.view import view_config
 from yafowil.base import (
@@ -14,9 +16,13 @@ from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_users
 
 
-@view_config('portrait_image', context=User)
+@view_config('portrait_image', context=User, permission='view')
 def portrait_image(model, request):
-    pass
+    response = Response()
+    ucfg = ugm_users(model)
+    response.body = model.attrs[ucfg.attrs['users_portrait_attr']]
+    response.headers['Content-Type'] = 'image/jpg'
+    return response
 
 
 class PortraitForm(Part):
@@ -45,10 +51,12 @@ class PortraitForm(Part):
             mode = 'display'
         ucfg = ugm_users(model)
         image_attr = ucfg.attrs['users_portrait_attr']
-        image_value = model.attrs.get(image_attr, UNSET)
-        if image_value:
+        image_data = model.attrs.get(image_attr)
+        if image_data:
+            image_value = {'file': StringIO(image_data)}
             image_url = make_url(request, node=model, resource='portrait_image')
         else:
+            image_value = UNSET
             resource = 'cone.ugm.static/images/default_portrait.jpg'
             image_url = make_url(request, node=model.root, resource=resource)
         portrait_widget = factory(
@@ -66,7 +74,16 @@ class PortraitForm(Part):
     
     @plumb
     def save(_next, self, widget, data):
-        if self.portrait_support:
-            # XXX:
-            pass
+        if not self.portrait_support or \
+          not has_permission('manage', self.model.parent, self.request):
+            _next(self, widget, data)
+            return
+        ucfg = ugm_users(self.model)
+        image_attr = ucfg.attrs['users_portrait_attr']
+        portrait = data.fetch('userform.portrait').extracted
+        if portrait:
+            if portrait['action'] in ['new', 'replace']:
+                self.model.attrs[image_attr] = portrait['file'].read()
+            if portrait['action'] == 'delete':
+                del self.model.attrs[image_attr]
         _next(self, widget, data)

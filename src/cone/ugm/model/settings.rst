@@ -51,6 +51,7 @@ LDAP users config::
     >>> ucfg.attrmap
     {'cn': 'cn', 
     'userPassword': 'userPassword', 
+    u'jpegPhoto': u'jpegPhoto', 
     'sn': 'sn', 
     'mail': 'mail', 
     'login': 'uid', 

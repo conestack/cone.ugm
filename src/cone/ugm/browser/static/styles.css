@@ -385,6 +385,8 @@ div.right_column div.field div {
 #field-userform-id div {
     width:330px;
 }
+#field-userform-portrait {
+}
 #image-preview-userform-portrait {
     border-radius:3px 3px 3px 3px;
     box-shadow:0px 0px 4px #666666;
@@ -395,7 +397,20 @@ div.right_column div.field div {
 }
 #input-userform-portrait {
     width:336px !important;
-    margin-bottom:6px;
+}
+#radio-userform-portrait-keep,
+#radio-userform-portrait-replace,
+#radio-userform-portrait-delete {
+    clear:both;
+    width:340px;
+    position:relative;
+}
+#radio-userform-portrait-keep input,
+#radio-userform-portrait-replace input,
+#radio-userform-portrait-delete input {
+    float:left;
+    position:relative;
+    top:3px;
 }
 div.expiration-widget {
     font-size:90% !important;

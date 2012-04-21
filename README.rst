@@ -188,6 +188,9 @@ History
 0.9.4dev
 --------
 
+- Portrait Image support.
+  [rnix, 2012-04-21]
+
 - Configuration for attributes exposed to attribute map.
   [rnix, 2012-04-19]
 
