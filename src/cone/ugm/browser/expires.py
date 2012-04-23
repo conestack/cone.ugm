@@ -22,7 +22,7 @@ from yafowil.widget.datetime.widget import (
     render_datetime_display,
     datetime_extractor,
 )
-from cone.ugm.model.utils import ugm_users
+from cone.ugm.model.utils import ugm_general
 
 
 def expiration_extractor(widget, data):
@@ -134,15 +134,15 @@ class ExpirationForm(Part):
         ``self.form``.
         """
         _next(self)
-        ucfg = ugm_users(self.model)
-        if ucfg.attrs['users_account_expiration'] != 'True':
+        cfg = ugm_general(self.model)
+        if cfg.attrs['users_account_expiration'] != 'True':
             return
         mode = 'edit'
         if not has_permission('edit', self.model.parent, self.request):
             mode = 'display'
         if self.action_resource == 'edit':
-            attr = ucfg.attrs['users_expires_attr']
-            unit = int(ucfg.attrs['users_expires_unit'])
+            attr = cfg.attrs['users_expires_attr']
+            unit = int(cfg.attrs['users_expires_unit'])
             value = int(self.model.attrs.get(attr, 0))
             # if format days, convert to seconds
             if unit == 0:
@@ -164,10 +164,10 @@ class ExpirationForm(Part):
     @plumb
     def save(_next, self, widget, data):
         if has_permission('edit', self.model.parent, self.request):
-            ucfg = ugm_users(self.model)
-            if ucfg.attrs['users_account_expiration'] == 'True':
-                attr = ucfg.attrs['users_expires_attr']
-                unit = int(ucfg.attrs['users_expires_unit'])
+            cfg = ugm_general(self.model)
+            if cfg.attrs['users_account_expiration'] == 'True':
+                attr = cfg.attrs['users_expires_attr']
+                unit = int(cfg.attrs['users_expires_unit'])
                 value = data.fetch('userform.active').extracted
                 if value is UNSET:
                     if unit == 0:

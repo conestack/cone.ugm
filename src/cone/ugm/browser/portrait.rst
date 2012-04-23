@@ -5,7 +5,7 @@ Portrait Widget
     >>> from cone.tile import render_tile
     >>> from cone.app import get_root
     >>> from cone.ugm.model.user import User
-    >>> from cone.ugm.model.utils import ugm_users
+    >>> from cone.ugm.model.utils import ugm_general
     
     >>> layer.login('manager')
     
@@ -18,20 +18,20 @@ Portrait Widget
 
 Portrait related config properties::
 
-    >>> ucfg = ugm_users(user)
-    >>> ucfg.attrs.users_portrait
+    >>> cfg = ugm_general(user)
+    >>> cfg.attrs.users_portrait
     u'True'
     
-    >>> ucfg.attrs.users_portrait_attr
+    >>> cfg.attrs.users_portrait_attr
     u'jpegPhoto'
     
-    >>> ucfg.attrs.users_portrait_accept
+    >>> cfg.attrs.users_portrait_accept
     u'image/jpeg'
     
-    >>> ucfg.attrs.users_portrait_width
+    >>> cfg.attrs.users_portrait_width
     u'50'
     
-    >>> ucfg.attrs.users_portrait_height
+    >>> cfg.attrs.users_portrait_height
     u'50'
 
 Portrait enabled, widget is rendered::
@@ -80,7 +80,7 @@ Submit portrait::
     ...     'mimetype': 'image/jpeg',
     ... }
     
-    >>> ucfg.attrs.users_portrait
+    >>> cfg.attrs.users_portrait
     u'True'
     
     >>> request = user_request(user, portrait)
@@ -106,15 +106,15 @@ Portrait present, link to user portrait is shown::
 
 Portrait disabled, widget is skipped::
 
-    >>> ucfg.attrs.users_portrait = u'False'
-    >>> ucfg()
+    >>> cfg.attrs.users_portrait = u'False'
+    >>> cfg()
     
     >>> request = layer.new_request()
     >>> res = render_tile(user, request, 'editform')
     >>> res.find('id="input-userform-portrait"') > -1
     False
     
-    >>> ucfg.attrs.users_portrait = u'True'
-    >>> ucfg()
+    >>> cfg.attrs.users_portrait = u'True'
+    >>> cfg()
 
     >>> layer.logout()

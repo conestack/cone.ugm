@@ -6,7 +6,7 @@ Autoincrement support
     >>> from cone.app import get_root
     >>> from cone.app.model import BaseNode
     >>> from cone.ugm.model.user import User
-    >>> from cone.ugm.model.utils import ugm_users
+    >>> from cone.ugm.model.utils import ugm_general
     
     >>> layer.login('manager')
     
@@ -14,11 +14,11 @@ Autoincrement support
     >>> users = root['users']
     >>> user = users['uid0']
     
-    >>> ucfg = ugm_users(user)
-    >>> ucfg.attrs.user_id_autoincrement
+    >>> cfg = ugm_general(user)
+    >>> cfg.attrs.user_id_autoincrement
     u'False'
     
-    >>> ucfg.attrs.user_id_autoincrement_prefix
+    >>> cfg.attrs.user_id_autoincrement_prefix
     u''
     
     >>> def user_vessel(users):
@@ -32,8 +32,8 @@ Autoincrement support
     u'...<input class="required text" id="input-userform-id" 
     name="userform.id" required="required" type="text" value="" />...'
     
-    >>> ucfg.attrs.user_id_autoincrement = u'True'
-    >>> ucfg()
+    >>> cfg.attrs.user_id_autoincrement = u'True'
+    >>> cfg()
     
     >>> vessel = user_vessel(users)
     >>> render_tile(vessel, request, 'addform')
@@ -69,8 +69,8 @@ Autoincrement support
     u'uid8', u'uid9', u'viewer', u'editor', u'admin', u'manager', u'max', 
     u'sepp', u'uid99', u'uid100', u'uid101', u'100', u'101']
     
-    >>> ucfg.attrs.user_id_autoincrement_prefix = u'uid'
-    >>> ucfg()
+    >>> cfg.attrs.user_id_autoincrement_prefix = u'uid'
+    >>> cfg()
     
     >>> request = user_request('Ander Er', 'Ander', 'ander@er.org')
     >>> vessel = user_vessel(users)
@@ -80,8 +80,8 @@ Autoincrement support
     u'uid8', u'uid9', u'viewer', u'editor', u'admin', u'manager', u'max', 
     u'sepp', u'uid99', u'uid100', u'uid101', u'100', u'101', u'uid102']
     
-    >>> ucfg.attrs.user_id_autoincrement_prefix = u'admin'
-    >>> ucfg()
+    >>> cfg.attrs.user_id_autoincrement_prefix = u'admin'
+    >>> cfg()
     
     >>> request = user_request('Hirs Schneider', 'Hirs', 'hirs@schneider.org')
     >>> vessel = user_vessel(users)
@@ -101,8 +101,8 @@ Cleanup::
     
     >>> users()
 
-    >>> ucfg.attrs.user_id_autoincrement = u'False'
-    >>> ucfg.attrs.user_id_autoincrement_prefix = u''
-    >>> ucfg()
+    >>> cfg.attrs.user_id_autoincrement = u'False'
+    >>> cfg.attrs.user_id_autoincrement_prefix = u''
+    >>> cfg()
    
     >>> layer.logout()

@@ -3,7 +3,7 @@ from plumber import (
     default,
     plumb,
 )
-from cone.ugm.model.utils import ugm_users
+from cone.ugm.model.utils import ugm_general
 
 
 class AutoIncrementForm(Part):
@@ -15,15 +15,15 @@ class AutoIncrementForm(Part):
     @default
     @property
     def autoincrement_support(self):
-        ucfg = ugm_users(self.model)
-        return ucfg.attrs['user_id_autoincrement'] == 'True'
+        cfg = ugm_general(self.model)
+        return cfg.attrs['user_id_autoincrement'] == 'True'
     
     @default
     @property
     def next_principal_id(self):
-        ucfg = ugm_users(self.model)
-        prefix = ucfg.attrs['user_id_autoincrement_prefix']
-        default = int(ucfg.attrs['user_id_autoincrement_start'])
+        cfg = ugm_general(self.model)
+        prefix = cfg.attrs['user_id_autoincrement_prefix']
+        default = int(cfg.attrs['user_id_autoincrement_start'])
         search = u'%s*' % prefix
         backend = self.model.parent.backend
         backend.invalidate()

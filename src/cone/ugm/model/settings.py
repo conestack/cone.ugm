@@ -31,6 +31,7 @@ def _read_ugm_config():
 
 def _invalidate_ugm_settings(model):
     settings = model.root['settings']
+    settings['ugm_general']._xml_config = None
     settings['ugm_server']._ldap_props = None
     settings['ugm_server']._xml_config = None
     settings['ugm_users']._ldap_ucfg = None
@@ -133,6 +134,9 @@ class UsersSettings(UgmSettings):
                     map[key] = key
             expiresAttr = None
             expiresUnit = EXPIRATION_DAYS
+            # from general settings. be aware that all config options are
+            # currently available on ``self._config``. This might change in
+            # future and below settings must be read from general settings then.
             if config.users_account_expiration == 'True':
                 expiresAttr = config.users_expires_attr
                 expiresUnit = int(config.users_expires_unit)
