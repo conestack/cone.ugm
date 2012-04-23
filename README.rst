@@ -188,6 +188,9 @@ History
 0.9.4dev
 --------
 
+- Fix invalidation after settings form save.
+  [rnix, 2012-04-23]
+
 - Portrait Image support.
   [rnix, 2012-04-21]
 

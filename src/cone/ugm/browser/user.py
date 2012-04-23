@@ -276,6 +276,11 @@ class UserAddForm(UserForm, Form):
             if not val:
                 continue
             extracted[key] = val
+        # possibly extracted by other parts
+        # XXX: call next in at the end in all extension parts to reduce
+        #      database queries.
+        for key, val in self.model.attrs.items():
+            extracted[key] = val
         users = self.model.parent.backend
         id = extracted.pop('id')
         password = extracted.pop('userPassword')
@@ -332,7 +337,15 @@ class UserEditForm(UserForm, Form):
                     del self.model.attrs[key] 
             else:
                 self.model.attrs[key] = extracted
-        
+        # set object classes if missing
+        ocs = self.model.model.context.attrs['objectClass']
+        for oc in settings.attrs.users_object_classes:
+            if isinstance(ocs, basestring):
+                ocs = [ocs]
+            if not oc in ocs:
+                ocs.append(oc)
+        if ocs != self.model.model.context.attrs['objectClass']:
+            self.model.model.context.attrs['objectClass'] = ocs
         password = data.fetch('userform.userPassword').extracted
         self.model.model.context()
         if password is not UNSET:

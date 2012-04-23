@@ -38,6 +38,8 @@ def _invalidate_ugm_settings(model):
     settings['ugm_users']._xml_config = None
     settings['ugm_groups']._ldap_gcfg = None
     settings['ugm_groups']._xml_config = None
+    settings['ugm_roles']._ldap_gcfg = None
+    settings['ugm_roles']._xml_config = None
     import cone.app
     cone.app.cfg.auth = None
 
@@ -49,6 +51,8 @@ class UgmSettings(BaseNode):
     
     def invalidate(self):
         _invalidate_ugm_settings(self)
+        self.root['users'].invalidate()
+        self.root['groups'].invalidate()
 
     @property
     def attrs(self):

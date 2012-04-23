@@ -8,6 +8,7 @@
   <users_query></users_query>
   <users_object_classes>
     <item>top</item>
+    <item>inetOrgPerson</item>
     <item>posixAccount</item>
     <item>shadowAccount</item>
   </users_object_classes>
@@ -38,6 +39,10 @@
       <key>cn</key>
       <value>Fullname</value>
     </elem>
+    <elem>
+      <key>sn</key>
+      <value>Surname</value>
+    </elem>
   </users_form_attrmap>
   <users_listing_columns>
     <elem>
@@ -46,13 +51,13 @@
     </elem>
   </users_listing_columns>
   <users_listing_default_column>cn</users_listing_default_column>
-  <users_exposed_attributes></users_exposed_attributes>
+  <users_exposed_attributes/>
   <users_account_expiration>True</users_account_expiration>
   <users_expires_attr>shadowExpire</users_expires_attr>
   <users_expires_unit>0</users_expires_unit>
-  <user_id_autoincrement>False</user_id_autoincrement>
-  <user_id_autoincrement_prefix></user_id_autoincrement_prefix>
-  <user_id_autoincrement_start>100</user_id_autoincrement_start>
+  <user_id_autoincrement>True</user_id_autoincrement>
+  <user_id_autoincrement_prefix>uid</user_id_autoincrement_prefix>
+  <user_id_autoincrement_start>0</user_id_autoincrement_start>
   <users_portrait>True</users_portrait>
   <users_portrait_attr>jpegPhoto</users_portrait_attr>
   <users_portrait_accept>image/jpeg</users_portrait_accept>
