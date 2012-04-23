@@ -16,7 +16,7 @@ from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_general
 
 
-@view_config('portrait_image', context=User, permission='view')
+@view_config('portrait_image', context=User, permission='view_portrait')
 def portrait_image(model, request):
     response = Response()
     cfg = ugm_general(model)

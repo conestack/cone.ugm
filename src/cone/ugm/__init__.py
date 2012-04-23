@@ -61,7 +61,9 @@ cone.app.register_plugin('groups', groups_factory)
 
 
 # security
-admin_permissions = ['view', 'add', 'edit', 'delete', 'manage_membership']
+admin_permissions = [
+    'view', 'add', 'edit', 'delete', 'manage_membership', 'view_portrait',
+]
 
 
 ugm_default_acl = [
@@ -72,10 +74,13 @@ ugm_default_acl = [
     (Allow, Everyone, ['login']),
     (Deny, Everyone, ALL_PERMISSIONS),
 ]
+ugm_user_acl = [
+    (Allow, 'system.Authenticated', ['view_portrait']),
+] + ugm_default_acl
 
 
 # register default acl's
-acl_registry.register(ugm_default_acl, User, 'user')
+acl_registry.register(ugm_user_acl, User, 'user')
 acl_registry.register(ugm_default_acl, Users, 'users')
 acl_registry.register(ugm_default_acl, Group, 'group')
 acl_registry.register(ugm_default_acl, Groups, 'groups')
