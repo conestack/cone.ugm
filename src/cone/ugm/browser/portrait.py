@@ -52,6 +52,9 @@ class PortraitForm(Part):
             mode = 'display'
         ucfg = ugm_users(model)
         image_attr = ucfg.attrs['users_portrait_attr']
+        image_accept = ucfg.attrs['users_portrait_accept']
+        image_width = int(ucfg.attrs['users_portrait_width'])
+        image_height = int(ucfg.attrs['users_portrait_height'])
         image_data = model.attrs.get(image_attr)
         if image_data:
             image_value = {
@@ -71,10 +74,10 @@ class PortraitForm(Part):
                 'label': 'Portrait',
                 'src': image_url,
                 'alt': u'Portrait',
-                'accept': 'image/jpeg',
-                'minsize': (85, 108),
+                'accept': image_accept,
+                'minsize': (image_width, image_height),
                 'crop': {
-                    'size': (85, 108),
+                    'size': (image_width, image_height),
                     'fitting': True,
                 }
             },

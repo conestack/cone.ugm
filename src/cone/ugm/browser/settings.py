@@ -140,7 +140,18 @@ class GeneralSettingsForm(Form):
         model = self.model
         for attr_name in ['default_membership_assignment_widget',
                           'user_display_name_attr',
-                          'group_display_name_attr']:
+                          'group_display_name_attr',
+                          'users_account_expiration',
+                          'users_expires_attr',
+                          'users_expires_unit',
+                          'user_id_autoincrement',
+                          'user_id_autoincrement_prefix',
+                          'user_id_autoincrement_start',
+                          'users_portrait',
+                          'users_portrait_attr',
+                          'users_portrait_accept',
+                          'users_portrait_width',
+                          'users_portrait_height']:
             val = data.fetch('ugm_general.%s' % attr_name).extracted
             setattr(model.attrs, attr_name, val)
         model()
@@ -233,15 +244,7 @@ class UsersSettingsForm(Form, VocabMixin):
                           'users_form_attrmap',
                           'users_listing_columns',
                           'users_listing_default_column',
-                          'users_exposed_attributes',
-                          'users_account_expiration',
-                          'users_expires_attr',
-                          'users_expires_unit',
-                          'user_id_autoincrement',
-                          'user_id_autoincrement_prefix',
-                          'user_id_autoincrement_start',
-                          'users_portrait',
-                          'users_portrait_attr']:
+                          'users_exposed_attributes']:
             val = data.fetch('ldap_users_settings.%s' % attr_name).extracted
             if attr_name == 'users_object_classes':
                 val = [v.strip() for v in val.split(',') if v.strip()]

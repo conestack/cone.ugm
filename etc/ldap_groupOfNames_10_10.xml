@@ -68,6 +68,9 @@
   <user_id_autoincrement_start>100</user_id_autoincrement_start>
   <users_portrait>True</users_portrait>
   <users_portrait_attr>jpegPhoto</users_portrait_attr>
+  <users_portrait_accept>image/jpeg</users_portrait_accept>
+  <users_portrait_width>85</users_portrait_width>
+  <users_portrait_height>108</users_portrait_height>
   <groups_dn>ou=groups,ou=groupOfNames_10_10,dc=my-domain,dc=com</groups_dn>
   <groups_scope>1</groups_scope>
   <groups_query></groups_query>
