@@ -1,5 +1,7 @@
-Autoincrement support::
+Autoincrement support
+---------------------
 
+::
     >>> from cone.tile import render_tile
     >>> from cone.app import get_root
     >>> from cone.app.model import BaseNode
