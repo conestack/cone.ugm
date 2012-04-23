@@ -21,7 +21,8 @@ def portrait_image(model, request):
     response = Response()
     ucfg = ugm_users(model)
     response.body = model.attrs[ucfg.attrs['users_portrait_attr']]
-    response.headers['Content-Type'] = 'image/jpg'
+    response.headers['Content-Type'] = 'image/jpeg'
+    response.headers['Cache-Control'] = 'max-age=0'
     return response
 
 
@@ -53,20 +54,29 @@ class PortraitForm(Part):
         image_attr = ucfg.attrs['users_portrait_attr']
         image_data = model.attrs.get(image_attr)
         if image_data:
-            image_value = {'file': StringIO(image_data)}
+            image_value = {
+                'file': StringIO(image_data),
+                'mimetype': 'image/jpeg',
+            }
             image_url = make_url(request, node=model, resource='portrait_image')
         else:
             image_value = UNSET
             resource = 'cone.ugm.static/images/default_portrait.jpg'
             image_url = make_url(request, node=model.root, resource=resource)
         portrait_widget = factory(
-            'field:label:image',
+            'field:label:error:image',
             name='portrait',
             value=image_value,
             props={
                 'label': 'Portrait',
                 'src': image_url,
                 'alt': u'Portrait',
+                'accept': 'image/jpeg',
+                'minsize': (85, 108),
+                'crop': {
+                    'size': (85, 108),
+                    'fitting': True,
+                }
             },
             mode=mode)
         save_widget = self.form['save']
@@ -83,7 +93,11 @@ class PortraitForm(Part):
         portrait = data.fetch('userform.portrait').extracted
         if portrait:
             if portrait['action'] in ['new', 'replace']:
-                self.model.attrs[image_attr] = portrait['file'].read()
+                cropped = portrait['cropped']
+                image_data = StringIO()
+                cropped.save(image_data, 'jpeg', quality=100)
+                image_data.seek(0)
+                self.model.attrs[image_attr] = image_data.read()
             if portrait['action'] == 'delete':
                 del self.model.attrs[image_attr]
         _next(self, widget, data)

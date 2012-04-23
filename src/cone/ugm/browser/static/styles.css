@@ -385,7 +385,8 @@ div.right_column div.field div {
 #field-userform-id div {
     width:330px;
 }
-#field-userform-portrait {
+#field-userform-portrait .errormessage {
+    width:334px;
 }
 #image-preview-userform-portrait {
     border-radius:3px 3px 3px 3px;
@@ -394,6 +395,9 @@ div.right_column div.field div {
     margin-top:4px;
     margin-bottom:6px;
     clear:both;
+}
+div.error img#image-preview-userform-portrait {
+    margin-left:3px;
 }
 #input-userform-portrait {
     width:336px !important;
