@@ -18,6 +18,9 @@ from cone.ugm.model.utils import ugm_general
 
 @view_config('portrait_image', context=User, permission='view_portrait')
 def portrait_image(model, request):
+    """XXX: needs polishing. Return configured default portrait if not set
+    on user.
+    """
     response = Response()
     cfg = ugm_general(model)
     response.body = model.attrs[cfg.attrs['users_portrait_attr']]
