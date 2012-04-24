@@ -90,6 +90,9 @@ acl_registry.register(ugm_default_acl, Groups, 'groups')
 def initialize_ugm(config, global_config, local_config):
     """Initialize UGM.
     """
+    # add translation
+    config.add_translation_dirs('cone.ugm:locale/')
+    
     # static resources
     config.add_view('cone.ugm.browser.static_resources', name='cone.ugm.static')
 

@@ -39,5 +39,11 @@ setup(name='cone.ugm',
       tests_require=[
           'interlude',
       ],
-      test_suite = "cone.ugm.tests.test_suite"
+      test_suite = "cone.ugm.tests.test_suite",
+      message_extractors = {
+          '.': [
+              ('**.py', 'lingua_python', None),
+              ('**.pt', 'lingua_xml', None),
+          ]
+      }
       )
