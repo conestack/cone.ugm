@@ -23,10 +23,10 @@ Check Metadata::
 
     >>> md = groups.metadata
     >>> md.title
-    'Groups'
+    u'groups_node'
     
     >>> md.description
-    'Container for Groups'
+    u'groups_node_description'
 
 Check for test groups::
 

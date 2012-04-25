@@ -1,6 +1,7 @@
 import logging
 from node.locking import locktree
 from node.utils import instance_property
+from pyramid.i18n import TranslationStringFactory
 from cone.app.model import (
     BaseNode,
     BaseMetadata,
@@ -12,8 +13,8 @@ from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_backend
 from cone.ugm.browser.utils import unquote_slash
 
-
 logger = logging.getLogger('cone.ugm')
+_ = TranslationStringFactory('cone.ugm')
 
 
 def users_factory():
@@ -32,8 +33,9 @@ class Users(BaseNode):
     @instance_property
     def metadata(self):
         metadata = BaseMetadata()
-        metadata.title = "Users"
-        metadata.description = "Container for Users"
+        metadata.title = _('users_node', 'Users')
+        metadata.description = _('users_node_description',
+                                 'Container for Users')
         return metadata
     
     @property
@@ -84,8 +86,9 @@ class Users(BaseNode):
 
 
 info = BaseNodeInfo()
-info.title = 'Users'
-info.description = 'Users Container.'
+info.title = _('users_node', 'Users')
+info.description = _('users_node_description',
+                     'Container for Users')
 info.node = Users
 info.addables = ['user']
 info.icon = 'cone.ugm.static/images/users16_16.png'

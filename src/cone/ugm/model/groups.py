@@ -1,6 +1,7 @@
 import logging
 from node.locking import locktree
 from node.utils import instance_property
+from pyramid.i18n import TranslationStringFactory
 from cone.app.model import (
     BaseNode,
     BaseMetadata,
@@ -12,8 +13,8 @@ from cone.ugm.model.group import Group
 from cone.ugm.model.utils import ugm_backend
 from cone.ugm.browser.utils import unquote_slash
 
-
 logger = logging.getLogger('cone.ugm')
+_ = TranslationStringFactory('cone.ugm')
 
 
 def groups_factory():
@@ -32,8 +33,9 @@ class Groups(BaseNode):
     @instance_property
     def metadata(self):
         metadata = BaseMetadata()
-        metadata.title = "Groups"
-        metadata.description = "Container for Groups"
+        metadata.title = _('groups_node', 'Groups')
+        metadata.description = _('groups_node_description',
+                                 'Container for Groups')
         return metadata
 
     @property
@@ -84,8 +86,9 @@ class Groups(BaseNode):
 
 
 info = BaseNodeInfo()
-info.title = 'Groups'
-info.description = 'Groups Container.'
+info.title = _('groups_node', 'Groups')
+info.description = _('groups_node_description',
+                     'Container for Groups')
 info.node = Groups
 info.addables = ['group']
 info.icon = 'cone.ugm.static/images/groups16_16.png'

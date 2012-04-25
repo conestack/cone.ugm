@@ -1,6 +1,7 @@
 import os
 import ldap
 import cone.ugm
+from pyramid.i18n import TranslationStringFactory
 from node.utils import instance_property
 from node.ext.ldap import (
     LDAPProps,
@@ -19,6 +20,8 @@ from cone.app.model import (
     BaseMetadata,
 )
 from cone.ugm.model.utils import ldap_cfg_file
+
+_ = TranslationStringFactory('cone.ugm')
 
 
 def _read_ugm_config():
@@ -70,8 +73,9 @@ class GeneralSettings(UgmSettings):
     @instance_property
     def metadata(self):
         metadata = BaseMetadata()
-        metadata.title = "UGM Settings"
-        metadata.description = "General user and group management settings"
+        metadata.title = _('ugm_settings_node', 'UGM Settings')
+        metadata.description = _('ugm_settings_node_description',
+                                 'General user and group management settings')
         return metadata
 
 
@@ -80,8 +84,9 @@ class ServerSettings(UgmSettings):
     @instance_property
     def metadata(self):
         metadata = BaseMetadata()
-        metadata.title = "LDAP Props"
-        metadata.description = "LDAP properties"
+        metadata.title = _('ldap_props_node', 'LDAP Props')
+        metadata.description = _('ldap_props_node_description',
+                                 'LDAP properties')
         return metadata
     
     @property
@@ -109,8 +114,9 @@ class UsersSettings(UgmSettings):
     @instance_property
     def metadata(self):
         metadata = BaseMetadata()
-        metadata.title = "Users Settings"
-        metadata.description = "LDAP users settings"
+        metadata.title = _('user_settings_node', 'Users Settings')
+        metadata.description = _('user_settings_node_description',
+                                 'LDAP users settings')
         return metadata
     
     @property
@@ -166,8 +172,9 @@ class GroupsSettings(UgmSettings):
     @instance_property
     def metadata(self):
         metadata = BaseMetadata()
-        metadata.title = "Groups Settings"
-        metadata.description = "LDAP groups settings"
+        metadata.title = _('group_settings_node', 'Groups Settings')
+        metadata.description = _('group_settings_node_description',
+                                 'LDAP groups settings')
         return metadata
     
     @property
@@ -208,8 +215,9 @@ class RolesSettings(UgmSettings):
     @instance_property
     def metadata(self):
         metadata = BaseMetadata()
-        metadata.title = "Roles Settings"
-        metadata.description = "LDAP roles settings"
+        metadata.title = _('role_settings_node', 'Roles Settings')
+        metadata.description = _('role_settings_node_description',
+                                 'LDAP roles settings')
         return metadata
     
     @property

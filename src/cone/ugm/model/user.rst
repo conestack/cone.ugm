@@ -24,10 +24,10 @@ Check Metadata::
 
     >>> md = user.metadata
     >>> md.title
-    'User'
+    u'user_node'
     
     >>> md.description
-    'User'
+    u'user_node_description'
 
 The real user objects are available via .model::
 

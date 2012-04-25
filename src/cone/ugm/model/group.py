@@ -1,5 +1,6 @@
 from node.locking import locktree
 from node.utils import instance_property
+from pyramid.i18n import TranslationStringFactory
 from cone.app.model import (
     AdapterNode,
     Properties,
@@ -7,6 +8,8 @@ from cone.app.model import (
     BaseNodeInfo,
     registerNodeInfo,
 )
+
+_ = TranslationStringFactory('cone.ugm')
 
 
 class Group(AdapterNode):
@@ -20,8 +23,8 @@ class Group(AdapterNode):
     @instance_property
     def metadata(self):
         metadata = BaseMetadata()
-        metadata.title = "Group"
-        metadata.description = "Group"
+        metadata.title = _('group_node', 'Group')
+        metadata.description = _('group_node_description', 'Group')
         return metadata
     
     @locktree
@@ -30,8 +33,8 @@ class Group(AdapterNode):
 
 
 info = BaseNodeInfo()
-info.title = 'Group'
-info.description = 'Group'
+info.title = _('group_node', 'Group')
+info.description = _('group_node_description', 'Group')
 info.node = Group
 info.addables = []
 registerNodeInfo('group', info)

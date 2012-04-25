@@ -26,10 +26,10 @@ Check Metadata::
 
     >>> md = users.metadata
     >>> md.title
-    'Users'
+    u'users_node'
     
     >>> md.description
-    'Container for Users'
+    u'users_node_description'
 
 Check for test users::
 

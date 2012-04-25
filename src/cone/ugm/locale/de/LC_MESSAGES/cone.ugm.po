@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2012-04-24 12:34+0200\n"
-"PO-Revision-Date: 2012-04-25 15:51+0200\n"
+"PO-Revision-Date: 2012-04-25 16:25+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -210,10 +210,9 @@ msgstr "Knoten für Gruppen erstellen?"
 msgid "create_groups_container_description"
 msgstr ""
 "Knoten für Gruppen existiert nicht. Das Programm kann versuchen den "
-"Knoten zu erstellen. Das funktioniert nur wenn der Elternknoten des "
-"zu erstellenden Knotens existiert. Der neue Knoten wird mit der "
-"Objektklasse 'organizationalUnit' erstellt, das muss im DN "
-"berücksichtigt werden"
+"Knoten zu erstellen. Das funktioniert nur wenn der Elternknoten des zu "
+"erstellenden Knotens existiert. Der neue Knoten wird mit der Objektklasse"
+" 'organizationalUnit' erstellt, das muss im DN berücksichtigt werden"
 
 #. Default: Create groups container now
 #: src/cone/ugm/browser/templates/groups_settings.pt:35
@@ -259,11 +258,10 @@ msgstr "Knoten für Rollen erstellen?"
 #: src/cone/ugm/browser/templates/roles_settings.pt:28
 msgid "create_roles_container_description"
 msgstr ""
-"Knoten für Rollen existiert nicht. Das Programm kann versuchen den "
-"Knoten zu erstellen. Das funktioniert nur wenn der Elternknoten des "
-"zu erstellenden Knotens existiert. Der neue Knoten wird mit der "
-"Objektklasse 'organizationalUnit' erstellt, das muss im DN "
-"berücksichtigt werden"
+"Knoten für Rollen existiert nicht. Das Programm kann versuchen den Knoten"
+" zu erstellen. Das funktioniert nur wenn der Elternknoten des zu "
+"erstellenden Knotens existiert. Der neue Knoten wird mit der Objektklasse"
+" 'organizationalUnit' erstellt, das muss im DN berücksichtigt werden"
 
 #. Default: Create roles container now
 #: src/cone/ugm/browser/templates/roles_settings.pt:35
@@ -305,15 +303,104 @@ msgstr "Knoten für Benutzer erstellen?"
 msgid "create_users_container_description"
 msgstr ""
 "Knoten für Benutzer existiert nicht. Das Programm kann versuchen den "
-"Knoten zu erstellen. Das funktioniert nur wenn der Elternknoten des "
-"zu erstellenden Knotens existiert. Der neue Knoten wird mit der "
-"Objektklasse 'organizationalUnit' erstellt, das muss im DN "
-"berücksichtigt werden"
+"Knoten zu erstellen. Das funktioniert nur wenn der Elternknoten des zu "
+"erstellenden Knotens existiert. Der neue Knoten wird mit der Objektklasse"
+" 'organizationalUnit' erstellt, das muss im DN berücksichtigt werden"
 
 #. Default: Create users container now
 #: src/cone/ugm/browser/templates/users_settings.pt:35
 msgid "create_users_container_now"
 msgstr "Benutzerknoten erstellen"
+
+#. Default: Group
+#: src/cone/ugm/model/group.py:26 src/cone/ugm/model/group.py:36
+msgid "group_node"
+msgstr "Gruppe"
+
+#. Default: Group
+#: src/cone/ugm/model/group.py:27 src/cone/ugm/model/group.py:37
+msgid "group_node_description"
+msgstr "Gruppe"
+
+#. Default: Groups
+#: src/cone/ugm/model/groups.py:36 src/cone/ugm/model/groups.py:89
+msgid "groups_node"
+msgstr "Gruppen"
+
+#. Default: Container for Groups
+#: src/cone/ugm/model/groups.py:37 src/cone/ugm/model/groups.py:90
+msgid "groups_node_description"
+msgstr "Gruppencontainer"
+
+#. Default: UGM Settings
+#: src/cone/ugm/model/settings.py:76
+msgid "ugm_settings_node"
+msgstr "UGM Einstellungen"
+
+#. Default: General user and group management settings
+#: src/cone/ugm/model/settings.py:77
+msgid "ugm_settings_node_description"
+msgstr "Allgemeine Benutzer- und Gruppeneinstellungen"
+
+#. Default: LDAP Props
+#: src/cone/ugm/model/settings.py:87
+msgid "ldap_props_node"
+msgstr "LDAP Einstellungen"
+
+#. Default: LDAP properties
+#: src/cone/ugm/model/settings.py:88
+msgid "ldap_props_node_description"
+msgstr "LDAP Einstellungen"
+
+#. Default: Users Settings
+#: src/cone/ugm/model/settings.py:117
+msgid "user_settings_node"
+msgstr "Benutzereinstellungen"
+
+#. Default: LDAP users settings
+#: src/cone/ugm/model/settings.py:118
+msgid "user_settings_node_description"
+msgstr "LDAP Benutzereinstellungen"
+
+#. Default: Groups Settings
+#: src/cone/ugm/model/settings.py:175
+msgid "group_settings_node"
+msgstr "Gruppeneinstellungen"
+
+#. Default: LDAP groups settings
+#: src/cone/ugm/model/settings.py:176
+msgid "group_settings_node_description"
+msgstr "LDAP Gruppeneinstellungen"
+
+#. Default: Roles Settings
+#: src/cone/ugm/model/settings.py:218
+msgid "role_settings_node"
+msgstr "Rolleneinstellungen"
+
+#. Default: LDAP roles settings
+#: src/cone/ugm/model/settings.py:219
+msgid "role_settings_node_description"
+msgstr "LDAP Rolleneinstellungen"
+
+#. Default: User
+#: src/cone/ugm/model/user.py:26 src/cone/ugm/model/user.py:36
+msgid "user_node"
+msgstr "Benutzer"
+
+#. Default: User
+#: src/cone/ugm/model/user.py:27 src/cone/ugm/model/user.py:37
+msgid "user_node_description"
+msgstr "Benutzer"
+
+#. Default: Users
+#: src/cone/ugm/model/users.py:36 src/cone/ugm/model/users.py:89
+msgid "users_node"
+msgstr "Benutzer"
+
+#. Default: Container for Users
+#: src/cone/ugm/model/users.py:37 src/cone/ugm/model/users.py:90
+msgid "users_node_description"
+msgstr "Benutzercontainer"
 
 # #############################################################################
 # manually created message strings

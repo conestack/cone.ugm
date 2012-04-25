@@ -37,10 +37,10 @@ LDAP props::
     
     >>> md = settings['ugm_server'].metadata
     >>> md.title
-    'LDAP Props'
+    u'ldap_props_node'
     
     >>> md.description
-    'LDAP properties'
+    u'ldap_props_node_description'
 
 LDAP users config::
 
@@ -69,10 +69,10 @@ LDAP users config::
     
     >>> md = settings['ugm_users'].metadata
     >>> md.title
-    'Users Settings'
+    u'user_settings_node'
     
     >>> md.description
-    'LDAP users settings'
+    u'user_settings_node_description'
 
 LDAP groups config::
 
@@ -95,10 +95,10 @@ LDAP groups config::
     
     >>> md = settings['ugm_groups'].metadata
     >>> md.title
-    'Groups Settings'
+    u'group_settings_node'
     
     >>> md.description
-    'LDAP groups settings'
+    u'group_settings_node_description'
 
 LDAP connectivity tests::
 

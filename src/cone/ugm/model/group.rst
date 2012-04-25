@@ -24,10 +24,10 @@ Check Metadata::
 
     >>> md = group.metadata
     >>> md.title
-    'Group'
+    u'group_node'
     
     >>> md.description
-    'Group'
+    u'group_node_description'
 
 The real group objects are available via .model::
 
