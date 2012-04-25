@@ -8,25 +8,25 @@ widgets:
     factory: field:label:error:text
     value: expr:context.model.attrs.uri
     props:
-        label: LDAP URI
-        required: No URI defined
+        label: i18n:ldap_uri
+        required: i18n:ldap_uri_required
 - user:
     factory: field:label:error:text
     value: expr:context.model.attrs.user
     props:
-        label: LDAP Manager User
-        required: No user defined
+        label: i18n:ldap_manager_user
+        required: i18n:ldap_manager_user_required
 - password:
     factory: field:label:error:password
     value: expr:context.model.attrs.password
     props:
-        label: LDAP Manager Password
-        required: No password defined
+        label: i18n:ldap_manager_password
+        required: i18n:ldap_manager_password_required
 - cache:
     factory: field:label:checkbox
     value: expr:int(context.model.attrs.cache)
     props:
-        label: Use cache for LDAP queries?
+        label: i18n:use_cache_for_ldap_queries
 - save:
     factory: submit
     props:
@@ -34,4 +34,4 @@ widgets:
         expression: True
         handler: context.save
         next: context.next
-        label: Save
+        label: i18n:save

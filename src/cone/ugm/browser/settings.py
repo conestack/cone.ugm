@@ -158,6 +158,10 @@ class GeneralSettingsForm(Form):
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/general_settings.yaml'
     
+    @property
+    def message_factory(self):
+        return _
+    
     def save(self, widget, data):
         model = self.model
         for attr_name in ['default_membership_assignment_widget',
@@ -198,6 +202,10 @@ class ServerSettingsForm(Form):
     
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/server_settings.yaml'
+    
+    @property
+    def message_factory(self):
+        return _
     
     def save(self, widget, data):
         model = self.model
@@ -245,6 +253,10 @@ class UsersSettingsForm(Form, VocabMixin):
     
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/users_settings.yaml'
+    
+    @property
+    def message_factory(self):
+        return _
     
     @property
     def users_aliases_attrmap(self):
@@ -308,6 +320,10 @@ class GroupsSettingsForm(Form, VocabMixin):
     form_template = 'cone.ugm.browser:forms/groups_settings.yaml'
     
     @property
+    def message_factory(self):
+        return _
+    
+    @property
     def groups_aliases_attrmap(self):
         attrs = self.model.attrs
         groups_aliases_attrmap = odict()
@@ -365,6 +381,10 @@ class RolesSettingsForm(Form, VocabMixin):
     
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/roles_settings.yaml'
+    
+    @property
+    def message_factory(self):
+        return _
     
     @property
     def roles_aliases_attrmap(self):

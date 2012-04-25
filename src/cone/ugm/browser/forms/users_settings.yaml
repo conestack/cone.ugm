@@ -8,78 +8,78 @@ widgets:
     factory: field:label:error:text
     value: expr:context.model.attrs.users_dn
     props:
-        label: Users container DN
-        help: LDAP DN of container with users
-        required: No Users DN defined
+        label: i18n:users_container_dn
+        help: i18n:users_container_dn_help
+        required: i18n:users_container_dn_required
 - users_scope:
     factory: field:label:select
     value: expr:context.model.attrs.users_scope
     props:
-        label: Users search scope
-        help: LDAP Search scope for users
+        label: i18n:users_search_scope
+        help: i18n:users_search_scope_help
         vocabulary: expr:context.scope_vocab
 - users_query:
     factory: field:label:text
     value: expr:context.model.attrs.users_query
     props:
-        label: Users search query filter
-        help: Custom LDAP query for user objects
+        label: i18n:users_search_query_filter
+        help: i18n:users_search_query_filter_help
 - users_object_classes:
     factory: field:label:text
     value: expr:u', '.join(context.model.attrs.get('users_object_classes', []))
     props:
-        label: Object classes for User creation
-        help: LDAP object classes
+        label: i18n:user_object_classes
+        help: i18n:user_object_classes_help
 - users_aliases_attrmap:
     factory: field:label:error:dict
     value: expr:context.users_aliases_attrmap
     props:
-        label: User attribute aliases
-        help: Aliases for reserved attribute keys
-        required: User attribute aliases values are mandatory
+        label: i18n:user_attribute_aliases
+        help: i18n:user_attribute_aliases_help
+        required: i18n:user_attribute_aliases_required
         static: True
         head:
-            key: Reserved key
-            value: LDAP attr name
+            key: i18n:reserved_key
+            value: i18n:ldap_attr_name
 - users_form_attrmap:
     factory: field:label:dict
     value: expr:context.model.attrs.users_form_attrmap
     props:
-        label: User form attributes
-        help: Attributes exposed in user form
+        label: i18n:user_form_attributes
+        help: i18n:user_form_attributes_help
         head:
-            key: LDAP attr name
-            value: Form label
+            key: i18n:ldap_attr_name
+            value: i18n:form_label
 - users_listing_columns:
     factory: field:label:dict
     value: expr:context.model.attrs.users_listing_columns
     props:
-        label: Column configuration for user listings
-        help: Attributes shown in user listing
-        required: Column configuration for user listings values are mandatory
+        label: i18n:column_configuration_for_user_listings
+        help: i18n:column_configuration_for_user_listings_help
+        required: i18n:column_configuration_for_user_listings_required
         head:
-            key: Attr name
-            value: Display name
+            key: i18n:attr_name
+            value: i18n:display_name
 - users_listing_default_column:
     factory: field:label:text
     value: expr:context.model.attrs.users_listing_default_column
     props:
-        label: Users listing default column
-        help: Default sort column in user listing
+        label: i18n:users_listing_default_column
+        help: i18n:users_listing_default_column_help
 - users_exposed_attributes:
     factory: field:label:array
     value: expr:context.model.attrs.users_exposed_attributes
     props:
-        label.label: User attributes exposed to attribute map
-        array.label: Click '+' to add attributes
-        help: Attributes which can be set via remote API
+        label.label: i18n:exposed_attributes_label
+        array.label: i18n:exposed_attributes_array
+        help: i18n:exposed_attributes_help
         sort: False
     widgets:
     - exposed:
         factory: error:text
         props:
-            label: Attribute
-            required: No attribute given
+            label: i18n:exposed_attributes_attribute
+            required: i18n:exposed_attributes_attribute_required
 - save:
     factory: submit
     props:
@@ -87,4 +87,4 @@ widgets:
         expression: True
         handler: context.save
         next: context.next
-        label: Save
+        label: i18n:save

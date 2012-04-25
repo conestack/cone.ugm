@@ -8,42 +8,42 @@ widgets:
     factory: field:label:error:text
     value: expr:context.model.attrs.roles_dn
     props:
-        label: Roles container DN
-        required: No Roles DN defined
+        label: i18n:roles_container_dn
+        required: i18n:roles_container_dn_required
 - roles_scope:
     factory: field:label:select
     value: expr:context.model.attrs.roles_scope
     props:
-        label: Roles search scope
+        label: i18n:roles_search_scope
         vocabulary: expr:context.scope_vocab
 - roles_query:
     factory: field:label:text
     value: expr:context.model.attrs.roles_query
     props:
-        label: Roles search query filter
+        label: i18n:roles_search_query_filter
 - roles_object_classes:
     factory: field:label:text
     value: expr:u', '.join(context.model.attrs.get('roles_object_classes', []))
     props:
-        label: Object classes for Role creation
+        label: i18n:roles_object_classes
 - roles_aliases_attrmap:
     factory: field:label:error:dict
     value: expr:context.roles_aliases_attrmap
     props:
-        label: Role attribute aliases
-        required: Role attribute aliases values are mandatory
+        label: i18n:role_attribute_aliases
+        required: i18n:role_attribute_aliases_required
         static: True
         head:
-            key: Reserved key
-            value: LDAP attr name
+            key: i18n:reserved_key
+            value: i18n:ldap_attr_name
 - roles_form_attrmap:
     factory: field:label:dict
     value: expr:context.model.attrs.roles_form_attrmap
     props:
-        label: Role form attributes
+        label: i18n:role_form_attributes
         head:
-            key: LDAP attr name
-            value: Form label
+            key: i18n:ldap_attr_name
+            value: i18n:form_label
 #- roles_relation:
 #    factory: field:label:text
 #    value: expr:context.model.attrs.roles_relation
@@ -56,4 +56,4 @@ widgets:
         expression: True
         handler: context.save
         next: context.next
-        label: Save
+        label: i18n:save

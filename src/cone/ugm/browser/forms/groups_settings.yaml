@@ -8,42 +8,42 @@ widgets:
     factory: field:label:error:text
     value: expr:context.model.attrs.groups_dn
     props:
-        label: Groups container DN
-        required: No Groups DN defined
+        label: i18n:groups_container_dn
+        required: i18n:groups_container_dn_required
 - groups_scope:
     factory: field:label:select
     value: expr:context.model.attrs.groups_scope
     props:
-        label: Groups search scope
+        label: i18n:groups_search_scope
         vocabulary: expr:context.scope_vocab
 - groups_query:
     factory: field:label:text
     value: expr:context.model.attrs.groups_query
     props:
-        label: Groups search query filter
+        label: i18n:groups_search_query_filter
 - groups_object_classes:
     factory: field:label:text
     value: expr:u', '.join(context.model.attrs.get('groups_object_classes', []))
     props:
-        label: Object classes for Group creation
+        label: i18n:object_classes_for_group_creation
 - groups_aliases_attrmap:
     factory: field:label:error:dict
     value: expr:context.groups_aliases_attrmap
     props:
-        label: Group attribute aliases
-        required: Group attribute aliases values are mandatory
+        label: i18n:group_attribute_aliases
+        required: i18n:group_attribute_aliases_required
         static: True
         head:
-            key: Reserved key
-            value: LDAP attr name
+            key: i18n:reserved_key
+            value: i18n:ldap_attr_name
 - groups_form_attrmap:
     factory: field:label:dict
     value: expr:context.model.attrs.groups_form_attrmap
     props:
-        label: Group form attributes
+        label: i18n:group_form_attributes
         head:
-            key: LDAP attr name
-            value: Form label
+            key: i18n:ldap_attr_name
+            value: i18n:form_label
 #- groups_relation:
 #    factory: field:label:text
 #    value: expr:context.model.attrs.groups_relation
@@ -53,16 +53,16 @@ widgets:
     factory: field:label:dict
     value: expr:context.model.attrs.groups_listing_columns
     props:
-        label: Column configuration for groups listings
-        required: Column configuration for group listings value is mandatory
+        label: i18n:column_configuration_for_groups_listings
+        required: i18n:column_configuration_for_groups_listings_required
         head:
-            key: Attr name
-            value: Display name
+            key: i18n:attr_name
+            value: i18n:display_name
 - groups_listing_default_column:
     factory: field:label:text
     value: expr:context.model.attrs.groups_listing_default_column
     props:
-        label: Groups listing default column
+        label: i18n:groups_listing_default_column
 - save:
     factory: submit
     props:
@@ -70,4 +70,4 @@ widgets:
         expression: True
         handler: context.save
         next: context.next
-        label: Save
+        label: i18n:save
