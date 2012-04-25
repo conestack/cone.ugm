@@ -1,6 +1,10 @@
 from plumber import plumber
 from odict import odict
 from ldap.functions import explode_dn
+from pyramid.i18n import (
+    TranslationStringFactory,
+    get_localizer,
+)
 from node.ext.ldap import (
     BASE,
     ONELEVEL,
@@ -44,6 +48,8 @@ from cone.ugm.model.utils import (
     ugm_groups,
     ugm_roles,
 )
+
+_ = TranslationStringFactory('cone.ugm')
 
 
 class VocabMixin(object):
@@ -95,30 +101,46 @@ class CreateContainerAction(Tile):
             continuation = self.continuation
             ajax_continue(self.request, continuation)
         except Exception, e:
-            message = u"Can't create container %s" % str(e)
+            localizer = get_localizer(self.request)
+            message = localizer.translate(
+                _('cannot_create_container',
+                  default="Can't create container: ${error}",
+                  mapping={'error': str(e)}))
             ajax_message(self.request, message, 'error')
         return u''
     
     def create_container(self):
         dn = decode_dn(self.request.params.get('dn', ''))
+        localizer = get_localizer(self.request)
         if not dn:
-            raise Exception(u"No container DN defined.")
+            message = localizer.translate(
+                _('no_container_dn_defined', 'No container DN defined.'))
+            raise Exception(message)
         if not dn.startswith('ou='):
-            raise Exception(u"Expected 'ou' as RDN Attribute.")
+            message = localizer.translate(
+                _('expected_ou_as_rdn', "Expected 'ou' as RDN Attribute."))
+            raise Exception(message)
         props = self.model.parent['ugm_server'].ldap_props
         try:
             parent_dn = ','.join(explode_dn(dn)[1:])
         except Exception:
-            raise Exception(u"Invalid DN.")
+            message = localizer.translate(_('invalid_dn', 'Invalid DN.'))
+            raise Exception(message)
         rdn = explode_dn(dn)[0]
         node = LDAPNode(parent_dn, props)
         if node is None:
-            raise Exception(u"Parent not found. Can't continue.")
+            message = localizer.translate(
+                _('parent_not_found', "Parent not found. Can't continue."))
+            raise Exception(message)
         node[rdn] = LDAPNode()
         node[rdn].attrs['objectClass'] = ['organizationalUnit']
         node()
         self.model.invalidate()
-        return u"Created '%s'" % rdn
+        message = localizer.translate(
+                _('created_principal_container',
+                  default="Created ${rdn}",
+                  mapping={'rdn': rdn}))
+        return message
 
 
 registerTile('content',
@@ -166,7 +188,7 @@ class ServerSettingsTile(ProtectedContentTile):
     def ldap_status(self):
         if self.model.ldap_connectivity:
             return 'OK'
-        return 'Down'
+        return _('server_down', 'Down')
 
 
 @tile('editform', interface=ServerSettings, permission="manage")
@@ -204,7 +226,7 @@ class UsersSettingsTile(ProtectedContentTile, CreateContainerTrigger):
     def ldap_users(self):
         if self.model.ldap_users_container_valid:
             return 'OK'
-        return 'Inexistent'
+        return _('inexistent', 'Inexistent')
 
 
 @tile('create_container', interface=UsersSettings, permission='manage')
@@ -265,7 +287,7 @@ class GroupsSettingsTile(ProtectedContentTile, CreateContainerTrigger):
     def ldap_groups(self):
         if self.model.ldap_groups_container_valid:
             return 'OK'
-        return 'Inexistent'
+        return _('inexistent', 'Inexistent')
 
 
 @tile('create_container', interface=GroupsSettings, permission='manage')
@@ -324,7 +346,7 @@ class RolesSettingsTile(ProtectedContentTile, CreateContainerTrigger):
     def ldap_roles(self):
         if self.model.ldap_roles_container_valid:
             return 'OK'
-        return 'Inexistent'
+        return _('inexistent', 'Inexistent')
 
 
 @tile('create_container', interface=RolesSettings, permission='manage')

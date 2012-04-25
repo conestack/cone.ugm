@@ -1,5 +1,6 @@
 import logging
 from pyramid.security import has_permission
+from pyramid.i18n import TranslationStringFactory
 from cone.tile import (
     tile,
     Tile,
@@ -11,15 +12,15 @@ from cone.app.browser.utils import (
 from cone.ugm.model.users import Users
 from cone.ugm.browser.listing import PrincipalsListing
 
-
 logger = logging.getLogger('cone.ugm')
+_ = TranslationStringFactory('cone.ugm')
 
 
 @tile('leftcolumn', 'templates/left_column.pt',
       interface=Users, permission='view')
 class UsersLeftColumn(Tile):
 
-    add_label = u"Add User"
+    add_label = _('add_user', 'Add User')
 
     @property
     def add_target(self):
@@ -49,7 +50,7 @@ class UsersColumnListing(PrincipalsListing):
     sort_attr = PrincipalsListing.user_default_sort_column
     css = 'users'
     batchname = 'leftbatch'
-    delete_label = 'Delete User'
+    delete_label = _('delete_user', 'Delete User')
 
     @property
     def current_id(self):

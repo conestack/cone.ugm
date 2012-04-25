@@ -6,6 +6,7 @@ from plumber import (
 )
 from pyramid.response import Response
 from pyramid.security import has_permission
+from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
 from yafowil.base import (
     factory,
@@ -14,6 +15,8 @@ from yafowil.base import (
 from cone.app.browser.utils import make_url
 from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_general
+
+_ = TranslationStringFactory('cone.ugm')
 
 
 @view_config('portrait_image', context=User, permission='view_portrait')
@@ -74,9 +77,9 @@ class PortraitForm(Part):
             name='portrait',
             value=image_value,
             props={
-                'label': 'Portrait',
+                'label': _('portrait', 'Portrait'),
                 'src': image_url,
-                'alt': u'Portrait',
+                'alt': _('portrait', 'Portrait'),
                 'accept': image_accept,
                 'minsize': (image_width, image_height),
                 'crop': {

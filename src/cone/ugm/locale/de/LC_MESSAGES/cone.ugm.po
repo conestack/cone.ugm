@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2012-04-24 12:34+0200\n"
-"PO-Revision-Date: 2012-04-25 14:02+0200\n"
+"PO-Revision-Date: 2012-04-25 14:42+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -58,22 +58,118 @@ msgid "active"
 msgstr "Aktiv"
 
 #. Default: Add Group
-#: src/cone/ugm/browser/group.py:45
+#: src/cone/ugm/browser/group.py:42 src/cone/ugm/browser/groups.py:23
 msgid "add_group"
 msgstr "Gruppe hinzufügen"
 
 #. Default: Add user to selected group
-#: src/cone/ugm/browser/group.py:127
+#: src/cone/ugm/browser/group.py:124 src/cone/ugm/browser/user.py:132
 msgid "add_user_to_selected_group"
 msgstr "Benutzer zu Gruppe hinzufügen"
 
 #. Default: Remove user from selected group
-#: src/cone/ugm/browser/group.py:135
+#: src/cone/ugm/browser/group.py:132 src/cone/ugm/browser/user.py:140
 msgid "remove_user_from_selected_group"
 msgstr "Benutzer aus Gruppe entfernen"
 
 #. Default: Group ${gid} already exists.
-#: src/cone/ugm/browser/group.py:220
+#: src/cone/ugm/browser/group.py:217
 msgid "group_already_exists"
 msgstr "Gruppe ${gid} existiert bereits."
+
+#. Default: Delete Group
+#: src/cone/ugm/browser/groups.py:53
+msgid "delete_group"
+msgstr "Gruppe löschen"
+
+#. Default: Delete Principal
+#: src/cone/ugm/browser/listing.py:187
+msgid "delete_principal"
+msgstr "Benutzer/Gruppe löschen"
+
+#. Default: Portrait
+#: src/cone/ugm/browser/portrait.py:80 src/cone/ugm/browser/portrait.py:82
+msgid "portrait"
+msgstr "Portrait"
+
+#. Default: No ${field} defined
+#: src/cone/ugm/browser/principal.py:55
+msgid "no_field_value_defined"
+msgstr "No ${field} defined"
+
+#. Default: Save
+#: src/cone/ugm/browser/principal.py:98
+msgid "save"
+msgstr "Speichern"
+
+#. Default: Cancel
+#: src/cone/ugm/browser/principal.py:108
+msgid "cancel"
+msgstr "Abbrechen"
+
+#. Default: Roles
+#: src/cone/ugm/browser/roles.py:46
+msgid "roles"
+msgstr "Rollen"
+
+#. Default: Can't create container: ${error}
+#: src/cone/ugm/browser/settings.py:106
+msgid "cannot_create_container"
+msgstr "Kann Knoten nicht erstellen: ${error}"
+
+#. Default: No container DN defined.
+#: src/cone/ugm/browser/settings.py:117
+msgid "no_container_dn_defined"
+msgstr "Kein DN definiert"
+
+#. Default: Expected 'ou' as RDN Attribute.
+#: src/cone/ugm/browser/settings.py:121
+msgid "expected_ou_as_rdn"
+msgstr "'ou' als RDN Attribut erwartet"
+
+#. Default: Invalid DN.
+#: src/cone/ugm/browser/settings.py:127
+msgid "invalid_dn"
+msgstr "Ungültiger DN"
+
+#. Default: Parent not found. Can't continue.
+#: src/cone/ugm/browser/settings.py:133
+msgid "parent_not_found"
+msgstr "Elternelement nicht gefunden. Abbruch"
+
+#. Default: Created ${rdn}
+#: src/cone/ugm/browser/settings.py:140
+msgid "created_principal_container"
+msgstr "${rdn} erstellt"
+
+#. Default: Down
+#: src/cone/ugm/browser/settings.py:191
+msgid "server_down"
+msgstr "Nicht erreichbar"
+
+#. Default: Inexistent
+#: src/cone/ugm/browser/settings.py:229 src/cone/ugm/browser/settings.py:290
+#: src/cone/ugm/browser/settings.py:349
+msgid "inexistent"
+msgstr "Nicht existent"
+
+#. Default: Add User
+#: src/cone/ugm/browser/user.py:48 src/cone/ugm/browser/users.py:23
+msgid "add_user"
+msgstr "Benutzer hinzufügen"
+
+#. Default: User ${uid} already exists.
+#: src/cone/ugm/browser/user.py:237
+msgid "user_already_exists"
+msgstr "Benutzer ${uid} existiert bereits."
+
+#. Default: User login ${login} not unique.
+#: src/cone/ugm/browser/user.py:253
+msgid "user_login_not_unique"
+msgstr "Login name ${login} nicht eindeutig"
+
+#. Default: Delete User
+#: src/cone/ugm/browser/users.py:53
+msgid "delete_user"
+msgstr "Benutzer löschen"
 

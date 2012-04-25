@@ -4,8 +4,11 @@ from plumber import (
     plumb,
 )
 from pyramid.security import has_permission
+from pyramid.i18n import TranslationStringFactory
 from yafowil.base import factory
 from cone.ugm.model.utils import ugm_roles
+
+_ = TranslationStringFactory('cone.ugm')
 
 
 class PrincipalRolesForm(Part):
@@ -40,7 +43,7 @@ class PrincipalRolesForm(Part):
             name='principal_roles',
             value=value,
             props={
-                'label': 'Roles',
+                'label': _('roles', 'Roles'),
                 'multivalued': True,
                 'vocabulary': self.roles_vocab,
                 'format': 'single',

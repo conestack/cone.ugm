@@ -1,6 +1,7 @@
 import copy
 from plumber import plumber
 from pyramid.security import has_permission
+from pyramid.i18n import TranslationStringFactory
 from yafowil.base import (
     ExtractionError,
     UNSET,
@@ -38,11 +39,13 @@ from cone.ugm.browser.expires import ExpirationForm
 from cone.ugm.browser.autoincrement import AutoIncrementForm
 from webob.exc import HTTPFound
 
+_ = TranslationStringFactory('cone.ugm')
+
 
 @tile('leftcolumn', interface=User, permission='view')
 class UserLeftColumn(Column):
 
-    add_label = u"Add User"
+    add_label = _('add_user', 'Add User')
     
     @property
     def can_add(self):
@@ -126,14 +129,16 @@ class Groups(object):
             if can_change:
                 action_id = 'add_item'
                 action_enabled = not bool(related)
-                action_title = 'Add user to selected group'
+                action_title = _('add_user_to_selected_group',
+                                 'Add user to selected group')
                 add_item_action = obj.create_action(
                     action_id, action_enabled, action_title, action_target)
                 actions.append(add_item_action)
 
                 action_id = 'remove_item'
                 action_enabled = bool(related)
-                action_title = 'Remove user from selected group'
+                action_title = _('remove_user_from_selected_group',
+                                 'Remove user from selected group')
                 remove_item_action = obj.create_action(
                     action_id, action_enabled, action_title, action_target)
                 actions.append(remove_item_action)
@@ -229,8 +234,10 @@ class UserForm(PrincipalForm):
         if id is UNSET:
             return data.extracted
         if id in self.model.parent.backend:
-            msg = "User %s already exists." % (id,)
-            raise ExtractionError(msg)
+            message = _('user_already_exists',
+                        default="User ${uid} already exists.",
+                        mapping={'uid': id})
+            raise ExtractionError(message)
         return data.extracted
     
     def optional_login(self, widget, data):
@@ -243,8 +250,10 @@ class UserForm(PrincipalForm):
         if len(res) == 1:
             if res[0] == self.model.name:
                 return data.extracted
-        msg = "User login %s not unique." % data.extracted
-        raise ExtractionError(msg)
+        message = _('user_login_not_unique',
+                    default="User login ${login} not unique.",
+                    mapping={'login': data.extracted})
+        raise ExtractionError(message)
     
     def _get_auth_attrs(self):
         config = ugm_users(self.model)

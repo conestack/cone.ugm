@@ -1,5 +1,6 @@
 import logging
 from pyramid.security import has_permission
+from pyramid.i18n import TranslationStringFactory
 from cone.tile import (
     tile,
     Tile,
@@ -11,15 +12,15 @@ from cone.app.browser.utils import (
 from cone.ugm.model.groups import Groups
 from cone.ugm.browser.listing import PrincipalsListing
 
-
 logger = logging.getLogger('cone.ugm')
+_ = TranslationStringFactory('cone.ugm')
 
 
 @tile('leftcolumn', 'templates/left_column.pt',
       interface=Groups, permission='view')
 class GroupsLeftColumn(Tile):
 
-    add_label = u"Add Group"
+    add_label = _('add_group', 'Add Group')
 
     @property
     def add_target(self):
@@ -49,7 +50,7 @@ class GroupsColumnListing(PrincipalsListing):
     sort_attr = PrincipalsListing.group_default_sort_column
     css = 'groups'
     batchname = 'leftbatch'
-    delete_label = 'Delete Group'
+    delete_label = _('delete_group', 'Delete Group')
 
     @property
     def current_id(self):

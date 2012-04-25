@@ -1,6 +1,7 @@
 import types
 import logging
 from pyramid.security import has_permission
+from pyramid.i18n import TranslationStringFactory
 from yafowil.utils import Tag
 from cone.tile import Tile
 from cone.app.browser.utils import make_url
@@ -13,6 +14,7 @@ from cone.ugm.browser.batch import ColumnBatch
 tag = Tag(lambda x: x)
 
 logger = logging.getLogger('cone.ugm')
+_ = TranslationStringFactory('cone.ugm')
 
 
 class ColumnListing(Tile):
@@ -182,7 +184,7 @@ class ColumnListing(Tile):
 class PrincipalsListing(ColumnListing):
     """Column listing for principals.
     """
-    delete_label = 'Delete Principal'
+    delete_label = _('delete_principal', 'Delete Principal')
     listing_attrs = []
     sort_attr = None
     

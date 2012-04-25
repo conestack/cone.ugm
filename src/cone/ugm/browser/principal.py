@@ -1,8 +1,15 @@
+from pyramid.i18n import (
+    TranslationStringFactory,
+    get_localizer,
+)
 from yafowil.base import (
     factory,
     UNSET,
 )
 from cone.app.browser.utils import make_url
+
+_ = TranslationStringFactory('cone.ugm')
+
 
 class PrincipalForm(object):
     
@@ -38,13 +45,17 @@ class PrincipalForm(object):
             return form
         schema = self.form_field_definitions
         default = schema['default']
+        localizer = get_localizer(self.request)
         for key, val in attrmap.items():
             field = schema.get(key, default)
             chain = field.get('chain', default['chain'])
             props = dict()
-            props['label'] = val
+            props['label'] = _(val, val)
             if field.get('required'):
-                props['required'] = 'No %s defined' % val
+                req = _('no_field_value_defined',
+                        default='No ${field} defined',
+                        mapping={'field': localizer.translate(_(val, val))})
+                props['required'] = req
             props.update(field.get('props', dict()))
             value = UNSET
             mode = 'edit'
@@ -84,7 +95,7 @@ class PrincipalForm(object):
                 'expression': True,
                 'handler': self.save,
                 'next': self.next,
-                'label': 'Save',
+                'label': _('save', 'Save'),
             })
         if resource =='add':
             form['cancel'] = factory(
@@ -94,7 +105,7 @@ class PrincipalForm(object):
                     'expression': True,
                     'handler': None,
                     'next': self.next,
-                    'label': 'Cancel',
+                    'label': _('cancel', 'Cancel'),
                     'skip': True,
                 })
         self.form = form
