@@ -1,4 +1,8 @@
-<tal:ajax xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax" omit-tag="True">
+<tal:block xmlns:tal="http://xml.zope.org/namespaces/tal"
+           xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax"
+           xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+           i18n:domain="cone.ugm"
+           omit-tag="True">
 
   <div class="columnlisting ${context.batchname}sensitiv"
        ajax:bind="batchclicked"
@@ -9,7 +13,7 @@
 
     <div class="columnsorting">
       <div class="sortintro sort_col_1">
-        Sorting:
+        <span i18n:translate="sort_by">Sorting</span>:
       </div>
       <tal:sortheader repeat="header context.sortheader">
         <div class="${header['id']}">
@@ -55,4 +59,4 @@
     </div>
 
   </div>
-</tal:ajax>
+</tal:block>

@@ -1,7 +1,10 @@
-<div>
+<tal:block xmlns:tal="http://xml.zope.org/namespaces/tal"
+           omit-tag="True">
+  <div>
+    
+    <h1>UGM Settings</h1>
   
-  <h1>UGM Settings</h1>
-
-  <tal:settings replace="structure tile('editform')" />
-
-</div>
+    <tal:settings replace="structure tile('editform')" />
+  
+  </div>
+</tal:block>

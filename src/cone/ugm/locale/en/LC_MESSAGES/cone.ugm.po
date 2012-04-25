@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2012-04-24 12:34+0200\n"
-"PO-Revision-Date: 2012-04-25 14:42+0200\n"
+"PO-Revision-Date: 2012-04-25 15:51+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -172,4 +172,149 @@ msgstr "User login ${login} not unique."
 #: src/cone/ugm/browser/users.py:53
 msgid "delete_user"
 msgstr "Delete User"
+
+#. Default: Sorting
+#: src/cone/ugm/browser/templates/column_listing.pt:16
+msgid "sort_by"
+msgstr "Sorting"
+
+#. Default: Groups Settings
+#: src/cone/ugm/browser/templates/groups_settings.pt:8
+msgid "group_settings"
+msgstr "Groups Settings"
+
+#. Default: Check Groups DN:
+#: src/cone/ugm/browser/templates/groups_settings.pt:11
+msgid "check_groups_dn"
+msgstr "Check Groups DN:"
+
+#. Default: Server not reachable
+#: src/cone/ugm/browser/templates/groups_settings.pt:17
+#: src/cone/ugm/browser/templates/roles_settings.pt:17
+#: src/cone/ugm/browser/templates/users_settings.pt:17
+msgid "server_not_reachable"
+msgstr "Server not reachable"
+
+#. Default: Create groups container?
+#: src/cone/ugm/browser/templates/groups_settings.pt:25
+msgid "create_groups_container"
+msgstr "Create groups container?"
+
+#. Default: The groups container DN does not exist. The Application can try to
+#. create it. This only works if the parent entry of defined DN exists. The
+#. groups
+#. container will be created with objectClass 'organizationalUnit'. Thus, the
+#. RDN
+#. name of DN must be 'ou'.
+#: src/cone/ugm/browser/templates/groups_settings.pt:28
+msgid "create_groups_container_description"
+msgstr ""
+"The groups container DN does not exist. The Application can try to "
+"create it. This only works if the parent entry of defined DN exists. "
+"The groups container will be created with objectClass "
+"'organizationalUnit'. Thus, the RDN name of DN must be 'ou'."
+
+#. Default: Create groups container now
+#: src/cone/ugm/browser/templates/groups_settings.pt:35
+msgid "create_groups_container_now"
+msgstr "Create groups container now"
+
+#. Default: Available
+#: src/cone/ugm/browser/templates/in_out.pt:9
+msgid "available"
+msgstr "Available"
+
+#. Default: Recent
+#: src/cone/ugm/browser/templates/in_out.pt:17
+msgid "recent"
+msgstr "Recent"
+
+#. Default: List all
+#: src/cone/ugm/browser/templates/right_column.pt:31
+msgid "list_all"
+msgstr "List all"
+
+#. Default: Roles Settings
+#: src/cone/ugm/browser/templates/roles_settings.pt:8
+msgid "roles_settings"
+msgstr "Roles Settings"
+
+#. Default: Check Roles DN:
+#: src/cone/ugm/browser/templates/roles_settings.pt:11
+msgid "check_roles_dn"
+msgstr "Check Roles DN:"
+
+#. Default: Create roles container?
+#: src/cone/ugm/browser/templates/roles_settings.pt:25
+msgid "create_roles_container"
+msgstr "Create roles container?"
+
+#. Default: The roles container DN does not exist. The Application can try to
+#. create it. This only works if the parent entry of defined DN exists. The
+#. roles
+#. container will be created with objectClass 'organizationalUnit'. Thus, the
+#. RDN
+#. name of DN must be 'ou'.
+#: src/cone/ugm/browser/templates/roles_settings.pt:28
+msgid "create_roles_container_description"
+msgstr ""
+"The roles container DN does not exist. The Application can try to "
+"create it. This only works if the parent entry of defined DN exists. "
+"The roles container will be created with objectClass "
+"'organizationalUnit'. Thus, the RDN name of DN must be 'ou'."
+
+#. Default: Create roles container now
+#: src/cone/ugm/browser/templates/roles_settings.pt:35
+msgid "create_roles_container_now"
+msgstr "Create roles container now"
+
+#. Default: LDAP Server Settings
+#: src/cone/ugm/browser/templates/server_settings.pt:7
+msgid "ldap_server_settings"
+msgstr "LDAP Server Settings"
+
+#. Default: Server Connection:
+#: src/cone/ugm/browser/templates/server_settings.pt:10
+msgid "server_connection"
+msgstr "Server Connection:"
+
+#. Default: Users Settings
+#: src/cone/ugm/browser/templates/users_settings.pt:8
+msgid "users_settings"
+msgstr "Users Settings"
+
+#. Default: Check Users DN:
+#: src/cone/ugm/browser/templates/users_settings.pt:11
+msgid "check_users_dn"
+msgstr "Check Users DN:"
+
+#. Default: Create users container?
+#: src/cone/ugm/browser/templates/users_settings.pt:25
+msgid "create_users_container"
+msgstr "Create users container?"
+
+#. Default: The users container DN does not exist. The Application can try to
+#. create it. This only works if the parent entry of defined DN exists. The
+#. users
+#. container will be created with objectClass 'organizationalUnit'. Thus, the
+#. RDN
+#. name of DN must be 'ou'.
+#: src/cone/ugm/browser/templates/users_settings.pt:28
+msgid "create_users_container_description"
+msgstr ""
+"The users container DN does not exist. The Application can try to "
+"create it. This only works if the parent entry of defined DN exists. "
+"The users container will be created with objectClass "
+"'organizationalUnit'. Thus, the RDN name of DN must be 'ou'."
+
+#. Default: Create users container now
+#: src/cone/ugm/browser/templates/users_settings.pt:35
+msgid "create_users_container_now"
+msgstr "Create users container now"
+
+# #############################################################################
+# manually created message strings
+# filter listing
+msgid "filter_listing"
+msgstr "filter listing"
 

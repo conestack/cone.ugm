@@ -3,6 +3,7 @@
 # manually created message strings
 ##############################################################################
 
-# msgid ""
-# msgstr ""
+# filter listing
+msgid "filter_listing"
+msgstr ""
 

@@ -1,33 +1,44 @@
-<tal:ajax xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax" omit-tag="True">
+<tal:block xmlns:tal="http://xml.zope.org/namespaces/tal"
+           xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax"
+           xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+           i18n:domain="cone.ugm"
+           omit-tag="True">
   <div tal:define="status context.ldap_users">
   
-    <h1>Users Settings</h1>
+    <h1 i18n:translate="users_settings">Users Settings</h1>
 
     <p>
-      <strong>Check Users DN:</strong>
+      <strong i18n:translate="check_users_dn">Check Users DN:</strong>
       <strong tal:content="status"
               tal:condition="context.ldap_connectivity"
               tal:attributes="style status == 'OK' and 'color:green' or 'color:red'">
         OK
       </strong>
       <strong style="color:red;"
-              tal:condition="not context.ldap_connectivity">
+              tal:condition="not context.ldap_connectivity"
+              i18n:translate="server_not_reachable">
         Server not reachable
       </strong>
     </p>
     
     <p tal:condition="context.ldap_connectivity and status != 'OK'">
-      <strong>Create users container?</strong><br />
-      The users container DN does not exist. The Application can try to create 
-      it. This only works if the parent entry of defined DN exists. The users
-      container will be created with objectClass 'organizationalUnit'. Thus, 
-      the RDN name of DN must be 'ou'.
+      <strong i18n:translate="create_users_container">
+        Create users container?
+      </strong><br />
+      <span i18n:translate="create_users_container_description">
+        The users container DN does not exist. The Application can try to create 
+        it. This only works if the parent entry of defined DN exists. The users
+        container will be created with objectClass 'organizationalUnit'. Thus, 
+        the RDN name of DN must be 'ou'.
+      </span>
       <br />
       <a href="#"
          title="Create Container"
          ajax:bind="click"
          ajax:action="create_container:NONE:NONE"
-         ajax:target="${context.creation_target}">
+         ajax:target="${context.creation_target}"
+         i18n:attributes="title create_container"
+         i18n:translate="create_users_container_now">
         Create users container now
       </a>
     </p>
@@ -35,4 +46,4 @@
     <tal:settings replace="structure tile('editform')" />
 
   </div>
-</tal:ajax>
+</tal:block>
