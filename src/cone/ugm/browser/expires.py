@@ -5,6 +5,7 @@ from plumber import (
     plumb,
 )
 from pyramid.security import has_permission
+from pyramid.i18n import TranslationStringFactory
 from yafowil.base import (
     factory,
     UNSET,
@@ -23,6 +24,8 @@ from yafowil.widget.datetime.widget import (
     datetime_extractor,
 )
 from cone.ugm.model.utils import ugm_general
+
+_ = TranslationStringFactory('cone.ugm')
 
 
 def expiration_extractor(widget, data):
@@ -154,7 +157,7 @@ class ExpirationForm(Part):
             name='active',
             value=value,
             props={
-                'label': 'Active',
+                'label': _('active', 'Active'),
             },
             mode=mode
         )

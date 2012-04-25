@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-04-25 13:45+0200\n"
+"POT-Creation-Date: 2012-04-25 14:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,28 +23,58 @@ msgid "delete_user_from_database"
 msgstr ""
 
 #. Default: Added user '${uid}' to group '${gid}'.
-#: src/cone/ugm/browser/actions.py:92
+#: src/cone/ugm/browser/actions.py:93
 msgid "added_user_to_group"
 msgstr ""
 
 #. Default: Removed user '${uid}' from group '${gid}'.
-#: src/cone/ugm/browser/actions.py:130
+#: src/cone/ugm/browser/actions.py:132
 msgid "removed_user_from_group"
 msgstr ""
 
 #. Default: Deleted group from database
-#: src/cone/ugm/browser/actions.py:169
+#: src/cone/ugm/browser/actions.py:172
 msgid "deleted_group"
 msgstr ""
 
 #. Default: Added user to group
-#: src/cone/ugm/browser/actions.py:196
+#: src/cone/ugm/browser/actions.py:200
 msgid "group_added_user"
 msgstr ""
 
 #. Default: Removed user from group
-#: src/cone/ugm/browser/actions.py:228
+#: src/cone/ugm/browser/actions.py:233
 msgid "group_removed_user"
+msgstr ""
+
+#. Default: auto incremented
+#: src/cone/ugm/browser/autoincrement.py:62
+msgid "auto_incremented"
+msgstr ""
+
+#. Default: Active
+#: src/cone/ugm/browser/expires.py:160
+msgid "active"
+msgstr ""
+
+#. Default: Add Group
+#: src/cone/ugm/browser/group.py:45
+msgid "add_group"
+msgstr ""
+
+#. Default: Add user to selected group
+#: src/cone/ugm/browser/group.py:127
+msgid "add_user_to_selected_group"
+msgstr ""
+
+#. Default: Remove user from selected group
+#: src/cone/ugm/browser/group.py:135
+msgid "remove_user_from_selected_group"
+msgstr ""
+
+#. Default: Group ${gid} already exists.
+#: src/cone/ugm/browser/group.py:220
+msgid "group_already_exists"
 msgstr ""
 
 

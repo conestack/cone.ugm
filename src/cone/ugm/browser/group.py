@@ -1,5 +1,6 @@
 from plumber import plumber
 from pyramid.security import has_permission
+from pyramid.i18n import TranslationStringFactory
 from yafowil.base import ExtractionError
 from yafowil.utils import UNSET
 from cone.tile import (
@@ -32,11 +33,13 @@ from cone.ugm.browser.authoring import (
 from cone.ugm.browser.principal import PrincipalForm
 from webob.exc import HTTPFound
 
+_ = TranslationStringFactory('cone.ugm')
+
 
 @tile('leftcolumn', interface=Group, permission='view')
 class GroupLeftColumn(Column):
 
-    add_label = u"Add Group"
+    add_label = _('add_group', 'Add Group')
     
     @property
     def can_add(self):
@@ -118,14 +121,16 @@ class Principals(object):
             if can_change:
                 action_id = 'add_item'
                 action_enabled = not bool(related)
-                action_title = 'Add user to selected group'
+                action_title = _('add_user_to_selected_group',
+                                 'Add user to selected group')
                 add_item_action = obj.create_action(
                     action_id, action_enabled, action_title, action_target)
                 actions.append(add_item_action)
             
                 action_id = 'remove_item'
                 action_enabled = bool(related)
-                action_title = 'Remove user from selected group'
+                action_title = _('remove_user_from_selected_group',
+                                 'Remove user from selected group')
                 remove_item_action = obj.create_action(
                     action_id, action_enabled, action_title, action_target)
                 actions.append(remove_item_action)
@@ -209,8 +214,10 @@ class GroupForm(PrincipalForm):
         if group_id is UNSET:
             return data.extracted
         if group_id in self.model.parent.backend:
-            msg = "Group %s already exists." % (group_id,)
-            raise ExtractionError(msg)
+            message = _('group_already_exists',
+                        default="Group ${gid} already exists.",
+                        mapping={'gid': group_id})
+            raise ExtractionError(message)
         return data.extracted
 
 

@@ -3,7 +3,10 @@ from plumber import (
     default,
     plumb,
 )
+from pyramid.i18n import TranslationStringFactory
 from cone.ugm.model.utils import ugm_general
+
+_ = TranslationStringFactory('cone.ugm')
 
 
 class AutoIncrementForm(Part):
@@ -56,7 +59,7 @@ class AutoIncrementForm(Part):
         id_field = self.form['id']
         del id_field.attrs['required']
         id_field.attrs['disabled'] = 'disabled'
-        id_field.getter = 'auto incremented'
+        id_field.getter = _('auto_incremented', 'auto incremented')
     
     @plumb
     def save(_next, self, widget, data):
