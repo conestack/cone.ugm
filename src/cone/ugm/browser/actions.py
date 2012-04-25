@@ -1,6 +1,12 @@
 from pyramid.view import view_config
+from pyramid.i18n import (
+    TranslationStringFactory,
+    get_localizer,
+)
 from cone.ugm.model.user import User
 from cone.ugm.model.group import Group
+
+_ = TranslationStringFactory('cone.ugm')
 
 
 class Action(object):
@@ -46,9 +52,14 @@ class DeleteUserAction(Action):
             del users[uid]
             users()
             self.model.parent.invalidate()
+            localizer = get_localizer(self.request)
+            message = localizer.translate(
+                _('delete_user_from_database',
+                  default="Deleted user '${uid}' from database.",
+                  mapping={'uid': uid}))
             return {
                 'success': True,
-                'message': "Deleted user '%s' from database." % uid,
+                'message': message,
             }
         except Exception, e:
             return {
@@ -77,10 +88,17 @@ class UserAddToGroupAction(Action):
                 groups[group_id].add(user.name)
             groups()
             self.model.parent.invalidate(user.name)
+            localizer = get_localizer(self.request)
+            message = localizer.translate(
+                _('added_user_to_group',
+                  default="Added user '${uid}' to group '${gid}'.",
+                  mapping={
+                      'uid': user.id,
+                      'gid': group_id
+                  }))
             return {
                 'success': True,
-                'message': "Added user '%s' to group '%s'." % \
-                    (user.id, group_id),
+                'message': message,
             }
         except Exception, e:
             return {
@@ -109,10 +127,17 @@ class UserRemoveFromGroupAction(Action):
                 del groups[group_id][user.name]
             groups()
             self.model.parent.invalidate(user.name)
+            localizer = get_localizer(self.request)
+            message = localizer.translate(
+                _('removed_user_from_group',
+                  default="Removed user '${uid}' from group '${gid}'.",
+                  mapping={
+                      'uid': user.id,
+                      'gid': group_id
+                  }))
             return {
                 'success': True,
-                'message': "Removed user '%s' from group '%s'." % \
-                    (user.id, group_id),
+                'message': message,
             }
         except Exception, e:
             return {
@@ -143,9 +168,12 @@ class DeleteGroupAction(Action):
                 'success': False,
                 'message': str(e),
             }
+        localizer = get_localizer(self.request)
+        message = localizer.translate(_('deleted_group',
+                                        'Deleted group from database'))
         return {
             'success': True,
-            'message': 'Deleted group from database',
+            'message': message,
         }
 
 
@@ -168,9 +196,12 @@ class GroupAddUserAction(Action):
                 group.add(user_id)
             group()
             self.model.parent.invalidate(group.name)
+            localizer = get_localizer(self.request)
+            message = localizer.translate(_('group_added_user',
+                                            'Added user to group'))
             return {
                 'success': True,
-                'message': 'Added user to group',
+                'message': message,
             }
         except Exception, e:
             return {
@@ -198,9 +229,12 @@ class GroupRemoveUserAction(Action):
                 del group[user_id]
             group()
             self.model.parent.invalidate(group.name)
+            localizer = get_localizer(self.request)
+            message = localizer.translate(_('group_removed_user',
+                                            'Removed user from group'))
             return {
                 'success': True,
-                'message': 'Removed user from group',
+                'message': message,
             }
         except Exception, e:
             return {

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2012-04-24 12:34+0200\n"
-"PO-Revision-Date: 2012-04-24 12:34+0200\n"
+"PO-Revision-Date: 2012-04-25 13:45+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -16,4 +16,34 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.4\n"
+
+#. Default: Deleted user '${uid}' from database.
+#: src/cone/ugm/browser/actions.py:57
+msgid "delete_user_from_database"
+msgstr "Deleted user '${uid}' from database."
+
+#. Default: Added user '${uid}' to group '${gid}'.
+#: src/cone/ugm/browser/actions.py:92
+msgid "added_user_to_group"
+msgstr "Added user '${uid}' to group '${gid}'."
+
+#. Default: Removed user '${uid}' from group '${gid}'.
+#: src/cone/ugm/browser/actions.py:130
+msgid "removed_user_from_group"
+msgstr "Removed user '${uid}' from group '${gid}'."
+
+#. Default: Deleted group from database
+#: src/cone/ugm/browser/actions.py:169
+msgid "deleted_group"
+msgstr "Deleted group from database"
+
+#. Default: Added user to group
+#: src/cone/ugm/browser/actions.py:196
+msgid "group_added_user"
+msgstr "Added user to group"
+
+#. Default: Removed user from group
+#: src/cone/ugm/browser/actions.py:228
+msgid "group_removed_user"
+msgstr "Removed user from group"
 

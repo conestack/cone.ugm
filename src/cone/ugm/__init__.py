@@ -24,25 +24,20 @@ from cone.ugm.model.users import users_factory
 from cone.ugm.model.groups import groups_factory
 from node.ext.ldap.ugm import Ugm
 
-
 logger = logging.getLogger('cone.ugm')
-
 
 # custom UGM styles
 cone.app.cfg.css.protected.append('cone.ugm.static/styles.css')
-
 
 # custom UGM javascript
 cone.app.cfg.js.protected.append('cone.ugm.static/jQuery.sortElements.js')
 cone.app.cfg.js.protected.append('cone.ugm.static/naturalSort.js')
 cone.app.cfg.js.protected.append('cone.ugm.static/ugm.js')
 
-
 # layout configuration
 cone.app.cfg.layout.livesearch = False
 cone.app.cfg.layout.pathbar = False
 cone.app.cfg.layout.sidebar_left = []
-
 
 # UGM settings
 cone.app.register_plugin_config('ugm_general', GeneralSettings)
@@ -51,21 +46,16 @@ cone.app.register_plugin_config('ugm_users', UsersSettings)
 cone.app.register_plugin_config('ugm_groups', GroupsSettings)
 cone.app.register_plugin_config('ugm_roles', RolesSettings)
 
-
 # Users container
 cone.app.register_plugin('users', users_factory)
 
-
 # Groups container
 cone.app.register_plugin('groups', groups_factory)
-
 
 # security
 admin_permissions = [
     'view', 'add', 'edit', 'delete', 'manage_membership', 'view_portrait',
 ]
-
-
 ugm_default_acl = [
     (Allow, 'role:editor', ['view', 'manage_membership']),
     (Allow, 'role:admin', admin_permissions),
@@ -78,13 +68,11 @@ ugm_user_acl = [
     (Allow, 'system.Authenticated', ['view_portrait']),
 ] + ugm_default_acl
 
-
 # register default acl's
 acl_registry.register(ugm_user_acl, User, 'user')
 acl_registry.register(ugm_default_acl, Users, 'users')
 acl_registry.register(ugm_default_acl, Group, 'group')
 acl_registry.register(ugm_default_acl, Groups, 'groups')
-
 
 # application startup hooks
 def initialize_ugm(config, global_config, local_config):
@@ -95,7 +83,6 @@ def initialize_ugm(config, global_config, local_config):
     
     # static resources
     config.add_view('cone.ugm.browser.static_resources', name='cone.ugm.static')
-
 
 cone.app.register_main_hook(initialize_ugm)
 
