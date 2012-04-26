@@ -1,4 +1,6 @@
 include *.rst
+include *.mo
+include *.po
 include demo.cfg
 include ugm.ini
 include bootstrap.py
