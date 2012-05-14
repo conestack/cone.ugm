@@ -20,7 +20,7 @@ from yafowil.widget.datetime.widget import (
     format_date,
     format_time,
     render_datetime_input,
-    render_datetime_display,
+    datetime_display_renderer,
     datetime_extractor,
 )
 from cone.ugm.model.utils import ugm_general
@@ -89,7 +89,7 @@ def expiration_display_renderer(widget, data):
     until = tag('label', u'until')
     if value not in [0, UNSET]:
         value = datetime.fromtimestamp(value)
-    expires = render_datetime_display(widget, data, value)
+    expires = datetime_display_renderer(widget, data, value)
     if expires:
         expires = until + expires
     return tag('div', active + expires, class_='expiration-widget')
