@@ -74,7 +74,7 @@ def remote_add_user(model, request):
     exposed = settings.attrs.users_exposed_attributes
     
     checked_attrs = dict()
-    valid_attrs = attrmap.keys() + exposed.keys()
+    valid_attrs = attrmap.keys() + exposed
     for key in valid_attrs:
         val = attrs.get(key)
         if not val:
