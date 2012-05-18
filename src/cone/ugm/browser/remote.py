@@ -72,9 +72,10 @@ def remote_add_user(model, request):
     settings = ugm_users(model)
     attrmap = settings.attrs.users_form_attrmap
     exposed = settings.attrs.users_exposed_attributes
-    
-    checked_attrs = dict()
+    if not exposed:
+        exposed = list()
     valid_attrs = attrmap.keys() + exposed
+    checked_attrs = dict()
     for key in valid_attrs:
         val = attrs.get(key)
         if not val:
