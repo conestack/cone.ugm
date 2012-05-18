@@ -188,6 +188,9 @@ History
 0.9.4dev
 --------
 
+- Get rid of BBB classes usage from ``cone.app``.
+  [rnix, 2012-05-18]
+
 - Fix invalidation after settings form save.
   [rnix, 2012-04-23]
 

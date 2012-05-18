@@ -4,8 +4,8 @@ from node.utils import instance_property
 from pyramid.i18n import TranslationStringFactory
 from cone.app.model import (
     BaseNode,
-    BaseMetadata,
-    BaseNodeInfo,
+    Metadata,
+    NodeInfo,
     registerNodeInfo,
     Properties,
 )
@@ -32,7 +32,7 @@ class Groups(BaseNode):
     
     @instance_property
     def metadata(self):
-        metadata = BaseMetadata()
+        metadata = Metadata()
         metadata.title = _('groups_node', 'Groups')
         metadata.description = _('groups_node_description',
                                  'Container for Groups')
@@ -85,7 +85,7 @@ class Groups(BaseNode):
             return group
 
 
-info = BaseNodeInfo()
+info = NodeInfo()
 info.title = _('groups_node', 'Groups')
 info.description = _('groups_node_description',
                      'Container for Groups')

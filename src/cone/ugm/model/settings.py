@@ -17,7 +17,7 @@ from node.ext.ldap.ugm._api import EXPIRATION_DAYS
 from cone.app.model import (
     BaseNode,
     XMLProperties,
-    BaseMetadata,
+    Metadata,
 )
 from cone.ugm.model.utils import ldap_cfg_file
 
@@ -72,7 +72,7 @@ class GeneralSettings(UgmSettings):
     
     @instance_property
     def metadata(self):
-        metadata = BaseMetadata()
+        metadata = Metadata()
         metadata.title = _('ugm_settings_node', 'UGM Settings')
         metadata.description = _('ugm_settings_node_description',
                                  'General user and group management settings')
@@ -83,7 +83,7 @@ class ServerSettings(UgmSettings):
     
     @instance_property
     def metadata(self):
-        metadata = BaseMetadata()
+        metadata = Metadata()
         metadata.title = _('ldap_props_node', 'LDAP Props')
         metadata.description = _('ldap_props_node_description',
                                  'LDAP properties')
@@ -113,7 +113,7 @@ class UsersSettings(UgmSettings):
     
     @instance_property
     def metadata(self):
-        metadata = BaseMetadata()
+        metadata = Metadata()
         metadata.title = _('user_settings_node', 'Users Settings')
         metadata.description = _('user_settings_node_description',
                                  'LDAP users settings')
@@ -171,7 +171,7 @@ class GroupsSettings(UgmSettings):
     
     @instance_property
     def metadata(self):
-        metadata = BaseMetadata()
+        metadata = Metadata()
         metadata.title = _('group_settings_node', 'Groups Settings')
         metadata.description = _('group_settings_node_description',
                                  'LDAP groups settings')
@@ -214,7 +214,7 @@ class RolesSettings(UgmSettings):
     
     @instance_property
     def metadata(self):
-        metadata = BaseMetadata()
+        metadata = Metadata()
         metadata.title = _('role_settings_node', 'Roles Settings')
         metadata.description = _('role_settings_node_description',
                                  'LDAP roles settings')

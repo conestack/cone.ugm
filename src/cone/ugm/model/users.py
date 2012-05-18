@@ -4,8 +4,8 @@ from node.utils import instance_property
 from pyramid.i18n import TranslationStringFactory
 from cone.app.model import (
     BaseNode,
-    BaseMetadata,
-    BaseNodeInfo,
+    Metadata,
+    NodeInfo,
     registerNodeInfo,
     Properties,
 )
@@ -32,7 +32,7 @@ class Users(BaseNode):
     
     @instance_property
     def metadata(self):
-        metadata = BaseMetadata()
+        metadata = Metadata()
         metadata.title = _('users_node', 'Users')
         metadata.description = _('users_node_description',
                                  'Container for Users')
@@ -85,7 +85,7 @@ class Users(BaseNode):
             return user
 
 
-info = BaseNodeInfo()
+info = NodeInfo()
 info.title = _('users_node', 'Users')
 info.description = _('users_node_description',
                      'Container for Users')
