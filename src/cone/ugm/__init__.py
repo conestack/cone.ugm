@@ -22,17 +22,19 @@ from cone.ugm.model.settings import (
 )
 from cone.ugm.model.users import users_factory
 from cone.ugm.model.groups import groups_factory
+from cone.ugm.browser import static_resources
 from node.ext.ldap.ugm import Ugm
 
 logger = logging.getLogger('cone.ugm')
 
 # custom UGM styles
-cone.app.cfg.css.protected.append('cone.ugm.static/styles.css')
+cone.app.cfg.merged.css.protected.append((static_resources, 'styles.css'))
 
 # custom UGM javascript
-cone.app.cfg.js.protected.append('cone.ugm.static/jQuery.sortElements.js')
-cone.app.cfg.js.protected.append('cone.ugm.static/naturalSort.js')
-cone.app.cfg.js.protected.append('cone.ugm.static/ugm.js')
+cone.app.cfg.merged.js.protected.append((static_resources,
+                                         'jQuery.sortElements.js'))
+cone.app.cfg.merged.js.protected.append((static_resources, 'naturalSort.js'))
+cone.app.cfg.merged.js.protected.append((static_resources, 'ugm.js'))
 
 # layout configuration
 cone.app.cfg.layout.livesearch = False
