@@ -44,7 +44,7 @@ Portrait enabled, widget is rendered::
 No portrait, default portrait is shown::
 
     >>> request = layer.new_request()
-    >>> expected = 'src="http://example.com/cone.ugm.static/images/default_portrait.jpg"'
+    >>> expected = 'src="http://example.com/cone.ugm.static/images/default_portrait.jpg?nocache='
     >>> res.find(expected) > -1
     True
 
@@ -100,7 +100,7 @@ Portrait present, link to user portrait is shown::
 
     >>> request = layer.new_request()
     >>> res = render_tile(user, request, 'editform')
-    >>> expected = 'src="http://example.com/users/uid0/portrait_image"'
+    >>> expected = 'src="http://example.com/users/uid0/portrait_image?nocache='
     >>> res.find(expected) > -1
     True
 
