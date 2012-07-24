@@ -10,10 +10,10 @@ Dummy environment.::
 
 Local manager configuration object::
     
-    >>> from cone.ugm.model.localmanager import LocalManagerConfig
-    >>> config = LocalManagerConfig(conf_path)
+    >>> from cone.ugm.model.localmanager import LocalManagerConfigAttributes
+    >>> config = LocalManagerConfigAttributes(conf_path)
     >>> config
-    <cone.ugm.model.localmanager.LocalManagerConfig object at ...>
+    <LocalManagerConfigAttributes object 'None' at ...>
 
 Not exists yet::
 
@@ -76,7 +76,7 @@ Write config to file::
 
 Recreate on existing conf::
 
-    >>> config = LocalManagerConfig(conf_path)
+    >>> config = LocalManagerConfigAttributes(conf_path)
     >>> config.items()
     [('foo', {'default': 'bar', 'target': ['bar', 'baz']}), 
     ('aaa', {'default': 'ccc', 'target': ['bbb', 'ccc']})]

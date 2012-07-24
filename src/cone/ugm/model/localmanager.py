@@ -1,22 +1,30 @@
 import os
 import types
 from lxml import etree
+from plumber import (
+    plumber,
+    finalize,
+)
+from node.parts import (
+    Nodify,
+    DictStorage,
+)
 
 
-class LocalManagerConfig(object):
-    """Local Management configuration.
+class LocalManagerConfig(DictStorage):
+    """Local Management configuration storage.
     """
-    
-    def __init__(self, path):
-        self.path = path
-        self.rules = dict()
+        
+    @finalize
+    def load(self):
+        path = self.file_path
         if not path or not os.path.exists(path):
             return
         with open(path, 'r') as handle:
             tree = etree.parse(handle)
         root = tree.getroot()
         for rule in root.getchildren():
-            new_rule = self.rules[rule.tag] = dict()
+            new_rule = self.storage[rule.tag] = dict()
             for prop in rule.getchildren():
                 if prop.tag == 'target':
                     new_rule['target'] = list()
@@ -25,33 +33,10 @@ class LocalManagerConfig(object):
                 if prop.tag == 'default':
                     new_rule['default'] = prop.text
     
-    def __getitem__(self, key):
-        return self.rules[key]
-    
-    def __setitem__(self, key, val):
-        self.rules[key] = val
-    
-    def __delitem__(self, key):
-        del self.rules[key]
-    
-    def __iter__(self):
-        return self.rules.__iter__()
-    
-    def get(self, key, default=None):
-        return self.get(key, default)
-    
-    def keys(self):
-        return self.rules.keys()
-    
-    def values(self):
-        return self.rules.values()
-    
-    def items(self):
-        return self.rules.items()
-    
+    @finalize
     def __call__(self):
         root = etree.Element('localmanager')
-        for gid, rule in self.rules.items():
+        for gid, rule in self.storage.items():
             group = etree.SubElement(root, gid)
             target = etree.SubElement(group, 'target')
             for target_gid in rule['target']:
@@ -59,5 +44,17 @@ class LocalManagerConfig(object):
                 item.text = target_gid
             default = etree.SubElement(group, 'default')
             default.text = rule['default']
-        with open(self.path, 'w') as handle:
+        with open(self.file_path, 'w') as handle:
             handle.write(etree.tostring(root, pretty_print=True))
+
+
+class LocalManagerConfigAttributes(object):
+    __metaclass__ = plumber
+    __plumbing__ = (
+        Nodify,
+        LocalManagerConfig,
+    )
+    
+    def __init__(self, path):
+        self.file_path = path
+        self.load()
