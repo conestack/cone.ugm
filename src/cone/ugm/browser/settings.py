@@ -453,13 +453,33 @@ class LocalManagerSettingsForm(Form):
             rules.append(rule)
         return rules
     
+    def duplicate_rule(self, widget, data):
+        """Check for duplicate rules.
+        """
+        source = data.extracted['source']
+        if not source:
+            return data.extracted
+        exists = [source]
+        for val in data.parent.values():
+            if val.name == data.name:
+                continue
+            other = val.extracted['source']
+            if other in exists:
+                raise ExtractionError(_('localmanager_duplicate_rule_error'))
+            exists.append(other)
+        return data.extracted
+    
     def target_not_source(self, widget, data):
+        """Check whether source and target are same.
+        """
         source = data.parent.parent.parent['source'].extracted
         if source == data.extracted:
             raise ExtractionError(_('localmanager_target_is_source_error'))
         return data.extracted
     
     def save(self, widget, data):
+        """save rules.
+        """
         attrs = self.model.attrs
         extracted = data.fetch('localmanager_settings.rules').extracted
         for entry in extracted:

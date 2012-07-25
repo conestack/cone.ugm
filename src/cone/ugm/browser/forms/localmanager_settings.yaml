@@ -13,7 +13,11 @@ widgets:
         table_class: rules_array
     widgets:
     - rule:
-            factory: compound
+            factory: error:*duplicate_rule:compound
+            custom:
+                duplicate_rule:
+                    extractors:
+                        - context.duplicate_rule
             widgets:
             - source:
                 factory: field:label:error:autocomplete
@@ -29,6 +33,7 @@ widgets:
                 props:
                     label: i18n:localmanager_rule_target
                     required: i18n:localmanager_no_targets_for_source
+                    error.position: after
                     sort: False
                     class: array targets_field
                     table_class: targets_array

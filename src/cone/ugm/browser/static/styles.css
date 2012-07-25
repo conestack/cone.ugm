@@ -500,6 +500,10 @@ div.expiration-widget .ui-datepicker-trigger {
 }
 
 /* localmanager form */
+#array-localmanager_settings-rules .error {
+    border:none;
+    background-color:transparent;
+}
 #array-localmanager_settings-rules .rules_array {
     width:650px;
     border:none;
@@ -512,9 +516,11 @@ div.expiration-widget .ui-datepicker-trigger {
 #array-localmanager_settings-rules .rules_array .actions {
     padding-top:6px;
     background-color:#efefef;
+    width:45px;
 }
 #array-localmanager_settings-rules .rules_array .widget {
     padding-top:5px;
+    padding-bottom:8px;
 }
 #array-localmanager_settings-rules input {
     font-size:90%;
@@ -524,8 +530,10 @@ div.expiration-widget .ui-datepicker-trigger {
     float:left;
     margin-right:30px;
 }
+#array-localmanager_settings-rules label.source_field {
+    margin-bottom:6px;
+}
 #array-localmanager_settings-rules .source_field input {
-    margin-top:6px;
     margin-bottom:12px;
 }
 #array-localmanager_settings-rules .targets_field {
@@ -534,16 +542,19 @@ div.expiration-widget .ui-datepicker-trigger {
 #array-localmanager_settings-rules .targets_array {
     border:none;
     width:290px;
+    margin-bottom:0;
 }
 #array-localmanager_settings-rules .targets_array tr {
     border:none;
 }
 #array-localmanager_settings-rules .targets_array .actions {
-    padding-top:2px;
+    vertical-align:bottom;
+    padding-bottom:5px;
     background-color:transparent;
 }
 #array-localmanager_settings-rules .targets_array .widget {
     padding-top:0px;
+    padding-bottom:0px;
 }
 #array-localmanager_settings-rules .targets_array .yafowil-widget-autocomplete {
     float:left;
