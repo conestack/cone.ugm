@@ -259,7 +259,7 @@ class RolesSettings(UgmSettings):
 
 class LocalManagerSettings(BaseNode):
     
-    def attributes_factory(self):
+    def attributes_factory(self, name=None, parent=None):
         return LocalManagerConfigAttributes(localmanager_cfg_file())
     
     @instance_property

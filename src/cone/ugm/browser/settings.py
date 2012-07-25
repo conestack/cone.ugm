@@ -434,7 +434,28 @@ class LocalManagerSettingsForm(Form):
     
     @property
     def rules_value(self):
-        return []
+        """Return value format:
+        
+            return [{
+                'source': 'aaa',
+                'targets': [{
+                    'gid': 'bbb',
+                    'default': False,
+                }]
+            }]
+        """
+        rules = list()
+        for source, defs in self.model.attrs.items():
+            rule = dict()
+            rule['source'] = source
+            rule['targets'] = list()
+            for gid in defs['target']:
+                rule['targets'].append({
+                    'gid': gid,
+                    'default': gid in defs['default']
+                })
+            rules.append(rule)
+        return rules
     
     def save(self, widget, data):
         print 'save localmanagement config!'
