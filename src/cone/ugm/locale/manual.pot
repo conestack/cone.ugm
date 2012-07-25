@@ -108,6 +108,14 @@ msgstr ""
 msgid "portrait_height_help"
 msgstr ""
 
+# Local User Management
+msgid "users_local_management_enabled"
+msgstr ""
+
+# Enable local User Management
+msgid "users_local_management_enabled_help"
+msgstr ""
+
 # Groups container DN
 msgid "groups_container_dn"
 msgstr ""

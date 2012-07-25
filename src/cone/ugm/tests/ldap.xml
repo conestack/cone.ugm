@@ -75,6 +75,7 @@
   <users_portrait_accept>image/jpeg</users_portrait_accept>
   <users_portrait_width>50</users_portrait_width>
   <users_portrait_height>50</users_portrait_height>
+  <users_local_management_enabled>False</users_local_management_enabled>
   <groups_dn>ou=groups,ou=groupOfNames_10_10,dc=my-domain,dc=com</groups_dn>
   <groups_scope>1</groups_scope>
   <groups_query></groups_query>

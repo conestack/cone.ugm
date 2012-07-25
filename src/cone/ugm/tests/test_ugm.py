@@ -47,11 +47,14 @@ class UGMLayer(Security):
         ugm.users()
     
     def make_app(self):
-        ldap_config = os.path.join(os.path.split(__file__)[0], 'ldap.xml')
+        base_path = os.path.split(__file__)[0]
+        ldap_config = os.path.join(base_path, 'ldap.xml')
+        localmanager_config = os.path.join(base_path, 'localmanager.xml')
         super(UGMLayer, self).make_app(**{
             'cone.auth_impl': 'node.ext.ldap',
             'cone.plugins': 'node.ext.ugm\ncone.ugm',
             'cone.ugm.ldap_config': ldap_config,
+            'cone.ugm.localmanager_config': localmanager_config,
         })
         LDIF_groupOfNames_10_10.gcfg.attrmap['cn'] = 'cn'
 
@@ -60,27 +63,27 @@ ugm_layer = UGMLayer()
 
 
 DOCFILES = [
-#    ('../model/settings.rst', ugm_layer),
-#    ('../model/utils.rst', ugm_layer),
-#    ('../model/users.rst', ugm_layer),
-#    ('../model/groups.rst', ugm_layer),
-#    ('../model/user.rst', ugm_layer),
-#    ('../model/group.rst', ugm_layer),
+    ('../model/settings.rst', ugm_layer),
+    ('../model/utils.rst', ugm_layer),
+    ('../model/users.rst', ugm_layer),
+    ('../model/groups.rst', ugm_layer),
+    ('../model/user.rst', ugm_layer),
+    ('../model/group.rst', ugm_layer),
     ('../model/localmanager.rst', ugm_layer),
-#    ('../browser/__init__.rst', ugm_layer),
-#    ('../browser/utils.rst', ugm_layer),
-#    ('../browser/users.rst', ugm_layer),
-#    ('../browser/groups.rst', ugm_layer),
-#    ('../browser/root.rst', ugm_layer),
-#    ('../browser/user.rst', ugm_layer),
-#    ('../browser/group.rst', ugm_layer),
-#    ('../browser/actions.rst', ugm_layer),
-#    ('../browser/settings.rst', ugm_layer),
-#    ('../browser/remote.rst', ugm_layer),
-#    ('../browser/expires.rst', ugm_layer),
-#    ('../browser/roles.rst', ugm_layer),
-#    ('../browser/autoincrement.rst', ugm_layer),
-#    ('../browser/portrait.rst', ugm_layer),
+    ('../browser/__init__.rst', ugm_layer),
+    ('../browser/utils.rst', ugm_layer),
+    ('../browser/users.rst', ugm_layer),
+    ('../browser/groups.rst', ugm_layer),
+    ('../browser/root.rst', ugm_layer),
+    ('../browser/user.rst', ugm_layer),
+    ('../browser/group.rst', ugm_layer),
+    ('../browser/actions.rst', ugm_layer),
+    ('../browser/settings.rst', ugm_layer),
+    ('../browser/remote.rst', ugm_layer),
+    ('../browser/expires.rst', ugm_layer),
+    ('../browser/roles.rst', ugm_layer),
+    ('../browser/autoincrement.rst', ugm_layer),
+    ('../browser/portrait.rst', ugm_layer),
 ]
 
 

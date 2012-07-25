@@ -90,6 +90,12 @@ widgets:
         label: i18n:portrait_height
         help: i18n:portrait_height_help
         datatype: integer
+- users_local_management_enabled:
+    factory: field:label:checkbox
+    value: expr:context.model.attrs.users_local_management_enabled == 'True'
+    props:
+        label: i18n:users_local_management_enabled
+        help: i18n:users_local_management_enabled_help
 - save:
     factory: submit
     props:

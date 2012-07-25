@@ -177,7 +177,8 @@ class GeneralSettingsForm(Form):
                           'users_portrait_attr',
                           'users_portrait_accept',
                           'users_portrait_width',
-                          'users_portrait_height']:
+                          'users_portrait_height',
+                          'users_local_management_enabled']:
             val = data.fetch('ugm_general.%s' % attr_name).extracted
             setattr(model.attrs, attr_name, val)
         model()
