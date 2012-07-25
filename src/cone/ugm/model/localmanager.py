@@ -2,7 +2,9 @@ import os
 import types
 from lxml import etree
 from plumber import (
+    Part,
     plumber,
+    plumb,
     finalize,
 )
 from node.parts import (
@@ -56,3 +58,13 @@ class LocalManagerConfigAttributes(object):
     def __init__(self, path):
         self.file_path = path
         self.load()
+
+
+class LocalManagerACL(Part):
+    """Part providing ACL's by local manager configuration.
+    """
+    
+    @plumb
+    @property
+    def __acl__(_next, self):
+        return _next(self)

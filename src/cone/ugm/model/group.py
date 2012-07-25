@@ -1,3 +1,4 @@
+from plumber import plumber
 from node.locking import locktree
 from node.utils import instance_property
 from pyramid.i18n import TranslationStringFactory
@@ -8,11 +9,15 @@ from cone.app.model import (
     NodeInfo,
     registerNodeInfo,
 )
+from cone.ugm.model.localmanager import LocalManagerACL
 
 _ = TranslationStringFactory('cone.ugm')
 
 
 class Group(AdapterNode):
+    __metaclass__ = plumber
+    __plumbing__ = LocalManagerACL
+    
     node_info_name = 'group'
     
     @instance_property

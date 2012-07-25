@@ -1,4 +1,5 @@
 import logging
+from plumber import plumber
 from node.locking import locktree
 from node.utils import instance_property
 from pyramid.i18n import TranslationStringFactory
@@ -9,6 +10,7 @@ from cone.app.model import (
     registerNodeInfo,
     Properties,
 )
+from cone.ugm.model.localmanager import LocalManagerACL
 from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_backend
 from cone.ugm.browser.utils import unquote_slash
@@ -22,6 +24,9 @@ def users_factory():
 
 
 class Users(BaseNode):
+    __metaclass__ = plumber
+    __plumbing__ = LocalManagerACL
+    
     node_info_name = 'users'
 
     @instance_property

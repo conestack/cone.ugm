@@ -8,7 +8,7 @@ Dummy environment.::
     >>> tempdir = tempfile.mkdtemp()
     >>> conf_path = os.path.join(tempdir, 'localmanager.xml')
 
-Local manager configuration object::
+Local manager configuration attributes::
     
     >>> from cone.ugm.model.localmanager import LocalManagerConfigAttributes
     >>> config = LocalManagerConfigAttributes(conf_path)
@@ -84,3 +84,25 @@ Recreate on existing conf::
     >>> config.items()
     [('foo', {'default': ['bar'], 'target': ['bar', 'baz']}), 
     ('aaa', {'default': ['ccc'], 'target': ['bbb', 'ccc']})]
+
+Local manager ACL::
+
+    >>> from cone.app import get_root
+    >>> root = get_root()
+    
+    >>> localmanager_settings = root['settings']['ugm_localmanager']
+    >>> localmanager_settings
+    <LocalManagerSettings object 'ugm_localmanager' at ...>
+    
+    >>> users = root['users']
+    >>> users
+    <Users object 'users' at ...>
+    
+    >>> groups = root['groups']
+    >>> groups
+    <Groups object 'groups' at ...>
+
+Cleanup::
+
+    >>> import shutil
+    >>> shutil.rmtree(tempdir)

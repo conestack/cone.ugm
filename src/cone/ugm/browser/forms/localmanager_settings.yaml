@@ -35,7 +35,7 @@ widgets:
                     required: i18n:localmanager_no_targets_for_source
                     error.position: after
                     sort: False
-                    class: array targets_field
+                    class: targets_field
                     table_class: targets_array
                 widgets:
                 - target:
