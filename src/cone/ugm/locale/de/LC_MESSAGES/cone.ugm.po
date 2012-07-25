@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2012-04-24 12:34+0200\n"
-"PO-Revision-Date: 2012-07-25 15:18+0200\n"
+"PO-Revision-Date: 2012-07-25 16:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -153,7 +153,11 @@ msgstr "Nicht erreichbar"
 msgid "inexistent"
 msgstr "Nicht existent"
 
-#: src/cone/ugm/browser/settings.py:459
+#: src/cone/ugm/browser/settings.py:468
+msgid "localmanager_duplicate_rule_error"
+msgstr "Doppelte Zugriffsregel definiert"
+
+#: src/cone/ugm/browser/settings.py:477
 msgid "localmanager_target_is_source_error"
 msgstr "Ziel GID entspricht Administrations GID"
 
@@ -764,7 +768,7 @@ msgstr "Kein Attribut angegeben"
 
 # Rules
 msgid "localmanager_rules"
-msgstr "Regeln"
+msgstr "Zugriffsregeln"
 
 # Source GID
 msgid "localmanager_rule_source"

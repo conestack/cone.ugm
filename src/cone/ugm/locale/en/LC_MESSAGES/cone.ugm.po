@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2012-04-24 12:34+0200\n"
-"PO-Revision-Date: 2012-07-25 15:18+0200\n"
+"PO-Revision-Date: 2012-07-25 16:00+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -153,9 +153,13 @@ msgstr "Down"
 msgid "inexistent"
 msgstr "Inexistent"
 
-#: src/cone/ugm/browser/settings.py:459
+#: src/cone/ugm/browser/settings.py:468
+msgid "localmanager_duplicate_rule_error"
+msgstr "Duplicate access rule"
+
+#: src/cone/ugm/browser/settings.py:477
 msgid "localmanager_target_is_source_error"
-msgstr "Target GID equates Source GID"
+msgstr "Target GID equates source GID"
 
 #. Default: Add User
 #: src/cone/ugm/browser/user.py:48 src/cone/ugm/browser/users.py:23
@@ -760,7 +764,7 @@ msgstr "No attribute given"
 
 # Rules
 msgid "localmanager_rules"
-msgstr "Rules"
+msgstr "Access rules"
 
 # Source GID
 msgid "localmanager_rule_source"

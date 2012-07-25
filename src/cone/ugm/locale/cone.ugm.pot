@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-07-25 15:18+0200\n"
+"POT-Creation-Date: 2012-07-25 16:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -153,7 +153,11 @@ msgstr ""
 msgid "inexistent"
 msgstr ""
 
-#: src/cone/ugm/browser/settings.py:459
+#: src/cone/ugm/browser/settings.py:468
+msgid "localmanager_duplicate_rule_error"
+msgstr ""
+
+#: src/cone/ugm/browser/settings.py:477
 msgid "localmanager_target_is_source_error"
 msgstr ""
 
