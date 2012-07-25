@@ -10,7 +10,7 @@ App path for testing::
     >>> path
     '...cone.ugm'
 
-Create dummy settings container::
+Dummy settings container::
 
     >>> from node.base import OrderedNode
     >>> from cone.ugm.model.settings import (
@@ -198,7 +198,7 @@ Test invalidate::
     >>> gcfg is settings['ugm_groups'].ldap_gcfg
     False
 
-Reset backend and prepare settings for following tests::
+Cleanup. Reset backend and prepare settings for following tests::
 
     >>> cone.ugm.backend = None
     >>> settings['ugm_server']._ldap_props = layer['props']

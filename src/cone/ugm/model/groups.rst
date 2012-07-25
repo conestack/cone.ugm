@@ -19,7 +19,7 @@ Properties::
     >>> groups.properties
     <cone.app.model.Properties object at ...>
 
-Check Metadata::
+Metadata::
 
     >>> md = groups.metadata
     >>> md.title
@@ -28,32 +28,30 @@ Check Metadata::
     >>> md.description
     u'groups_node_description'
 
-Check for test groups::
+Iter groups::
 
     >>> len([x for x in groups])
     10
 
-Access inexistent child::
+Inexistent child::
 
     >>> groups['inexistent']
     Traceback (most recent call last):
       ...
     KeyError: u'inexistent'
 
-The children are group application nodes::
+Children are group application nodes::
     
     >>> group = groups['group0']
     >>> group
     <Group object 'group0' at ...>
 
-If we delete a group, it's not deleted from the underlying backend, this is
+If group gets deleted, it's not deleted from the underlying backend, this is
 needed for invalidation::
 
     >>> del groups['group0']
     >>> groups['group0']
     <Group object 'group0' at ...>
-
-Test invalidation::
 
     >>> backend = groups.backend
     >>> backend
@@ -66,6 +64,17 @@ Test invalidation::
     >>> backend is groups.backend
     False
 
-Check if ugm is not configured properly::
+ACL::
+
+    >>> groups.__acl__
+    [('Allow', 'role:editor', ['view', 'manage_membership']), 
+    ('Allow', 'role:admin', ['view', 'manage_membership', 'view_portrait', 
+    'add', 'edit', 'delete', 'add_user', 'edit_user', 'delete_user', 
+    'manage_expiration', 'add_group', 'edit_group', 'delete_group']), 
+    ('Allow', 'role:manager', ['view', 'manage_membership', 'view_portrait', 
+    'add', 'edit', 'delete', 'add_user', 'edit_user', 'delete_user', 
+    'manage_expiration', 'add_group', 'edit_group', 'delete_group', 'manage']), 
+    ('Allow', 'system.Everyone', ['login']), 
+    ('Deny', 'system.Everyone', <pyramid.security.AllPermissionsList object at ...>)]
 
     >>> layer.logout()

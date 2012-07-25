@@ -40,7 +40,7 @@ class Action(object):
 ###############################################################################
 
 @view_config(name='delete_item', accept='application/json',
-             renderer='json', context=User, permission='delete')
+             renderer='json', context=User, permission='delete_user')
 class DeleteUserAction(Action):
 
     def __call__(self):
@@ -151,7 +151,7 @@ class UserRemoveFromGroupAction(Action):
 ###############################################################################
 
 @view_config(name='delete_item', accept='application/json',
-             renderer='json', context=Group, permission='delete')
+             renderer='json', context=Group, permission='delete_group')
 class DeleteGroupAction(Action):
 
     def __call__(self):

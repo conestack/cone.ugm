@@ -43,7 +43,7 @@ class GroupLeftColumn(Column):
     
     @property
     def can_add(self):
-        return has_permission('add', self.model.parent, self.request)
+        return has_permission('add_group', self.model.parent, self.request)
 
     def render(self):
         setattr(self.request, '_curr_listing_id', self.model.name)
@@ -221,7 +221,7 @@ class GroupForm(PrincipalForm):
         return data.extracted
 
 
-@tile('addform', interface=Group, permission="add")
+@tile('addform', interface=Group, permission="add_group")
 class GroupAddForm(GroupForm, Form):
     __metaclass__ = plumber
     __plumbing__ = AddPart, PrincipalRolesForm, AddFormFiddle
@@ -266,7 +266,7 @@ class GroupAddForm(GroupForm, Form):
         return HTTPFound(location=url)
 
 
-@tile('editform', interface=Group, permission="edit", strict=False)
+@tile('editform', interface=Group, permission="edit_group", strict=False)
 class GroupEditForm(GroupForm, Form):
     __metaclass__ = plumber
     __plumbing__ = EditPart, PrincipalRolesForm, EditFormFiddle

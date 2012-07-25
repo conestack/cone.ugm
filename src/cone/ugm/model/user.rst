@@ -20,7 +20,7 @@ Properties::
     >>> user.properties
     <cone.app.model.Properties object at ...>
 
-Check Metadata::
+Metadata::
 
     >>> md = user.metadata
     >>> md.title
@@ -29,7 +29,7 @@ Check Metadata::
     >>> md.description
     u'user_node_description'
 
-The real user objects are available via .model::
+Backend user node is available at ``model``::
 
     >>> user.model
     <User object 'uid0' at ...>
@@ -37,13 +37,12 @@ The real user objects are available via .model::
     >>> user.model.__class__
     <class 'node.ext.ldap.ugm._api.User'>
 
-XXX: model is too generic, needs discussion. If so generic I'd say .context,
-otherwise more specific.
+XXX: model is too generic, should become ``context``
 
 XXX: should all this below work on the application model user or on the data
 model behind?
 
-The attributes of the user are wrapped::
+Attributes of the user are wrapped::
 
     >>> sorted(user.attrs.items())
     [('cn', u'cn0'), 
@@ -68,5 +67,19 @@ The attributes of the user are wrapped::
     >>> del user.attrs['mail']
     >>> user.attrs['mail'] = 'uid0@users300.my-domain.com'
     >>> user()
-    
+
+ACL::
+
+    >>> user.__acl__
+    [('Allow', 'system.Authenticated', ['view_portrait']), 
+    ('Allow', 'role:editor', ['view', 'manage_membership']), 
+    ('Allow', 'role:admin', ['view', 'manage_membership', 'view_portrait', 
+    'add', 'edit', 'delete', 'add_user', 'edit_user', 'delete_user', 
+    'manage_expiration', 'add_group', 'edit_group', 'delete_group']), 
+    ('Allow', 'role:manager', ['view', 'manage_membership', 'view_portrait', 
+    'add', 'edit', 'delete', 'add_user', 'edit_user', 'delete_user', 
+    'manage_expiration', 'add_group', 'edit_group', 'delete_group', 'manage']), 
+    ('Allow', 'system.Everyone', ['login']), 
+    ('Deny', 'system.Everyone', <pyramid.security.AllPermissionsList object at ...>)]
+
     >>> layer.logout()

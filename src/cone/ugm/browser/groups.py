@@ -30,7 +30,7 @@ class GroupsLeftColumn(Tile):
     
     @property
     def can_add(self):
-        return has_permission('add', self.model, self.request)
+        return has_permission('add_group', self.model, self.request)
 
 
 @tile('rightcolumn', interface=Groups, permission='view')
@@ -51,6 +51,7 @@ class GroupsColumnListing(PrincipalsListing):
     css = 'groups'
     batchname = 'leftbatch'
     delete_label = _('delete_group', 'Delete Group')
+    delete_permission = 'delete_group'
 
     @property
     def current_id(self):

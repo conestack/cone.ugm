@@ -30,7 +30,7 @@ class UsersLeftColumn(Tile):
     
     @property
     def can_add(self):
-        return has_permission('add', self.model, self.request)
+        return has_permission('add_user', self.model, self.request)
 
 
 @tile('rightcolumn', interface=Users, permission='view')
@@ -51,6 +51,7 @@ class UsersColumnListing(PrincipalsListing):
     css = 'users'
     batchname = 'leftbatch'
     delete_label = _('delete_user', 'Delete User')
+    delete_permission = 'delete_user'
 
     @property
     def current_id(self):

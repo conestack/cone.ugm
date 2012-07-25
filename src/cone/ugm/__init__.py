@@ -57,13 +57,28 @@ cone.app.register_plugin('users', users_factory)
 cone.app.register_plugin('groups', groups_factory)
 
 # security
-admin_permissions = [
-    'view', 'add', 'edit', 'delete', 'manage_membership', 'view_portrait',
+management_permissions = [
+    'add', 'edit', 'delete',
 ]
+user_management_permissions = [
+    'add_user', 'edit_user', 'delete_user', 'manage_expiration',
+]
+group_management_permissions = [
+    'add_group', 'edit_group', 'delete_group',
+]
+admin_permissions = [
+    'view', 'manage_membership', 'view_portrait',
+] + management_permissions \
+  + user_management_permissions \
+  + group_management_permissions
+# old admin_permissions
+#admin_permissions = [
+#    'view', 'add', 'edit', 'delete', 'manage_membership', 'view_portrait',
+#]
 ugm_default_acl = [
     (Allow, 'role:editor', ['view', 'manage_membership']),
     (Allow, 'role:admin', admin_permissions),
-    (Allow, 'role:owner', admin_permissions),
+#    (Allow, 'role:owner', admin_permissions), # XXX: need owner permissions?
     (Allow, 'role:manager', admin_permissions + ['manage']),
     (Allow, Everyone, ['login']),
     (Deny, Everyone, ALL_PERMISSIONS),

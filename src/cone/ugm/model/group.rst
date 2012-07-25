@@ -20,7 +20,7 @@ Properties::
     >>> group.properties
     <cone.app.model.Properties object at ...>
 
-Check Metadata::
+Metadata::
 
     >>> md = group.metadata
     >>> md.title
@@ -29,7 +29,7 @@ Check Metadata::
     >>> md.description
     u'group_node_description'
 
-The real group objects are available via .model::
+Backend group node is available at ``model``::
 
     >>> group.model
     <Group object 'group0' at ...>
@@ -37,13 +37,12 @@ The real group objects are available via .model::
     >>> group.model.__class__
     <class 'node.ext.ldap.ugm._api.Group'>
 
-XXX: model is too generic, needs discussion. If so generic I'd say .context,
-otherwise more specific.
+XXX: model is too generic, should become ``context``
 
 XXX: should all this below work on the application model user or on the data
 model behind?
 
-The attributes of the group are wrapped::
+Attributes of the group are wrapped::
 
     >>> group.attrs.items()
     [('member', [u'cn=nobody']), ('rdn', u'group0')]
@@ -64,5 +63,18 @@ The attributes of the group are wrapped::
 
     >>> del group.attrs['businessCategory']
     >>> group()
-    
+
+ACL::
+
+    >>> group.__acl__
+    [('Allow', 'role:editor', ['view', 'manage_membership']), 
+    ('Allow', 'role:admin', ['view', 'manage_membership', 'view_portrait', 
+    'add', 'edit', 'delete', 'add_user', 'edit_user', 'delete_user', 
+    'manage_expiration', 'add_group', 'edit_group', 'delete_group']), 
+    ('Allow', 'role:manager', ['view', 'manage_membership', 'view_portrait', 
+    'add', 'edit', 'delete', 'add_user', 'edit_user', 'delete_user', 
+    'manage_expiration', 'add_group', 'edit_group', 'delete_group', 'manage']), 
+    ('Allow', 'system.Everyone', ['login']), 
+    ('Deny', 'system.Everyone', <pyramid.security.AllPermissionsList object at ...>)]
+
     >>> layer.logout()

@@ -4,7 +4,7 @@ from cone.ugm.model.utils import ugm_users
 
 
 @view_config('remote_add_user', accept='application/json',
-             renderer='json', context=Users, permission='add')
+             renderer='json', context=Users, permission='add_user')
 def remote_add_user(model, request):
     """Add user via remote service.
     
@@ -121,7 +121,7 @@ def remote_add_user(model, request):
 
 
 @view_config('remote_delete_user', accept='application/json',
-             renderer='json', context=Users, permission='delete')
+             renderer='json', context=Users, permission='delete_user')
 def remote_delete_user(model, request):
     """Remove user via remote service.
     

@@ -98,6 +98,8 @@ Local manager ACL::
     >>> users
     <Users object 'users' at ...>
     
+    #########>> users.__acl__
+    
     >>> groups = root['groups']
     >>> groups
     <Groups object 'groups' at ...>

@@ -22,7 +22,7 @@ Properties::
     >>> users.properties
     <cone.app.model.Properties object at ...>
 
-Check Metadata::
+Metadata::
 
     >>> md = users.metadata
     >>> md.title
@@ -31,33 +31,31 @@ Check Metadata::
     >>> md.description
     u'users_node_description'
 
-Check for test users::
+Iter users::
 
     >>> from cone.ugm.model.utils import ugm_users
     >>> len([x for x in users])
     16
 
-Access inexistent child::
+Inexistent child::
 
     >>> users['inexistent']
     Traceback (most recent call last):
       ...
     KeyError: u'inexistent'
 
-The children are user application nodes::
+Children are user application nodes::
     
     >>> user = users['uid0']
     >>> user.__class__
     <class 'cone.ugm.model.user.User'>
 
-If we delete a user, it's not deleted from the underlying backend, this behavior
+If user gets deleted, it's not deleted from underlying backend, this behavior
 is expected for app model invalidation::
 
     >>> del users['uid0']
     >>> users['uid0']
     <User object 'uid0' at ...>
-
-Test invalidation::
 
     >>> backend = users.backend
     >>> backend.__class__
@@ -73,6 +71,17 @@ Test invalidation::
     >>> backend is users.backend
     False
 
-Check if ugm is not configured properly::
+ACL::
+
+    >>> users.__acl__
+    [('Allow', 'role:editor', ['view', 'manage_membership']), 
+    ('Allow', 'role:admin', ['view', 'manage_membership', 'view_portrait', 
+    'add', 'edit', 'delete', 'add_user', 'edit_user', 'delete_user', 
+    'manage_expiration', 'add_group', 'edit_group', 'delete_group']), 
+    ('Allow', 'role:manager', ['view', 'manage_membership', 'view_portrait', 
+    'add', 'edit', 'delete', 'add_user', 'edit_user', 'delete_user', 
+    'manage_expiration', 'add_group', 'edit_group', 'delete_group', 'manage']), 
+    ('Allow', 'system.Everyone', ['login']), 
+    ('Deny', 'system.Everyone', <pyramid.security.AllPermissionsList object at ...>)]
 
     >>> layer.logout()

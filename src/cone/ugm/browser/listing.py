@@ -185,12 +185,15 @@ class PrincipalsListing(ColumnListing):
     """Column listing for principals.
     """
     delete_label = _('delete_principal', 'Delete Principal')
+    delete_permission = 'delete_principal' # inexistent permission
     listing_attrs = []
     sort_attr = None
     
     @property
     def query_items(self):
-        can_delete = has_permission('delete', self.model, self.request)
+        can_delete = has_permission(self.delete_permission,
+                                    self.model,
+                                    self.request)
         try:
             attrlist = self.listing_attrs
             sort_attr = self.sort_attr

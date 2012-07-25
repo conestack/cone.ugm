@@ -49,7 +49,7 @@ class UserLeftColumn(Column):
     
     @property
     def can_add(self):
-        return has_permission('add', self.model.parent, self.request)
+        return has_permission('add_user', self.model.parent, self.request)
 
     def render(self):
         setattr(self.request, '_curr_listing_id', self.model.name)
@@ -261,7 +261,7 @@ class UserForm(PrincipalForm):
         return aliases['id'], aliases['login']
 
 
-@tile('addform', interface=User, permission='add')
+@tile('addform', interface=User, permission='add_user')
 class UserAddForm(UserForm, Form):
     __metaclass__ = plumber
     __plumbing__ = (
@@ -320,7 +320,7 @@ class UserAddForm(UserForm, Form):
         return HTTPFound(location=url)
 
 
-@tile('editform', interface=User, permission='edit', strict=False)
+@tile('editform', interface=User, permission='edit_user', strict=False)
 class UserEditForm(UserForm, Form):
     __metaclass__ = plumber
     __plumbing__ = (
