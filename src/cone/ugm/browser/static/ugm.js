@@ -41,9 +41,15 @@
         localmanager: {
             
             autocomplete_gid: function(request, callback) {
-                // XXX
+                bdajax.request({
+                    success: function(data) {
+                        callback(data);
+                    },
+                    url: 'group_id_vocab',
+                    params: { term: request.term },
+                    type: 'json'
+                });
             }
-            
         },
         
         // object to store global flags

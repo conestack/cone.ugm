@@ -1,6 +1,7 @@
 from plumber import plumber
 from odict import odict
 from ldap.functions import explode_dn
+from pyramid.view import view_config
 from pyramid.i18n import (
     TranslationStringFactory,
     get_localizer,
@@ -42,12 +43,6 @@ from cone.ugm.model.settings import (
     GroupsSettings,
     RolesSettings,
     LocalManagerSettings,
-)
-from cone.ugm.model.utils import (
-    ugm_server,
-    ugm_users,
-    ugm_groups,
-    ugm_roles,
 )
 
 _ = TranslationStringFactory('cone.ugm')
@@ -473,3 +468,12 @@ class LocalManagerSettingsForm(Form):
             }
             attrs[entry['source']] = rule
         self.model()
+
+
+@view_config(name='group_id_vocab', accept='application/json',
+             renderer='json', permission='manage')
+def group_id_vocab(model, request):
+    term = request.params['term']
+    if len(term) < 2:
+        return list()
+    return model.root['groups'].backend.search(criteria={'id': '%s*' % term})
