@@ -26,24 +26,22 @@ class LocalManagerConfig(DictStorage):
         for rule in root.getchildren():
             new_rule = self.storage[rule.tag] = dict()
             for prop in rule.getchildren():
-                if prop.tag == 'target':
-                    new_rule['target'] = list()
-                    for group in prop.getchildren():
-                        new_rule['target'].append(group.text)
-                if prop.tag == 'default':
-                    new_rule['default'] = prop.text
+                for tag_name in ['target', 'default']:
+                    if prop.tag == tag_name:
+                        new_rule[tag_name] = list()
+                        for group in prop.getchildren():
+                            new_rule[tag_name].append(group.text)
     
     @finalize
     def __call__(self):
         root = etree.Element('localmanager')
         for gid, rule in self.storage.items():
             group = etree.SubElement(root, gid)
-            target = etree.SubElement(group, 'target')
-            for target_gid in rule['target']:
-                item = etree.SubElement(target, 'item')
-                item.text = target_gid
-            default = etree.SubElement(group, 'default')
-            default.text = rule['default']
+            for tag_name in ['target', 'default']:
+                elem = etree.SubElement(group, tag_name)
+                for gid in rule[tag_name]:
+                    item = etree.SubElement(elem, 'item')
+                    item.text = gid
         with open(self.file_path, 'w') as handle:
             handle.write(etree.tostring(root, pretty_print=True))
 

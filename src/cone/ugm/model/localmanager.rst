@@ -34,12 +34,12 @@ Add rules::
 
     >>> config['foo'] = {
     ...     'target': ['bar', 'baz'],
-    ...     'default': 'bar',
+    ...     'default': ['bar'],
     ... }
     
     >>> config['aaa'] = {
     ...     'target': ['bbb', 'ccc'],
-    ...     'default': 'ccc',
+    ...     'default': ['ccc'],
     ... }
 
 Iter::
@@ -49,7 +49,7 @@ Iter::
 
 Modify a rule::
 
-    >>> rule = config['foo']['default'] = 'bar'
+    >>> rule = config['foo']['default'] = ['bar']
 
 Write config to file::
 
@@ -62,14 +62,18 @@ Write config to file::
     '      <item>bar</item>', 
     '      <item>baz</item>', 
     '    </target>', 
-    '    <default>bar</default>', 
+    '    <default>', 
+    '      <item>bar</item>', 
+    '    </default>', 
     '  </foo>', 
     '  <aaa>', 
     '    <target>', 
     '      <item>bbb</item>', 
     '      <item>ccc</item>', 
     '    </target>', 
-    '    <default>ccc</default>', 
+    '    <default>', 
+    '      <item>ccc</item>', 
+    '    </default>', 
     '  </aaa>', 
     '</localmanager>', 
     '']
@@ -78,5 +82,5 @@ Recreate on existing conf::
 
     >>> config = LocalManagerConfigAttributes(conf_path)
     >>> config.items()
-    [('foo', {'default': 'bar', 'target': ['bar', 'baz']}), 
-    ('aaa', {'default': 'ccc', 'target': ['bbb', 'ccc']})]
+    [('foo', {'default': ['bar'], 'target': ['bar', 'baz']}), 
+    ('aaa', {'default': ['ccc'], 'target': ['bbb', 'ccc']})]
