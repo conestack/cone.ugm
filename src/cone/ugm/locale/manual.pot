@@ -344,6 +344,6 @@ msgstr ""
 msgid "localmanager_rule_source"
 msgstr ""
 
-# Target GID
+# Target GID [default]
 msgid "localmanager_rule_target"
 msgstr ""

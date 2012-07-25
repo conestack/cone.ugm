@@ -766,7 +766,7 @@ msgstr "Regeln"
 msgid "localmanager_rule_source"
 msgstr "Administrations GID"
 
-# Target GID
+# Target GID [default]
 msgid "localmanager_rule_target"
-msgstr "Ziel GID"
+msgstr "Ziel GID [Standard]"
 

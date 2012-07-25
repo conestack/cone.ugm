@@ -509,8 +509,15 @@ div.expiration-widget .ui-datepicker-trigger {
     text-align:left;
     padding-bottom:5px;
 }
+#array-localmanager_settings-rules .rules_array .actions {
+    padding-top:6px;
+    background-color:#efefef;
+}
 #array-localmanager_settings-rules .rules_array .widget {
     padding-top:5px;
+}
+#array-localmanager_settings-rules input {
+    font-size:90%;
 }
 #array-localmanager_settings-rules .source_field {
     width:240px;
@@ -518,7 +525,7 @@ div.expiration-widget .ui-datepicker-trigger {
     margin-right:30px;
 }
 #array-localmanager_settings-rules .source_field input {
-    margin-top:8px;
+    margin-top:6px;
     margin-bottom:12px;
 }
 #array-localmanager_settings-rules .targets_field {
@@ -531,6 +538,22 @@ div.expiration-widget .ui-datepicker-trigger {
 #array-localmanager_settings-rules .targets_array tr {
     border:none;
 }
+#array-localmanager_settings-rules .targets_array .actions {
+    padding-top:2px;
+    background-color:transparent;
+}
 #array-localmanager_settings-rules .targets_array .widget {
     padding-top:0px;
+}
+#array-localmanager_settings-rules .targets_array .yafowil-widget-autocomplete {
+    float:left;
+    width:220px;
+}
+#array-localmanager_settings-rules .targets_array .yafowil-widget-autocomplete input {
+    width:210px;
+}
+#array-localmanager_settings-rules .targets_array .target_default {
+    float:right;
+    position:relative;
+    top:2px;
 }

@@ -23,7 +23,7 @@ widgets:
                     minLength: 1
                     delay: 300
                     class: source_field
-            - target:
+            - targets:
                 factory: array
                 props:
                     label: i18n:localmanager_rule_target
@@ -31,12 +31,19 @@ widgets:
                     class: array targets_field
                     table_class: targets_array
                 widgets:
-                - gid:
-                    factory: field:autocomplete
-                    props:
-                        source: javascript:ugm.localmanager.autocomplete_gid
-                        minLength: 1
-                        delay: 300
+                - target:
+                    factory: compound
+                    widgets:
+                    - gid:
+                        factory: autocomplete
+                        props:
+                            source: javascript:ugm.localmanager.autocomplete_gid
+                            minLength: 1
+                            delay: 300
+                    - default:
+                        factory: checkbox
+                        props:
+                            class: target_default
 - save:
     factory: submit
     props:

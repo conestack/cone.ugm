@@ -762,7 +762,7 @@ msgstr "Rules"
 msgid "localmanager_rule_source"
 msgstr "Source GID"
 
-# Target GID
+# Target GID [default]
 msgid "localmanager_rule_target"
-msgstr "Target GID"
+msgstr "Target GID [default]"
 
