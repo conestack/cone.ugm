@@ -336,3 +336,14 @@ msgstr ""
 msgid "exposed_attributes_attribute_required"
 msgstr ""
 
+# Rules
+msgid "localmanager_rules"
+msgstr ""
+
+# Source GID
+msgid "localmanager_rule_source"
+msgstr ""
+
+# Target GID
+msgid "localmanager_rule_target"
+msgstr ""

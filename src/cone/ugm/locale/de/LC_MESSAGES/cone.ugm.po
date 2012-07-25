@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2012-04-24 12:34+0200\n"
-"PO-Revision-Date: 2012-04-25 17:22+0200\n"
+"PO-Revision-Date: 2012-07-25 12:49+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -113,43 +113,43 @@ msgid "roles"
 msgstr "Rollen"
 
 #. Default: Can't create container: ${error}
-#: src/cone/ugm/browser/settings.py:106
+#: src/cone/ugm/browser/settings.py:107
 msgid "cannot_create_container"
 msgstr "Kann Knoten nicht erstellen: ${error}"
 
 #. Default: No container DN defined.
-#: src/cone/ugm/browser/settings.py:117
+#: src/cone/ugm/browser/settings.py:118
 msgid "no_container_dn_defined"
 msgstr "Kein DN definiert"
 
 #. Default: Expected 'ou' as RDN Attribute.
-#: src/cone/ugm/browser/settings.py:121
+#: src/cone/ugm/browser/settings.py:122
 msgid "expected_ou_as_rdn"
 msgstr "'ou' als RDN Attribut erwartet"
 
 #. Default: Invalid DN.
-#: src/cone/ugm/browser/settings.py:127
+#: src/cone/ugm/browser/settings.py:128
 msgid "invalid_dn"
 msgstr "Ungültiger DN"
 
 #. Default: Parent not found. Can't continue.
-#: src/cone/ugm/browser/settings.py:133
+#: src/cone/ugm/browser/settings.py:134
 msgid "parent_not_found"
 msgstr "Elternelement nicht gefunden. Abbruch"
 
 #. Default: Created ${rdn}
-#: src/cone/ugm/browser/settings.py:140
+#: src/cone/ugm/browser/settings.py:141
 msgid "created_principal_container"
 msgstr "${rdn} erstellt"
 
 #. Default: Down
-#: src/cone/ugm/browser/settings.py:195
+#: src/cone/ugm/browser/settings.py:197
 msgid "server_down"
 msgstr "Nicht erreichbar"
 
 #. Default: Inexistent
-#: src/cone/ugm/browser/settings.py:233 src/cone/ugm/browser/settings.py:294
-#: src/cone/ugm/browser/settings.py:353
+#: src/cone/ugm/browser/settings.py:239 src/cone/ugm/browser/settings.py:304
+#: src/cone/ugm/browser/settings.py:367
 msgid "inexistent"
 msgstr "Nicht existent"
 
@@ -228,6 +228,11 @@ msgstr "Verfügbar"
 #: src/cone/ugm/browser/templates/in_out.pt:17
 msgid "recent"
 msgstr "Zugewiesen"
+
+#. Default: Local User Management is not enabled.
+#: src/cone/ugm/browser/templates/localmanager_settings.pt:9
+msgid "localmanager_disabled_warning"
+msgstr "Lokale Benutzeradministration ist deaktiviert"
 
 #. Default: List all
 #: src/cone/ugm/browser/templates/right_column.pt:31
@@ -333,54 +338,64 @@ msgid "groups_node_description"
 msgstr "Gruppencontainer"
 
 #. Default: UGM Settings
-#: src/cone/ugm/model/settings.py:76
+#: src/cone/ugm/model/settings.py:80
 msgid "ugm_settings_node"
 msgstr "UGM Einstellungen"
 
 #. Default: General user and group management settings
-#: src/cone/ugm/model/settings.py:77
+#: src/cone/ugm/model/settings.py:81
 msgid "ugm_settings_node_description"
 msgstr "Allgemeine Benutzer- und Gruppeneinstellungen"
 
 #. Default: LDAP Props
-#: src/cone/ugm/model/settings.py:87
+#: src/cone/ugm/model/settings.py:91
 msgid "ldap_props_node"
 msgstr "LDAP Einstellungen"
 
 #. Default: LDAP properties
-#: src/cone/ugm/model/settings.py:88
+#: src/cone/ugm/model/settings.py:92
 msgid "ldap_props_node_description"
 msgstr "LDAP Einstellungen"
 
 #. Default: Users Settings
-#: src/cone/ugm/model/settings.py:117
+#: src/cone/ugm/model/settings.py:121
 msgid "user_settings_node"
 msgstr "Benutzereinstellungen"
 
 #. Default: LDAP users settings
-#: src/cone/ugm/model/settings.py:118
+#: src/cone/ugm/model/settings.py:122
 msgid "user_settings_node_description"
 msgstr "LDAP Benutzereinstellungen"
 
 #. Default: Groups Settings
-#: src/cone/ugm/model/settings.py:175
+#: src/cone/ugm/model/settings.py:179
 msgid "group_settings_node"
 msgstr "Gruppeneinstellungen"
 
 #. Default: LDAP groups settings
-#: src/cone/ugm/model/settings.py:176
+#: src/cone/ugm/model/settings.py:180
 msgid "group_settings_node_description"
 msgstr "LDAP Gruppeneinstellungen"
 
 #. Default: Roles Settings
-#: src/cone/ugm/model/settings.py:218
+#: src/cone/ugm/model/settings.py:222
 msgid "role_settings_node"
 msgstr "Rolleneinstellungen"
 
 #. Default: LDAP roles settings
-#: src/cone/ugm/model/settings.py:219
+#: src/cone/ugm/model/settings.py:223
 msgid "role_settings_node_description"
 msgstr "LDAP Rolleneinstellungen"
+
+#. Default: Local Manager Settings
+#: src/cone/ugm/model/settings.py:268
+msgid "localmanager_settings_node"
+msgstr "Einstellungen lokale Benutzeradministratoren"
+
+#. Default: Local Manager Settings
+#: src/cone/ugm/model/settings.py:270
+msgid "localmanager_settings_node_description"
+msgstr "Einstellungen lokale Benutzeradministratoren"
 
 #. Default: User
 #: src/cone/ugm/model/user.py:26 src/cone/ugm/model/user.py:36
@@ -512,6 +527,14 @@ msgid "portrait_height_help"
 msgstr ""
 "Portrait Höhe in Pixel. Bild wird auf diese Höhe skaliert bzw "
 "zugeschnitten"
+
+# Local User Management
+msgid "users_local_management_enabled"
+msgstr "Benutzeradmin"
+
+# Enable local User Management
+msgid "users_local_management_enabled_help"
+msgstr "Lokale Benutzeradministration aktivieren"
 
 # Groups container DN
 msgid "groups_container_dn"
@@ -672,8 +695,8 @@ msgstr "LDAP Objektklassen für neue Benutzer"
 # LDAP object classes
 msgid "user_object_classes_help"
 msgstr ""
-"Diese Objektklassen werden auf neuen Benutzern gesetzt bzw beim aktualisieren "
-"von Benutzern aktualisiert."
+"Diese Objektklassen werden auf neuen Benutzern gesetzt bzw beim "
+"aktualisieren von Benutzern aktualisiert."
 
 # User attribute aliases
 msgid "user_attribute_aliases"
@@ -734,4 +757,16 @@ msgstr "Attribut"
 # No attribute given
 msgid "exposed_attributes_attribute_required"
 msgstr "Kein Attribut angegeben"
+
+# Rules
+msgid "localmanager_rules"
+msgstr "Regeln"
+
+# Source GID
+msgid "localmanager_rule_source"
+msgstr "Administrations GID"
+
+# Target GID
+msgid "localmanager_rule_target"
+msgstr "Ziel GID"
 
