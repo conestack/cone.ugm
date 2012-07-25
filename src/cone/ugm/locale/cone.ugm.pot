@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-07-25 12:49+0200\n"
+"POT-Creation-Date: 2012-07-25 15:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -113,44 +113,48 @@ msgid "roles"
 msgstr ""
 
 #. Default: Can't create container: ${error}
-#: src/cone/ugm/browser/settings.py:107
+#: src/cone/ugm/browser/settings.py:103
 msgid "cannot_create_container"
 msgstr ""
 
 #. Default: No container DN defined.
-#: src/cone/ugm/browser/settings.py:118
+#: src/cone/ugm/browser/settings.py:114
 msgid "no_container_dn_defined"
 msgstr ""
 
 #. Default: Expected 'ou' as RDN Attribute.
-#: src/cone/ugm/browser/settings.py:122
+#: src/cone/ugm/browser/settings.py:118
 msgid "expected_ou_as_rdn"
 msgstr ""
 
 #. Default: Invalid DN.
-#: src/cone/ugm/browser/settings.py:128
+#: src/cone/ugm/browser/settings.py:124
 msgid "invalid_dn"
 msgstr ""
 
 #. Default: Parent not found. Can't continue.
-#: src/cone/ugm/browser/settings.py:134
+#: src/cone/ugm/browser/settings.py:130
 msgid "parent_not_found"
 msgstr ""
 
 #. Default: Created ${rdn}
-#: src/cone/ugm/browser/settings.py:141
+#: src/cone/ugm/browser/settings.py:137
 msgid "created_principal_container"
 msgstr ""
 
 #. Default: Down
-#: src/cone/ugm/browser/settings.py:197
+#: src/cone/ugm/browser/settings.py:193
 msgid "server_down"
 msgstr ""
 
 #. Default: Inexistent
-#: src/cone/ugm/browser/settings.py:239 src/cone/ugm/browser/settings.py:304
-#: src/cone/ugm/browser/settings.py:367
+#: src/cone/ugm/browser/settings.py:235 src/cone/ugm/browser/settings.py:300
+#: src/cone/ugm/browser/settings.py:363
 msgid "inexistent"
+msgstr ""
+
+#: src/cone/ugm/browser/settings.py:459
+msgid "localmanager_target_is_source_error"
 msgstr ""
 
 #. Default: Add User
@@ -745,6 +749,18 @@ msgstr ""
 msgid "localmanager_rule_source"
 msgstr ""
 
-# Target GID
+# Target GID [default]
 msgid "localmanager_rule_target"
+msgstr ""
+
+# No target GID's defined for source GID
+msgid "localmanager_no_targets_for_source"
+msgstr ""
+
+# No source GID defined
+msgid "localmanager_source_empty"
+msgstr ""
+
+# No target GID defined
+msgid "localmanager_target_empty"
 msgstr ""

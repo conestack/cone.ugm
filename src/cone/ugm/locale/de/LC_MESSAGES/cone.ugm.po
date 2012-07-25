@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2012-04-24 12:34+0200\n"
-"PO-Revision-Date: 2012-07-25 12:49+0200\n"
+"PO-Revision-Date: 2012-07-25 15:18+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -113,45 +113,49 @@ msgid "roles"
 msgstr "Rollen"
 
 #. Default: Can't create container: ${error}
-#: src/cone/ugm/browser/settings.py:107
+#: src/cone/ugm/browser/settings.py:103
 msgid "cannot_create_container"
 msgstr "Kann Knoten nicht erstellen: ${error}"
 
 #. Default: No container DN defined.
-#: src/cone/ugm/browser/settings.py:118
+#: src/cone/ugm/browser/settings.py:114
 msgid "no_container_dn_defined"
 msgstr "Kein DN definiert"
 
 #. Default: Expected 'ou' as RDN Attribute.
-#: src/cone/ugm/browser/settings.py:122
+#: src/cone/ugm/browser/settings.py:118
 msgid "expected_ou_as_rdn"
 msgstr "'ou' als RDN Attribut erwartet"
 
 #. Default: Invalid DN.
-#: src/cone/ugm/browser/settings.py:128
+#: src/cone/ugm/browser/settings.py:124
 msgid "invalid_dn"
 msgstr "Ungültiger DN"
 
 #. Default: Parent not found. Can't continue.
-#: src/cone/ugm/browser/settings.py:134
+#: src/cone/ugm/browser/settings.py:130
 msgid "parent_not_found"
 msgstr "Elternelement nicht gefunden. Abbruch"
 
 #. Default: Created ${rdn}
-#: src/cone/ugm/browser/settings.py:141
+#: src/cone/ugm/browser/settings.py:137
 msgid "created_principal_container"
 msgstr "${rdn} erstellt"
 
 #. Default: Down
-#: src/cone/ugm/browser/settings.py:197
+#: src/cone/ugm/browser/settings.py:193
 msgid "server_down"
 msgstr "Nicht erreichbar"
 
 #. Default: Inexistent
-#: src/cone/ugm/browser/settings.py:239 src/cone/ugm/browser/settings.py:304
-#: src/cone/ugm/browser/settings.py:367
+#: src/cone/ugm/browser/settings.py:235 src/cone/ugm/browser/settings.py:300
+#: src/cone/ugm/browser/settings.py:363
 msgid "inexistent"
 msgstr "Nicht existent"
+
+#: src/cone/ugm/browser/settings.py:459
+msgid "localmanager_target_is_source_error"
+msgstr "Ziel GID entspricht Administrations GID"
 
 #. Default: Add User
 #: src/cone/ugm/browser/user.py:48 src/cone/ugm/browser/users.py:23
@@ -769,4 +773,16 @@ msgstr "Administrations GID"
 # Target GID [default]
 msgid "localmanager_rule_target"
 msgstr "Ziel GID [Standard]"
+
+# No target GID's defined for source GID
+msgid "localmanager_no_targets_for_source"
+msgstr "Keine Ziel GID's für Administrations GID angegeben"
+
+# No source GID defined
+msgid "localmanager_source_empty"
+msgstr "Keine Administrations GID angegeben"
+
+# No target GID defined
+msgid "localmanager_target_empty"
+msgstr "Keine Ziel GID angegeben"
 
