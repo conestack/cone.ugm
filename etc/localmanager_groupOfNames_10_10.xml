@@ -1,2 +1,11 @@
 <localmanager>
+  <aaa>
+    <target>
+      <item>bbb</item>
+      <item>ccc</item>
+    </target>
+    <default>
+      <item>ccc</item>
+    </default>
+  </aaa>
 </localmanager>

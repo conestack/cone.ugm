@@ -458,4 +458,18 @@ class LocalManagerSettingsForm(Form):
         return rules
     
     def save(self, widget, data):
-        print 'save localmanagement config!'
+        attrs = self.model.attrs
+        extracted = data.fetch('localmanager_settings.rules').extracted
+        for entry in extracted:
+            targets = set()
+            defaults = set()
+            for target in entry['targets']:
+                targets.add(target['gid'])
+                if target['default']:
+                    defaults.add(target['gid'])
+            rule = {
+                'target': list(targets),
+                'default': list(defaults),
+            }
+            attrs[entry['source']] = rule
+        self.model()
