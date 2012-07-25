@@ -15,6 +15,7 @@ from node.ext.ldap import (
 from yafowil.base import (
     factory,
     UNSET,
+    ExtractionError,
 )
 from cone.tile import (
     tile,
@@ -452,6 +453,12 @@ class LocalManagerSettingsForm(Form):
             rules.append(rule)
         return rules
     
+    def target_not_source(self, widget, data):
+        source = data.parent.parent.parent['source'].extracted
+        if source == data.extracted:
+            raise ExtractionError(_('localmanager_target_is_source_error'))
+        return data.extracted
+    
     def save(self, widget, data):
         attrs = self.model.attrs
         extracted = data.fetch('localmanager_settings.rules').extracted
@@ -475,5 +482,6 @@ class LocalManagerSettingsForm(Form):
 def group_id_vocab(model, request):
     term = request.params['term']
     if len(term) < 2:
-        return list()
-    return model.root['groups'].backend.search(criteria={'id': '%s*' % term})
+        return []
+    backend = model.root['groups'].backend
+    return backend.search(criteria={'id': '%s*' % term})

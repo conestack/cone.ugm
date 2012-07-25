@@ -16,17 +16,19 @@ widgets:
             factory: compound
             widgets:
             - source:
-                factory: field:label:autocomplete
+                factory: field:label:error:autocomplete
                 props:
                     label: i18n:localmanager_rule_source
+                    required: i18n:localmanager_source_empty
                     source: javascript:ugm.localmanager.autocomplete_gid
                     minLength: 1
                     delay: 300
                     class: source_field
             - targets:
-                factory: array
+                factory: error:array
                 props:
                     label: i18n:localmanager_rule_target
+                    required: i18n:localmanager_no_targets_for_source
                     sort: False
                     class: array targets_field
                     table_class: targets_array
@@ -35,11 +37,16 @@ widgets:
                     factory: compound
                     widgets:
                     - gid:
-                        factory: autocomplete
+                        factory: error:*notsource:autocomplete
                         props:
+                            required: i18n:localmanager_target_empty
                             source: javascript:ugm.localmanager.autocomplete_gid
                             minLength: 1
                             delay: 300
+                        custom:
+                            notsource:
+                                extractors:
+                                    - context.target_not_source
                     - default:
                         factory: checkbox
                         props:

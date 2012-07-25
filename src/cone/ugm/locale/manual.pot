@@ -347,3 +347,15 @@ msgstr ""
 # Target GID [default]
 msgid "localmanager_rule_target"
 msgstr ""
+
+# No target GID's defined for source GID
+msgid "localmanager_no_targets_for_source"
+msgstr ""
+
+# No source GID defined
+msgid "localmanager_source_empty"
+msgstr ""
+
+# No target GID defined
+msgid "localmanager_target_empty"
+msgstr ""
