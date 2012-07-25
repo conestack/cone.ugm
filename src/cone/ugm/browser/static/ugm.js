@@ -37,6 +37,15 @@
     
     ugm = {
         
+        // localmanager
+        localmanager: {
+            
+            autocomplete_gid: function(request, callback) {
+                // XXX
+            }
+            
+        },
+        
         // object to store global flags
         flags: {},
             

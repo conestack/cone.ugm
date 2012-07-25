@@ -14,7 +14,7 @@ from node.parts import (
 class LocalManagerConfig(DictStorage):
     """Local Management configuration storage.
     """
-        
+    
     @finalize
     def load(self):
         path = self.file_path

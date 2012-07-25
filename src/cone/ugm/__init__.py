@@ -19,6 +19,7 @@ from cone.ugm.model.settings import (
     UsersSettings,
     GroupsSettings,
     RolesSettings,
+    LocalManagerSettings,
 )
 from cone.ugm.model.users import users_factory
 from cone.ugm.model.groups import groups_factory
@@ -47,6 +48,7 @@ cone.app.register_plugin_config('ugm_server', ServerSettings)
 cone.app.register_plugin_config('ugm_users', UsersSettings)
 cone.app.register_plugin_config('ugm_groups', GroupsSettings)
 cone.app.register_plugin_config('ugm_roles', RolesSettings)
+cone.app.register_plugin_config('ugm_localmanager', LocalManagerSettings)
 
 # Users container
 cone.app.register_plugin('users', users_factory)

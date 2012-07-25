@@ -1,0 +1,20 @@
+<tal:block xmlns:tal="http://xml.zope.org/namespaces/tal"
+           omit-tag="True">
+  <div>
+    
+    <h1>Localmanager Settings</h1>
+    
+    <tal:disabled condition="not model.enabled">
+      <div class="warning">
+        <strong i18n:translate="localmanager_disabled_warning">
+          Local User Management is not enabled.
+        </strong>
+      </div>
+    </tal:disabled>
+    
+    <tal:enabled condition="model.enabled">
+      <tal:settings replace="structure tile('editform')" />
+    </tal:enabled>
+  
+  </div>
+</tal:block>

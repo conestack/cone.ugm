@@ -41,6 +41,7 @@ from cone.ugm.model.settings import (
     UsersSettings,
     GroupsSettings,
     RolesSettings,
+    LocalManagerSettings,
 )
 from cone.ugm.model.utils import (
     ugm_server,
@@ -411,3 +412,29 @@ class RolesSettingsForm(Form, VocabMixin):
             setattr(model.attrs, attr_name, val)
         model()
         model.invalidate()
+
+
+@tile('content', 'templates/localmanager_settings.pt',
+      interface=LocalManagerSettings, permission='manage')
+class LocalManagerSettingsTile(ProtectedContentTile):
+    pass
+
+
+@tile('editform', interface=LocalManagerSettings, permission="manage")
+class LocalManagerSettingsForm(Form):
+    __metaclass__ = plumber
+    __plumbing__ = SettingsPart, YAMLForm
+    
+    action_resource = u'edit'
+    form_template = 'cone.ugm.browser:forms/localmanager_settings.yaml'
+    
+    @property
+    def message_factory(self):
+        return _
+    
+    @property
+    def rules_value(self):
+        return []
+    
+    def save(self, widget, data):
+        print 'save localmanagement config!'

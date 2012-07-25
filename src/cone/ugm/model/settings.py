@@ -19,7 +19,11 @@ from cone.app.model import (
     XMLProperties,
     Metadata,
 )
-from cone.ugm.model.utils import ldap_cfg_file
+from cone.ugm.model.localmanager import LocalManagerConfigAttributes
+from cone.ugm.model.utils import (
+    ldap_cfg_file,
+    localmanager_cfg_file,
+)
 
 _ = TranslationStringFactory('cone.ugm')
 
@@ -251,3 +255,26 @@ class RolesSettings(UgmSettings):
                 defaults=cone.ugm.model.factory_defaults.role,
                 )
         return self._ldap_rcfg
+
+
+class LocalManagerSettings(BaseNode):
+    
+    def attributes_factory(self):
+        return LocalManagerConfigAttributes(localmanager_cfg_file())
+    
+    @instance_property
+    def metadata(self):
+        metadata = Metadata()
+        metadata.title = _('localmanager_settings_node',
+                           'Local Manager Settings')
+        metadata.description = _('localmanager_settings_node_description',
+                                 'Local Manager Settings')
+        return metadata
+    
+    @property
+    def enabled(self):
+        general_settings = self.root['settings']['ugm_general']
+        return general_settings.attrs.users_local_management_enabled == 'True'
+    
+    def __call__(self):
+        self.attrs()

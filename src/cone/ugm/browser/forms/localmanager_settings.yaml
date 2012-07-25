@@ -1,0 +1,47 @@
+factory: form
+name: localmanager_settings
+props:
+    action: context.form_action
+    class: ajax
+widgets:
+- rules:
+    factory: field:array
+    value: expr:context.rules_value
+    props:
+        label: i18n:localmanager_rules
+        sort: False
+        table_class: rules_array
+    widgets:
+    - rule:
+            factory: compound
+            widgets:
+            - source:
+                factory: field:label:autocomplete
+                props:
+                    label: i18n:localmanager_rule_source
+                    source: javascript:ugm.localmanager.autocomplete_gid
+                    minLength: 1
+                    delay: 300
+                    class: source_field
+            - target:
+                factory: array
+                props:
+                    label: i18n:localmanager_rule_target
+                    sort: False
+                    class: array targets_field
+                    table_class: targets_array
+                widgets:
+                - gid:
+                    factory: field:autocomplete
+                    props:
+                        source: javascript:ugm.localmanager.autocomplete_gid
+                        minLength: 1
+                        delay: 300
+- save:
+    factory: submit
+    props:
+        action: save
+        expression: True
+        handler: context.save
+        next: context.next
+        label: i18n:save

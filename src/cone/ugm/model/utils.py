@@ -11,6 +11,10 @@ def ldap_cfg_file():
     return os.environ['LDAP_CFG_FILE']
 
 
+def localmanager_cfg_file():
+    return os.environ['LOCAL_MANAGER_CFG_FILE']
+
+
 def ugm_general(model):
     return model.root['settings']['ugm_general']
 

@@ -498,3 +498,39 @@ div.expiration-widget .ui-datepicker-trigger {
 #form-ldap_users_settings .array table tr {
     border:none;
 }
+
+/* localmanager form */
+#array-localmanager_settings-rules .rules_array {
+    width:650px;
+    border:none;
+}
+#array-localmanager_settings-rules .rules_array th {
+    background-color:transparent;
+    text-align:left;
+    padding-bottom:5px;
+}
+#array-localmanager_settings-rules .rules_array .widget {
+    padding-top:5px;
+}
+#array-localmanager_settings-rules .source_field {
+    width:240px;
+    float:left;
+    margin-right:30px;
+}
+#array-localmanager_settings-rules .source_field input {
+    margin-top:8px;
+    margin-bottom:12px;
+}
+#array-localmanager_settings-rules .targets_field {
+    float:left;
+}
+#array-localmanager_settings-rules .targets_array {
+    border:none;
+    width:290px;
+}
+#array-localmanager_settings-rules .targets_array tr {
+    border:none;
+}
+#array-localmanager_settings-rules .targets_array .widget {
+    padding-top:0px;
+}
