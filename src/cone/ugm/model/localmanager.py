@@ -12,7 +12,10 @@ from node.parts import (
     Nodify,
     DictStorage,
 )
-from pyramid.security import Allow
+from pyramid.security import (
+    Allow,
+    authenticated_userid,
+)
 from pyramid.threadlocal import get_current_request
 from cone.app.security import authenticated_user
 
@@ -92,10 +95,10 @@ class LocalManager(Part):
         if len(rules) == 0:
             return list()
         if len(rules) > 1:
-            msg = u"Authenticated member defined in local manager " + \
-                  u"groups %s but only one management group allowed for " + \
-                  u"each user. Please contact System Administrator in " + \
-                  u"order to fix this problem."
+            msg = (u"Authenticated member defined in local manager "
+                   u"groups %s but only one management group allowed for "
+                   u"each user. Please contact System Administrator in "
+                   u"order to fix this problem.")
             raise Exception(msg % ', '.join(["'%s'" % gid for gid in adm_gids]))
         return rules[0]['target']
     
@@ -146,9 +149,11 @@ class LocalManagerUsersACL(LocalManagerACL):
     @finalize
     @property
     def local_manager_acl(self):
-        """Permit ``view``, ``add_user`` and for local manager.
-        """
-        return []
+        if not self.local_manager_target_gids:
+            return []
+        return [(Allow,
+                 authenticated_userid(get_current_request()),
+                 ['view', 'add', 'add_user'])]
 
 
 class LocalManagerUserACL(LocalManagerACL):
@@ -156,10 +161,11 @@ class LocalManagerUserACL(LocalManagerACL):
     @finalize
     @property
     def local_manager_acl(self):
-        """Permit ``view``, ``edit_user``, ``manage_expiration`` for local
-        manager.
-        """
-        return []
+        if not self.name in self.local_manager_target_uids:
+            return []
+        return [(Allow,
+                 authenticated_userid(get_current_request()),
+                 ['view', 'edit', 'edit_user', 'manage_expiration'])]
 
 
 class LocalManagerGroupsACL(LocalManagerACL):
@@ -167,9 +173,11 @@ class LocalManagerGroupsACL(LocalManagerACL):
     @finalize
     @property
     def local_manager_acl(self):
-        """Permit ``view`` for local manager.
-        """
-        return []
+        if not self.local_manager_target_gids:
+            return []
+        return [(Allow,
+                 authenticated_userid(get_current_request()),
+                 ['view', 'manage_membership'])]
 
 
 class LocalManagerGroupACL(LocalManagerACL):
@@ -177,6 +185,8 @@ class LocalManagerGroupACL(LocalManagerACL):
     @finalize
     @property
     def local_manager_acl(self):
-        """Permit ``view`` and ``manage_membership`` for local manager.
-        """
-        return []
+        if not self.name in self.local_manager_target_gids:
+            return []
+        return [(Allow,
+                 authenticated_userid(get_current_request()),
+                 ['view', 'manage_membership'])]

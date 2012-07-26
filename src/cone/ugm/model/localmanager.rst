@@ -1,7 +1,7 @@
 Local Manager
 =============
 
-Dummy environment.::
+Dummy environment::
 
     >>> import os
     >>> import tempfile
@@ -206,12 +206,134 @@ Check of group id is marked as default::
     >>> lm_node.local_manager_is_default('admin_group_2', 'group2')
     True
 
-Local Manager ACL::
+Local manager ACL for users node::
 
     >>> users = root['users']
-    >>> users
-    <Users object 'users' at ...>
+    >>> users.local_manager_acl
+    []
     
+    >>> layer.login('uid1')
+    >>> users.local_manager_acl
+    []
+    
+    >>> layer.logout()
+    >>> layer.login('localmanager_1')
+    >>> users.local_manager_acl
+    [('Allow', u'localmanager_1', ['view', 'add', 'add_user'])]
+    
+    >>> layer.logout()
+    
+Local manager ACL for groups node::
+
     >>> groups = root['groups']
-    >>> groups
-    <Groups object 'groups' at ...>
+    >>> groups.local_manager_acl
+    []
+    
+    >>> layer.login('uid1')
+    >>> groups.local_manager_acl
+    []
+    
+    >>> layer.logout()
+    >>> layer.login('localmanager_1')
+    >>> groups.local_manager_acl
+    [('Allow', u'localmanager_1', ['view', 'manage_membership'])]
+    
+    >>> layer.logout()
+
+Local manager ACL for group node::
+
+    >>> group0 = groups['group0']
+    >>> group1 = groups['group1']
+    >>> group2 = groups['group2']
+    
+    >>> group0.local_manager_acl
+    []
+    
+    >>> group1.local_manager_acl
+    []
+    
+    >>> group2.local_manager_acl
+    []
+    
+    >>> layer.login('uid1')
+    
+    >>> group0.local_manager_acl
+    []
+    
+    >>> group1.local_manager_acl
+    []
+    
+    >>> group2.local_manager_acl
+    []
+    
+    >>> layer.logout()
+    
+    >>> layer.login('localmanager_1')
+    
+    >>> group0.local_manager_acl
+    [('Allow', u'localmanager_1', ['view', 'manage_membership'])]
+    
+    >>> group1.local_manager_acl
+    [('Allow', u'localmanager_1', ['view', 'manage_membership'])]
+    
+    >>> group2.local_manager_acl
+    []
+    
+    >>> layer.logout()
+    
+    >>> layer.login('localmanager_2')
+    
+    >>> group0.local_manager_acl
+    []
+    
+    >>> group1.local_manager_acl
+    [('Allow', u'localmanager_2', ['view', 'manage_membership'])]
+    
+    >>> group2.local_manager_acl
+    [('Allow', u'localmanager_2', ['view', 'manage_membership'])]
+    
+    >>> layer.logout()
+
+Local manager ACL for user node::
+
+    >>> user1 = users['uid1']
+    >>> user2 = users['uid2']
+    
+    >>> user1.local_manager_acl
+    []
+    
+    >>> user2.local_manager_acl
+    []
+    
+    >>> layer.login('uid1')
+    
+    >>> user1.local_manager_acl
+    []
+    
+    >>> user2.local_manager_acl
+    []
+    
+    >>> layer.logout()
+    
+    >>> layer.login('localmanager_1')
+    
+    >>> user1.local_manager_acl
+    [('Allow', u'localmanager_1', 
+    ['view', 'edit', 'edit_user', 'manage_expiration'])]
+    
+    >>> user2.local_manager_acl
+    []
+    
+    >>> layer.logout()
+    
+    >>> layer.login('localmanager_2')
+    
+    >>> user1.local_manager_acl
+    [('Allow', u'localmanager_2', 
+    ['view', 'edit', 'edit_user', 'manage_expiration'])]
+    
+    >>> user2.local_manager_acl
+    [('Allow', u'localmanager_2', 
+    ['view', 'edit', 'edit_user', 'manage_expiration'])]
+    
+    >>> layer.logout()
