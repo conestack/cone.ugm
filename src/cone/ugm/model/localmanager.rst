@@ -85,42 +85,133 @@ Recreate on existing conf::
     [('foo', {'default': ['bar'], 'target': ['bar', 'baz']}), 
     ('aaa', {'default': ['ccc'], 'target': ['bbb', 'ccc']})]
 
-Configure local management for test users::
+Cleanup dummy environment::
+
+    >>> import shutil
+    >>> shutil.rmtree(tempdir)
+
+Local Manager test config::
 
     >>> from cone.app import get_root
     >>> root = get_root()
     
-    >>> layer.login('manager')
+    >>> config = root['settings']['ugm_localmanager'].attrs
+    >>> config.items()
+    [('admin_group_1', 
+    {'default': ['group1'], 'target': ['group0', 'group1']}), 
+    ('admin_group_2', 
+    {'default': ['group2'], 'target': ['group1', 'group2']})]
+
+Local Manager plumbing part::
+
+    >>> from plumber import plumber
+    >>> from cone.app.model import BaseNode
+    >>> from cone.ugm.model.localmanager import LocalManager
+    >>> class LocalManagerNode(BaseNode):
+    ...     __metaclass__ = plumber
+    ...     __plumbing__ = LocalManager
+    
+    >>> lm_node = LocalManagerNode(name='lm_node', parent=root)
+    >>> lm_node.local_management_enabled
+    False
+
+``local_management_enabled`` is generally ignored in following
+functions of ``LocalManager``. User needs to consider if local management is
+enabled.
+
+Unauthenticated::
+
+    >>> lm_node.local_manager_target_gids
+    []
+    
+    >>> lm_node.local_manager_target_uids
+    []
+
+Authenticated, no local manager::
+
+    >>> layer.login('uid0')
+    >>> lm_node.local_manager_target_gids
+    []
+    
+    >>> lm_node.local_manager_target_uids
+    []
+    
+    >>> layer.logout()
+
+Authenticated, invalid local management group member::
+
+    >>> groups = root['groups'].backend
+    >>> group = groups['admin_group_2']
+    >>> group.add('localmanager_1')
+    >>> group()
+    >>> group.member_ids
+    [u'localmanager_2', u'localmanager_1']
+    
+    >>> layer.login('localmanager_1')
+    >>> lm_node.local_manager_target_gids
+    Traceback (most recent call last):
+      ...
+    Exception: Authenticated member defined in local manager groups 
+    'admin_group_1', 'admin_group_2' but only one management group allowed 
+    for each user. Please contact System Administrator in order to fix 
+    this problem.
+    
     >>> layer.logout()
     
-    >>> ugm = root['users'].backend.parent
-    >>> ugm
-    <Ugm object 'ldap_ugm' at ...>
-    
-    >> ugm.printtree()
-    
-    >>> config = root['settings']['ugm_localmanager'].attrs
-    >>> 
+    >>> del group['localmanager_1']
+    >>> group()
+    >>> group.member_ids
+    [u'localmanager_2']
 
-Local manager ACL::
+Authenticated, local manager::
 
+    >>> layer.login('localmanager_1')
+    >>> lm_node.local_manager_target_gids
+    ['group0', 'group1']
     
+    >>> lm_node.local_manager_target_uids
+    [u'uid1']
     
-    >>> localmanager_settings = root['settings']['ugm_localmanager']
-    >>> localmanager_settings
-    <LocalManagerSettings object 'ugm_localmanager' at ...>
+    >>> layer.logout()
+    >>> layer.login('localmanager_2')
+    >>> lm_node.local_manager_target_gids
+    ['group1', 'group2']
     
+    >>> lm_node.local_manager_target_uids
+    [u'uid2', u'uid1']
+    
+    >>> layer.logout()
+
+Check of group id is marked as default::
+
+    >>> lm_node.local_manager_is_default('admin_group_1', 'group0')
+    False
+    
+    >>> lm_node.local_manager_is_default('admin_group_2', 'group0')
+    Traceback (most recent call last):
+      ...
+    Exception: group 'group0' not managed by 'admin_group_2'
+    
+    >>> lm_node.local_manager_is_default('admin_group_1', 'group1')
+    True
+    
+    >>> lm_node.local_manager_is_default('admin_group_2', 'group1')
+    False
+    
+    >>> lm_node.local_manager_is_default('admin_group_1', 'group2')
+    Traceback (most recent call last):
+      ...
+    Exception: group 'group2' not managed by 'admin_group_1'
+    
+    >>> lm_node.local_manager_is_default('admin_group_2', 'group2')
+    True
+
+Local Manager ACL::
+
     >>> users = root['users']
     >>> users
     <Users object 'users' at ...>
     
-    #########>> users.__acl__
-    
     >>> groups = root['groups']
     >>> groups
     <Groups object 'groups' at ...>
-
-Cleanup::
-
-    >>> import shutil
-    >>> shutil.rmtree(tempdir)

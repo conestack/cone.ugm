@@ -79,12 +79,25 @@ class LocalManager(Part):
     def local_manager_target_gids(self):
         config = self.root['settings']['ugm_localmanager'].attrs
         user = authenticated_user(get_current_request())
+        if not user:
+            return list()
         gids = user.group_ids
-        managed_gids = set()
+        rules = list()
+        adm_gids = list()
         for gid in gids:
-            for rule in config.get(gid, []):
-                managed_gids.update(rule['target'])
-        return list(managed_gids)
+            rule = config.get(gid)
+            if rule:
+                rules.append(rule)
+                adm_gids.append(gid)
+        if len(rules) == 0:
+            return list()
+        if len(rules) > 1:
+            msg = u"Authenticated member defined in local manager " + \
+                  u"groups %s but only one management group allowed for " + \
+                  u"each user. Please contact System Administrator in " + \
+                  u"order to fix this problem."
+            raise Exception(msg % ', '.join(["'%s'" % gid for gid in adm_gids]))
+        return rules[0]['target']
     
     @finalize
     @property
@@ -98,12 +111,12 @@ class LocalManager(Part):
         return list(managed_uids)
     
     @finalize
-    def local_manager_is_default(self, gid):
+    def local_manager_is_default(self, adm_gid, gid):
         config = self.root['settings']['ugm_localmanager'].attrs
-        for rule in config.values():
-            if gid in rule['default']:
-                return True
-        return False
+        rule = config[adm_gid]
+        if not gid in rule['target']:
+            raise Exception(u"group '%s' not managed by '%s'" % (gid, adm_gid))
+        return gid in rule['default']
 
 
 class LocalManagerACL(LocalManager):
