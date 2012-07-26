@@ -10,7 +10,7 @@ from cone.app.model import (
     registerNodeInfo,
     Properties,
 )
-from cone.ugm.model.localmanager import LocalManagerACL
+from cone.ugm.model.localmanager import LocalManagerGroupsACL
 from cone.ugm.model.group import Group
 from cone.ugm.model.utils import ugm_backend
 from cone.ugm.browser.utils import unquote_slash
@@ -25,7 +25,7 @@ def groups_factory():
 
 class Groups(BaseNode):
     __metaclass__ = plumber
-    __plumbing__ = LocalManagerACL
+    __plumbing__ = LocalManagerGroupsACL
     
     node_info_name = 'groups'
 

@@ -10,7 +10,7 @@ from cone.app.model import (
     registerNodeInfo,
     Properties,
 )
-from cone.ugm.model.localmanager import LocalManagerACL
+from cone.ugm.model.localmanager import LocalManagerUsersACL
 from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_backend
 from cone.ugm.browser.utils import unquote_slash
@@ -25,7 +25,7 @@ def users_factory():
 
 class Users(BaseNode):
     __metaclass__ = plumber
-    __plumbing__ = LocalManagerACL
+    __plumbing__ = LocalManagerUsersACL
     
     node_info_name = 'users'
 

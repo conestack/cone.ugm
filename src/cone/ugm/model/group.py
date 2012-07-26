@@ -9,14 +9,14 @@ from cone.app.model import (
     NodeInfo,
     registerNodeInfo,
 )
-from cone.ugm.model.localmanager import LocalManagerACL
+from cone.ugm.model.localmanager import LocalManagerGroupACL
 
 _ = TranslationStringFactory('cone.ugm')
 
 
 class Group(AdapterNode):
     __metaclass__ = plumber
-    __plumbing__ = LocalManagerACL
+    __plumbing__ = LocalManagerGroupACL
     
     node_info_name = 'group'
     

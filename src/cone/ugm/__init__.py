@@ -71,14 +71,9 @@ admin_permissions = [
 ] + management_permissions \
   + user_management_permissions \
   + group_management_permissions
-# old admin_permissions
-#admin_permissions = [
-#    'view', 'add', 'edit', 'delete', 'manage_membership', 'view_portrait',
-#]
 ugm_default_acl = [
     (Allow, 'role:editor', ['view', 'manage_membership']),
     (Allow, 'role:admin', admin_permissions),
-#    (Allow, 'role:owner', admin_permissions), # XXX: need owner permissions?
     (Allow, 'role:manager', admin_permissions + ['manage']),
     (Allow, Everyone, ['login']),
     (Deny, Everyone, ALL_PERMISSIONS),
@@ -88,6 +83,7 @@ ugm_user_acl = [
 ] + ugm_default_acl
 
 # register default acl's
+# XXX: define permissions referring users, user, groups respective group only,
 acl_registry.register(ugm_user_acl, User, 'user')
 acl_registry.register(ugm_default_acl, Users, 'users')
 acl_registry.register(ugm_default_acl, Group, 'group')
