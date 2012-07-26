@@ -185,6 +185,13 @@ Contributors
 History
 =======
 
+0.9.5dev
+--------
+
+- Add local manager functionality.
+  [rnix, 2012-07-25]
+
+
 0.9.4
 -----
 
