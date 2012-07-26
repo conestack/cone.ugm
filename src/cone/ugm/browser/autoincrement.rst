@@ -58,7 +58,8 @@ Autoincrement support
     >>> users.keys()
     [u'uid0', u'uid1', u'uid2', u'uid3', u'uid4', u'uid5', u'uid6', u'uid7', 
     u'uid8', u'uid9', u'viewer', u'editor', u'admin', u'manager', u'max', 
-    u'sepp', u'uid99', u'uid100', u'uid101', u'100']
+    u'sepp', u'localmanager_1', u'localmanager_2', u'uid99', u'uid100', 
+    u'uid101', u'100']
     
     >>> request = user_request('Franz Hinterhuber', 'Franz',
     ...                        'franz@hinterhuber.org')
@@ -67,7 +68,8 @@ Autoincrement support
     >>> users.keys()
     [u'uid0', u'uid1', u'uid2', u'uid3', u'uid4', u'uid5', u'uid6', u'uid7', 
     u'uid8', u'uid9', u'viewer', u'editor', u'admin', u'manager', u'max', 
-    u'sepp', u'uid99', u'uid100', u'uid101', u'100', u'101']
+    u'sepp', u'localmanager_1', u'localmanager_2', u'uid99', u'uid100', 
+    u'uid101', u'100', u'101']
     
     >>> cfg.attrs.user_id_autoincrement_prefix = u'uid'
     >>> cfg()
@@ -78,7 +80,8 @@ Autoincrement support
     >>> users.keys()
     [u'uid0', u'uid1', u'uid2', u'uid3', u'uid4', u'uid5', u'uid6', u'uid7', 
     u'uid8', u'uid9', u'viewer', u'editor', u'admin', u'manager', u'max', 
-    u'sepp', u'uid99', u'uid100', u'uid101', u'100', u'101', u'uid102']
+    u'sepp', u'localmanager_1', u'localmanager_2', u'uid99', u'uid100', 
+    u'uid101', u'100', u'101', u'uid102']
     
     >>> cfg.attrs.user_id_autoincrement_prefix = u'admin'
     >>> cfg()
@@ -89,8 +92,8 @@ Autoincrement support
     >>> users.keys()
     [u'uid0', u'uid1', u'uid2', u'uid3', u'uid4', u'uid5', u'uid6', u'uid7', 
     u'uid8', u'uid9', u'viewer', u'editor', u'admin', u'manager', u'max', 
-    u'sepp', u'uid99', u'uid100', u'uid101', u'100', u'101', u'uid102', 
-    u'admin100']
+    u'sepp', u'localmanager_1', u'localmanager_2', u'uid99', u'uid100', 
+    u'uid101', u'100', u'101', u'uid102', u'admin100']
 
 Cleanup::
 

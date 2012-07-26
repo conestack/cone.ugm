@@ -85,10 +85,26 @@ Recreate on existing conf::
     [('foo', {'default': ['bar'], 'target': ['bar', 'baz']}), 
     ('aaa', {'default': ['ccc'], 'target': ['bbb', 'ccc']})]
 
-Local manager ACL::
+Configure local management for test users::
 
     >>> from cone.app import get_root
     >>> root = get_root()
+    
+    >>> layer.login('manager')
+    >>> layer.logout()
+    
+    >>> ugm = root['users'].backend.parent
+    >>> ugm
+    <Ugm object 'ldap_ugm' at ...>
+    
+    >> ugm.printtree()
+    
+    >>> config = root['settings']['ugm_localmanager'].attrs
+    >>> 
+
+Local manager ACL::
+
+    
     
     >>> localmanager_settings = root['settings']['ugm_localmanager']
     >>> localmanager_settings

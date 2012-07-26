@@ -25,7 +25,7 @@ class UGMLayer(Security):
         cone.ugm.model.settings._invalidate_ugm_settings(cone.app.get_root())
         ugm = cone.ugm.model.utils.ugm_backend(cone.app.get_root())
         roles = ['viewer', 'editor', 'admin', 'manager']
-        for uid in ['viewer', 'editor', 'admin', 'manager', 'max', 'sepp']:
+        def create_user(uid):
             data = {
                 'cn': uid,
                 'sn': uid,
@@ -34,16 +34,28 @@ class UGMLayer(Security):
             user = ugm.users.create(uid, **data)
             ugm()
             ugm.users.passwd(uid, None, 'secret')
+            return user
+        for uid in ['viewer', 'editor', 'admin', 'manager', 'max', 'sepp']:
+            user = create_user(uid)
             if uid in roles:
                 user.add_role(uid)
+        for uid in ['localmanager_1', 'localmanager_2']:
+            create_user(uid)
+        for gid, uid in [('admin_group_1', 'localmanager_1'),
+                         ('admin_group_2', 'localmanager_2')]:
+            group = ugm.groups.create(gid)
+            group.add(uid)
         ugm()
     
     def tearDown(self):
         super(UGMLayer, self).tearDown()
         import cone.app
         ugm = cone.app.cfg.auth
-        for uid in ['viewer', 'editor', 'admin', 'manager', 'max', 'sepp']:
+        for uid in ['viewer', 'editor', 'admin', 'manager', 'max', 'sepp',
+                    'localmanager_1', 'localmanager_2']:
             del ugm.users[uid]
+        for gid in ['admin_group_1', 'admin_group_2']:
+            del ugm.groups[gid]
         ugm.users()
     
     def make_app(self):

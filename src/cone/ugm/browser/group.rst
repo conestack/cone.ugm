@@ -119,7 +119,8 @@ Add::
     
     >>> groups.keys()
     [u'group0', u'group1', u'group2', u'group3', u'group4', u'group5', 
-    u'group6', u'group7', u'group8', u'group9', u'group99']
+    u'group6', u'group7', u'group8', u'group9', u'admin_group_1', 
+    u'admin_group_2', u'group99']
     
     >>> group = groups['group99']
     >>> group

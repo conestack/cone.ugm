@@ -31,7 +31,7 @@ Metadata::
 Iter groups::
 
     >>> len([x for x in groups])
-    10
+    12
 
 Inexistent child::
 

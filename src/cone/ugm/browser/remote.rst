@@ -63,7 +63,7 @@ No id given::
     >>> users.keys()
     [u'uid0', u'uid1', u'uid2', u'uid3', u'uid4', u'uid5', 
     u'uid6', u'uid7', u'uid8', u'uid9', u'viewer', u'editor', 
-    u'admin', u'manager', u'max', u'sepp']
+    u'admin', u'manager', u'max', u'sepp', u'localmanager_1', u'localmanager_2']
 
 Existent id given::
 
@@ -146,7 +146,8 @@ groups are not available.::
 
     >>> user.parent.parent['groups'].keys()
     [u'group0', u'group1', u'group2', u'group3', u'group4', u'group5', 
-    u'group6', u'group7', u'group8', u'group9']
+    u'group6', u'group7', u'group8', u'group9', u'admin_group_1', 
+    u'admin_group_2']
     
     >>> request.params['id'] = 'uid102'
     >>> request.params['password'] = 'secret'
@@ -201,7 +202,8 @@ No id given::
     >>> users.keys()
     [u'uid0', u'uid1', u'uid2', u'uid3', u'uid4', u'uid5', u'uid6', 
     u'uid7', u'uid8', u'uid9', u'viewer', u'editor', u'admin', u'manager', 
-    u'max', u'sepp', u'uid99', u'uid100', u'uid101', u'uid102']
+    u'max', u'sepp', u'localmanager_1', u'localmanager_2', u'uid99', 
+    u'uid100', u'uid101', u'uid102']
 
 Inexistent id given::
 
@@ -220,7 +222,8 @@ Valid deletions::
     >>> users.keys()
     [u'uid0', u'uid1', u'uid2', u'uid3', u'uid4', u'uid5', u'uid6', u'uid7', 
     u'uid8', u'uid9', u'viewer', u'editor', u'admin', u'manager', u'max', 
-    u'sepp', u'uid99', u'uid100', u'uid101']
+    u'sepp', u'localmanager_1', u'localmanager_2', u'uid99', u'uid100', 
+    u'uid101']
 
 Cleanup::
 

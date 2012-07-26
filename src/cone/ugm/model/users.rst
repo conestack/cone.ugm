@@ -35,7 +35,7 @@ Iter users::
 
     >>> from cone.ugm.model.utils import ugm_users
     >>> len([x for x in users])
-    16
+    18
 
 Inexistent child::
 
