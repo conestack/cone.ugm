@@ -8,14 +8,6 @@ cone.ugm.browser.actions
     >>> users = root['users']
     >>> groups = root['groups']
 
-Abstract Action::
-
-    >>> from cone.ugm.browser.actions import Action
-    >>> Action(None, None)()
-    Traceback (most recent call last):
-      ...
-    NotImplementedError: Abstract action does not implement ``__call__``.
-
 Test GroupAddUserAction::
 
     >>> layer.login('viewer')
@@ -27,7 +19,7 @@ Test GroupAddUserAction::
     >>> render_view_to_response(group, request, name='add_item')
     Traceback (most recent call last):
       ...
-    HTTPForbidden: Unauthorized: <function GroupAddUserAction at ...> failed 
+    HTTPForbidden: Unauthorized: <function group_add_user_action at ...> failed 
     permission check
     
     >>> layer.login('editor')
@@ -55,7 +47,7 @@ Test GroupRemoveUserAction::
     >>> render_view_to_response(group, request, name='remove_item')
     Traceback (most recent call last):
       ...
-    HTTPForbidden: Unauthorized: <function GroupRemoveUserAction at ...> failed 
+    HTTPForbidden: Unauthorized: <function group_remove_user_action at ...> failed 
     permission check
     
     >>> layer.login('editor')
@@ -81,7 +73,7 @@ Test UserAddToGroupAction::
     >>> render_view_to_response(user, request, name='add_item')
     Traceback (most recent call last):
       ...
-    HTTPForbidden: Unauthorized: <function UserAddToGroupAction at ...> failed 
+    HTTPForbidden: Unauthorized: <function user_add_to_group_action at ...> failed 
     permission check
     
     >>> layer.login('editor')
@@ -106,7 +98,7 @@ Test UserRemoveFromGroupAction::
     >>> render_view_to_response(user, request, name='remove_item')
     Traceback (most recent call last):
       ...
-    HTTPForbidden: Unauthorized: <function UserRemoveFromGroupAction at ...> failed 
+    HTTPForbidden: Unauthorized: <function user_remove_from_group_action at ...> failed 
     permission check
     
     >>> layer.login('editor')
@@ -131,7 +123,7 @@ Test DeleteUserAction::
     >>> render_view_to_response(user, request, name='delete_item')
     Traceback (most recent call last):
       ...
-    HTTPForbidden: Unauthorized: <function DeleteUserAction at ...> failed 
+    HTTPForbidden: Unauthorized: <function delete_user_action at ...> failed 
     permission check
     
     >>> layer.login('admin')
@@ -168,7 +160,7 @@ Test DeleteGroupAction::
     >>> render_view_to_response(group, request, name='delete_item')
     Traceback (most recent call last):
       ...
-    HTTPForbidden: Unauthorized: <function DeleteGroupAction at ...> failed 
+    HTTPForbidden: Unauthorized: <function delete_group_action at ...> failed 
     permission check
     
     >>> layer.login('admin')

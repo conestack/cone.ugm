@@ -17,7 +17,7 @@ from pyramid.security import (
     authenticated_userid,
 )
 from pyramid.threadlocal import get_current_request
-from cone.app.security import authenticated_user
+from cone.app import security
 
 
 class LocalManagerConfig(DictStorage):
@@ -81,7 +81,7 @@ class LocalManager(Part):
     @property
     def local_manager_target_gids(self):
         config = self.root['settings']['ugm_localmanager'].attrs
-        user = authenticated_user(get_current_request())
+        user = security.authenticated_user(get_current_request())
         if not user:
             return list()
         gids = user.group_ids
@@ -138,10 +138,13 @@ class LocalManagerACL(LocalManager):
         acl = _next(self)
         if not self.local_management_enabled:
             return acl
-        roles = authenticated_user(self.request).roles
+        request = get_current_request()
+        if authenticated_userid(request) == security.ADMIN_USER:
+            return acl
+        roles = security.authenticated_user(request).roles
         if 'admin' in roles or 'manager' in roles:
             return acl
-        return self.local_manager_acl + _next(self)
+        return self.local_manager_acl + acl
 
 
 class LocalManagerUsersACL(LocalManagerACL):

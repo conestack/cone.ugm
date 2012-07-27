@@ -141,7 +141,19 @@ class ColumnListing(Tile):
         """
         settings = ugm_groups(self.model)
         return settings.attrs.groups_listing_columns.keys()
-
+    
+    @property
+    def user_listing_criteria(self):
+        if not self.model.local_management_enabled:
+            return None
+        return dict(id=self.model.local_manager_target_uids)
+    
+    @property
+    def group_listing_criteria(self):
+        if not self.model.local_management_enabled:
+            return None
+        return dict(id=self.model.local_manager_target_gids)
+    
     @property
     def user_list_columns(self):
         """XXX: not generic, move
@@ -187,6 +199,7 @@ class PrincipalsListing(ColumnListing):
     delete_label = _('delete_principal', 'Delete Principal')
     delete_permission = 'delete_principal' # inexistent permission
     listing_attrs = []
+    listing_criteria = None
     sort_attr = None
     
     @property
@@ -196,15 +209,17 @@ class PrincipalsListing(ColumnListing):
                                     self.request)
         try:
             attrlist = self.listing_attrs
+            criteria = self.listing_criteria
             sort_attr = self.sort_attr
             ret = list()
             users = self.model.backend
-            result = users.search(criteria=None, attrlist=attrlist)
+            result = users.search(criteria=criteria,
+                                  attrlist=attrlist,
+                                  or_search=True)
             for key, attrs in result:
                 target = make_url(self.request,
                                   node=self.model,
                                   resource=key)
-                
                 actions = list()
                 if can_delete:
                     action_id = 'delete_item'

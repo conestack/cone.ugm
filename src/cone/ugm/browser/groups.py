@@ -47,6 +47,7 @@ class GroupsColumnListing(PrincipalsListing):
     slot = 'leftlisting'
     list_columns = PrincipalsListing.group_list_columns
     listing_attrs = PrincipalsListing.group_attrs
+    listing_criteria = PrincipalsListing.group_listing_criteria
     sort_attr = PrincipalsListing.group_default_sort_column
     css = 'groups'
     batchname = 'leftbatch'

@@ -188,6 +188,9 @@ History
 0.9.5dev
 --------
 
+- Simplify ``cone.ugm.browser.actions``.
+  [rnix, 2012-07-26]
+
 - Add local manager functionality.
   [rnix, 2012-07-25]
 
