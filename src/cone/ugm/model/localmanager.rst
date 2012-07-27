@@ -219,7 +219,7 @@ Local manager ACL for users node::
     >>> layer.logout()
     >>> layer.login('localmanager_1')
     >>> users.local_manager_acl
-    [('Allow', u'localmanager_1', ['view', 'add', 'add_user'])]
+    [('Allow', u'localmanager_1', ['view', 'add', 'add_user', 'manage_membership'])]
     
     >>> layer.logout()
     
@@ -319,7 +319,7 @@ Local manager ACL for user node::
     
     >>> user1.local_manager_acl
     [('Allow', u'localmanager_1', 
-    ['view', 'edit', 'edit_user', 'manage_expiration'])]
+    ['view', 'edit', 'edit_user', 'manage_expiration', 'manage_membership'])]
     
     >>> user2.local_manager_acl
     []
@@ -330,10 +330,10 @@ Local manager ACL for user node::
     
     >>> user1.local_manager_acl
     [('Allow', u'localmanager_2', 
-    ['view', 'edit', 'edit_user', 'manage_expiration'])]
+    ['view', 'edit', 'edit_user', 'manage_expiration', 'manage_membership'])]
     
     >>> user2.local_manager_acl
     [('Allow', u'localmanager_2', 
-    ['view', 'edit', 'edit_user', 'manage_expiration'])]
+    ['view', 'edit', 'edit_user', 'manage_expiration', 'manage_membership'])]
     
     >>> layer.logout()

@@ -79,6 +79,19 @@ class LocalManager(Part):
     
     @finalize
     @property
+    def local_manager_consider_for_user(self):
+        if not self.local_management_enabled:
+            return False
+        request = get_current_request()
+        if authenticated_userid(request) == security.ADMIN_USER:
+            return False
+        roles = security.authenticated_user(request).roles
+        if 'admin' in roles or 'manager' in roles:
+            return False
+        return True
+    
+    @finalize
+    @property
     def local_manager_target_gids(self):
         config = self.root['settings']['ugm_localmanager'].attrs
         user = security.authenticated_user(get_current_request())
@@ -136,13 +149,7 @@ class LocalManagerACL(LocalManager):
     @property
     def __acl__(_next, self):
         acl = _next(self)
-        if not self.local_management_enabled:
-            return acl
-        request = get_current_request()
-        if authenticated_userid(request) == security.ADMIN_USER:
-            return acl
-        roles = security.authenticated_user(request).roles
-        if 'admin' in roles or 'manager' in roles:
+        if not self.local_manager_consider_for_user:
             return acl
         return self.local_manager_acl + acl
 
@@ -156,7 +163,7 @@ class LocalManagerUsersACL(LocalManagerACL):
             return []
         return [(Allow,
                  authenticated_userid(get_current_request()),
-                 ['view', 'add', 'add_user'])]
+                 ['view', 'add', 'add_user', 'manage_membership'])]
 
 
 class LocalManagerUserACL(LocalManagerACL):
@@ -168,7 +175,8 @@ class LocalManagerUserACL(LocalManagerACL):
             return []
         return [(Allow,
                  authenticated_userid(get_current_request()),
-                 ['view', 'edit', 'edit_user', 'manage_expiration'])]
+                 ['view', 'edit', 'edit_user', 'manage_expiration',
+                  'manage_membership'])]
 
 
 class LocalManagerGroupsACL(LocalManagerACL):

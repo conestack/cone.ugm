@@ -1,3 +1,4 @@
+import uuid
 import types
 import logging
 from pyramid.security import has_permission
@@ -130,50 +131,46 @@ class ColumnListing(Tile):
     
     @property
     def user_attrs(self):
-        """XXX: not generic, move
-        """
         settings = ugm_users(self.model)
         return settings.attrs.users_listing_columns.keys()
 
     @property
     def group_attrs(self):
-        """XXX: not generic, move
-        """
         settings = ugm_groups(self.model)
         return settings.attrs.groups_listing_columns.keys()
     
     @property
     def user_listing_criteria(self):
-        if not self.model.local_management_enabled:
+        if not self.model.local_manager_consider_for_user:
             return None
-        return dict(id=self.model.local_manager_target_uids)
+        ids = self.model.local_manager_target_uids
+        if not ids:
+            ids = [str(uuid.uuid4())] # ensure criteria forces empty result
+        return dict(id=ids)
     
     @property
     def group_listing_criteria(self):
-        if not self.model.local_management_enabled:
+        if not self.model.local_manager_consider_for_user:
             return None
-        return dict(id=self.model.local_manager_target_gids)
+        ids = self.model.local_manager_target_gids
+        if not ids:
+            ids = [str(uuid.uuid4())] # ensure criteria forces empty result
+        return dict(id=ids)
     
     @property
     def user_list_columns(self):
-        """XXX: not generic, move
-        """
         settings = ugm_users(self.model)
         defs = settings.attrs.users_listing_columns
         return self.calc_list_columns(defs)
 
     @property
     def group_list_columns(self):
-        """XXX: not generic, move
-        """
         settings = ugm_groups(self.model)
         defs = settings.attrs.groups_listing_columns
         return self.calc_list_columns(defs)
     
     @property
     def user_default_sort_column(self):
-        """XXX: not generic, move
-        """
         settings = ugm_users(self.model)
         attrs = self.user_attrs
         sort = settings.attrs.users_listing_default_column
@@ -183,8 +180,6 @@ class ColumnListing(Tile):
     
     @property
     def group_default_sort_column(self):
-        """XXX: not generic, move
-        """
         settings = ugm_groups(self.model)
         attrs = self.group_attrs
         sort = settings.attrs.groups_listing_default_column

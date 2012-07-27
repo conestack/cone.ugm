@@ -102,6 +102,11 @@ class Groups(object):
             if available_only:
                 groups = [g for g in groups if not g.name in related_ids]
         
+        # reduce for local manager
+        if obj.model.local_manager_consider_for_user:
+            local_gids = obj.model.local_manager_target_gids
+            groups = [g for g in groups if g.name in local_gids]
+        
         ret = list()
         
         can_change = has_permission(

@@ -95,6 +95,11 @@ class Principals(object):
             users = group.root.users.values()
             if available_only:
                 users = [u for u in users if not u.name in member_ids]
+        
+        # reduce for local manager
+        if obj.model.local_manager_consider_for_user:
+            local_uids = obj.model.local_manager_target_uids
+            users = [u for u in users if u.name in local_uids]
 
         attrlist = obj.user_attrs
         sort_attr = obj.user_default_sort_column
