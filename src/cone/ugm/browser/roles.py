@@ -1,5 +1,5 @@
 from plumber import (
-    Part,
+    Behavior,
     default,
     plumb,
 )
@@ -11,7 +11,7 @@ from cone.ugm.model.utils import ugm_roles
 _ = TranslationStringFactory('cone.ugm')
 
 
-class PrincipalRolesForm(Part):
+class PrincipalRolesForm(Behavior):
     
     @default
     @property

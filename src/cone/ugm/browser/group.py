@@ -13,8 +13,8 @@ from cone.app.browser.utils import (
 )
 from cone.app.browser.form import Form
 from cone.app.browser.authoring import (
-    AddPart,
-    EditPart,
+    AddBehavior,
+    EditBehavior,
 )
 from cone.app.browser.ajax import AjaxAction
 from cone.ugm.model.group import Group
@@ -106,9 +106,6 @@ class Principals(object):
         
         ret = list()
         
-        can_change = has_permission(
-            'manage_membership', obj.model.parent, obj.request)
-        
         for user in users:
             id = user.name
             attrs = user.attrs
@@ -123,7 +120,7 @@ class Principals(object):
                 related = id in member_ids
 
             actions = list()
-            if can_change:
+            if has_permission('manage_membership', obj.model, obj.request):
                 action_id = 'add_item'
                 action_enabled = not bool(related)
                 action_title = _('add_user_to_selected_group',
@@ -229,7 +226,7 @@ class GroupForm(PrincipalForm):
 @tile('addform', interface=Group, permission="add_group")
 class GroupAddForm(GroupForm, Form):
     __metaclass__ = plumber
-    __plumbing__ = AddPart, PrincipalRolesForm, AddFormFiddle
+    __plumbing__ = AddBehavior, PrincipalRolesForm, AddFormFiddle
     
     show_heading = False
     show_contextmenu = False
@@ -274,7 +271,7 @@ class GroupAddForm(GroupForm, Form):
 @tile('editform', interface=Group, permission="edit_group", strict=False)
 class GroupEditForm(GroupForm, Form):
     __metaclass__ = plumber
-    __plumbing__ = EditPart, PrincipalRolesForm, EditFormFiddle
+    __plumbing__ = EditBehavior, PrincipalRolesForm, EditFormFiddle
     
     show_heading = False
     show_contextmenu = False

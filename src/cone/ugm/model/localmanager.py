@@ -2,13 +2,13 @@ import os
 import types
 from lxml import etree
 from plumber import (
-    Part,
+    Behavior,
     plumber,
     plumb,
     default,
     finalize,
 )
-from node.parts import (
+from node.behaviors import (
     Nodify,
     DictStorage,
 )
@@ -67,8 +67,8 @@ class LocalManagerConfigAttributes(object):
         self.load()
 
 
-class LocalManager(Part):
-    """Part providing local manager information for authenticated user.
+class LocalManager(Behavior):
+    """Behavior providing local manager information for authenticated user.
     """
     
     @finalize
@@ -92,28 +92,35 @@ class LocalManager(Part):
     
     @finalize
     @property
-    def local_manager_target_gids(self):
+    def local_manager_gid(self):
         config = self.root['settings']['ugm_localmanager'].attrs
         user = security.authenticated_user(get_current_request())
         if not user:
-            return list()
+            return None
         gids = user.group_ids
-        rules = list()
         adm_gids = list()
         for gid in gids:
             rule = config.get(gid)
             if rule:
-                rules.append(rule)
                 adm_gids.append(gid)
-        if len(rules) == 0:
-            return list()
-        if len(rules) > 1:
+        if len(adm_gids) == 0:
+            return None
+        if len(adm_gids) > 1:
             msg = (u"Authenticated member defined in local manager "
                    u"groups %s but only one management group allowed for "
                    u"each user. Please contact System Administrator in "
                    u"order to fix this problem.")
             raise Exception(msg % ', '.join(["'%s'" % gid for gid in adm_gids]))
-        return rules[0]['target']
+        return adm_gids[0]
+    
+    @finalize
+    @property
+    def local_manager_target_gids(self):
+        adm_gid = self.local_manager_gid
+        if not adm_gid:
+            return list()
+        config = self.root['settings']['ugm_localmanager'].attrs
+        return config[adm_gid]['target']
     
     @finalize
     @property
@@ -136,7 +143,7 @@ class LocalManager(Part):
 
 
 class LocalManagerACL(LocalManager):
-    """Part providing ACL's by local manager configuration.
+    """Behavior providing ACL's by local manager configuration.
     """
 
     @default
@@ -163,7 +170,7 @@ class LocalManagerUsersACL(LocalManagerACL):
             return []
         return [(Allow,
                  authenticated_userid(get_current_request()),
-                 ['view', 'add', 'add_user', 'manage_membership'])]
+                 ['view', 'add', 'add_user'])]
 
 
 class LocalManagerUserACL(LocalManagerACL):
@@ -173,10 +180,13 @@ class LocalManagerUserACL(LocalManagerACL):
     def local_manager_acl(self):
         if not self.name in self.local_manager_target_uids:
             return []
+        permissions = ['view', 'edit', 'edit_user', 'manage_expiration']
+        permissions.append('manage_membership')
+        #if not self.local_manager_is_default(self.local_manager_gid, self.name):
+        #    permissions.append('manage_membership')
         return [(Allow,
                  authenticated_userid(get_current_request()),
-                 ['view', 'edit', 'edit_user', 'manage_expiration',
-                  'manage_membership'])]
+                 permissions)]
 
 
 class LocalManagerGroupsACL(LocalManagerACL):
@@ -188,7 +198,7 @@ class LocalManagerGroupsACL(LocalManagerACL):
             return []
         return [(Allow,
                  authenticated_userid(get_current_request()),
-                 ['view', 'manage_membership'])]
+                 ['view'])]
 
 
 class LocalManagerGroupACL(LocalManagerACL):
@@ -198,6 +208,9 @@ class LocalManagerGroupACL(LocalManagerACL):
     def local_manager_acl(self):
         if not self.name in self.local_manager_target_gids:
             return []
+        permissions = ['view']
+        if not self.local_manager_is_default(self.local_manager_gid, self.name):
+            permissions.append('manage_membership')
         return [(Allow,
                  authenticated_userid(get_current_request()),
-                 ['view', 'manage_membership'])]
+                 permissions)]

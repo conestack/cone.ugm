@@ -1,7 +1,7 @@
 import time
 from datetime import datetime
 from plumber import (
-    Part,
+    Behavior,
     plumb,
 )
 from pyramid.security import has_permission
@@ -127,8 +127,8 @@ factory.doc['props']['expiration.format'] = \
 """
 
 
-class ExpirationForm(Part):
-    """Expiration field plumbing part for user forms.
+class ExpirationForm(Behavior):
+    """Expiration field plumbing behavior for user forms.
     """
     
     @plumb

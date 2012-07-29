@@ -1,6 +1,6 @@
 from StringIO import StringIO
 from plumber import (
-    Part,
+    Behavior,
     default,
     plumb,
 )
@@ -32,8 +32,8 @@ def portrait_image(model, request):
     return response
 
 
-class PortraitForm(Part):
-    """Plumbing part for setting user portrait image.
+class PortraitForm(Behavior):
+    """Plumbing behavior for setting user portrait image.
     """
     
     @default

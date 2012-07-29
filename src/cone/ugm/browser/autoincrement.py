@@ -1,5 +1,5 @@
 from plumber import (
-    Part,
+    Behavior,
     default,
     plumb,
 )
@@ -9,8 +9,8 @@ from cone.ugm.model.utils import ugm_general
 _ = TranslationStringFactory('cone.ugm')
 
 
-class AutoIncrementForm(Part):
-    """Plumbing part for setting user id by auto increment logic.
+class AutoIncrementForm(Behavior):
+    """Plumbing behavior for setting user id by auto increment logic.
     
     For user add form.
     """

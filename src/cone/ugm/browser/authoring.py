@@ -1,11 +1,11 @@
 from plumber import (
     plumb,
-    Part,
+    Behavior,
 )
 from cone.app.browser.ajax import ajax_form_fiddle
 
-class AddFormFiddle(Part):
-    """Form fiddle plumbing part for user and group add forms.
+class AddFormFiddle(Behavior):
+    """Form fiddle plumbing behavior for user and group add forms.
     """
     
     @plumb
@@ -14,8 +14,8 @@ class AddFormFiddle(Part):
         return _next(self, model, request)
 
 
-class EditFormFiddle(Part):
-    """Form fiddle plumbing part for user and group edit forms.
+class EditFormFiddle(Behavior):
+    """Form fiddle plumbing behavior for user and group edit forms.
     """
     
     @plumb

@@ -102,7 +102,7 @@ Local Manager test config::
     ('admin_group_2', 
     {'default': ['group2'], 'target': ['group1', 'group2']})]
 
-Local Manager plumbing part::
+Local Manager plumbing behavior::
 
     >>> from plumber import plumber
     >>> from cone.app.model import BaseNode

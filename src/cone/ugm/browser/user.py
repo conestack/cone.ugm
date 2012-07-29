@@ -16,8 +16,8 @@ from cone.app.browser.utils import (
 )
 from cone.app.browser.form import Form
 from cone.app.browser.authoring import (
-    AddPart,
-    EditPart,
+    AddBehavior,
+    EditBehavior,
 )
 from cone.app.browser.ajax import AjaxAction
 from cone.ugm.model.user import User
@@ -108,10 +108,6 @@ class Groups(object):
             groups = [g for g in groups if g.name in local_gids]
         
         ret = list()
-        
-        can_change = has_permission(
-            'manage_membership', obj.model.parent, obj.request)
-        
         attrlist = obj.group_attrs
         sort_attr = obj.group_default_sort_column
 
@@ -131,7 +127,7 @@ class Groups(object):
                 related = id in related_ids
 
             actions = list()
-            if can_change:
+            if has_permission('manage_membership', obj.model, obj.request):
                 action_id = 'add_item'
                 action_enabled = not bool(related)
                 action_title = _('add_user_to_selected_group',
@@ -270,7 +266,7 @@ class UserForm(PrincipalForm):
 class UserAddForm(UserForm, Form):
     __metaclass__ = plumber
     __plumbing__ = (
-        AddPart,
+        AddBehavior,
         PrincipalRolesForm,
         PortraitForm,
         ExpirationForm,
@@ -290,8 +286,8 @@ class UserAddForm(UserForm, Form):
             if not val:
                 continue
             extracted[key] = val
-        # possibly extracted by other parts
-        # XXX: call next in at the end in all extension parts to reduce
+        # possibly extracted by other behaviors
+        # XXX: call next at the end in all extension behaviors to reduce
         #      database queries.
         for key, val in self.model.attrs.items():
             extracted[key] = val
@@ -329,7 +325,7 @@ class UserAddForm(UserForm, Form):
 class UserEditForm(UserForm, Form):
     __metaclass__ = plumber
     __plumbing__ = (
-        EditPart,
+        EditBehavior,
         PrincipalRolesForm,
         PortraitForm,
         ExpirationForm,

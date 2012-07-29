@@ -54,10 +54,10 @@ Start the application::
 and browse ``http://localhost:8081/``. Default ``admin`` user password is
 ``admin``.
 
-The "roles" part in the principal form is only displayed if roles configuration
-is sane. The LDIF imported for test layer does not provide the roles container
-by default. Browse "Settings -> LDAP Roles" and perform "create roles container"
-action if you want to enable roles in the demo.
+The "roles" behavior in the principal form is only displayed if roles
+configuration is sane. The LDIF imported for test layer does not provide the
+roles container by default. Browse "Settings -> LDAP Roles" and perform
+"create roles container" action if you want to enable roles in the demo.
 
 **Note**: If ``python_ldap`` fails, don't use buildout offline mode!
 
@@ -187,6 +187,15 @@ History
 
 0.9.5dev
 --------
+
+- adopt to ``cone.app`` 0.9.4
+  [rnix, 2012-07-29]
+
+- adopt to ``node`` 0.9.8
+  [rnix, 2012-07-29]
+
+- adopt to ``plumber`` 1.2
+  [rnix, 2012-07-29]
 
 - Simplify ``cone.ugm.browser.actions``.
   [rnix, 2012-07-26]

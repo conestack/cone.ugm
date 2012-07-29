@@ -27,7 +27,7 @@ from cone.app.browser.form import (
     Form,
     YAMLForm,
 )
-from cone.app.browser.settings import SettingsPart
+from cone.app.browser.settings import SettingsBehavior
 from cone.app.browser.ajax import (
     ajax_continue,
     ajax_message,
@@ -150,7 +150,7 @@ registerTile('content',
 @tile('editform', interface=GeneralSettings, permission="manage")
 class GeneralSettingsForm(Form):
     __metaclass__ = plumber
-    __plumbing__ = SettingsPart, YAMLForm
+    __plumbing__ = SettingsBehavior, YAMLForm
     
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/general_settings.yaml'
@@ -196,7 +196,7 @@ class ServerSettingsTile(ProtectedContentTile):
 @tile('editform', interface=ServerSettings, permission="manage")
 class ServerSettingsForm(Form):
     __metaclass__ = plumber
-    __plumbing__ = SettingsPart, YAMLForm
+    __plumbing__ = SettingsBehavior, YAMLForm
     
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/server_settings.yaml'
@@ -247,7 +247,7 @@ class UsersCreateContainerAction(CreateContainerAction):
 @tile('editform', interface=UsersSettings, permission="manage")
 class UsersSettingsForm(Form, VocabMixin):
     __metaclass__ = plumber
-    __plumbing__ = SettingsPart, YAMLForm
+    __plumbing__ = SettingsBehavior, YAMLForm
     
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/users_settings.yaml'
@@ -312,7 +312,7 @@ class GroupsCreateContainerAction(CreateContainerAction):
 @tile('editform', interface=GroupsSettings, permission="manage")
 class GroupsSettingsForm(Form, VocabMixin):
     __metaclass__ = plumber
-    __plumbing__ = SettingsPart, YAMLForm
+    __plumbing__ = SettingsBehavior, YAMLForm
     
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/groups_settings.yaml'
@@ -375,7 +375,7 @@ class RolesCreateContainerAction(CreateContainerAction):
 @tile('editform', interface=RolesSettings, permission="manage")
 class RolesSettingsForm(Form, VocabMixin):
     __metaclass__ = plumber
-    __plumbing__ = SettingsPart, YAMLForm
+    __plumbing__ = SettingsBehavior, YAMLForm
     
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/roles_settings.yaml'
@@ -419,7 +419,7 @@ class LocalManagerSettingsTile(ProtectedContentTile):
 @tile('editform', interface=LocalManagerSettings, permission="manage")
 class LocalManagerSettingsForm(Form):
     __metaclass__ = plumber
-    __plumbing__ = SettingsPart, YAMLForm
+    __plumbing__ = SettingsBehavior, YAMLForm
     
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/localmanager_settings.yaml'
