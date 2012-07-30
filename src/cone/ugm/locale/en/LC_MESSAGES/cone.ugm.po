@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2012-04-24 12:34+0200\n"
-"PO-Revision-Date: 2012-07-25 16:00+0200\n"
+"PO-Revision-Date: 2012-07-30 14:02+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -18,34 +18,68 @@ msgstr ""
 "Generated-By: Babel 0.9.4\n"
 
 #. Default: Deleted user '${uid}' from database.
-#: src/cone/ugm/browser/actions.py:57
+#: src/cone/ugm/browser/actions.py:75
 msgid "delete_user_from_database"
 msgstr "Deleted user '${uid}' from database."
 
 #. Default: Added user '${uid}' to group '${gid}'.
-#: src/cone/ugm/browser/actions.py:93
+#: src/cone/ugm/browser/actions.py:105 src/cone/ugm/browser/actions.py:223
 msgid "added_user_to_group"
 msgstr "Added user '${uid}' to group '${gid}'."
 
+#. Default: Failed adding user '${uid}' to group '${gid}'. Manage membership
+#. denied
+#. for target group.
+#: src/cone/ugm/browser/actions.py:116
+msgid "lm_add_target_gid_not_allowed"
+msgstr ""
+"Failed adding user '${uid}' to group '${gid}'. Manage membership "
+"denied for target group."
+
 #. Default: Removed user '${uid}' from group '${gid}'.
-#: src/cone/ugm/browser/actions.py:132
+#: src/cone/ugm/browser/actions.py:148 src/cone/ugm/browser/actions.py:265
 msgid "removed_user_from_group"
 msgstr "Removed user '${uid}' from group '${gid}'."
 
+#. Default: Failed removing user '${uid}' from group '${gid}'. Manage
+#. membership
+#. denied for target group.
+#: src/cone/ugm/browser/actions.py:158
+msgid "lm_remove_target_gid_not_allowed"
+msgstr ""
+"Failed removing user '${uid}' from group '${gid}'. Manage "
+"membership denied for target group."
+
+#. Default: Failed removing user '${uid}' from group '${gid}'. Target group is
+#. default group of user.
+#: src/cone/ugm/browser/actions.py:165 src/cone/ugm/browser/actions.py:282
+msgid "lm_remove_target_gid_is_default"
+msgstr ""
+"Failed removing user '${uid}' from group '${gid}'. Target group is "
+"default group of user."
+
 #. Default: Deleted group from database
-#: src/cone/ugm/browser/actions.py:172
+#: src/cone/ugm/browser/actions.py:198
 msgid "deleted_group"
 msgstr "Deleted group from database"
 
-#. Default: Added user to group
-#: src/cone/ugm/browser/actions.py:200
-msgid "group_added_user"
-msgstr "Added user to group"
+#. Default: Failed adding user '${uid}' to group '${gid}'. Manage membership
+#. denied
+#. for user.
+#: src/cone/ugm/browser/actions.py:234
+msgid "lm_add_target_uid_not_allowed"
+msgstr ""
+"Failed adding user '${uid}' to group '${gid}'. Manage membership "
+"denied for user."
 
-#. Default: Removed user from group
-#: src/cone/ugm/browser/actions.py:233
-msgid "group_removed_user"
-msgstr "Removed user from group"
+#. Default: Failed removing user '${uid}' from group '${gid}'. Manage
+#. membership
+#. denied for user.
+#: src/cone/ugm/browser/actions.py:275
+msgid "lm_remove_target_uid_not_allowed"
+msgstr ""
+"Failed removing user '${uid}' from group '${gid}'. Manage "
+"membership denied for user."
 
 #. Default: auto incremented
 #: src/cone/ugm/browser/autoincrement.py:62
@@ -53,7 +87,7 @@ msgid "auto_incremented"
 msgstr "auto incremented"
 
 #. Default: Active
-#: src/cone/ugm/browser/expires.py:160
+#: src/cone/ugm/browser/expires.py:162
 msgid "active"
 msgstr "Active"
 
@@ -63,27 +97,27 @@ msgid "add_group"
 msgstr "Add Group"
 
 #. Default: Add user to selected group
-#: src/cone/ugm/browser/group.py:124 src/cone/ugm/browser/user.py:132
+#: src/cone/ugm/browser/group.py:129 src/cone/ugm/browser/user.py:137
 msgid "add_user_to_selected_group"
 msgstr "Add user to selected group"
 
 #. Default: Remove user from selected group
-#: src/cone/ugm/browser/group.py:132 src/cone/ugm/browser/user.py:140
+#: src/cone/ugm/browser/group.py:137 src/cone/ugm/browser/user.py:145
 msgid "remove_user_from_selected_group"
 msgstr "Remove user from selected group"
 
 #. Default: Group ${gid} already exists.
-#: src/cone/ugm/browser/group.py:217
+#: src/cone/ugm/browser/group.py:222
 msgid "group_already_exists"
 msgstr "Group ${gid} already exists."
 
 #. Default: Delete Group
-#: src/cone/ugm/browser/groups.py:53
+#: src/cone/ugm/browser/groups.py:54
 msgid "delete_group"
 msgstr "Delete Group"
 
 #. Default: Delete Principal
-#: src/cone/ugm/browser/listing.py:187
+#: src/cone/ugm/browser/listing.py:194
 msgid "delete_principal"
 msgstr "Delete Principal"
 
@@ -167,17 +201,17 @@ msgid "add_user"
 msgstr "Add User"
 
 #. Default: User ${uid} already exists.
-#: src/cone/ugm/browser/user.py:237
+#: src/cone/ugm/browser/user.py:242
 msgid "user_already_exists"
 msgstr "User ${uid} already exists."
 
 #. Default: User login ${login} not unique.
-#: src/cone/ugm/browser/user.py:253
+#: src/cone/ugm/browser/user.py:258
 msgid "user_login_not_unique"
 msgstr "User login ${login} not unique."
 
 #. Default: Delete User
-#: src/cone/ugm/browser/users.py:53
+#: src/cone/ugm/browser/users.py:54
 msgid "delete_user"
 msgstr "Delete User"
 
@@ -326,22 +360,22 @@ msgid "create_users_container_now"
 msgstr "Create users container now"
 
 #. Default: Group
-#: src/cone/ugm/model/group.py:26 src/cone/ugm/model/group.py:36
+#: src/cone/ugm/model/group.py:31 src/cone/ugm/model/group.py:41
 msgid "group_node"
 msgstr "Group"
 
 #. Default: Group
-#: src/cone/ugm/model/group.py:27 src/cone/ugm/model/group.py:37
+#: src/cone/ugm/model/group.py:32 src/cone/ugm/model/group.py:42
 msgid "group_node_description"
 msgstr "Group"
 
 #. Default: Groups
-#: src/cone/ugm/model/groups.py:36 src/cone/ugm/model/groups.py:89
+#: src/cone/ugm/model/groups.py:41 src/cone/ugm/model/groups.py:94
 msgid "groups_node"
 msgstr "Groups"
 
 #. Default: Container for Groups
-#: src/cone/ugm/model/groups.py:37 src/cone/ugm/model/groups.py:90
+#: src/cone/ugm/model/groups.py:42 src/cone/ugm/model/groups.py:95
 msgid "groups_node_description"
 msgstr "Container for Groups"
 
@@ -406,22 +440,22 @@ msgid "localmanager_settings_node_description"
 msgstr "Local Manager Settings"
 
 #. Default: User
-#: src/cone/ugm/model/user.py:26 src/cone/ugm/model/user.py:36
+#: src/cone/ugm/model/user.py:31 src/cone/ugm/model/user.py:41
 msgid "user_node"
 msgstr "User"
 
 #. Default: User
-#: src/cone/ugm/model/user.py:27 src/cone/ugm/model/user.py:37
+#: src/cone/ugm/model/user.py:32 src/cone/ugm/model/user.py:42
 msgid "user_node_description"
 msgstr "User"
 
 #. Default: Users
-#: src/cone/ugm/model/users.py:36 src/cone/ugm/model/users.py:89
+#: src/cone/ugm/model/users.py:41 src/cone/ugm/model/users.py:94
 msgid "users_node"
 msgstr "Users"
 
 #. Default: Container for Users
-#: src/cone/ugm/model/users.py:37 src/cone/ugm/model/users.py:90
+#: src/cone/ugm/model/users.py:42 src/cone/ugm/model/users.py:95
 msgid "users_node_description"
 msgstr "Container for Users"
 
@@ -785,4 +819,10 @@ msgstr "No source GID defined"
 # No target GID defined
 msgid "localmanager_target_empty"
 msgstr "No target GID defined"
+
+#~ msgid "group_added_user"
+#~ msgstr "Added user to group"
+
+#~ msgid "group_removed_user"
+#~ msgstr "Removed user from group"
 
