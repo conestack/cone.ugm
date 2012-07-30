@@ -125,14 +125,34 @@ class LocalManager(Behavior):
     
     @finalize
     @property
-    def local_manager_target_gids(self):
-        """Target group id's for local manager.
+    def local_manager_rule(self):
+        """Return rule for local manager.
         """
         adm_gid = self.local_manager_gid
         if not adm_gid:
-            return list()
+            return None
         config = self.root['settings']['ugm_localmanager'].attrs
-        return config[adm_gid]['target']
+        return config[adm_gid]
+    
+    @finalize
+    @property
+    def local_manager_default_gids(self):
+        """Return default group id's for local manager.
+        """
+        rule = self.local_manager_rule
+        if not rule:
+            return list()
+        return rule['default']
+    
+    @finalize
+    @property
+    def local_manager_target_gids(self):
+        """Target group id's for local manager.
+        """
+        rule = self.local_manager_rule
+        if not rule:
+            return list()
+        return rule['target']
     
     @finalize
     @property
@@ -184,7 +204,8 @@ class LocalManagerUsersACL(LocalManagerACL):
     def local_manager_acl(self):
         if not self.local_manager_target_gids:
             return []
-        permissions = ['view', 'add', 'add_user', 'manage_membership']
+        permissions = ['view', 'add', 'add_user', 'edit', 'edit_user',
+                       'manage_expiration', 'manage_membership']
         return [(Allow,
                  authenticated_userid(get_current_request()),
                  permissions)]
@@ -195,10 +216,12 @@ class LocalManagerUserACL(LocalManagerACL):
     @finalize
     @property
     def local_manager_acl(self):
-        if not self.name in self.local_manager_target_uids:
-            return []
-        permissions = ['view', 'edit', 'edit_user', 'manage_expiration',
-                       'manage_membership']
+        # if self.name is None, User object was created by add model factory
+        if self.name is not None:
+            if not self.name in self.local_manager_target_uids:
+                return []
+        permissions = ['view', 'add', 'add_user', 'edit', 'edit_user',
+                       'manage_expiration', 'manage_membership']
         return [(Allow,
                  authenticated_userid(get_current_request()),
                  permissions)]

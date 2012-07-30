@@ -296,18 +296,23 @@ class UserAddForm(UserForm, Form):
         for key, val in self.model.attrs.items():
             extracted[key] = val
         users = self.model.parent.backend
-        id = extracted.pop('id')
+        uid = extracted.pop('id')
         password = extracted.pop('userPassword')
-        users.create(id, **extracted)
-        self.request.environ['next_resource'] = id
+        users.create(uid, **extracted)
         users()
+        if self.model.local_manager_consider_for_user:
+            groups = users.parent.groups
+            for gid in self.model.local_manager_default_gids:
+                groups[gid].add(uid)
+            groups()
+        self.request.environ['next_resource'] = uid
         if password is not UNSET:
-            users.passwd(id, None, password)
+            users.passwd(uid, None, password)
         self.model.parent.invalidate()
         # XXX: access already added user after invalidation.
         #      if not done, there's some kind of race condition with ajax
         #      continuation. figure out why.
-        self.model.parent[id]
+        self.model.parent[uid]
 
     def next(self, request):
         next_resource = self.request.environ.get('next_resource')

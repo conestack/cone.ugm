@@ -141,7 +141,9 @@ class ExpirationForm(Behavior):
         if cfg.attrs['users_account_expiration'] != 'True':
             return
         mode = 'edit'
-        if not has_permission('edit_user', self.model.parent, self.request):
+        if not has_permission('manage_expiration',
+                              self.model.parent,
+                              self.request):
             mode = 'display'
         if self.action_resource == 'edit':
             attr = cfg.attrs['users_expires_attr']
@@ -166,7 +168,7 @@ class ExpirationForm(Behavior):
     
     @plumb
     def save(_next, self, widget, data):
-        if has_permission('edit_user', self.model.parent, self.request):
+        if has_permission('manage_expiration', self.model.parent, self.request):
             cfg = ugm_general(self.model)
             if cfg.attrs['users_account_expiration'] == 'True':
                 attr = cfg.attrs['users_expires_attr']

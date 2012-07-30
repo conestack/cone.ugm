@@ -52,7 +52,7 @@ class PortraitForm(Behavior):
             return
         model = self.model
         request = self.request
-        if has_permission('manage', model.parent, request):
+        if has_permission('edit_user', model.parent, request):
             mode = 'edit'
         else:
             mode = 'display'
@@ -94,7 +94,7 @@ class PortraitForm(Behavior):
     @plumb
     def save(_next, self, widget, data):
         if not self.portrait_support or \
-          not has_permission('manage', self.model.parent, self.request):
+          not has_permission('edit_user', self.model.parent, self.request):
             _next(self, widget, data)
             return
         cfg = ugm_general(self.model)
