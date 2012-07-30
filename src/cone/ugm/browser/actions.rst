@@ -28,7 +28,7 @@ Test GroupAddUserAction::
     <Response at ... 200 OK>
     
     >>> res.body
-    '{"message": "Added user to group", "success": true}'
+    '{"message": "Added user \'uid99\' to group \'group99\'.", "success": true}'
     
     >>> request.params['id'] = 'uid100'
     >>> res = render_view_to_response(group, request, name='add_item')
@@ -58,7 +58,7 @@ Test GroupRemoveUserAction::
     >>> request.params['id'] = 'uid99'
     >>> res = render_view_to_response(group, request, name='remove_item')
     >>> res.body
-    '{"message": "Removed user from group", "success": true}'
+    '{"message": "Removed user \'uid99\' from group \'group99\'.", "success": true}'
     
     >>> group.model.users
     []

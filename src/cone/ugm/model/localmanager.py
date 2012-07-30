@@ -74,12 +74,17 @@ class LocalManager(Behavior):
     @finalize
     @property
     def local_management_enabled(self):
+        """Flag whether local management is enabled.
+        """
         general_settings = self.root['settings']['ugm_general']
         return general_settings.attrs.users_local_management_enabled == 'True'
     
     @finalize
     @property
     def local_manager_consider_for_user(self):
+        """Flag whether local manager ACL should be considered for current
+        authenticated user.
+        """
         if not self.local_management_enabled:
             return False
         request = get_current_request()
@@ -93,6 +98,11 @@ class LocalManager(Behavior):
     @finalize
     @property
     def local_manager_gid(self):
+        """Group id of local manager group of current authenticated member.
+        
+        Currently a user can be assigned only to one local manager group. If
+        mode than one local manager group is configured, an error is raised.
+        """
         config = self.root['settings']['ugm_localmanager'].attrs
         user = security.authenticated_user(get_current_request())
         if not user:
@@ -116,6 +126,8 @@ class LocalManager(Behavior):
     @finalize
     @property
     def local_manager_target_gids(self):
+        """Target group id's for local manager.
+        """
         adm_gid = self.local_manager_gid
         if not adm_gid:
             return list()
@@ -125,6 +137,8 @@ class LocalManager(Behavior):
     @finalize
     @property
     def local_manager_target_uids(self):
+        """Target uid's for local manager.
+        """
         groups = self.root['groups'].backend
         managed_uids = set()
         for gid in self.local_manager_target_gids:
@@ -135,6 +149,8 @@ class LocalManager(Behavior):
     
     @finalize
     def local_manager_is_default(self, adm_gid, gid):
+        """Check whether gid is default group for local manager group.
+        """
         config = self.root['settings']['ugm_localmanager'].attrs
         rule = config[adm_gid]
         if not gid in rule['target']:
@@ -168,9 +184,10 @@ class LocalManagerUsersACL(LocalManagerACL):
     def local_manager_acl(self):
         if not self.local_manager_target_gids:
             return []
+        permissions = ['view', 'add', 'add_user', 'manage_membership']
         return [(Allow,
                  authenticated_userid(get_current_request()),
-                 ['view', 'add', 'add_user'])]
+                 permissions)]
 
 
 class LocalManagerUserACL(LocalManagerACL):
@@ -180,10 +197,8 @@ class LocalManagerUserACL(LocalManagerACL):
     def local_manager_acl(self):
         if not self.name in self.local_manager_target_uids:
             return []
-        permissions = ['view', 'edit', 'edit_user', 'manage_expiration']
-        permissions.append('manage_membership')
-        #if not self.local_manager_is_default(self.local_manager_gid, self.name):
-        #    permissions.append('manage_membership')
+        permissions = ['view', 'edit', 'edit_user', 'manage_expiration',
+                       'manage_membership']
         return [(Allow,
                  authenticated_userid(get_current_request()),
                  permissions)]
@@ -196,9 +211,10 @@ class LocalManagerGroupsACL(LocalManagerACL):
     def local_manager_acl(self):
         if not self.local_manager_target_gids:
             return []
+        permissions = ['view', 'manage_membership']
         return [(Allow,
                  authenticated_userid(get_current_request()),
-                 ['view'])]
+                 permissions)]
 
 
 class LocalManagerGroupACL(LocalManagerACL):
@@ -208,9 +224,7 @@ class LocalManagerGroupACL(LocalManagerACL):
     def local_manager_acl(self):
         if not self.name in self.local_manager_target_gids:
             return []
-        permissions = ['view']
-        if not self.local_manager_is_default(self.local_manager_gid, self.name):
-            permissions.append('manage_membership')
+        permissions = ['view', 'manage_membership']
         return [(Allow,
                  authenticated_userid(get_current_request()),
                  permissions)]

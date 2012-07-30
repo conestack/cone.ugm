@@ -13,49 +13,49 @@ widgets:
         table_class: rules_array
     widgets:
     - rule:
-            factory: error:*duplicate_rule:compound
-            custom:
-                duplicate_rule:
-                    extractors:
-                        - context.duplicate_rule
+        factory: error:*duplicate_rule:compound
+        custom:
+            duplicate_rule:
+                extractors:
+                    - context.duplicate_rule
+        widgets:
+        - source:
+            factory: field:label:error:autocomplete
+            props:
+                label: i18n:localmanager_rule_source
+                required: i18n:localmanager_source_empty
+                source: javascript:ugm.localmanager.autocomplete_gid
+                minLength: 1
+                delay: 300
+                class: source_field
+        - targets:
+            factory: error:array
+            props:
+                label: i18n:localmanager_rule_target
+                required: i18n:localmanager_no_targets_for_source
+                error.position: after
+                sort: False
+                class: targets_field
+                table_class: targets_array
             widgets:
-            - source:
-                factory: field:label:error:autocomplete
-                props:
-                    label: i18n:localmanager_rule_source
-                    required: i18n:localmanager_source_empty
-                    source: javascript:ugm.localmanager.autocomplete_gid
-                    minLength: 1
-                    delay: 300
-                    class: source_field
-            - targets:
-                factory: error:array
-                props:
-                    label: i18n:localmanager_rule_target
-                    required: i18n:localmanager_no_targets_for_source
-                    error.position: after
-                    sort: False
-                    class: targets_field
-                    table_class: targets_array
+            - target:
+                factory: compound
                 widgets:
-                - target:
-                    factory: compound
-                    widgets:
-                    - gid:
-                        factory: error:*notsource:autocomplete
-                        props:
-                            required: i18n:localmanager_target_empty
-                            source: javascript:ugm.localmanager.autocomplete_gid
-                            minLength: 1
-                            delay: 300
-                        custom:
-                            notsource:
-                                extractors:
-                                    - context.target_not_source
-                    - default:
-                        factory: checkbox
-                        props:
-                            class: target_default
+                - gid:
+                    factory: error:*notsource:autocomplete
+                    props:
+                        required: i18n:localmanager_target_empty
+                        source: javascript:ugm.localmanager.autocomplete_gid
+                        minLength: 1
+                        delay: 300
+                    custom:
+                        notsource:
+                            extractors:
+                                - context.target_not_source
+                - default:
+                    factory: checkbox
+                    props:
+                        class: target_default
 - save:
     factory: submit
     props:

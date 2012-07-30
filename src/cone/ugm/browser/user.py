@@ -108,6 +108,10 @@ class Groups(object):
             groups = [g for g in groups if g.name in local_gids]
         
         ret = list()
+        
+        can_change = has_permission(
+            'manage_membership', obj.model.parent, obj.request)
+        
         attrlist = obj.group_attrs
         sort_attr = obj.group_default_sort_column
 
@@ -127,7 +131,7 @@ class Groups(object):
                 related = id in related_ids
 
             actions = list()
-            if has_permission('manage_membership', obj.model, obj.request):
+            if can_change:
                 action_id = 'add_item'
                 action_enabled = not bool(related)
                 action_title = _('add_user_to_selected_group',

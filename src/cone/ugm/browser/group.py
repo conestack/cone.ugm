@@ -106,6 +106,9 @@ class Principals(object):
         
         ret = list()
         
+        can_change = has_permission(
+            'manage_membership', obj.model.parent, obj.request)
+        
         for user in users:
             id = user.name
             attrs = user.attrs
@@ -120,7 +123,7 @@ class Principals(object):
                 related = id in member_ids
 
             actions = list()
-            if has_permission('manage_membership', obj.model, obj.request):
+            if can_change:
                 action_id = 'add_item'
                 action_enabled = not bool(related)
                 action_title = _('add_user_to_selected_group',
