@@ -441,11 +441,14 @@ class LocalManagerSettingsForm(Form):
             }]
         """
         rules = list()
-        for source, defs in self.model.attrs.items():
+        items = self.model.attrs.items()
+        items = sorted(items, key=lambda x: x[0])
+        for source, defs in items:
             rule = dict()
             rule['source'] = source
             rule['targets'] = list()
-            for gid in defs['target']:
+            targets = sorted(defs['target'])
+            for gid in targets:
                 rule['targets'].append({
                     'gid': gid,
                     'default': gid in defs['default']
@@ -481,8 +484,12 @@ class LocalManagerSettingsForm(Form):
         """save rules.
         """
         attrs = self.model.attrs
+        recent = attrs.keys()
         extracted = data.fetch('localmanager_settings.rules').extracted
         for entry in extracted:
+            source = entry['source']
+            if source in recent:
+                recent.remove(source)
             targets = set()
             defaults = set()
             for target in entry['targets']:
@@ -493,7 +500,9 @@ class LocalManagerSettingsForm(Form):
                 'target': list(targets),
                 'default': list(defaults),
             }
-            attrs[entry['source']] = rule
+            attrs[source] = rule
+        for source in recent:
+            del attrs[source]
         self.model()
 
 
