@@ -31,7 +31,7 @@ _ = TranslationStringFactory('cone.ugm')
 def _read_ugm_config():
     cfg_file = ldap_cfg_file()
     if not os.path.isfile(cfg_file):
-        raise ValueError('Configuration file %s does not exist.'% cfg_file)
+        raise ValueError('Configuration file %s does not exist.' % cfg_file)
     ugm_config = XMLProperties(cfg_file)
     return ugm_config
 
@@ -52,10 +52,10 @@ def _invalidate_ugm_settings(model):
 
 
 class UgmSettings(BaseNode):
-    
+
     def __call__(self):
         self.attrs()
-    
+
     def invalidate(self):
         _invalidate_ugm_settings(self)
         self.root['users'].invalidate()
@@ -64,7 +64,7 @@ class UgmSettings(BaseNode):
     @property
     def attrs(self):
         return self._config
-    
+
     @property
     def _config(self):
         if not hasattr(self, '_xml_config') or self._xml_config is None:
@@ -73,7 +73,7 @@ class UgmSettings(BaseNode):
 
 
 class GeneralSettings(UgmSettings):
-    
+
     @instance_property
     def metadata(self):
         metadata = Metadata()
@@ -84,7 +84,7 @@ class GeneralSettings(UgmSettings):
 
 
 class ServerSettings(UgmSettings):
-    
+
     @instance_property
     def metadata(self):
         metadata = Metadata()
@@ -92,15 +92,15 @@ class ServerSettings(UgmSettings):
         metadata.description = _('ldap_props_node_description',
                                  'LDAP properties')
         return metadata
-    
+
     @property
     def ldap_connectivity(self):
         try:
             props = self.ldap_props
         except ValueError:
             return False
-        return testLDAPConnectivity(props=props) == 'success'    
-    
+        return testLDAPConnectivity(props=props) == 'success'
+
     @property
     def ldap_props(self):
         if not hasattr(self, '_ldap_props') or self._ldap_props is None:
@@ -114,7 +114,7 @@ class ServerSettings(UgmSettings):
 
 
 class UsersSettings(UgmSettings):
-    
+
     @instance_property
     def metadata(self):
         metadata = Metadata()
@@ -122,7 +122,7 @@ class UsersSettings(UgmSettings):
         metadata.description = _('user_settings_node_description',
                                  'LDAP users settings')
         return metadata
-    
+
     @property
     def ldap_users_container_valid(self):
         try:
@@ -131,7 +131,7 @@ class UsersSettings(UgmSettings):
             return len(node) >= 0
         except ldap.LDAPError:
             return False
-    
+
     @property
     def ldap_ucfg(self):
         if not hasattr(self, '_ldap_ucfg') or self._ldap_ucfg is None:
@@ -150,7 +150,8 @@ class UsersSettings(UgmSettings):
             expiresUnit = EXPIRATION_DAYS
             # from general settings. be aware that all config options are
             # currently available on ``self._config``. This might change in
-            # future and below settings must be read from general settings then.
+            # future and below settings must be read from general settings
+            # then.
             if config.users_account_expiration == 'True':
                 expiresAttr = config.users_expires_attr
                 expiresUnit = int(config.users_expires_unit)
@@ -172,7 +173,7 @@ class UsersSettings(UgmSettings):
 
 
 class GroupsSettings(UgmSettings):
-    
+
     @instance_property
     def metadata(self):
         metadata = Metadata()
@@ -180,7 +181,7 @@ class GroupsSettings(UgmSettings):
         metadata.description = _('group_settings_node_description',
                                  'LDAP groups settings')
         return metadata
-    
+
     @property
     def ldap_groups_container_valid(self):
         try:
@@ -189,7 +190,7 @@ class GroupsSettings(UgmSettings):
             return len(node) >= 0
         except ldap.LDAPError:
             return False
-    
+
     @property
     def ldap_gcfg(self):
         if not hasattr(self, '_ldap_gcfg') or self._ldap_gcfg is None:
@@ -215,7 +216,7 @@ class GroupsSettings(UgmSettings):
 
 
 class RolesSettings(UgmSettings):
-    
+
     @instance_property
     def metadata(self):
         metadata = Metadata()
@@ -223,7 +224,7 @@ class RolesSettings(UgmSettings):
         metadata.description = _('role_settings_node_description',
                                  'LDAP roles settings')
         return metadata
-    
+
     @property
     def ldap_roles_container_valid(self):
         try:
@@ -232,7 +233,7 @@ class RolesSettings(UgmSettings):
             return len(node) >= 0
         except ldap.LDAPError:
             return False
-    
+
     @property
     def ldap_rcfg(self):
         if not hasattr(self, '_ldap_rcfg') or self._ldap_rcfg is None:
@@ -258,10 +259,10 @@ class RolesSettings(UgmSettings):
 
 
 class LocalManagerSettings(BaseNode):
-    
+
     def attributes_factory(self, name=None, parent=None):
         return LocalManagerConfigAttributes(localmanager_cfg_file())
-    
+
     @instance_property
     def metadata(self):
         metadata = Metadata()
@@ -270,11 +271,11 @@ class LocalManagerSettings(BaseNode):
         metadata.description = _('localmanager_settings_node_description',
                                  'Local Manager Settings')
         return metadata
-    
+
     @property
     def enabled(self):
         general_settings = self.root['settings']['ugm_general']
         return general_settings.attrs.users_local_management_enabled == 'True'
-    
+
     def __call__(self):
         self.attrs()

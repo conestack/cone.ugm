@@ -1,5 +1,4 @@
 import os
-import types
 from lxml import etree
 from plumber import (
     Behavior,
@@ -23,7 +22,7 @@ from cone.app import security
 class LocalManagerConfig(DictStorage):
     """Local Management configuration storage.
     """
-    
+
     @finalize
     def load(self):
         path = self.file_path
@@ -40,7 +39,7 @@ class LocalManagerConfig(DictStorage):
                         new_rule[tag_name] = list()
                         for group in prop.getchildren():
                             new_rule[tag_name].append(group.text)
-    
+
     @finalize
     def __call__(self):
         root = etree.Element('localmanager')
@@ -61,7 +60,7 @@ class LocalManagerConfigAttributes(object):
         Nodify,
         LocalManagerConfig,
     )
-    
+
     def __init__(self, path):
         self.file_path = path
         self.load()
@@ -70,7 +69,7 @@ class LocalManagerConfigAttributes(object):
 class LocalManager(Behavior):
     """Behavior providing local manager information for authenticated user.
     """
-    
+
     @finalize
     @property
     def local_management_enabled(self):
@@ -78,7 +77,7 @@ class LocalManager(Behavior):
         """
         general_settings = self.root['settings']['ugm_general']
         return general_settings.attrs.users_local_management_enabled == 'True'
-    
+
     @finalize
     @property
     def local_manager_consider_for_user(self):
@@ -94,12 +93,12 @@ class LocalManager(Behavior):
         if 'admin' in roles or 'manager' in roles:
             return False
         return True
-    
+
     @finalize
     @property
     def local_manager_gid(self):
         """Group id of local manager group of current authenticated member.
-        
+
         Currently a user can be assigned only to one local manager group. If
         mode than one local manager group is configured, an error is raised.
         """
@@ -120,9 +119,10 @@ class LocalManager(Behavior):
                    u"groups %s but only one management group allowed for "
                    u"each user. Please contact System Administrator in "
                    u"order to fix this problem.")
-            raise Exception(msg % ', '.join(["'%s'" % gid for gid in adm_gids]))
+            exc = msg % ', '.join(["'%s'" % gid for gid in adm_gids])
+            raise Exception(exc)
         return adm_gids[0]
-    
+
     @finalize
     @property
     def local_manager_rule(self):
@@ -133,7 +133,7 @@ class LocalManager(Behavior):
             return None
         config = self.root['settings']['ugm_localmanager'].attrs
         return config[adm_gid]
-    
+
     @finalize
     @property
     def local_manager_default_gids(self):
@@ -143,7 +143,7 @@ class LocalManager(Behavior):
         if not rule:
             return list()
         return rule['default']
-    
+
     @finalize
     @property
     def local_manager_target_gids(self):
@@ -153,7 +153,7 @@ class LocalManager(Behavior):
         if not rule:
             return list()
         return rule['target']
-    
+
     @finalize
     @property
     def local_manager_target_uids(self):
@@ -166,7 +166,7 @@ class LocalManager(Behavior):
             if group:
                 managed_uids.update(group.member_ids)
         return list(managed_uids)
-    
+
     @finalize
     def local_manager_is_default(self, adm_gid, gid):
         """Check whether gid is default group for local manager group.
@@ -187,7 +187,7 @@ class LocalManagerACL(LocalManager):
     def local_manager_acl(self):
         raise NotImplementedError(u"Abstract ``LocalManagerACL`` does not "
                                   u"implement ``local_manager_acl``")
-    
+
     @plumb
     @property
     def __acl__(_next, self):
@@ -198,7 +198,7 @@ class LocalManagerACL(LocalManager):
 
 
 class LocalManagerUsersACL(LocalManagerACL):
-    
+
     @finalize
     @property
     def local_manager_acl(self):
@@ -212,7 +212,7 @@ class LocalManagerUsersACL(LocalManagerACL):
 
 
 class LocalManagerUserACL(LocalManagerACL):
-    
+
     @finalize
     @property
     def local_manager_acl(self):
@@ -228,7 +228,7 @@ class LocalManagerUserACL(LocalManagerACL):
 
 
 class LocalManagerGroupsACL(LocalManagerACL):
-    
+
     @finalize
     @property
     def local_manager_acl(self):
@@ -241,7 +241,7 @@ class LocalManagerGroupsACL(LocalManagerACL):
 
 
 class LocalManagerGroupACL(LocalManagerACL):
-    
+
     @finalize
     @property
     def local_manager_acl(self):

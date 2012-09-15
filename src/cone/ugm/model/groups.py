@@ -26,7 +26,7 @@ def groups_factory():
 class Groups(BaseNode):
     __metaclass__ = plumber
     __plumbing__ = LocalManagerGroupsACL
-    
+
     node_info_name = 'groups'
 
     @instance_property
@@ -34,7 +34,7 @@ class Groups(BaseNode):
         props = Properties()
         props.in_navtree = True
         return props
-    
+
     @instance_property
     def metadata(self):
         metadata = Metadata()
@@ -62,7 +62,7 @@ class Groups(BaseNode):
     @locktree
     def __call__(self):
         self.backend()
-    
+
     @locktree
     def __iter__(self):
         try:

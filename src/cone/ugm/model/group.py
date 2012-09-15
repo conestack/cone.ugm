@@ -17,21 +17,21 @@ _ = TranslationStringFactory('cone.ugm')
 class Group(AdapterNode):
     __metaclass__ = plumber
     __plumbing__ = LocalManagerGroupACL
-    
+
     node_info_name = 'group'
-    
+
     @instance_property
     def properties(self):
         props = Properties()
         return props
-    
+
     @instance_property
     def metadata(self):
         metadata = Metadata()
         metadata.title = _('group_node', 'Group')
         metadata.description = _('group_node_description', 'Group')
         return metadata
-    
+
     @locktree
     def __call__(self):
         self.model()
