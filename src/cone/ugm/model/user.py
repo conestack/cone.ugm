@@ -17,21 +17,21 @@ _ = TranslationStringFactory('cone.ugm')
 class User(AdapterNode):
     __metaclass__ = plumber
     __plumbing__ = LocalManagerUserACL
-    
+
     node_info_name = 'user'
-    
+
     @instance_property
     def properties(self):
         props = Properties()
         return props
-    
+
     @instance_property
     def metadata(self):
         metadata = Metadata()
         metadata.title = _('user_node', 'User')
         metadata.description = _('user_node_description', 'User')
         return metadata
-    
+
     @locktree
     def __call__(self):
         self.model()

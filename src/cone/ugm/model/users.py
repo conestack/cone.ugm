@@ -26,7 +26,7 @@ def users_factory():
 class Users(BaseNode):
     __metaclass__ = plumber
     __plumbing__ = LocalManagerUsersACL
-    
+
     node_info_name = 'users'
 
     @instance_property
@@ -34,7 +34,7 @@ class Users(BaseNode):
         props = Properties()
         props.in_navtree = True
         return props
-    
+
     @instance_property
     def metadata(self):
         metadata = Metadata()
@@ -42,11 +42,11 @@ class Users(BaseNode):
         metadata.description = _('users_node_description',
                                  'Container for Users')
         return metadata
-    
+
     @property
     def backend(self):
         return ugm_backend(self).users
-    
+
     @locktree
     def invalidate(self, key=None):
         if key is None:
@@ -58,11 +58,11 @@ class Users(BaseNode):
             del self[key]
         except KeyError:
             pass
-    
+
     @locktree
     def __call__(self):
         self.backend()
-    
+
     @locktree
     def __iter__(self):
         try:

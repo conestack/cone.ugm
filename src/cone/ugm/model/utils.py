@@ -1,9 +1,4 @@
 import os
-from node.ext.ldap.ugm import (
-    UsersConfig,
-    GroupsConfig,
-    Ugm,
-)
 import cone.ugm
 
 
