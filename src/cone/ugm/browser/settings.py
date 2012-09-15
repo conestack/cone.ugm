@@ -13,7 +13,6 @@ from node.ext.ldap import (
     LDAPNode,
 )
 from yafowil.base import (
-    factory,
     UNSET,
     ExtractionError,
 )
@@ -67,30 +66,30 @@ def decode_dn(dn):
 
 
 class CreateContainerTrigger(Tile):
-    
+
     @property
     def creation_dn(self):
         raise NotImplementedError(u"Abstract ``CreateContainerTrigger`` "
                                   u"does not implement ``creation_dn``")
-    
+
     @property
     def creation_target(self):
         dn = encode_dn(self.creation_dn)
         query = make_query(dn=dn)
         return make_url(self.request, node=self.model, query=query)
-    
+
     @property
     def ldap_connectivity(self):
         return self.model.parent['ugm_server'].ldap_connectivity
 
 
 class CreateContainerAction(Tile):
-    
+
     @property
     def continuation(self):
         raise NotImplementedError(u"Abstract ``CreateContainerAction`` "
                                   u"does not implement ``continuation``")
-    
+
     def render(self):
         try:
             message = self.create_container()
@@ -105,7 +104,7 @@ class CreateContainerAction(Tile):
                   mapping={'error': str(e)}))
             ajax_message(self.request, message, 'error')
         return u''
-    
+
     def create_container(self):
         dn = decode_dn(self.request.params.get('dn', ''))
         localizer = get_localizer(self.request)
@@ -151,14 +150,14 @@ registerTile('content',
 class GeneralSettingsForm(Form):
     __metaclass__ = plumber
     __plumbing__ = SettingsBehavior, YAMLForm
-    
+
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/general_settings.yaml'
-    
+
     @property
     def message_factory(self):
         return _
-    
+
     def save(self, widget, data):
         model = self.model
         for attr_name in ['default_membership_assignment_widget',
@@ -185,7 +184,7 @@ class GeneralSettingsForm(Form):
 @tile('content', 'templates/server_settings.pt',
       interface=ServerSettings, permission='manage')
 class ServerSettingsTile(ProtectedContentTile):
-    
+
     @property
     def ldap_status(self):
         if self.model.ldap_connectivity:
@@ -197,14 +196,14 @@ class ServerSettingsTile(ProtectedContentTile):
 class ServerSettingsForm(Form):
     __metaclass__ = plumber
     __plumbing__ = SettingsBehavior, YAMLForm
-    
+
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/server_settings.yaml'
-    
+
     @property
     def message_factory(self):
         return _
-    
+
     def save(self, widget, data):
         model = self.model
         for attr_name in ['uri', 'user']:
@@ -223,11 +222,11 @@ class ServerSettingsForm(Form):
 @tile('content', 'templates/users_settings.pt',
       interface=UsersSettings, permission='manage')
 class UsersSettingsTile(ProtectedContentTile, CreateContainerTrigger):
-    
+
     @property
     def creation_dn(self):
         return self.model.attrs.users_dn
-    
+
     @property
     def ldap_users(self):
         if self.model.ldap_users_container_valid:
@@ -248,14 +247,14 @@ class UsersCreateContainerAction(CreateContainerAction):
 class UsersSettingsForm(Form, VocabMixin):
     __metaclass__ = plumber
     __plumbing__ = SettingsBehavior, YAMLForm
-    
+
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/users_settings.yaml'
-    
+
     @property
     def message_factory(self):
         return _
-    
+
     @property
     def users_aliases_attrmap(self):
         attrs = self.model.attrs
@@ -265,7 +264,7 @@ class UsersSettingsForm(Form, VocabMixin):
         users_aliases_attrmap['login'] = \
             attrs.users_aliases_attrmap.get('login')
         return users_aliases_attrmap
-    
+
     def save(self, widget, data):
         model = self.model
         for attr_name in ['users_dn',
@@ -288,11 +287,11 @@ class UsersSettingsForm(Form, VocabMixin):
 @tile('content', 'templates/groups_settings.pt',
       interface=GroupsSettings, permission='manage')
 class GroupsSettingsTile(ProtectedContentTile, CreateContainerTrigger):
-    
+
     @property
     def creation_dn(self):
         return self.model.attrs.groups_dn
-    
+
     @property
     def ldap_groups(self):
         if self.model.ldap_groups_container_valid:
@@ -302,7 +301,7 @@ class GroupsSettingsTile(ProtectedContentTile, CreateContainerTrigger):
 
 @tile('create_container', interface=GroupsSettings, permission='manage')
 class GroupsCreateContainerAction(CreateContainerAction):
-    
+
     @property
     def continuation(self):
         url = make_url(self.request, node=self.model)
@@ -313,14 +312,14 @@ class GroupsCreateContainerAction(CreateContainerAction):
 class GroupsSettingsForm(Form, VocabMixin):
     __metaclass__ = plumber
     __plumbing__ = SettingsBehavior, YAMLForm
-    
+
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/groups_settings.yaml'
-    
+
     @property
     def message_factory(self):
         return _
-    
+
     @property
     def groups_aliases_attrmap(self):
         attrs = self.model.attrs
@@ -328,7 +327,7 @@ class GroupsSettingsForm(Form, VocabMixin):
         groups_aliases_attrmap['rdn'] = attrs.groups_aliases_attrmap.get('rdn')
         groups_aliases_attrmap['id'] = attrs.groups_aliases_attrmap.get('id')
         return groups_aliases_attrmap
-    
+
     def save(self, widget, data):
         model = self.model
         for attr_name in ['groups_dn',
@@ -351,11 +350,11 @@ class GroupsSettingsForm(Form, VocabMixin):
 @tile('content', 'templates/roles_settings.pt',
       interface=RolesSettings, permission='manage')
 class RolesSettingsTile(ProtectedContentTile, CreateContainerTrigger):
-    
+
     @property
     def creation_dn(self):
         return self.model.attrs.roles_dn
-    
+
     @property
     def ldap_roles(self):
         if self.model.ldap_roles_container_valid:
@@ -376,14 +375,14 @@ class RolesCreateContainerAction(CreateContainerAction):
 class RolesSettingsForm(Form, VocabMixin):
     __metaclass__ = plumber
     __plumbing__ = SettingsBehavior, YAMLForm
-    
+
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/roles_settings.yaml'
-    
+
     @property
     def message_factory(self):
         return _
-    
+
     @property
     def roles_aliases_attrmap(self):
         attrs = self.model.attrs
@@ -391,7 +390,7 @@ class RolesSettingsForm(Form, VocabMixin):
         roles_aliases_attrmap['rdn'] = attrs.roles_aliases_attrmap.get('rdn')
         roles_aliases_attrmap['id'] = attrs.roles_aliases_attrmap.get('id')
         return roles_aliases_attrmap
-    
+
     def save(self, widget, data):
         model = self.model
         for attr_name in ['roles_dn',
@@ -420,18 +419,18 @@ class LocalManagerSettingsTile(ProtectedContentTile):
 class LocalManagerSettingsForm(Form):
     __metaclass__ = plumber
     __plumbing__ = SettingsBehavior, YAMLForm
-    
+
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/localmanager_settings.yaml'
-    
+
     @property
     def message_factory(self):
         return _
-    
+
     @property
     def rules_value(self):
         """Return value format:
-        
+
             return [{
                 'source': 'aaa',
                 'targets': [{
@@ -455,7 +454,7 @@ class LocalManagerSettingsForm(Form):
                 })
             rules.append(rule)
         return rules
-    
+
     def duplicate_rule(self, widget, data):
         """Check for duplicate rules.
         """
@@ -471,7 +470,7 @@ class LocalManagerSettingsForm(Form):
                 raise ExtractionError(_('localmanager_duplicate_rule_error'))
             exists.append(other)
         return data.extracted
-    
+
     def target_not_source(self, widget, data):
         """Check whether source and target are same.
         """
@@ -479,7 +478,7 @@ class LocalManagerSettingsForm(Form):
         if source == data.extracted:
             raise ExtractionError(_('localmanager_target_is_source_error'))
         return data.extracted
-    
+
     def save(self, widget, data):
         """save rules.
         """

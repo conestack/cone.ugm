@@ -1,7 +1,7 @@
 from cone.app.browser.batch import Batch
 from cone.app.browser.utils import (
     nodepath,
-    make_query, 
+    make_query,
     make_url,
 )
 
@@ -9,7 +9,7 @@ from cone.app.browser.utils import (
 class ColumnBatch(Batch):
     """Abstract UGM column batch.
     """
-    
+
     def __init__(self, name, items, slicesize):
         self.name = name
         #self.name = 'columnbatch'
@@ -17,11 +17,11 @@ class ColumnBatch(Batch):
         self.attribute = 'render'
         self.items = items
         self.slicesize = slicesize
-    
+
     @property
     def display(self):
         return len(self.vocab) > 1
-    
+
     @property
     def vocab(self):
         ret = list()
@@ -41,23 +41,23 @@ class ColumnBatch(Batch):
                 'url': url,
             })
         return ret
-    
+
     @property
     def firstpage(self):
         return None
-    
+
     @property
     def prevpage(self):
         return None
-    
+
     @property
     def nextpage(self):
         return None
-    
+
     @property
     def lastpage(self):
         return None
-    
+
     @property
     def leftellipsis(self):
         return ''

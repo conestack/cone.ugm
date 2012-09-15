@@ -12,21 +12,21 @@ _ = TranslationStringFactory('cone.ugm')
 
 
 class PrincipalRolesForm(Behavior):
-    
+
     @default
     @property
     def roles_vocab(self):
         from cone.app.security import DEFAULT_ROLES
         return DEFAULT_ROLES
-    
+
     @default
     @property
     def roles_support(self):
         return ugm_roles(self.model).ldap_roles_container_valid
-    
+
     @plumb
     def prepare(_next, self):
-        """Hook after prepare and set 'principal_roles' as selection to 
+        """Hook after prepare and set 'principal_roles' as selection to
         ``self.form``.
         """
         _next(self)
@@ -53,7 +53,7 @@ class PrincipalRolesForm(Behavior):
         )
         save_widget = self.form['save']
         self.form.insertbefore(roles_widget, save_widget)
-    
+
     @plumb
     def save(_next, self, widget, data):
         _next(self, widget, data)
@@ -66,8 +66,8 @@ class PrincipalRolesForm(Behavior):
             principal = self.model.model
             existing_roles = principal.roles
         else:
-            id = data.fetch('%s.id' % self.form_name).extracted
-            principal = self.model.parent[id].model
+            uid = data.fetch('%s.id' % self.form_name).extracted
+            principal = self.model.parent[uid].model
         new_roles = data.fetch('%s.principal_roles' % self.form_name).extracted
         removed_roles = list()
         for role in existing_roles:

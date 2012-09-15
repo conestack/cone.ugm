@@ -46,7 +46,7 @@ _ = TranslationStringFactory('cone.ugm')
 class UserLeftColumn(Column):
 
     add_label = _('add_user', 'Add User')
-    
+
     @property
     def can_add(self):
         return has_permission('add_user', self.model.parent, self.request)
@@ -59,7 +59,7 @@ class UserLeftColumn(Column):
 @tile('rightcolumn', 'templates/right_column.pt',
       interface=User, permission='view')
 class UserRightColumn(Tile):
-    
+
     @property
     def default_widget(self):
         settings = ugm_general(self.model)
@@ -86,13 +86,13 @@ class Groups(object):
         user = appuser.model
         groups = user.groups
         related_ids = [g.name for g in groups]
-        
+
         # always True if we list members only, otherwise will be set
         # in the loop below
         related = self.related_only
-        
+
         available_only = self.available_only
-        
+
         if related and available_only:
             raise Exception(u"Invalid object settings.")
 
@@ -101,34 +101,34 @@ class Groups(object):
             groups = obj.model.root['groups'].backend.values()
             if available_only:
                 groups = [g for g in groups if not g.name in related_ids]
-        
+
         # reduce for local manager
         if obj.model.local_manager_consider_for_user:
             local_gids = obj.model.local_manager_target_gids
             groups = [g for g in groups if g.name in local_gids]
-        
+
         ret = list()
-        
+
         can_change = has_permission(
             'manage_membership', obj.model.parent, obj.request)
-        
+
         attrlist = obj.group_attrs
         sort_attr = obj.group_default_sort_column
 
         # XXX: These should be the mapped attributes - lack of backend support
         for group in groups:
-            id = group.name
+            gid = group.name
             attrs = group.attrs
 
             # XXX: resource was only set for alluserlisting
             item_target = make_url(obj.request, path=group.path[1:])
-            action_query = make_query(id=id)
+            action_query = make_query(id=gid)
             action_target = make_url(obj.request,
                                      node=appuser,
                                      query=action_query)
 
             if not self.related_only:
-                related = id in related_ids
+                related = gid in related_ids
 
             actions = list()
             if can_change:
@@ -147,12 +147,13 @@ class Groups(object):
                 remove_item_action = obj.create_action(
                     action_id, action_enabled, action_title, action_target)
                 actions.append(remove_item_action)
-            
+
             vals = [obj.extract_raw(attrs, attr) for attr in attrlist]
             sort = obj.extract_raw(attrs, sort_attr)
             content = obj.item_content(*vals)
             current = False
-            item = obj.create_item(sort, item_target, content, current, actions)
+            item = obj.create_item(sort, item_target,
+                                   content, current, actions)
             ret.append(item)
         return ret
 
@@ -186,20 +187,19 @@ class AllGroupsColumnListing(ColumnListing):
 @tile('inoutlisting', 'templates/in_out.pt',
       interface=User, permission='view')
 class InOutListing(ColumnListing):
-    
     selected_items = Groups(related_only=True)
     available_items = Groups(available_only=True)
-    
+
     @property
     def group_attrs(self):
         settings = ugm_general(self.model)
         return [settings.attrs['group_display_name_attr']]
-    
+
     @property
     def group_default_sort_column(self):
         settings = ugm_general(self.model)
         return settings.attrs['group_display_name_attr']
-    
+
     @property
     def display_control_buttons(self):
         return True
@@ -208,21 +208,20 @@ class InOutListing(ColumnListing):
 
 
 class UserForm(PrincipalForm):
-    
     form_name = 'userform'
-    
+
     @property
     def form_attrmap(self):
         settings = ugm_users(self.model)
         return settings.attrs.users_form_attrmap
-    
+
     @property
     def form_field_definitions(self):
         """Hook optional_login extractor if necessary for form defaults.
         """
         schema = copy.deepcopy(form_field_definitions.user)
-        id, login = self._get_auth_attrs()
-        if id != login:
+        uid, login = self._get_auth_attrs()
+        if uid != login:
             field = schema.get(login, schema['default'])
             if field['chain'].find('*optional_login') == -1:
                 field['chain'] = '%s:%s' % (
@@ -235,19 +234,20 @@ class UserForm(PrincipalForm):
         return schema
 
     def exists(self, widget, data):
-        id = data.extracted
-        if id is UNSET:
+        uid = data.extracted
+        if uid is UNSET:
             return data.extracted
-        if id in self.model.parent.backend:
+        if uid in self.model.parent.backend:
             message = _('user_already_exists',
                         default="User ${uid} already exists.",
-                        mapping={'uid': id})
+                        mapping={'uid': uid})
             raise ExtractionError(message)
         return data.extracted
-    
+
     def optional_login(self, widget, data):
-        id, login = self._get_auth_attrs()
-        res = self.model.parent.backend.search(criteria={login: data.extracted})
+        login = self._get_auth_attrs()[1]
+        res = self.model.parent.backend.search(
+            criteria={login: data.extracted})
         # no entries found with same login attribute set.
         if not res:
             return data.extracted
@@ -259,7 +259,7 @@ class UserForm(PrincipalForm):
                     default="User login ${login} not unique.",
                     mapping={'login': data.extracted})
         raise ExtractionError(message)
-    
+
     def _get_auth_attrs(self):
         config = ugm_users(self.model)
         aliases = config.attrs.users_aliases_attrmap
@@ -277,7 +277,7 @@ class UserAddForm(UserForm, Form):
         AutoIncrementForm,
         AddFormFiddle,
     )
-    
+
     show_heading = False
     show_contextmenu = False
 
@@ -340,7 +340,7 @@ class UserEditForm(UserForm, Form):
         ExpirationForm,
         EditFormFiddle,
     )
-    
+
     show_heading = False
     show_contextmenu = False
 
@@ -350,10 +350,10 @@ class UserEditForm(UserForm, Form):
         for key in attrmap:
             if key in ['id', 'login', 'userPassword']:
                 continue
-            extracted = data.fetch('userform.%s' % key).extracted            
+            extracted = data.fetch('userform.%s' % key).extracted
             if not extracted:
                 if key in self.model.attrs:
-                    del self.model.attrs[key] 
+                    del self.model.attrs[key]
             else:
                 self.model.attrs[key] = extracted
         # set object classes if missing
@@ -368,8 +368,8 @@ class UserEditForm(UserForm, Form):
         password = data.fetch('userform.userPassword').extracted
         self.model.model.context()
         if password is not UNSET:
-            id = self.model.name
-            self.model.parent.backend.passwd(id, None, password)
+            uid = self.model.name
+            self.model.parent.backend.passwd(uid, None, password)
 
     def next(self, request):
         url = make_url(request.request, node=self.model)

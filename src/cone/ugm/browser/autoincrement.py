@@ -11,16 +11,16 @@ _ = TranslationStringFactory('cone.ugm')
 
 class AutoIncrementForm(Behavior):
     """Plumbing behavior for setting user id by auto increment logic.
-    
+
     For user add form.
     """
-    
+
     @default
     @property
     def autoincrement_support(self):
         cfg = ugm_general(self.model)
         return cfg.attrs['user_id_autoincrement'] == 'True'
-    
+
     @default
     @property
     def next_principal_id(self):
@@ -48,7 +48,7 @@ class AutoIncrementForm(Behavior):
         if principal_id < default:
             principal_id = default
         return u'%s%i' % (prefix, principal_id)
-    
+
     @plumb
     def prepare(_next, self):
         """Hook after prepare and set 'id' disabled.
@@ -60,7 +60,7 @@ class AutoIncrementForm(Behavior):
         del id_field.attrs['required']
         id_field.attrs['disabled'] = 'disabled'
         id_field.getter = _('auto_incremented', 'auto incremented')
-    
+
     @plumb
     def save(_next, self, widget, data):
         if self.autoincrement_support:

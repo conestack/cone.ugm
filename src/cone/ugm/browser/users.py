@@ -27,7 +27,7 @@ class UsersLeftColumn(Tile):
         return make_url(self.request,
                         node=self.model.root['users'],
                         query=make_query(factory=u'user'))
-    
+
     @property
     def can_add(self):
         return has_permission('add_user', self.model, self.request)

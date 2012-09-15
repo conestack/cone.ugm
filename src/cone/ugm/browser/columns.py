@@ -16,6 +16,6 @@ registerTile('content',
 class Column(Tile):
     """Abstract column.
     """
-    
+
     def _render(self, model, name):
         return render_tile(model, self.request, name)

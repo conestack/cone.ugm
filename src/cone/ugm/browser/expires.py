@@ -30,12 +30,12 @@ _ = TranslationStringFactory('cone.ugm')
 
 def expiration_extractor(widget, data):
     """Extract expiration information.
-    
+
     - If active flag not set, Account is disabled (value 0).
     - If active flag set and value is UNSET, account never expires.
     - If active flag set and datetime choosen, account expires at given
       datetime.
-    - Timestamp in seconds since epoch is returned. 
+    - Timestamp in seconds since epoch is returned.
     """
     active = int(data.request.get('%s.active' % widget.name, '0'))
     if not active:
@@ -98,7 +98,7 @@ def expiration_display_renderer(widget, data):
 factory.register(
     'expiration',
     extractors=[generic_extractor, generic_required_extractor,
-                datetime_extractor, expiration_extractor], 
+                datetime_extractor, expiration_extractor],
     edit_renderers=[expiration_edit_renderer],
     display_renderers=[expiration_display_renderer])
 
@@ -130,10 +130,10 @@ factory.doc['props']['expiration.format'] = \
 class ExpirationForm(Behavior):
     """Expiration field plumbing behavior for user forms.
     """
-    
+
     @plumb
     def prepare(_next, self):
-        """Hook after prepare and set expiration widget to 
+        """Hook after prepare and set expiration widget to
         ``self.form``.
         """
         _next(self)
@@ -165,10 +165,12 @@ class ExpirationForm(Behavior):
         )
         save_widget = self.form['save']
         self.form.insertbefore(expires_widget, save_widget)
-    
+
     @plumb
     def save(_next, self, widget, data):
-        if has_permission('manage_expiration', self.model.parent, self.request):
+        if has_permission('manage_expiration',
+                          self.model.parent,
+                          self.request):
             cfg = ugm_general(self.model)
             if cfg.attrs['users_account_expiration'] == 'True':
                 attr = cfg.attrs['users_expires_attr']

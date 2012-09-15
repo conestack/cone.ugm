@@ -17,13 +17,13 @@ class SiteName(Tile):
 
 @tile('leftcolumn', interface=AppRoot, permission='view')
 class RootLeftColumn(Column):
-    
+
     def render(self):
         return self._render(self.model['users'], 'leftcolumn')
 
 
 @tile('rightcolumn', interface=AppRoot, permission='view')
 class RootRightColumn(Column):
-    
+
     def render(self):
         return self._render(self.model['users'], 'rightcolumn')

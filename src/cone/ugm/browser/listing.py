@@ -38,9 +38,9 @@ class ColumnListing(Tile):
     @property
     def sortheader(self):
         ret = list()
-        for id, name in self.list_columns:
+        for cid, name in self.list_columns:
             ret.append({
-                'id': 'sort_%s' % id,
+                'id': 'sort_%s' % cid,
                 'default': False,
                 'name': name,
             })
@@ -86,9 +86,9 @@ class ColumnListing(Tile):
             ],
         }
         """
-        raise NotImplementedError(                          #pragma NO COVERAGE
-            u"Abstract ``ColumnListing`` does not "         #pragma NO COVERAGE
-            u"implement ``items`` property")                #pragma NO COVERAGE
+        raise NotImplementedError(                         # pragma NO COVERAGE
+            u"Abstract ``ColumnListing`` does not "        # pragma NO COVERAGE
+            u"implement ``items`` property")               # pragma NO COVERAGE
 
     def item_content(self, *args):
         ret = u''
@@ -107,9 +107,9 @@ class ColumnListing(Tile):
             'actions': actions,
         }
 
-    def create_action(self, id, enabled, title, target):
+    def create_action(self, aid, enabled, title, target):
         return {
-            'id': id,
+            'id': aid,
             'enabled': enabled,
             'title': title,
             'target': target,
@@ -120,7 +120,7 @@ class ColumnListing(Tile):
         if type(raw) in [types.ListType, types.TupleType]:
             return raw[0]
         return raw and raw or ''
-    
+
     def calc_list_columns(self, defs):
         ret = list()
         i = 1
@@ -128,7 +128,7 @@ class ColumnListing(Tile):
             ret.append(('col_%i' % i, val))
             i += 1
         return ret
-    
+
     @property
     def user_attrs(self):
         settings = ugm_users(self.model)
@@ -138,25 +138,25 @@ class ColumnListing(Tile):
     def group_attrs(self):
         settings = ugm_groups(self.model)
         return settings.attrs.groups_listing_columns.keys()
-    
+
     @property
     def user_listing_criteria(self):
         if not self.model.local_manager_consider_for_user:
             return None
         ids = self.model.local_manager_target_uids
         if not ids:
-            ids = [str(uuid.uuid4())] # ensure criteria forces empty result
+            ids = [str(uuid.uuid4())]  # ensure criteria forces empty result
         return dict(id=ids)
-    
+
     @property
     def group_listing_criteria(self):
         if not self.model.local_manager_consider_for_user:
             return None
         ids = self.model.local_manager_target_gids
         if not ids:
-            ids = [str(uuid.uuid4())] # ensure criteria forces empty result
+            ids = [str(uuid.uuid4())]  # ensure criteria forces empty result
         return dict(id=ids)
-    
+
     @property
     def user_list_columns(self):
         settings = ugm_users(self.model)
@@ -168,7 +168,7 @@ class ColumnListing(Tile):
         settings = ugm_groups(self.model)
         defs = settings.attrs.groups_listing_columns
         return self.calc_list_columns(defs)
-    
+
     @property
     def user_default_sort_column(self):
         settings = ugm_users(self.model)
@@ -177,7 +177,7 @@ class ColumnListing(Tile):
         if not sort in attrs:
             return attrs[0]
         return sort
-    
+
     @property
     def group_default_sort_column(self):
         settings = ugm_groups(self.model)
@@ -192,11 +192,11 @@ class PrincipalsListing(ColumnListing):
     """Column listing for principals.
     """
     delete_label = _('delete_principal', 'Delete Principal')
-    delete_permission = 'delete_principal' # inexistent permission
+    delete_permission = 'delete_principal'  # inexistent permission
     listing_attrs = []
     listing_criteria = None
     sort_attr = None
-    
+
     @property
     def query_items(self):
         can_delete = has_permission(self.delete_permission,
@@ -222,7 +222,7 @@ class PrincipalsListing(ColumnListing):
                     delete_action = self.create_action(
                         action_id, True, action_title, target)
                     actions = [delete_action]
-                
+
                 vals = [self.extract_raw(attrs, attr) for attr in attrlist]
                 sort = self.extract_raw(attrs, sort_attr)
                 content = self.item_content(*vals)

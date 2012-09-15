@@ -40,7 +40,7 @@ _ = TranslationStringFactory('cone.ugm')
 class GroupLeftColumn(Column):
 
     add_label = _('add_group', 'Add Group')
-    
+
     @property
     def can_add(self):
         return has_permission('add_group', self.model.parent, self.request)
@@ -53,7 +53,7 @@ class GroupLeftColumn(Column):
 @tile('rightcolumn', 'templates/right_column.pt',
       interface=Group, permission='view')
 class GroupRightColumn(Tile):
-    
+
     @property
     def default_widget(self):
         settings = ugm_general(self.model)
@@ -76,16 +76,16 @@ class Principals(object):
         appgroup = obj.model
         group = appgroup.model
         member_ids = group.keys()
-        
+
         # always True if we list members only, otherwise will be set
         # in the loop below
         related = self.members_only
-        
+
         available_only = self.available_only
-        
+
         if related and available_only:
             raise Exception(u"Invalid object settings.")
-        
+
         # XXX: so far only users as members of groups, for
         # group-in-group we need to prefix groups
         if related:
@@ -95,7 +95,7 @@ class Principals(object):
             users = group.root.users.values()
             if available_only:
                 users = [u for u in users if not u.name in member_ids]
-        
+
         # reduce for local manager
         if obj.model.local_manager_consider_for_user:
             local_uids = obj.model.local_manager_target_uids
@@ -103,24 +103,24 @@ class Principals(object):
 
         attrlist = obj.user_attrs
         sort_attr = obj.user_default_sort_column
-        
+
         ret = list()
-        
+
         can_change = has_permission(
             'manage_membership', obj.model.parent, obj.request)
-        
+
         for user in users:
-            id = user.name
+            uid = user.name
             attrs = user.attrs
-            
+
             item_target = make_url(obj.request, path=user.path[1:])
-            action_query = make_query(id=id)
+            action_query = make_query(id=uid)
             action_target = make_url(obj.request,
                                      node=appgroup,
                                      query=action_query)
 
             if not self.members_only:
-                related = id in member_ids
+                related = uid in member_ids
 
             actions = list()
             if can_change:
@@ -131,7 +131,7 @@ class Principals(object):
                 add_item_action = obj.create_action(
                     action_id, action_enabled, action_title, action_target)
                 actions.append(add_item_action)
-            
+
                 action_id = 'remove_item'
                 action_enabled = bool(related)
                 action_title = _('remove_user_from_selected_group',
@@ -139,12 +139,13 @@ class Principals(object):
                 remove_item_action = obj.create_action(
                     action_id, action_enabled, action_title, action_target)
                 actions.append(remove_item_action)
-            
+
             vals = [obj.extract_raw(attrs, attr) for attr in attrlist]
             sort = obj.extract_raw(attrs, sort_attr)
             content = obj.item_content(*vals)
             current = False
-            item = obj.create_item(sort, item_target, content, current, actions)
+            item = obj.create_item(sort, item_target, content,
+                                   current, actions)
             ret.append(item)
         return ret
 
@@ -180,20 +181,19 @@ class AllUsersColumnListing(ColumnListing):
 @tile('inoutlisting', 'templates/in_out.pt',
       interface=Group, permission='view')
 class InOutListing(ColumnListing):
-    
     selected_items = Principals(members_only=True)
     available_items = Principals(available_only=True)
-    
+
     @property
     def user_attrs(self):
         settings = ugm_general(self.model)
         return [settings.attrs['user_display_name_attr']]
-    
+
     @property
     def user_default_sort_column(self):
         settings = ugm_general(self.model)
         return settings.attrs['user_display_name_attr']
-    
+
     @property
     def display_control_buttons(self):
         return True
@@ -202,14 +202,13 @@ class InOutListing(ColumnListing):
 
 
 class GroupForm(PrincipalForm):
-    
     form_name = 'groupform'
-    
+
     @property
     def form_attrmap(self):
         settings = ugm_groups(self.model)
         return settings.attrs.groups_form_attrmap
-    
+
     @property
     def form_field_definitions(self):
         return form_field_definitions.group
@@ -230,7 +229,7 @@ class GroupForm(PrincipalForm):
 class GroupAddForm(GroupForm, Form):
     __metaclass__ = plumber
     __plumbing__ = AddBehavior, PrincipalRolesForm, AddFormFiddle
-    
+
     show_heading = False
     show_contextmenu = False
 
@@ -244,16 +243,16 @@ class GroupAddForm(GroupForm, Form):
                 continue
             extracted[key] = val
         groups = self.model.parent.backend
-        id = extracted.pop('id')
-        #group = groups.create(id, **extracted)
-        groups.create(id, **extracted)
-        self.request.environ['next_resource'] = id
+        gid = extracted.pop('id')
+        #group = groups.create(gid, **extracted)
+        groups.create(gid, **extracted)
+        self.request.environ['next_resource'] = gid
         groups()
         self.model.parent.invalidate()
         # XXX: access already added user after invalidation.
         #      if not done, there's some kind of race condition with ajax
         #      continuation. figure out why.
-        self.model.parent[id]
+        self.model.parent[gid]
 
     def next(self, request):
         next_resource = self.request.environ.get('next_resource')
@@ -275,7 +274,7 @@ class GroupAddForm(GroupForm, Form):
 class GroupEditForm(GroupForm, Form):
     __metaclass__ = plumber
     __plumbing__ = EditBehavior, PrincipalRolesForm, EditFormFiddle
-    
+
     show_heading = False
     show_contextmenu = False
 
@@ -288,11 +287,11 @@ class GroupEditForm(GroupForm, Form):
             extracted = data.fetch('groupform.%s' % key).extracted
             if not extracted:
                 if key in self.model.attrs:
-                    del self.model.attrs[key] 
+                    del self.model.attrs[key]
             else:
                 self.model.attrs[key] = extracted
         self.model.model.context()
-    
+
     def next(self, request):
         url = make_url(request.request, node=self.model)
         if self.ajax_request:

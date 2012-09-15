@@ -12,14 +12,14 @@ _ = TranslationStringFactory('cone.ugm')
 
 
 class PrincipalForm(object):
-    
+
     form_name = None
-    
+
     @property
     def form_attrmap(self):
         raise NotImplementedError(u"Abstract principal form does not provide "
                                   u"``form_attrmap``")
-    
+
     @property
     def form_field_definitions(self):
         raise NotImplementedError(u"Abstract principal form does not provide "
@@ -27,12 +27,12 @@ class PrincipalForm(object):
 
     def prepare(self):
         resource = self.action_resource
-        
+
         # load props befor edit form is rendered.
         # XXX: this is LDAP world, not generic UGM
         if resource == 'edit':
             self.model.attrs.context.load()
-        
+
         action = make_url(self.request, node=self.model, resource=resource)
         form = factory(
             u'form',
@@ -76,10 +76,10 @@ class PrincipalForm(object):
                                     raise Exception(
                                         u"chain callable definition invalid")
                                 attrname = part[part.index('.') + 1:]
-                                callable = getattr(self, attrname)
+                                clb = getattr(self, attrname)
                             else:
-                                callable = part
-                            chain_parsed.append(callable)
+                                clb = part
+                            chain_parsed.append(clb)
                         val_parsed.append(chain_parsed)
                     custom_parsed[k] = tuple(val_parsed)
             form[key] = factory(
@@ -90,17 +90,17 @@ class PrincipalForm(object):
                 mode=mode)
         form['save'] = factory(
             'submit',
-            props = {
+            props={
                 'action': 'save',
                 'expression': True,
                 'handler': self.save,
                 'next': self.next,
                 'label': _('save', 'Save'),
             })
-        if resource =='add':
+        if resource == 'add':
             form['cancel'] = factory(
                 'submit',
-                props = {
+                props={
                     'action': 'cancel',
                     'expression': True,
                     'handler': None,

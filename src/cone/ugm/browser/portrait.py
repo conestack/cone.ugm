@@ -35,16 +35,16 @@ def portrait_image(model, request):
 class PortraitForm(Behavior):
     """Plumbing behavior for setting user portrait image.
     """
-    
+
     @default
     @property
     def portrait_support(self):
         cfg = ugm_general(self.model)
         return cfg.attrs['users_portrait'] == 'True'
-    
+
     @plumb
     def prepare(_next, self):
-        """Hook after prepare and set 'portrait' as image widget to 
+        """Hook after prepare and set 'portrait' as image widget to
         ``self.form``.
         """
         _next(self)
@@ -67,7 +67,8 @@ class PortraitForm(Behavior):
                 'file': StringIO(image_data),
                 'mimetype': 'image/jpeg',
             }
-            image_url = make_url(request, node=model, resource='portrait_image')
+            image_url = make_url(request, node=model,
+                                 resource='portrait_image')
         else:
             image_value = UNSET
             resource = 'cone.ugm.static/images/default_portrait.jpg'
@@ -90,7 +91,7 @@ class PortraitForm(Behavior):
             mode=mode)
         save_widget = self.form['save']
         self.form.insertbefore(portrait_widget, save_widget)
-    
+
     @plumb
     def save(_next, self, widget, data):
         if not self.portrait_support or \

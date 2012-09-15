@@ -27,7 +27,7 @@ class GroupsLeftColumn(Tile):
         return make_url(self.request,
                         node=self.model.root['groups'],
                         query=make_query(factory=u'group'))
-    
+
     @property
     def can_add(self):
         return has_permission('add_group', self.model, self.request)

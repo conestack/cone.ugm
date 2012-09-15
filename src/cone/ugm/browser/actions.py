@@ -19,7 +19,7 @@ LM_TARGET_GID_IS_DEFAULT = 2
 
 
 class ManageMembershipError(Exception):
-    
+
     def __init__(self, reason, data):
         self.reason = reason
         self.data = data
