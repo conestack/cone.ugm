@@ -17,20 +17,20 @@ from cone.app.browser.authoring import (
     EditBehavior,
 )
 from cone.app.browser.ajax import AjaxAction
-from cone.ugm.model.group import Group
-from cone.ugm.model.utils import (
+from ..model.group import Group
+from ..model.utils import (
     ugm_general,
     ugm_groups,
 )
-from cone.ugm.browser import form_field_definitions
-from cone.ugm.browser.columns import Column
-from cone.ugm.browser.listing import ColumnListing
-from cone.ugm.browser.roles import PrincipalRolesForm
-from cone.ugm.browser.authoring import (
+from . import form_field_definitions
+from .columns import Column
+from .listing import ColumnListing
+from .roles import PrincipalRolesForm
+from .authoring import (
     AddFormFiddle,
     EditFormFiddle,
 )
-from cone.ugm.browser.principal import PrincipalForm
+from .principal import PrincipalForm
 from webob.exc import HTTPFound
 
 _ = TranslationStringFactory('cone.ugm')

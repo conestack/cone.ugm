@@ -4,19 +4,14 @@ import interlude
 import pprint
 import pkg_resources
 import unittest2 as unittest
-
 from plone.testing import layered
-
 from cone.app.testing import Security
-from node.ext.ldap.testing import (
-    LDAPLayer,
-    LDIF_groupOfNames_10_10,
-)
+from node.ext.ldap.testing import LDIF_groupOfNames_10_10
 
 
 class UGMLayer(Security):
     defaultBases = (LDIF_groupOfNames_10_10, )
-    
+
     def setUp(self, args=None):
         super(UGMLayer, self).setUp(args)
         import cone.ugm
@@ -25,6 +20,7 @@ class UGMLayer(Security):
         cone.ugm.model.settings._invalidate_ugm_settings(cone.app.get_root())
         ugm = cone.ugm.model.utils.ugm_backend(cone.app.get_root())
         roles = ['viewer', 'editor', 'admin', 'manager']
+
         def create_user(uid):
             data = {
                 'cn': uid,
@@ -46,7 +42,7 @@ class UGMLayer(Security):
             group = ugm.groups.create(gid)
             group.add(uid)
         ugm()
-    
+
     def tearDown(self):
         super(UGMLayer, self).tearDown()
         import cone.app
@@ -57,7 +53,7 @@ class UGMLayer(Security):
         for gid in ['admin_group_1', 'admin_group_2']:
             del ugm.groups[gid]
         ugm.users()
-    
+
     def make_app(self):
         base_path = os.path.split(__file__)[0]
         ldap_config = os.path.join(base_path, 'ldap.xml')
@@ -110,6 +106,7 @@ If testing while development fails, please check if memcached is installed and
 stop it if running.
 *******************************************************************************
 """
+
 
 def test_suite():
     suite = unittest.TestSuite()

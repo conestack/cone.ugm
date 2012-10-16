@@ -19,8 +19,8 @@ from cone.app.model import (
     XMLProperties,
     Metadata,
 )
-from cone.ugm.model.localmanager import LocalManagerConfigAttributes
-from cone.ugm.model.utils import (
+from .localmanager import LocalManagerConfigAttributes
+from .utils import (
     ldap_cfg_file,
     localmanager_cfg_file,
 )

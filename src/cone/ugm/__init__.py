@@ -9,11 +9,11 @@ from pyramid.security import (
 )
 from cone.app.security import acl_registry
 from cone.app.model import Properties
-from cone.ugm.model.user import User
-from cone.ugm.model.users import Users
-from cone.ugm.model.group import Group
-from cone.ugm.model.groups import Groups
-from cone.ugm.model.settings import (
+from .model.user import User
+from .model.users import Users
+from .model.group import Group
+from .model.groups import Groups
+from .model.settings import (
     GeneralSettings,
     ServerSettings,
     UsersSettings,
@@ -21,9 +21,9 @@ from cone.ugm.model.settings import (
     RolesSettings,
     LocalManagerSettings,
 )
-from cone.ugm.model.users import users_factory
-from cone.ugm.model.groups import groups_factory
-from cone.ugm.browser import static_resources
+from .model.users import users_factory
+from .model.groups import groups_factory
+from .browser import static_resources
 from node.ext.ldap.ugm import Ugm
 
 logger = logging.getLogger('cone.ugm')
@@ -89,15 +89,17 @@ acl_registry.register(ugm_default_acl, Users, 'users')
 acl_registry.register(ugm_default_acl, Group, 'group')
 acl_registry.register(ugm_default_acl, Groups, 'groups')
 
+
 # application startup hooks
 def initialize_ugm(config, global_config, local_config):
     """Initialize UGM.
     """
     # add translation
     config.add_translation_dirs('cone.ugm:locale/')
-    
+
     # static resources
-    config.add_view('cone.ugm.browser.static_resources', name='cone.ugm.static')
+    config.add_view('cone.ugm.browser.static_resources',
+                    name='cone.ugm.static')
 
 cone.app.register_main_hook(initialize_ugm)
 
@@ -105,7 +107,7 @@ cone.app.register_main_hook(initialize_ugm)
 def initialize_auth_impl(config, global_config, local_config):
     """Initialize LDAP based UGM implementation for cone.app as
     authentication implementation.
-    
+
     XXX: move to cone.ldap later
     """
     os.environ['LDAP_CFG_FILE'] = local_config.get('cone.ugm.ldap_config', '')

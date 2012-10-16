@@ -1,6 +1,6 @@
 from pyramid.view import view_config
-from cone.ugm.model.users import Users
-from cone.ugm.model.utils import ugm_users
+from ..model.users import Users
+from ..model.utils import ugm_users
 
 
 @view_config('remote_add_user', accept='application/json',

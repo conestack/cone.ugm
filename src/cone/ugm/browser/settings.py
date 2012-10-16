@@ -36,7 +36,7 @@ from cone.app.browser.utils import (
     make_url,
     make_query,
 )
-from cone.ugm.model.settings import (
+from ..model.settings import (
     GeneralSettings,
     ServerSettings,
     UsersSettings,

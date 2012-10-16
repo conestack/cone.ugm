@@ -9,8 +9,8 @@ from cone.app.browser.utils import (
     make_url,
     make_query,
 )
-from cone.ugm.model.groups import Groups
-from cone.ugm.browser.listing import PrincipalsListing
+from ..model.groups import Groups
+from .listing import PrincipalsListing
 
 logger = logging.getLogger('cone.ugm')
 _ = TranslationStringFactory('cone.ugm')

@@ -4,7 +4,7 @@ from plumber import (
     plumb,
 )
 from pyramid.i18n import TranslationStringFactory
-from cone.ugm.model.utils import ugm_general
+from ..model.utils import ugm_general
 
 _ = TranslationStringFactory('cone.ugm')
 

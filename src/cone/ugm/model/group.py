@@ -9,7 +9,7 @@ from cone.app.model import (
     NodeInfo,
     registerNodeInfo,
 )
-from cone.ugm.model.localmanager import LocalManagerGroupACL
+from .localmanager import LocalManagerGroupACL
 
 _ = TranslationStringFactory('cone.ugm')
 

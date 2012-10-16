@@ -10,10 +10,10 @@ from cone.app.model import (
     registerNodeInfo,
     Properties,
 )
-from cone.ugm.model.localmanager import LocalManagerUsersACL
-from cone.ugm.model.user import User
-from cone.ugm.model.utils import ugm_backend
-from cone.ugm.browser.utils import unquote_slash
+from .localmanager import LocalManagerUsersACL
+from .user import User
+from .utils import ugm_backend
+from ..browser.utils import unquote_slash
 
 logger = logging.getLogger('cone.ugm')
 _ = TranslationStringFactory('cone.ugm')

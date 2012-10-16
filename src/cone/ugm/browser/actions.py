@@ -3,8 +3,8 @@ from pyramid.i18n import (
     TranslationStringFactory,
     get_localizer,
 )
-from cone.ugm.model.user import User
-from cone.ugm.model.group import Group
+from ..model.user import User
+from ..model.group import Group
 
 _ = TranslationStringFactory('cone.ugm')
 

@@ -6,7 +6,7 @@ from plumber import (
 from pyramid.security import has_permission
 from pyramid.i18n import TranslationStringFactory
 from yafowil.base import factory
-from cone.ugm.model.utils import ugm_roles
+from ..model.utils import ugm_roles
 
 _ = TranslationStringFactory('cone.ugm')
 

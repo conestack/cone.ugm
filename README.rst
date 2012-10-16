@@ -13,6 +13,7 @@ Features
 - Create, edit and delete users and groups
 - Manage membership of users in groups
 - Roles support
+- Local Manager Support
 - User and group form configuration
 - POSIX support
 - Samba support
@@ -34,14 +35,15 @@ work::
 
     $  apt-get install libdb4.7-dev
 
+
 Installation
 ------------
 
 ``cone.ugm`` contains a buildout configuration. Download and extract package
 ZIP file, enter extraction location and run::
 
-    cone.ugm$ python2.6 bootstrap.py -c dev.cfg
-    cone.ugm$ ./bin/buildout -c dev.cfg
+    cone.ugm$ python2.7 bootstrap.py
+    cone.ugm$ ./bin/buildout
 
 Start Test LDAP server with appropriate LDIF layer::
 
@@ -49,7 +51,7 @@ Start Test LDAP server with appropriate LDIF layer::
 
 Start the application::
 
-    cone.ugm$ ./bin/paster serve ugm.ini
+    cone.ugm$ ./bin/paster serve ugm_groupOfNames_10_10.ini
 
 and browse ``http://localhost:8081/``. Default ``admin`` user password is
 ``admin``.
@@ -185,8 +187,12 @@ Contributors
 History
 =======
 
+
 0.9.5dev
 --------
+
+- Python 2.7 Support.
+  [rnix, 2012-10-16]
 
 - adopt to ``cone.app`` 0.9.4
   [rnix, 2012-07-29]

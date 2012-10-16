@@ -20,23 +20,23 @@ from cone.app.browser.authoring import (
     EditBehavior,
 )
 from cone.app.browser.ajax import AjaxAction
-from cone.ugm.model.user import User
-from cone.ugm.model.utils import (
+from ..model.user import User
+from ..model.utils import (
     ugm_general,
     ugm_users,
 )
-from cone.ugm.browser import form_field_definitions
-from cone.ugm.browser.columns import Column
-from cone.ugm.browser.listing import ColumnListing
-from cone.ugm.browser.roles import PrincipalRolesForm
-from cone.ugm.browser.portrait import PortraitForm
-from cone.ugm.browser.authoring import (
+from . import form_field_definitions
+from .columns import Column
+from .listing import ColumnListing
+from .roles import PrincipalRolesForm
+from .portrait import PortraitForm
+from .authoring import (
     AddFormFiddle,
     EditFormFiddle,
 )
-from cone.ugm.browser.principal import PrincipalForm
-from cone.ugm.browser.expires import ExpirationForm
-from cone.ugm.browser.autoincrement import AutoIncrementForm
+from .principal import PrincipalForm
+from .expires import ExpirationForm
+from .autoincrement import AutoIncrementForm
 from webob.exc import HTTPFound
 
 _ = TranslationStringFactory('cone.ugm')

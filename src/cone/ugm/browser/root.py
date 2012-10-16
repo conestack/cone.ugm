@@ -1,6 +1,6 @@
 from cone.tile import tile, Tile
 from cone.app.model import AppRoot
-from cone.ugm.browser.columns import Column
+from .columns import Column
 
 
 @tile('site', interface=AppRoot, permission='view')

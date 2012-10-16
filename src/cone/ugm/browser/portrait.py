@@ -13,8 +13,8 @@ from yafowil.base import (
     UNSET,
 )
 from cone.app.browser.utils import make_url
-from cone.ugm.model.user import User
-from cone.ugm.model.utils import ugm_general
+from ..model.user import User
+from ..model.utils import ugm_general
 
 _ = TranslationStringFactory('cone.ugm')
 

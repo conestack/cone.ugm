@@ -23,7 +23,7 @@ from yafowil.widget.datetime.widget import (
     datetime_display_renderer,
     datetime_extractor,
 )
-from cone.ugm.model.utils import ugm_general
+from ..model.utils import ugm_general
 
 _ = TranslationStringFactory('cone.ugm')
 

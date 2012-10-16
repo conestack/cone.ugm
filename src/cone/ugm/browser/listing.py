@@ -6,11 +6,11 @@ from pyramid.i18n import TranslationStringFactory
 from yafowil.utils import Tag
 from cone.tile import Tile
 from cone.app.browser.utils import make_url
-from cone.ugm.model.utils import (
+from ..model.utils import (
     ugm_users,
     ugm_groups,
 )
-from cone.ugm.browser.batch import ColumnBatch
+from .batch import ColumnBatch
 
 tag = Tag(lambda x: x)
 
@@ -86,9 +86,9 @@ class ColumnListing(Tile):
             ],
         }
         """
-        raise NotImplementedError(                         # pragma NO COVERAGE
-            u"Abstract ``ColumnListing`` does not "        # pragma NO COVERAGE
-            u"implement ``items`` property")               # pragma NO COVERAGE
+        raise NotImplementedError(                         #pragma NO COVERAGE
+            u"Abstract ``ColumnListing`` does not "        #pragma NO COVERAGE
+            u"implement ``items`` property")               #pragma NO COVERAGE
 
     def item_content(self, *args):
         ret = u''

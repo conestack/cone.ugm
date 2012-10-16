@@ -1,8 +1,8 @@
 from cone.app.model import Properties
-from cone.ugm.model.users import Users
-from cone.ugm.model.user import User
-from cone.ugm.model.groups import Groups
-from cone.ugm.model.group import Group
+from .users import Users
+from .user import User
+from .groups import Groups
+from .group import Group
 
 
 # user and group factory defaults
