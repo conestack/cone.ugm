@@ -191,6 +191,9 @@ History
 0.9.5dev
 --------
 
+- Portrait CSS fix.
+  [rnix, 2012-10-30]
+
 - Python 2.7 Support.
   [rnix, 2012-10-16]
 
