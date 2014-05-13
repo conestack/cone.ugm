@@ -187,6 +187,13 @@ Contributors
 History
 =======
 
+0.9.7
+-----
+
+- Directly depend on ``lxml`` in ``setup.py``
+  [rnix, 2014-05-13]
+
+
 0.9.6
 -----
 

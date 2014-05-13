@@ -5,7 +5,7 @@ from setuptools import (
 )
 
 
-version = '0.9.6'
+version = '0.9.7'
 shortdesc = 'cone.ugm'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
@@ -32,6 +32,7 @@ setup(name='cone.ugm',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'lxml',
           'cone.app',
           'yafowil.widget.array',
           'yafowil.widget.autocomplete',
