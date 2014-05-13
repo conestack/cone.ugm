@@ -5,7 +5,7 @@ from setuptools import (
 )
 
 
-version = '0.9.6dev'
+version = '0.9.6'
 shortdesc = 'cone.ugm'
 longdesc = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 

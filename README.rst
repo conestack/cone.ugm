@@ -187,8 +187,8 @@ Contributors
 History
 =======
 
-0.9.6dev
---------
+0.9.6
+-----
 
 - Adopt dependencies.
   [rnix, 2013-01-10]
