@@ -1,12 +1,15 @@
 cone.ugm.model.user
 ===================
 
-::
+Test imports::
+
+    >>> from cone.app import root
+    >>> from cone.ugm.model.user import User
+
+User node::
 
     >>> layer.login('manager')
 
-    >>> from cone.ugm.model.user import User
-    >>> from cone.app import root 
     >>> users = root['users']
     >>> user = users['uid0']
     >>> user
