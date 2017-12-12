@@ -27,7 +27,7 @@ def users_factory():
     description=_(
         'users_node_description',
         'Container for Users'),
-    icon='cone.ugm.static/images/users16_16.png',
+    icon='ion-person',
     addables=['user'])
 @plumbing(LocalManagerUsersACL)
 class Users(BaseNode):

@@ -2,20 +2,6 @@
     display:none;
 }
 
-/* main menu icons */
-ul#mainmenu li.node-users a {
-    background: url('/cone.ugm.static/images/menu_users.png') top left no-repeat;
-}
-ul#mainmenu li.node-users a.current_page_item {
-    background: url('/cone.ugm.static/images/menu_users_selected.png') top left no-repeat;
-}
-ul#mainmenu li.node-groups a {
-    background: url('/cone.ugm.static/images/menu_groups.png') top left no-repeat;
-}
-ul#mainmenu li.node-groups a.current_page_item {
-    background: url('/cone.ugm.static/images/menu_groups_selected.png') top left no-repeat;
-}
-
 /* columns */
 div.columns {
     display: block;

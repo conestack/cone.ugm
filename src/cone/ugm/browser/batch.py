@@ -10,9 +10,6 @@ class ColumnBatch(Batch):
 
     def __init__(self, name, items, slicesize):
         self.name = name
-        #self.name = 'columnbatch'
-        self.path = None
-        self.attribute = 'render'
         self.items = items
         self.slicesize = slicesize
 
@@ -36,7 +33,8 @@ class ColumnBatch(Batch):
                 'page': '%i' % (i + 1),
                 'current': current == str(i),
                 'visible': True,
-                'url': url,
+                'href': url,
+                'target': url
             })
         return ret
 

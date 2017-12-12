@@ -45,6 +45,7 @@ setup(
         'yafowil.widget.datetime',
         'yafowil.widget.dict',
         'yafowil.widget.image',
+        'yafowil.yaml',
         'node.ext.ldap'
     ],
     extras_require = dict(

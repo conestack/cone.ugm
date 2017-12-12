@@ -27,7 +27,7 @@ def groups_factory():
     description=_(
         'groups_node_description',
         'Container for Groups'),
-    icon='cone.ugm.static/images/groups16_16.png',
+    icon='ion-person-stalker',
     addables=['group'])
 @plumbing(LocalManagerGroupsACL)
 class Groups(BaseNode):
