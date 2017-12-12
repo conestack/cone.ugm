@@ -1,49 +1,34 @@
-from plumber import plumber
-from odict import odict
-from ldap.functions import explode_dn
-from pyramid.view import view_config
-from pyramid.i18n import (
-    TranslationStringFactory,
-    get_localizer,
-)
-from node.ext.ldap import (
-    BASE,
-    ONELEVEL,
-    SUBTREE,
-    LDAPNode,
-)
-from yafowil.base import (
-    UNSET,
-    ExtractionError,
-)
-from cone.tile import (
-    tile,
-    Tile,
-    registerTile,
-)
+from cone.app.browser.ajax import AjaxAction
+from cone.app.browser.ajax import ajax_continue
+from cone.app.browser.ajax import ajax_message
+from cone.app.browser.form import Form
+from cone.app.browser.form import YAMLForm
 from cone.app.browser.layout import ProtectedContentTile
-from cone.app.browser.form import (
-    Form,
-    YAMLForm,
-)
 from cone.app.browser.settings import SettingsBehavior
-from cone.app.browser.ajax import (
-    ajax_continue,
-    ajax_message,
-    AjaxAction,
-)
-from cone.app.browser.utils import (
-    make_url,
-    make_query,
-)
-from ..model.settings import (
-    GeneralSettings,
-    ServerSettings,
-    UsersSettings,
-    GroupsSettings,
-    RolesSettings,
-    LocalManagerSettings,
-)
+from cone.app.browser.utils import make_query
+from cone.app.browser.utils import make_url
+from cone.tile import Tile
+from cone.tile import registerTile
+from cone.tile import tile
+from cone.ugm.model.settings import GeneralSettings
+from cone.ugm.model.settings import GroupsSettings
+from cone.ugm.model.settings import LocalManagerSettings
+from cone.ugm.model.settings import RolesSettings
+from cone.ugm.model.settings import ServerSettings
+from cone.ugm.model.settings import UsersSettings
+from ldap.functions import explode_dn
+from node.ext.ldap import BASE
+from node.ext.ldap import LDAPNode
+from node.ext.ldap import ONELEVEL
+from node.ext.ldap import SUBTREE
+from odict import odict
+from plumber import plumber
+from pyramid.i18n import TranslationStringFactory
+from pyramid.i18n import get_localizer
+from pyramid.view import view_config
+from yafowil.base import ExtractionError
+from yafowil.base import UNSET
+
 
 _ = TranslationStringFactory('cone.ugm')
 

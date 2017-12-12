@@ -10,7 +10,7 @@ cone.ugm.model.groups
     >>> groups = root['groups']
     >>> groups
     <Groups object 'groups' at ...>
-    
+
     >>> isinstance(groups, Groups)
     True
 
@@ -24,7 +24,7 @@ Metadata::
     >>> md = groups.metadata
     >>> md.title
     u'groups_node'
-    
+
     >>> md.description
     u'groups_node_description'
 
@@ -41,7 +41,7 @@ Inexistent child::
     KeyError: u'inexistent'
 
 Children are group application nodes::
-    
+
     >>> group = groups['group0']
     >>> group
     <Group object 'group0' at ...>
@@ -56,10 +56,10 @@ needed for invalidation::
     >>> backend = groups.backend
     >>> backend
     <Groups object 'groups' at ...>
-    
+
     >>> backend is groups.backend
     True
-    
+
     >>> groups.invalidate()
     >>> backend is groups.backend
     False

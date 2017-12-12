@@ -2,13 +2,14 @@ Portrait Widget
 ---------------
 
 ::
+
     >>> from cone.tile import render_tile
     >>> from cone.app import get_root
     >>> from cone.ugm.model.user import User
     >>> from cone.ugm.model.utils import ugm_general
-    
+
     >>> layer.login('manager')
-    
+
     >>> root = get_root()
     >>> root['settings']['ugm_general'].invalidate()
     >>> root['settings']['ugm_users'].invalidate()
@@ -21,16 +22,16 @@ Portrait related config properties::
     >>> cfg = ugm_general(user)
     >>> cfg.attrs.users_portrait
     u'True'
-    
+
     >>> cfg.attrs.users_portrait_attr
     u'jpegPhoto'
-    
+
     >>> cfg.attrs.users_portrait_accept
     u'image/jpeg'
-    
+
     >>> cfg.attrs.users_portrait_width
     u'50'
-    
+
     >>> cfg.attrs.users_portrait_height
     u'50'
 
@@ -49,7 +50,7 @@ No portrait, default portrait is shown::
     True
 
 Submit portrait::
-    
+
     >>> def user_request(model, portrait):
     ...     request = layer.new_request()
     ...     request.params['ajax'] = '1'
@@ -61,7 +62,7 @@ Submit portrait::
     ...     request.params['userform.portrait'] = portrait
     ...     request.params['action.userform.save'] = '1'
     ...     return request
-    
+
     >>> import pkg_resources
     >>> from StringIO import StringIO
     >>> def dummy_file_data(filename):
@@ -70,7 +71,7 @@ Submit portrait::
     ...     with open(path) as file:
     ...         data = file.read()
     ...     return data
-    
+
     >>> dummy_jpg = dummy_file_data('dummy.jpg')
     >>> dummy_jpg
     '\xff\xd8\xff\xe0\x00\x10JFIF\...\xff\xd9'
@@ -79,10 +80,10 @@ Submit portrait::
     ...     'file': StringIO(dummy_jpg),
     ...     'mimetype': 'image/jpeg',
     ... }
-    
+
     >>> cfg.attrs.users_portrait
     u'True'
-    
+
     >>> request = user_request(user, portrait)
     >>> res = render_tile(user, request, 'editform')
 
@@ -108,12 +109,12 @@ Portrait disabled, widget is skipped::
 
     >>> cfg.attrs.users_portrait = u'False'
     >>> cfg()
-    
+
     >>> request = layer.new_request()
     >>> res = render_tile(user, request, 'editform')
     >>> res.find('id="input-userform-portrait"') > -1
     False
-    
+
     >>> cfg.attrs.users_portrait = u'True'
     >>> cfg()
 

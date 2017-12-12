@@ -1,5 +1,5 @@
-import os
 import cone.ugm
+import os
 
 
 def ldap_cfg_file():

@@ -11,7 +11,7 @@ cone.ugm.model.group
     >>> group = groups['group0']
     >>> group
     <Group object 'group0' at ...>
-    
+
     >>> isinstance(group, Group)
     True
 
@@ -25,7 +25,7 @@ Metadata::
     >>> md = group.metadata
     >>> md.title
     u'group_node'
-    
+
     >>> md.description
     u'group_node_description'
 
@@ -33,7 +33,7 @@ Backend group node is available at ``model``::
 
     >>> group.model
     <Group object 'group0' at ...>
-    
+
     >>> group.model.__class__
     <class 'node.ext.ldap.ugm._api.Group'>
 
@@ -53,7 +53,7 @@ Attributes of the group are wrapped::
 
     >>> group.attrs.changed
     True
-    
+
     >>> group()
     >>> group.attrs.changed
     False

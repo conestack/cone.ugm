@@ -8,7 +8,7 @@ Roles support
     >>> from cone.app.model import BaseNode
     >>> from cone.ugm.model.user import User
     >>> from cone.ugm.model.utils import ugm_users
-    
+
     >>> layer.login('manager')
 
 Cleanup::

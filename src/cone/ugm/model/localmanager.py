@@ -1,22 +1,16 @@
-import os
-from lxml import etree
-from plumber import (
-    Behavior,
-    plumber,
-    plumb,
-    default,
-    finalize,
-)
-from node.behaviors import (
-    Nodify,
-    DictStorage,
-)
-from pyramid.security import (
-    Allow,
-    authenticated_userid,
-)
-from pyramid.threadlocal import get_current_request
 from cone.app import security
+from lxml import etree
+from node.behaviors import DictStorage
+from node.behaviors import Nodify
+from plumber import Behavior
+from plumber import default
+from plumber import finalize
+from plumber import plumb
+from plumber import plumber
+from pyramid.security import Allow
+from pyramid.security import authenticated_userid
+from pyramid.threadlocal import get_current_request
+import os
 
 
 class LocalManagerConfig(DictStorage):

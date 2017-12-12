@@ -7,6 +7,6 @@ cone.ugm.browser.utils
     >>> quoted = quote_slash('foo/bar')
     >>> quoted
     'foo__s_l_a_s_h__bar'
-    
+
     >>> unquote_slash(quoted)
     'foo/bar'

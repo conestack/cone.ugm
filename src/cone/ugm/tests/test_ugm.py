@@ -1,12 +1,12 @@
-import os
-import doctest
-import interlude
-import pprint
-import pkg_resources
-import unittest2 as unittest
-from plone.testing import layered
 from cone.app.testing import Security
 from node.ext.ldap.testing import LDIF_groupOfNames_10_10
+from plone.testing import layered
+import doctest
+import interlude
+import os
+import pkg_resources
+import pprint
+import unittest2 as unittest
 
 
 class UGMLayer(Security):

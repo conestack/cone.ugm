@@ -1,43 +1,32 @@
-import copy
-from plumber import plumber
-from pyramid.security import has_permission
-from pyramid.i18n import TranslationStringFactory
-from yafowil.base import (
-    ExtractionError,
-    UNSET,
-)
-from cone.tile import (
-    tile,
-    Tile,
-)
-from cone.app.browser.utils import (
-    make_url,
-    make_query,
-)
-from cone.app.browser.form import Form
-from cone.app.browser.authoring import (
-    AddBehavior,
-    EditBehavior,
-)
 from cone.app.browser.ajax import AjaxAction
-from ..model.user import User
-from ..model.utils import (
-    ugm_general,
-    ugm_users,
-)
-from . import form_field_definitions
-from .columns import Column
-from .listing import ColumnListing
-from .roles import PrincipalRolesForm
-from .portrait import PortraitForm
-from .authoring import (
-    AddFormFiddle,
-    EditFormFiddle,
-)
-from .principal import PrincipalForm
-from .expires import ExpirationForm
-from .autoincrement import AutoIncrementForm
+from cone.app.browser.authoring import AddBehavior
+from cone.app.browser.authoring import EditBehavior
+from cone.app.browser.form import Form
+from cone.app.browser.utils import make_query
+from cone.app.browser.utils import make_url
+from cone.tile import Tile
+from cone.tile import tile
+from cone.ugm.browser import form_field_definitions
+from cone.ugm.browser.authoring import AddFormFiddle
+from cone.ugm.browser.authoring import EditFormFiddle
+from cone.ugm.browser.autoincrement import AutoIncrementForm
+from cone.ugm.browser.columns import Column
+from cone.ugm.browser.expires import ExpirationForm
+from cone.ugm.browser.listing import ColumnListing
+from cone.ugm.browser.portrait import PortraitForm
+from cone.ugm.browser.principal import PrincipalForm
+from cone.ugm.browser.roles import PrincipalRolesForm
+from cone.ugm.model.user import User
+from cone.ugm.model.utils import ugm_general
+from cone.ugm.model.utils import ugm_users
+from plumber import plumber
+from pyramid.i18n import TranslationStringFactory
+from pyramid.security import has_permission
 from webob.exc import HTTPFound
+from yafowil.base import ExtractionError
+from yafowil.base import UNSET
+import copy
+
 
 _ = TranslationStringFactory('cone.ugm')
 

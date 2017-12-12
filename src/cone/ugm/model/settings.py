@@ -1,29 +1,22 @@
-import os
-import ldap
-import cone.ugm
-from pyramid.i18n import TranslationStringFactory
-from node.utils import instance_property
-from node.ext.ldap import (
-    LDAPProps,
-    LDAPNode,
-    testLDAPConnectivity,
-)
-from node.ext.ldap.ugm import (
-    UsersConfig as LDAPUsersConfig,
-    GroupsConfig as LDAPGroupsConfig,
-    RolesConfig as LDAPRolesConfig,
-)
+from cone.app.model import BaseNode
+from cone.app.model import Metadata
+from cone.app.model import XMLProperties
+from cone.ugm.model.localmanager import LocalManagerConfigAttributes
+from cone.ugm.model.utils import ldap_cfg_file
+from cone.ugm.model.utils import localmanager_cfg_file
+from node.ext.ldap import LDAPNode
+from node.ext.ldap import LDAPProps
+from node.ext.ldap import testLDAPConnectivity
+from node.ext.ldap.ugm import GroupsConfig as LDAPGroupsConfig
+from node.ext.ldap.ugm import RolesConfig as LDAPRolesConfig
+from node.ext.ldap.ugm import UsersConfig as LDAPUsersConfig
 from node.ext.ldap.ugm._api import EXPIRATION_DAYS
-from cone.app.model import (
-    BaseNode,
-    XMLProperties,
-    Metadata,
-)
-from .localmanager import LocalManagerConfigAttributes
-from .utils import (
-    ldap_cfg_file,
-    localmanager_cfg_file,
-)
+from node.utils import instance_property
+from pyramid.i18n import TranslationStringFactory
+import cone.ugm
+import ldap
+import os
+
 
 _ = TranslationStringFactory('cone.ugm')
 

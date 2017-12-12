@@ -1,46 +1,40 @@
-import os
-import logging
-import cone.app
-from pyramid.security import (
-    Everyone,
-    Allow,
-    Deny,
-    ALL_PERMISSIONS,
-)
-from cone.app.security import acl_registry
 from cone.app.model import Properties
-from .model.user import User
-from .model.users import Users
-from .model.group import Group
-from .model.groups import Groups
-from .model.settings import (
-    GeneralSettings,
-    ServerSettings,
-    UsersSettings,
-    GroupsSettings,
-    RolesSettings,
-    LocalManagerSettings,
-)
-from .model.users import users_factory
-from .model.groups import groups_factory
-from .browser import static_resources
+from cone.app.security import acl_registry
+from cone.ugm.browser import static_resources
+from cone.ugm.model.group import Group
+from cone.ugm.model.groups import Groups
+from cone.ugm.model.groups import groups_factory
+from cone.ugm.model.settings import GeneralSettings
+from cone.ugm.model.settings import GroupsSettings
+from cone.ugm.model.settings import LocalManagerSettings
+from cone.ugm.model.settings import RolesSettings
+from cone.ugm.model.settings import ServerSettings
+from cone.ugm.model.settings import UsersSettings
+from cone.ugm.model.user import User
+from cone.ugm.model.users import Users
+from cone.ugm.model.users import users_factory
 from node.ext.ldap.ugm import Ugm
+from pyramid.security import ALL_PERMISSIONS
+from pyramid.security import Allow
+from pyramid.security import Deny
+from pyramid.security import Everyone
+import cone.app
+import logging
+import os
+
 
 logger = logging.getLogger('cone.ugm')
+
 
 # custom UGM styles
 cone.app.cfg.merged.css.protected.append((static_resources, 'styles.css'))
 
 # custom UGM javascript
-cone.app.cfg.merged.js.protected.append((static_resources,
-                                         'jQuery.sortElements.js'))
+cone.app.cfg.merged.js.protected.append(
+    (static_resources, 'jQuery.sortElements.js')
+)
 cone.app.cfg.merged.js.protected.append((static_resources, 'naturalSort.js'))
 cone.app.cfg.merged.js.protected.append((static_resources, 'ugm.js'))
-
-# layout configuration
-cone.app.cfg.layout.livesearch = False
-cone.app.cfg.layout.pathbar = False
-cone.app.cfg.layout.sidebar_left = []
 
 # UGM settings
 cone.app.register_plugin_config('ugm_general', GeneralSettings)
@@ -101,6 +95,9 @@ def initialize_ugm(config, global_config, local_config):
     config.add_view('cone.ugm.browser.static_resources',
                     name='cone.ugm.static')
 
+    # scan browser package
+    config.scan('cone.ugm.browser')
+
 cone.app.register_main_hook(initialize_ugm)
 
 
@@ -123,7 +120,7 @@ cone.app.register_main_hook(initialize_auth_impl)
 
 
 def reset_auth_impl():
-    """LDAP only ATM.
+    """LDAP only at the moment.
     """
     return reset_ldap_auth_impl()
 

@@ -1,9 +1,7 @@
-from cone.tile import (
-    Tile,
-    registerTile,
-    render_tile,
-)
 from cone.app.browser.layout import ProtectedContentTile
+from cone.tile import Tile
+from cone.tile import registerTile
+from cone.tile import render_tile
 
 
 registerTile('content',

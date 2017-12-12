@@ -1,12 +1,11 @@
-from plumber import (
-    Behavior,
-    default,
-    plumb,
-)
-from pyramid.security import has_permission
+from cone.ugm.model.utils import ugm_roles
+from plumber import Behavior
+from plumber import default
+from plumber import plumb
 from pyramid.i18n import TranslationStringFactory
+from pyramid.security import has_permission
 from yafowil.base import factory
-from ..model.utils import ugm_roles
+
 
 _ = TranslationStringFactory('cone.ugm')
 

@@ -5,9 +5,9 @@
  */
 
 (function($) {
-    
+
     $(document).ready(function() {
-        
+
         // initial binding
         ugm.key_binder();
         ugm.left_listing_nav_binder();
@@ -20,7 +20,7 @@
         ugm.inout_actions_binder();
         ugm.inout_filter_binder();
         ugm.inout_select_binder();
-        
+
         // add after ajax binding to bdajax
         $.extend(bdajax.binders, {
             left_listing_nav_binder: ugm.left_listing_nav_binder,
@@ -34,12 +34,12 @@
             inout_select_binder: ugm.inout_select_binder
         });
     });
-    
+
     ugm = {
-        
+
         // localmanager
         localmanager: {
-            
+
             autocomplete_gid: function(request, callback) {
                 bdajax.request({
                     success: function(data) {
@@ -51,13 +51,13 @@
                 });
             }
         },
-        
+
         // object to store global flags
         flags: {},
-            
+
         // keyboard control keys status
         keys: {},
-        
+
         // keydown / keyup binder for shift and ctrl keys
         key_binder: function() {
             $(document).bind('keydown', function(event) {
@@ -81,19 +81,19 @@
                 }
             });
         },
-        
+
         // bind left listing trigger
         left_listing_nav_binder: function(context) {
             $('ul.leftlisting div.li_trigger', context)
                 .unbind()
                 .bind('click', ugm.left_listing_nav_cb);
         },
-        
+
         // left listing trigger callback
         left_listing_nav_cb: function(event) {
             var li = $(this).parent();
             ugm.reset_listing_selected(li);
-            
+
             // perform action manually
             var target = bdajax.parsetarget(li.attr('ajax:target'));
             bdajax.action({
@@ -105,58 +105,58 @@
             });
             return false;
         },
-        
+
         // bind right listing trigger
         right_listing_nav_binder: function(context) {
             $('ul.rightlisting div.li_trigger', context)
                 .unbind()
                 .bind('click', ugm.right_listing_nav_cb);
         },
-        
+
         // right listing trigger callback
         right_listing_nav_cb: function(event) {
             var li = $(this).parent();
             ugm.reset_listing_selected(li);
-            
+
             // reload context sensitiv tiles and context with new target
             var target = li.attr('ajax:target');
             bdajax.trigger('contextchanged', '.contextsensitiv', target);
             bdajax.trigger('contextchanged', '#content', target);
             return false;
         },
-        
+
         // bind listing item actions
         listing_actions_binder: function(context) {
-            
+
             // bind delete actions
             $('div.columnitems div.actions a.delete_item', context)
                 .unbind()
                 .bind('click', ugm.actions.delete_item);
-            
+
             // bind disabled delete actions
             $('div.columnitems div.actions a.delete_item_disabled', context)
                 .unbind()
                 .bind('click', function(event) {
                     event.preventDefault();
                 });
-            
+
             // bind add actions
             $('div.columnitems div.actions a.add_item', context)
                 .unbind()
                 .bind('click', ugm.actions.listing_add_item);
-            
+
             // bind disabled add actions
             $('div.columnitems div.actions a.add_item_disabled', context)
                 .unbind()
                 .bind('click', function(event) {
                     event.preventDefault();
                 });
-            
+
             // bind remove actions
             $('div.columnitems div.actions a.remove_item', context)
                 .unbind()
                 .bind('click', ugm.actions.listing_remove_item);
-            
+
             // bind disabled remove actions
             $('div.columnitems div.actions a.remove_item_disabled', context)
                 .unbind()
@@ -164,41 +164,41 @@
                     event.preventDefault();
                 });
         },
-        
+
         // bind inout item selection
         inout_select_binder: function(context) {
             $('div.inoutlisting div.li_trigger', context)
                 .unbind()
                 .bind('click', ugm.actions.inout_select_item);
         },
-        
+
         // bind inout item actions
         inout_actions_binder: function(context) {
-            
+
             // bind add actions
             $('div.inoutlisting div.actions a.add_item', context)
                 .unbind()
                 .bind('click', ugm.actions.inout_add_item);
-            
+
             // bind remove actions
             $('div.inoutlisting div.actions a.remove_item', context)
                 .unbind()
                 .bind('click', ugm.actions.inout_remove_item);
-            
+
             // bind button add action
             $('div.inoutlisting input.inout_add_item', context)
                 .unbind()
                 .bind('click', ugm.actions.inout_button_add_item);
-            
+
             // bind button remove action
             $('div.inoutlisting input.inout_remove_item', context)
                 .unbind()
                 .bind('click', ugm.actions.inout_button_remove_item);
         },
-        
+
         // object containing ugm action callbacks
         actions: {
-            
+
             // delete item from database
             delete_item: function(event) {
                 event.preventDefault();
@@ -238,7 +238,7 @@
                     ugm.actions.perform(options);
                 });
             },
-            
+
             // add item as member in listing
             listing_add_item: function(event) {
                 event.preventDefault();
@@ -271,7 +271,7 @@
                 });
                 ugm.actions.perform(options);
             },
-            
+
             // remove item from member in listing
             listing_remove_item: function(event) {
                 event.preventDefault();
@@ -304,7 +304,7 @@
                 });
                 ugm.actions.perform(options);
             },
-            
+
             // select item in inout widget
             inout_select_item: function(event) {
                 event.preventDefault();
@@ -375,7 +375,7 @@
                     }
                 }
             },
-            
+
             // add item as member in inout widget via button
             inout_button_add_item: function(event) {
                 event.preventDefault();
@@ -415,7 +415,7 @@
                 });
                 ugm.actions.perform(options);
             },
-            
+
             // remove item from member in inout widget via button
             inout_button_remove_item: function(event) {
                 event.preventDefault();
@@ -455,7 +455,7 @@
                 });
                 ugm.actions.perform(options);
             },
-            
+
             // add item as member in inout widget
             inout_add_item: function(event) {
                 event.preventDefault();
@@ -486,7 +486,7 @@
                 });
                 ugm.actions.perform(options);
             },
-            
+
             // remove item from member in inout widget
             inout_remove_item: function(event) {
                 event.preventDefault();
@@ -517,7 +517,7 @@
                 });
                 ugm.actions.perform(options);
             },
-            
+
             // perform listing item action
             perform: function(config) {
                 bdajax.request({
@@ -528,16 +528,16 @@
                 });
             }
         },
-        
+
         // bind filter
         filter_binder: function(context, input_selector, listing_selector) {
-            
+
             // reset filter input field
             $(input_selector, context).bind('focus', function() {
                 this.value = '';
                 $(this).css('color', '#000');
             });
-            
+
             // refresh related column with filtered listing
             $(input_selector, context).bind('keyup', function() {
                 var current_filter = this.value.toLowerCase();
@@ -553,34 +553,34 @@
                     });
             });
         },
-        
+
         // bind listing filter
         listing_filter_binder: function(context) {
             ugm.filter_binder(context,
                               'div.column_filter input',
                               'div.columnitems li');
         },
-        
+
         // bind inout filter
         inout_filter_binder: function(context) {
-            
+
             // left listing
             ugm.filter_binder(context,
                               'div.left_column_filter input',
                               'ul.inoutleftlisting li');
-            
+
             // right listing
             ugm.filter_binder(context,
                               'div.right_column_filter input',
                               'ul.inoutrightlisting li');
         },
-        
+
         // reset selcted item in listing
         reset_listing_selected: function(li) {
             $('li', li.parent()).removeClass('selected');
             li.addClass('selected');
         },
-        
+
         // bind related items filter - XXX: changed to list_all, wait
         // for group in group to fix naming
         listing_related_binder: function(context) {
@@ -588,7 +588,7 @@
                 .unbind()
                 .bind('click', ugm.listing_related_cb);
         },
-        
+
         // callback when related filter gets toggled
         listing_related_cb: function(event) {
             var elem = $(this);
@@ -607,13 +607,13 @@
                 params: target.params
             });
         },
-        
+
         // scroll column listings to selected items
         scroll_listings_to_selected: function() {
             ugm.listing_scroll_to_selected('.selected', $('ul.leftlisting'));
             ugm.listing_scroll_to_selected('.selected', $('ul.rightlisting'));
         },
-        
+
         // scroll listing parent to element found by selector
         listing_scroll_to_selected: function(selector, listing) {
             var elem = $(selector, listing);
@@ -631,7 +631,7 @@
                 }
             }
         },
-        
+
         // scroll listing parent to element found by selector
         inout_scroll_to_selected: function(selector, container) {
             var elem = $(selector, container).first();
@@ -646,7 +646,7 @@
                 }
             }
         },
-        
+
         // toggle inout widget item
         inout_move_item: function(elems, new_container) {
             var old_container = elems.first().parent();
@@ -674,7 +674,7 @@
                 .addClass('first_item');
             elems.addClass('selected');
         },
-        
+
         // inout listing extract selected ids
         inout_extract_selected: function(elems) {
             var items = new Array();
@@ -687,11 +687,11 @@
             });
             return items;
         },
-        
+
         listing_sort_value: function(selector, context) {
             return $(selector, context).text();
         },
-        
+
         // sort listings binder
         listing_sort_binder: function(context) {
             var sort_links = $('.columnsorting a', context);
@@ -734,5 +734,5 @@
             $('.columnsorting a.default', context).trigger('click');
         }
     };
-    
+
 })(jQuery);

@@ -10,7 +10,7 @@ cone.ugm.model.users
     >>> users = root['users']
     >>> users
     <Users object 'users' at ...>
-    
+
     >>> isinstance(users, Users)
     True
 
@@ -27,7 +27,7 @@ Metadata::
     >>> md = users.metadata
     >>> md.title
     u'users_node'
-    
+
     >>> md.description
     u'users_node_description'
 
@@ -45,7 +45,7 @@ Inexistent child::
     KeyError: u'inexistent'
 
 Children are user application nodes::
-    
+
     >>> user = users['uid0']
     >>> user.__class__
     <class 'cone.ugm.model.user.User'>
@@ -60,13 +60,13 @@ is expected for app model invalidation::
     >>> backend = users.backend
     >>> backend.__class__
     <class 'node.ext.ldap.ugm._api.Users'>
-    
+
     >>> backend is users.backend
     True
-    
+
     >>> users.__class__
     <class 'cone.ugm.model.users.Users'>
-    
+
     >>> users.invalidate()
     >>> backend is users.backend
     False

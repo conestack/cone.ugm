@@ -1,9 +1,7 @@
 from cone.app.browser.batch import Batch
-from cone.app.browser.utils import (
-    nodepath,
-    make_query,
-    make_url,
-)
+from cone.app.browser.utils import make_query
+from cone.app.browser.utils import make_url
+from cone.app.browser.utils import nodepath
 
 
 class ColumnBatch(Batch):

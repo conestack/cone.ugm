@@ -4,7 +4,7 @@
            i18n:domain="cone.ugm"
            omit-tag="True">
   <div tal:define="status context.ldap_users">
-  
+
     <h1 i18n:translate="users_settings">Users Settings</h1>
 
     <p>
@@ -20,7 +20,7 @@
         Server not reachable
       </strong>
     </p>
-    
+
     <p tal:condition="context.ldap_connectivity and status != 'OK'">
       <strong i18n:translate="create_users_container">
         Create users container?

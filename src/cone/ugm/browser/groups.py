@@ -1,16 +1,13 @@
-import logging
-from pyramid.security import has_permission
+from cone.app.browser.utils import make_query
+from cone.app.browser.utils import make_url
+from cone.tile import Tile
+from cone.tile import tile
+from cone.ugm.browser.listing import PrincipalsListing
+from cone.ugm.model.groups import Groups
 from pyramid.i18n import TranslationStringFactory
-from cone.tile import (
-    tile,
-    Tile,
-)
-from cone.app.browser.utils import (
-    make_url,
-    make_query,
-)
-from ..model.groups import Groups
-from .listing import PrincipalsListing
+from pyramid.security import has_permission
+import logging
+
 
 logger = logging.getLogger('cone.ugm')
 _ = TranslationStringFactory('cone.ugm')

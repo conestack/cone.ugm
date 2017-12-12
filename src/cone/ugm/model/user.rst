@@ -11,7 +11,7 @@ cone.ugm.model.user
     >>> user = users['uid0']
     >>> user
     <User object 'uid0' at ...>
-    
+
     >>> isinstance(user, User)
     True
 
@@ -25,7 +25,7 @@ Metadata::
     >>> md = user.metadata
     >>> md.title
     u'user_node'
-    
+
     >>> md.description
     u'user_node_description'
 
@@ -33,7 +33,7 @@ Backend user node is available at ``model``::
 
     >>> user.model
     <User object 'uid0' at ...>
-    
+
     >>> user.model.__class__
     <class 'node.ext.ldap.ugm._api.User'>
 
@@ -56,7 +56,7 @@ Attributes of the user are wrapped::
 
     >>> user.attrs.changed
     True
-    
+
     >>> user()
     >>> user.attrs.changed
     False

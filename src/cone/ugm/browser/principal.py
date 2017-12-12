@@ -1,12 +1,9 @@
-from pyramid.i18n import (
-    TranslationStringFactory,
-    get_localizer,
-)
-from yafowil.base import (
-    factory,
-    UNSET,
-)
 from cone.app.browser.utils import make_url
+from pyramid.i18n import TranslationStringFactory
+from pyramid.i18n import get_localizer
+from yafowil.base import UNSET
+from yafowil.base import factory
+
 
 _ = TranslationStringFactory('cone.ugm')
 

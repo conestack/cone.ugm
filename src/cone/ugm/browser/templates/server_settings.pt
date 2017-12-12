@@ -3,9 +3,9 @@
            i18n:domain="cone.ugm"
            omit-tag="True">
   <div>
-    
+
     <h1 i18n:translate="ldap_server_settings">LDAP Server Settings</h1>
-  
+
     <p>
       <strong i18n:translate="server_connection">Server Connection:</strong>
       <strong tal:define="status context.ldap_status"
@@ -14,8 +14,8 @@
         OK
       </strong>
     </p>
-  
+
     <tal:settings replace="structure tile('editform')" />
-  
+
   </div>
 </tal:block>

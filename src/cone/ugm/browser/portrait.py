@@ -1,20 +1,17 @@
 from StringIO import StringIO
-from plumber import (
-    Behavior,
-    default,
-    plumb,
-)
+from cone.app.browser.utils import make_url
+from cone.ugm.model.user import User
+from cone.ugm.model.utils import ugm_general
+from plumber import Behavior
+from plumber import default
+from plumber import plumb
+from pyramid.i18n import TranslationStringFactory
 from pyramid.response import Response
 from pyramid.security import has_permission
-from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
-from yafowil.base import (
-    factory,
-    UNSET,
-)
-from cone.app.browser.utils import make_url
-from ..model.user import User
-from ..model.utils import ugm_general
+from yafowil.base import UNSET
+from yafowil.base import factory
+
 
 _ = TranslationStringFactory('cone.ugm')
 

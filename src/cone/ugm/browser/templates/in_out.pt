@@ -4,7 +4,7 @@
            i18n:domain="cone.ugm"
            omit-tag="True">
   <div class="inoutwidget">
-    
+
     <div class="inout_column_filter left_column_filter">
       <strong i18n:translate="available">Available</strong>
       <input type="text"
@@ -12,7 +12,7 @@
              value="filter listing"
              i18n:attributes="value filter_listing" />
     </div>
-    
+
     <div class="inout_column_filter right_column_filter">
       <strong i18n:translate="recent">Recent</strong>
       <input type="text"
@@ -20,10 +20,10 @@
              value="filter listing"
              i18n:attributes="value filter_listing" />
     </div>
-    
+
     <div class="inoutlisting"
          tal:define="display_control_buttons context.display_control_buttons">
-      
+
       <ul class="inoutleftlisting">
         <tal:item repeat="item context.available_items">
           <li ajax:target="${item['target']}"
@@ -53,13 +53,13 @@
           </li>
         </tal:item>
       </ul>
-      
+
       <div class="inoutbuttons"
            tal:condition="display_control_buttons">
         <input type="button" class="inout_add_item" value=">>" />
         <input type="button" class="inout_remove_item" value="<<" />
       </div>
-      
+
       <ul class="inoutrightlisting">
         <tal:item repeat="item context.selected_items">
           <li ajax:target="${item['target']}"
@@ -90,6 +90,6 @@
         </tal:item>
       </ul>
     </div>
-  
+
   </div>
 </tal:block>

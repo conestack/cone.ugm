@@ -1,10 +1,9 @@
+from cone.ugm.model.group import Group
+from cone.ugm.model.user import User
+from pyramid.i18n import TranslationStringFactory
+from pyramid.i18n import get_localizer
 from pyramid.view import view_config
-from pyramid.i18n import (
-    TranslationStringFactory,
-    get_localizer,
-)
-from ..model.user import User
-from ..model.group import Group
+
 
 _ = TranslationStringFactory('cone.ugm')
 

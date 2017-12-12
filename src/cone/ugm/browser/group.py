@@ -1,37 +1,28 @@
+from cone.app.browser.ajax import AjaxAction
+from cone.app.browser.authoring import AddBehavior
+from cone.app.browser.authoring import EditBehavior
+from cone.app.browser.form import Form
+from cone.app.browser.utils import make_query
+from cone.app.browser.utils import make_url
+from cone.tile import Tile
+from cone.tile import tile
+from cone.ugm.browser import form_field_definitions
+from cone.ugm.browser.authoring import AddFormFiddle
+from cone.ugm.browser.authoring import EditFormFiddle
+from cone.ugm.browser.columns import Column
+from cone.ugm.browser.listing import ColumnListing
+from cone.ugm.browser.principal import PrincipalForm
+from cone.ugm.browser.roles import PrincipalRolesForm
+from cone.ugm.model.group import Group
+from cone.ugm.model.utils import ugm_general
+from cone.ugm.model.utils import ugm_groups
 from plumber import plumber
-from pyramid.security import has_permission
 from pyramid.i18n import TranslationStringFactory
+from pyramid.security import has_permission
+from webob.exc import HTTPFound
 from yafowil.base import ExtractionError
 from yafowil.utils import UNSET
-from cone.tile import (
-    tile,
-    Tile,
-)
-from cone.app.browser.utils import (
-    make_url,
-    make_query,
-)
-from cone.app.browser.form import Form
-from cone.app.browser.authoring import (
-    AddBehavior,
-    EditBehavior,
-)
-from cone.app.browser.ajax import AjaxAction
-from ..model.group import Group
-from ..model.utils import (
-    ugm_general,
-    ugm_groups,
-)
-from . import form_field_definitions
-from .columns import Column
-from .listing import ColumnListing
-from .roles import PrincipalRolesForm
-from .authoring import (
-    AddFormFiddle,
-    EditFormFiddle,
-)
-from .principal import PrincipalForm
-from webob.exc import HTTPFound
+
 
 _ = TranslationStringFactory('cone.ugm')
 

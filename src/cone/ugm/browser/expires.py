@@ -1,29 +1,22 @@
-import time
+from cone.ugm.model.utils import ugm_general
 from datetime import datetime
-from plumber import (
-    Behavior,
-    plumb,
-)
-from pyramid.security import has_permission
+from plumber import Behavior
+from plumber import plumb
 from pyramid.i18n import TranslationStringFactory
-from yafowil.base import (
-    factory,
-    UNSET,
-    fetch_value,
-)
-from yafowil.common import (
-    generic_extractor,
-    generic_required_extractor,
-)
+from pyramid.security import has_permission
+from yafowil.base import UNSET
+from yafowil.base import factory
+from yafowil.base import fetch_value
+from yafowil.common import generic_extractor
+from yafowil.common import generic_required_extractor
 from yafowil.utils import cssid
-from yafowil.widget.datetime.widget import (
-    format_date,
-    format_time,
-    render_datetime_input,
-    datetime_display_renderer,
-    datetime_extractor,
-)
-from ..model.utils import ugm_general
+from yafowil.widget.datetime.widget import datetime_display_renderer
+from yafowil.widget.datetime.widget import datetime_extractor
+from yafowil.widget.datetime.widget import format_date
+from yafowil.widget.datetime.widget import format_time
+from yafowil.widget.datetime.widget import render_datetime_input
+import time
+
 
 _ = TranslationStringFactory('cone.ugm')
 

@@ -1,8 +1,6 @@
-from plumber import (
-    plumb,
-    Behavior,
-)
 from cone.app.browser.ajax import ajax_form_fiddle
+from plumber import Behavior
+from plumber import plumb
 
 
 class AddFormFiddle(Behavior):

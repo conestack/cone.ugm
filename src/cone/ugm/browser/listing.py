@@ -1,16 +1,15 @@
-import uuid
-import types
-import logging
-from pyramid.security import has_permission
-from pyramid.i18n import TranslationStringFactory
-from yafowil.utils import Tag
-from cone.tile import Tile
 from cone.app.browser.utils import make_url
-from ..model.utils import (
-    ugm_users,
-    ugm_groups,
-)
-from .batch import ColumnBatch
+from cone.tile import Tile
+from cone.ugm.browser.batch import ColumnBatch
+from cone.ugm.model.utils import ugm_groups
+from cone.ugm.model.utils import ugm_users
+from pyramid.i18n import TranslationStringFactory
+from pyramid.security import has_permission
+from yafowil.utils import Tag
+import logging
+import types
+import uuid
+
 
 tag = Tag(lambda x: x)
 

@@ -4,7 +4,7 @@
            i18n:domain="cone.ugm"
            omit-tag="True">
   <div class="column left_column box">
-  
+
     <div class="add_button"
          tal:condition="context.can_add">
       <form action="#">
@@ -16,17 +16,17 @@
                ajax:action="add:.right_column:inner" />
       </form>
     </div>
-  
+
     <div class="column_filter">
       <input type="text"
              name="column_filter"
              value="filter listing"
              i18n:attributes="value filter_listing" />
     </div>
-  
+
     <div class="clear"></div>
-  
+
     <tal:listing replace="structure tile('columnlisting')" />
-  
+
   </div>
 </tal:block>

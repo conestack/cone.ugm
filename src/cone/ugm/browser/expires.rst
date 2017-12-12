@@ -1,6 +1,6 @@
 Expiration widget
 -----------------
-  
+
 Edit renderer. Active with no expiration date by default::
 
     >>> from yafowil.base import factory
@@ -25,7 +25,7 @@ Active with no expiration date::
     >>> data = widget.extract(request)
     >>> data.extracted
     <UNSET>
-    
+
     >>> widget(request=request)
     u'<div class="expiration-widget"><input checked="checked" 
     id="checkbox-active" name="active.active" type="checkbox" 
@@ -65,7 +65,7 @@ Edit renderer with preset value::
     name="active.active" type="checkbox" value="1" /><label>until</label><input 
     class="datepicker expiration" id="input-active" name="active" 
     size="10" type="text" value="" /></div>'
-    
+
     >>> import datetime
     >>> widget = factory(
     ...     'expiration',
@@ -97,7 +97,7 @@ Display renderer::
     u'<div class="expiration-widget"><input checked="checked" 
     disabled="disabled" id="checkbox-active" 
     type="checkbox" /></div>'
-    
+
     >>> widget = factory(
     ...     'expiration',
     ...     name='active',
@@ -110,7 +110,7 @@ Display renderer::
     >>> widget()
     u'<div class="expiration-widget"><input disabled="disabled" 
     id="checkbox-active" type="checkbox" /></div>'
-    
+
     >>> widget = factory(
     ...     'expiration',
     ...     name='active',

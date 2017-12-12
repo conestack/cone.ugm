@@ -8,13 +8,13 @@ Remote calls for 3rd party integration. Test bootstrapping::
     >>> from cone.ugm.model.utils import ugm_server, ugm_roles
     >>> from node.ext.ldap import LDAPNode, ONELEVEL
     >>> from node.ext.ldap.ugm import RolesConfig
-    
+
     >>> props = ugm_server(root).ldap_props
     >>> node = LDAPNode('dc=my-domain,dc=com', props)
     >>> node['ou=roles'] = LDAPNode()
     >>> node['ou=roles'].attrs['objectClass'] = ['organizationalUnit']
     >>> node()
-    
+
     >>> rcfg = RolesConfig(
     ...     baseDN='ou=roles,dc=my-domain,dc=com',
     ...     attrmap={
@@ -28,12 +28,12 @@ Remote calls for 3rd party integration. Test bootstrapping::
     ... )
     >>> roles = ugm_roles(root)
     >>> roles._ldap_rcfg = rcfg
-    
+
     >>> import cone.ugm
     >>> cone.ugm.backend = None
     >>> cone.ugm.model.utils.ugm_backend(root)
     <Ugm object 'ldap_ugm' at ...>
-    
+
     >>> users = root['users']
 
 
@@ -59,7 +59,7 @@ No id given::
     >>> res = render_view_to_response(users, request, name='remote_add_user')
     >>> res.body
     '{"message": "No user ID given.", "success": false}'
-    
+
     >>> users.keys()
     [u'uid0', u'uid1', u'uid2', u'uid3', u'uid4', u'uid5', 
     u'uid6', u'uid7', u'uid8', u'uid9', u'viewer', u'editor', 
@@ -89,7 +89,7 @@ Add minimal valid user.::
     >>> res = render_view_to_response(users, request, name='remote_add_user')
     >>> res.body
     '{"message": "Created user with ID \'uid99\'.", "success": true}'
-    
+
     >>> user = users['uid99']
 
 The user was physically created.::
@@ -101,7 +101,7 @@ This user has nor roles and is not member of a group.::
 
     >>> user.model.roles
     []
-    
+
     >>> user.model.groups
     []
 
@@ -109,11 +109,11 @@ There was no password given, thus we cannot authenticate with this user yet.::
 
     >>> user.model.authenticate('secret')
     False
-    
+
     >>> user.model.passwd(None, 'secret')
     >>> user.model.authenticate('secret')
     True
-    
+
 Create another user with initial password.::
 
     >>> request.params['id'] = 'uid100'
@@ -123,7 +123,7 @@ Create another user with initial password.::
     >>> res = render_view_to_response(users, request, name='remote_add_user')
     >>> res.body
     '{"message": "Created user with ID \'uid100\'.", "success": true}'
-    
+
     >>> user = users['uid100']
     >>> user.model.authenticate('secret')
     True
@@ -148,7 +148,7 @@ groups are not available.::
     [u'group0', u'group1', u'group2', u'group3', u'group4', u'group5', 
     u'group6', u'group7', u'group8', u'group9', u'admin_group_1', 
     u'admin_group_2']
-    
+
     >>> request.params['id'] = 'uid102'
     >>> request.params['password'] = 'secret'
     >>> request.params['roles'] = 'editor,viewer,inexistent'
@@ -166,13 +166,13 @@ Check created user.::
     >>> user = users['uid102']
     >>> user.model.groups
     [<Group object 'group0' at ...>, <Group object 'group1' at ...>]
-    
+
     >>> user.model.roles
     [u'viewer', u'editor']
-    
+
     >>> user.model.authenticate('secret')
     True
-    
+
     >>> layer.logout()
 
 
@@ -198,7 +198,7 @@ No id given::
     >>> res = render_view_to_response(users, request, name='remote_delete_user')
     >>> res.body
     '{"message": "No user ID given.", "success": false}'
-    
+
     >>> users.keys()
     [u'uid0', u'uid1', u'uid2', u'uid3', u'uid4', u'uid5', u'uid6', 
     u'uid7', u'uid8', u'uid9', u'viewer', u'editor', u'admin', u'manager', 
@@ -218,7 +218,7 @@ Valid deletions::
     >>> res = render_view_to_response(users, request, name='remote_delete_user')
     >>> res.body
     '{"message": "Deleted user with ID \'uid102\'.", "success": true}'
-    
+
     >>> users.keys()
     [u'uid0', u'uid1', u'uid2', u'uid3', u'uid4', u'uid5', u'uid6', u'uid7', 
     u'uid8', u'uid9', u'viewer', u'editor', u'admin', u'manager', u'max', 

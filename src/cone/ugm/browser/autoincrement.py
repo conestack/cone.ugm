@@ -1,10 +1,9 @@
-from plumber import (
-    Behavior,
-    default,
-    plumb,
-)
+from cone.ugm.model.utils import ugm_general
+from plumber import Behavior
+from plumber import default
+from plumber import plumb
 from pyramid.i18n import TranslationStringFactory
-from ..model.utils import ugm_general
+
 
 _ = TranslationStringFactory('cone.ugm')
 
