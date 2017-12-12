@@ -16,6 +16,9 @@
 /downloads/
 /var/
 /dist/
+/include/
+/lib/
+/local/
 /share/
 /src/cone.ugm.egg-info/
 /paster.log
