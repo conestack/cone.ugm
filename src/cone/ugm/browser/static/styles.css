@@ -6,17 +6,10 @@
 div.add_button {
     float:left;
 }
-div.add_button input {
-    font-size:80%;
-}
 
 /* column filter */
 div.column_filter {
     float:right;
-}
-div.column_filter input {
-    color:#ccc;
-    font-size:80%;
 }
 
 /* column batch */

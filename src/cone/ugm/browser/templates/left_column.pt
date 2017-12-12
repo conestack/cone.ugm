@@ -8,24 +8,27 @@
 
     <div class="add_button"
          tal:condition="context.can_add">
-      <form action="#">
-        <input type="submit"
-               name="add"
-               value="${context.add_label}"
-               ajax:bind="click"
-               ajax:target="${context.add_target}"
-               ajax:action="add:.right_column:inner" />
-      </form>
+      <button class="btn btn-default"
+              type="submit"
+              ajax:bind="click"
+              ajax:target="${context.add_target}"
+              ajax:action="add:.right_column:inner">
+         <span class="ion-plus"></span>
+         <span tal:content="context.add_label">
+           Add principal
+         </span>
+      </button>
     </div>
 
     <div class="column_filter">
       <input type="text"
              name="column_filter"
              value="filter listing"
+             class="form-control"
              i18n:attributes="value filter_listing" />
     </div>
 
-    <div class="clear"></div>
+    <div class="clearfix"></div>
 
     <tal:listing replace="structure tile('columnlisting')" />
 
