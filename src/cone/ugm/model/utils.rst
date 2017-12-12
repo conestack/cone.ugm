@@ -4,12 +4,10 @@ cone.ugm.model.utils
 ::
 
     >>> from cone.app import root
-    >>> from cone.ugm.model.utils import (
-    ...     ugm_server,
-    ...     ugm_users,
-    ...     ugm_groups,
-    ...     ugm_backend,
-    ... )
+    >>> from cone.ugm.model.utils import ugm_backend
+    >>> from cone.ugm.model.utils import ugm_groups
+    >>> from cone.ugm.model.utils import ugm_server
+    >>> from cone.ugm.model.utils import ugm_users
 
     >>> ugm_server(root)
     <ServerSettings object 'ugm_server' at ...>
