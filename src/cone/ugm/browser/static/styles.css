@@ -63,37 +63,23 @@ a.delete_item_disabled {
 
 /* column listing */
 div.columnsorting {
-    margin-top:12px;
-    width:100%;
+    margin-top:6px;
+    margin-bottom:6px;
 }
 div.columnsorting div {
-    float:left;
+    color:#000;
 }
-div.columnsorting div.sort_col_1,
-div.columnsorting div.sort_col_2,
-div.columnsorting div.sort_col_3 {
-    padding-right:5px;
+div.columnsorting .columnsorticon::before {
+    font-family:"Ionicons";
+    content:"\f20b";
 }
-div.columnsorting div.sortintro {
-    color:#333;
-    cursor:pointer;
-    text-decoration:none;
-    font-size:80%;
-    padding-left:11px;
+div.columnsorting .btn.asc .columnsorticon::before {
+    font-family:"Ionicons";
+    content:"\f10d";
 }
-div.columnsorting a {
-    color:#333;
-    cursor:pointer;
-    text-decoration:none;
-    font-size:80%;
-    font-weight:bold;
-    padding-left:11px;
-}
-div.columnsorting a.asc {
-    background: url('/cone.ugm.static/images/icon_asc.gif') 0 50% no-repeat;
-}
-div.columnsorting a.desc {
-    background: url('/cone.ugm.static/images/icon_desc.gif') 0 50% no-repeat;
+div.columnsorting .btn.desc .columnsorticon::before {
+    font-family:"Ionicons";
+    content:"\f104";
 }
 div.columnitems {
     clear:both;

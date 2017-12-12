@@ -11,18 +11,17 @@
 
     <tal:batch replace="structure context.batch" />
 
-    <div class="columnsorting">
-      <div class="sortintro sort_col_1">
+    <div class="columnsorting btn-group">
+      <div class="btn btn-default" disabled="disabled">
         <span i18n:translate="sort_by">Sorting</span>:
       </div>
       <tal:sortheader repeat="header context.sortheader">
-        <div class="${header['id']}">
-          <a href="${header['id']}"
-             tal:attributes="class header['default'] and 'default' or None"
-             tal:content="header['name']">name</a>
-        </div>
+        <button id="${header['id']}"
+             class="${header['default'] and 'default' or None} btn btn-default ">
+          <span class="columnsorticon"></span>
+          <span tal:content="header['name']">name</span>
+        </button>
       </tal:sortheader>
-      <p>&nbsp;</p>
     </div>
 
     <div class="columnitems"

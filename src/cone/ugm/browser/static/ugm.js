@@ -679,23 +679,23 @@
 
         // sort listings binder
         listing_sort_binder: function(context) {
-            var sort_links = $('.columnsorting a', context);
+            var sort_links = $('.columnsorting button', context);
             sort_links.unbind().bind('click', function(event) {
                 bdajax.spinner.show();
-                event.preventDefault();
                 var elem = $(this);
                 var inv = elem.hasClass('inv');
-                sort_links.removeClass('default')
-                          .removeClass('inv')
-                          .removeClass('asc')
-                          .removeClass('desc');
+                var links = elem.parent().parent();
+                $('button', links).removeClass('default')
+                                  .removeClass('inv')
+                                  .removeClass('asc')
+                                  .removeClass('desc');
                 var cont = $('.columnitems', elem.parent().parent().parent());
                 if (inv) {
                     elem.addClass('asc');
                 } else {
                     elem.addClass('inv').addClass('desc');
                 }
-                var sortname = elem.attr('href');
+                var sortname = elem.attr('id');
                 if ($.browser.msie && ($.browser.version == 7)) {
                     sortname = sortname.substr(sortname.lastIndexOf('/') + 1);
                 }
@@ -716,7 +716,7 @@
                 ugm.scroll_listings_to_selected();
                 bdajax.spinner.hide();
             });
-            $('.columnsorting a.default', context).trigger('click');
+            $('.columnsorting button.default', context).trigger('click');
         }
     };
 
