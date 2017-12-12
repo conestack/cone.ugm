@@ -2,14 +2,14 @@ from cone.app.model import BaseNode
 from cone.app.model import Metadata
 from cone.app.model import NodeInfo
 from cone.app.model import Properties
-from cone.app.model import registerNodeInfo
+from cone.app.model import node_info
 from cone.ugm.browser.utils import unquote_slash
 from cone.ugm.model.group import Group
 from cone.ugm.model.localmanager import LocalManagerGroupsACL
 from cone.ugm.model.utils import ugm_backend
 from node.locking import locktree
 from node.utils import instance_property
-from plumber import plumber
+from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 import logging
 
@@ -22,11 +22,16 @@ def groups_factory():
     return Groups()
 
 
+@node_info(
+    'groups',
+    title=_('groups_node', 'Groups'),
+    description=_(
+        'groups_node_description',
+        'Container for Groups'),
+    icon='cone.ugm.static/images/groups16_16.png',
+    addables=['group'])
+@plumbing(LocalManagerGroupsACL)
 class Groups(BaseNode):
-    __metaclass__ = plumber
-    __plumbing__ = LocalManagerGroupsACL
-
-    node_info_name = 'groups'
 
     @instance_property
     def properties(self):
@@ -87,13 +92,3 @@ class Groups(BaseNode):
             group = Group(model, name, self)
             self[name] = group
             return group
-
-
-info = NodeInfo()
-info.title = _('groups_node', 'Groups')
-info.description = _('groups_node_description',
-                     'Container for Groups')
-info.node = Groups
-info.addables = ['group']
-info.icon = 'cone.ugm.static/images/groups16_16.png'
-registerNodeInfo('groups', info)

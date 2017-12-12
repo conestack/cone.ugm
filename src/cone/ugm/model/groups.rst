@@ -1,12 +1,15 @@
 cone.ugm.model.groups
 =====================
 
-::
+Test imports::
+
+    >>> from cone.app import root
+    >>> from cone.ugm.model.groups import Groups
+
+Groups container::
 
     >>> layer.login('manager')
 
-    >>> from cone.ugm.model.groups import Groups
-    >>> from cone.app import root 
     >>> groups = root['groups']
     >>> groups
     <Groups object 'groups' at ...>
