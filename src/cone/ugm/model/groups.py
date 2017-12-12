@@ -3,6 +3,7 @@ from cone.app.model import Metadata
 from cone.app.model import Properties
 from cone.app.model import node_info
 from cone.ugm.browser.utils import unquote_slash
+from cone.ugm.layout import UGMLayout
 from cone.ugm.model.group import Group
 from cone.ugm.model.localmanager import LocalManagerGroupsACL
 from cone.ugm.model.utils import ugm_backend
@@ -47,6 +48,10 @@ class Groups(BaseNode):
             'Container for Groups'
         )
         return metadata
+
+    @instance_property
+    def layout(self):
+        return UGMLayout(model=self)
 
     @property
     def backend(self):

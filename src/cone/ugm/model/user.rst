@@ -32,6 +32,12 @@ Metadata::
     >>> md.description
     u'user_node_description'
 
+Layout::
+
+    >>> layout = user.layout
+    >>> layout
+    <cone.ugm.layout.UGMLayout object at ...>
+
 Backend user node is available at ``model``::
 
     >>> user.model

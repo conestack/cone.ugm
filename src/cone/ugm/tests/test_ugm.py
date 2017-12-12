@@ -71,6 +71,7 @@ ugm_layer = UGMLayer()
 
 
 DOCFILES = [
+    ('../layout.rst', ugm_layer),
     ('../model/settings.rst', ugm_layer),
     ('../model/utils.rst', ugm_layer),
     ('../model/users.rst', ugm_layer),

@@ -32,6 +32,12 @@ Metadata::
     >>> md.description
     u'group_node_description'
 
+Layout::
+
+    >>> layout = group.layout
+    >>> layout
+    <cone.ugm.layout.UGMLayout object at ...>
+
 Backend group node is available at ``model``::
 
     >>> group.model

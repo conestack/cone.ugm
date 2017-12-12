@@ -35,6 +35,12 @@ Metadata::
     >>> md.description
     u'users_node_description'
 
+Layout::
+
+    >>> layout = users.layout
+    >>> layout
+    <cone.ugm.layout.UGMLayout object at ...>
+
 Iter users::
 
     >>> len([x for x in users])

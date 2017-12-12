@@ -2,6 +2,7 @@ from cone.app.model import AdapterNode
 from cone.app.model import Metadata
 from cone.app.model import Properties
 from cone.app.model import node_info
+from cone.ugm.layout import UGMLayout
 from cone.ugm.model.localmanager import LocalManagerUserACL
 from node.locking import locktree
 from node.utils import instance_property
@@ -30,6 +31,10 @@ class User(AdapterNode):
         metadata.title = _('user_node', 'User')
         metadata.description = _('user_node_description', 'User')
         return metadata
+
+    @instance_property
+    def layout(self):
+        return UGMLayout(model=self)
 
     @locktree
     def __call__(self):

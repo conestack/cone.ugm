@@ -31,6 +31,12 @@ Metadata::
     >>> md.description
     u'groups_node_description'
 
+Layout::
+
+    >>> layout = groups.layout
+    >>> layout
+    <cone.ugm.layout.UGMLayout object at ...>
+
 Iter groups::
 
     >>> len([x for x in groups])
