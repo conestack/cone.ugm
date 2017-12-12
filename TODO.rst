@@ -9,4 +9,4 @@ TODO
 
 - Listing batches.
 
-- DnD membership assignment
+- DnD membership assignment.
