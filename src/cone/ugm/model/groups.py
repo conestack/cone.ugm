@@ -42,8 +42,10 @@ class Groups(BaseNode):
     def metadata(self):
         metadata = Metadata()
         metadata.title = _('groups_node', 'Groups')
-        metadata.description = _('groups_node_description',
-                                 'Container for Groups')
+        metadata.description = _(
+            'groups_node_description',
+            'Container for Groups'
+        )
         return metadata
 
     @property

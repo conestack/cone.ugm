@@ -6,7 +6,7 @@ from plumber import Behavior
 from plumber import default
 from plumber import finalize
 from plumber import plumb
-from plumber import plumber
+from plumber import plumbing
 from pyramid.security import Allow
 from pyramid.security import authenticated_userid
 from pyramid.threadlocal import get_current_request
@@ -48,12 +48,8 @@ class LocalManagerConfig(DictStorage):
             handle.write(etree.tostring(root, pretty_print=True))
 
 
+@plumbing(Nodify, LocalManagerConfig)
 class LocalManagerConfigAttributes(object):
-    __metaclass__ = plumber
-    __plumbing__ = (
-        Nodify,
-        LocalManagerConfig,
-    )
 
     def __init__(self, path):
         self.file_path = path
