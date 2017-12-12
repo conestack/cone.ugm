@@ -2,14 +2,14 @@ from cone.app.model import BaseNode
 from cone.app.model import Metadata
 from cone.app.model import NodeInfo
 from cone.app.model import Properties
-from cone.app.model import registerNodeInfo
+from cone.app.model import node_info
 from cone.ugm.browser.utils import unquote_slash
 from cone.ugm.model.localmanager import LocalManagerUsersACL
 from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_backend
 from node.locking import locktree
 from node.utils import instance_property
-from plumber import plumber
+from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 import logging
 
@@ -22,11 +22,16 @@ def users_factory():
     return Users()
 
 
+@node_info(
+    'users',
+    title=_('users_node', 'Users'),
+    description=_(
+        'users_node_description',
+        'Container for Users'),
+    icon='cone.ugm.static/images/users16_16.png',
+    addables=['user'])
+@plumbing(LocalManagerUsersACL)
 class Users(BaseNode):
-    __metaclass__ = plumber
-    __plumbing__ = LocalManagerUsersACL
-
-    node_info_name = 'users'
 
     @instance_property
     def properties(self):
@@ -38,8 +43,10 @@ class Users(BaseNode):
     def metadata(self):
         metadata = Metadata()
         metadata.title = _('users_node', 'Users')
-        metadata.description = _('users_node_description',
-                                 'Container for Users')
+        metadata.description = _(
+            'users_node_description',
+            'Container for Users'
+        )
         return metadata
 
     @property
@@ -87,13 +94,3 @@ class Users(BaseNode):
             user = User(model, name, self)
             self[name] = user
             return user
-
-
-info = NodeInfo()
-info.title = _('users_node', 'Users')
-info.description = _('users_node_description',
-                     'Container for Users')
-info.node = Users
-info.addables = ['user']
-info.icon = 'cone.ugm.static/images/users16_16.png'
-registerNodeInfo('users', info)

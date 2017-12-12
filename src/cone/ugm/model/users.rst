@@ -1,12 +1,16 @@
 cone.ugm.model.users
 ====================
 
-::
+Test imports::
+
+    >>> from cone.ugm.model.users import Users
+    >>> from cone.ugm.model.utils import ugm_users
+    >>> from cone.app import root
+
+Users container::
 
     >>> layer.login('manager')
 
-    >>> from cone.ugm.model.users import Users
-    >>> from cone.app import root 
     >>> users = root['users']
     >>> users
     <Users object 'users' at ...>
@@ -33,7 +37,6 @@ Metadata::
 
 Iter users::
 
-    >>> from cone.ugm.model.utils import ugm_users
     >>> len([x for x in users])
     18
 
