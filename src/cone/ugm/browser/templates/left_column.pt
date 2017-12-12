@@ -3,7 +3,8 @@
            xmlns:i18n="http://xml.zope.org/namespaces/i18n"
            i18n:domain="cone.ugm"
            omit-tag="True">
-  <div class="column left_column box">
+
+  <div class="column left_column col-md-6">
 
     <div class="add_button"
          tal:condition="context.can_add">
@@ -29,4 +30,5 @@
     <tal:listing replace="structure tile('columnlisting')" />
 
   </div>
+
 </tal:block>

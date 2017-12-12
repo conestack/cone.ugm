@@ -16,14 +16,15 @@ _ = TranslationStringFactory('cone.ugm')
 @tile('leftcolumn', 'templates/left_column.pt',
       interface=Users, permission='view')
 class UsersLeftColumn(Tile):
-
     add_label = _('add_user', 'Add User')
 
     @property
     def add_target(self):
-        return make_url(self.request,
-                        node=self.model.root['users'],
-                        query=make_query(factory=u'user'))
+        return make_url(
+            self.request,
+            node=self.model.root['users'],
+            query=make_query(factory=u'user')
+        )
 
     @property
     def can_add(self):
@@ -34,13 +35,12 @@ class UsersLeftColumn(Tile):
 class UsersRightColumn(Tile):
 
     def render(self):
-        return u'<div class="column right_column">&nbsp;</div>'
+        return u'<div class="column right_column col-md-6">&nbsp;</div>'
 
 
 @tile('columnlisting', 'templates/column_listing.pt',
       interface=Users, permission='view')
 class UsersColumnListing(PrincipalsListing):
-
     slot = 'leftlisting'
     list_columns = PrincipalsListing.user_list_columns
     listing_attrs = PrincipalsListing.user_attrs

@@ -214,7 +214,6 @@
                         var li = elem.parent().parent();
                         if (li.hasClass('selected')) {
                             var col = $('div.right_column');
-                            col.removeClass('box');
                             col.empty();
                         }
                         li.remove();

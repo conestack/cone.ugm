@@ -4,11 +4,13 @@ from cone.tile import registerTile
 from cone.tile import render_tile
 
 
-registerTile('content',
-             'cone.ugm:browser/templates/columns.pt',
-             class_=ProtectedContentTile,
-             permission='login',
-             strict=False)
+registerTile(
+    'content',
+    'cone.ugm:browser/templates/columns.pt',
+    class_=ProtectedContentTile,
+    permission='login',
+    strict=False
+)
 
 
 class Column(Tile):

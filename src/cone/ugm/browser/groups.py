@@ -16,14 +16,15 @@ _ = TranslationStringFactory('cone.ugm')
 @tile('leftcolumn', 'templates/left_column.pt',
       interface=Groups, permission='view')
 class GroupsLeftColumn(Tile):
-
     add_label = _('add_group', 'Add Group')
 
     @property
     def add_target(self):
-        return make_url(self.request,
-                        node=self.model.root['groups'],
-                        query=make_query(factory=u'group'))
+        return make_url(
+            self.request,
+            node=self.model.root['groups'],
+            query=make_query(factory=u'group')
+        )
 
     @property
     def can_add(self):
@@ -34,13 +35,12 @@ class GroupsLeftColumn(Tile):
 class GroupsRightColumn(Tile):
 
     def render(self):
-        return u'<div class="column right_column">&nbsp;</div>'
+        return u'<div class="column right_column col-md-6">&nbsp;</div>'
 
 
 @tile('columnlisting', 'templates/column_listing.pt',
       interface=Groups, permission='view')
 class GroupsColumnListing(PrincipalsListing):
-
     slot = 'leftlisting'
     list_columns = PrincipalsListing.group_list_columns
     listing_attrs = PrincipalsListing.group_attrs

@@ -1,10 +1,12 @@
 cone.ugm.browser.users
 ======================
 
-::
+Test imports::
 
     >>> from cone.app import root
     >>> from cone.tile import render_tile
+
+Users container::
 
     >>> users = root['users']
 
@@ -46,11 +48,11 @@ Authenticate and render tiles::
     >>> layer.login('manager')
 
     >>> res = render_tile(users, request, 'leftcolumn')
-    >>> res.find('<div class="column left_column box">') > -1
+    >>> res.find('<div class="column left_column col-md-6">') > -1
     True
 
     >>> res = render_tile(users, request, 'rightcolumn')
-    >>> res == u'<div class="column right_column">&nbsp;</div>'
+    >>> res == u'<div class="column right_column col-md-6">&nbsp;</div>'
     True
 
     >>> res = render_tile(users, request, 'columnlisting')

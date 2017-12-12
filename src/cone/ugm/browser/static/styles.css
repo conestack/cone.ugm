@@ -2,27 +2,6 @@
     display:none;
 }
 
-/* columns */
-div.columns {
-    display: block;
-    float: left;
-    position: relative;
-    width: 100%;
-}
-div.columns div.column {
-    float:left;
-    left:100%;
-    position:relative;
-    width:48%;
-    float:left;
-}
-div.left_column {
-    margin-left:-100%;
-}
-div.right_column {
-    margin-left:-50%;
-}
-
 /* add button */
 div.add_button {
     float:left;
@@ -337,11 +316,6 @@ div.right_column div.field div {
     float:right;
     font-size:80%;
     width:160px;
-}
-
-.principal_form .box {
-    background: none!important;
-    border-top: 1px solid #eee;
 }
 .column.right_column {
     margin-top: 82px;
