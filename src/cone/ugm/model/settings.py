@@ -71,8 +71,10 @@ class GeneralSettings(UgmSettings):
     def metadata(self):
         metadata = Metadata()
         metadata.title = _('ugm_settings_node', 'UGM Settings')
-        metadata.description = _('ugm_settings_node_description',
-                                 'General user and group management settings')
+        metadata.description = _(
+            'ugm_settings_node_description',
+            'General user and group management settings'
+        )
         return metadata
 
 
@@ -82,8 +84,10 @@ class ServerSettings(UgmSettings):
     def metadata(self):
         metadata = Metadata()
         metadata.title = _('ldap_props_node', 'LDAP Props')
-        metadata.description = _('ldap_props_node_description',
-                                 'LDAP properties')
+        metadata.description = _(
+            'ldap_props_node_description',
+            'LDAP properties'
+        )
         return metadata
 
     @property
@@ -112,8 +116,10 @@ class UsersSettings(UgmSettings):
     def metadata(self):
         metadata = Metadata()
         metadata.title = _('user_settings_node', 'Users Settings')
-        metadata.description = _('user_settings_node_description',
-                                 'LDAP users settings')
+        metadata.description = _(
+            'user_settings_node_description',
+            'LDAP users settings'
+        )
         return metadata
 
     @property
@@ -171,8 +177,10 @@ class GroupsSettings(UgmSettings):
     def metadata(self):
         metadata = Metadata()
         metadata.title = _('group_settings_node', 'Groups Settings')
-        metadata.description = _('group_settings_node_description',
-                                 'LDAP groups settings')
+        metadata.description = _(
+            'group_settings_node_description',
+            'LDAP groups settings'
+        )
         return metadata
 
     @property
@@ -214,8 +222,10 @@ class RolesSettings(UgmSettings):
     def metadata(self):
         metadata = Metadata()
         metadata.title = _('role_settings_node', 'Roles Settings')
-        metadata.description = _('role_settings_node_description',
-                                 'LDAP roles settings')
+        metadata.description = _(
+            'role_settings_node_description',
+            'LDAP roles settings'
+        )
         return metadata
 
     @property
@@ -259,10 +269,14 @@ class LocalManagerSettings(BaseNode):
     @instance_property
     def metadata(self):
         metadata = Metadata()
-        metadata.title = _('localmanager_settings_node',
-                           'Local Manager Settings')
-        metadata.description = _('localmanager_settings_node_description',
-                                 'Local Manager Settings')
+        metadata.title = _(
+            'localmanager_settings_node',
+            'Local Manager Settings'
+        )
+        metadata.description = _(
+            'localmanager_settings_node_description',
+            'Local Manager Settings'
+        )
         return metadata
 
     @property

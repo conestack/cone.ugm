@@ -1,10 +1,20 @@
 cone.ugm.model.settings
 =======================
 
-App path for testing::
+Test imports::
 
+    >>> from cone.ugm.model.settings import GroupsSettings
+    >>> from cone.ugm.model.settings import ServerSettings
+    >>> from cone.ugm.model.settings import UsersSettings
+    >>> from node.base import OrderedNode
+    >>> from node.ext.ldap.properties import LDAPProps
+    >>> import cone.app
+    >>> import cone.ugm
     >>> import os
     >>> import pkg_resources
+
+App path for testing::
+
     >>> path = pkg_resources.resource_filename('cone.ugm', '')
     >>> path = os.path.sep.join(path.split(os.path.sep)[:-3])
     >>> path
@@ -12,12 +22,6 @@ App path for testing::
 
 Dummy settings container::
 
-    >>> from node.base import OrderedNode
-    >>> from cone.ugm.model.settings import (
-    ...     ServerSettings,
-    ...     UsersSettings,
-    ...     GroupsSettings,
-    ... )
     >>> settings = OrderedNode()
     >>> settings['ugm_server'] = ServerSettings()
     >>> settings['ugm_users'] = UsersSettings()
@@ -102,7 +106,6 @@ LDAP groups config::
 
 LDAP connectivity tests::
 
-    >>> from node.ext.ldap.properties import LDAPProps
     >>> props = LDAPProps(
     ...     uri='ldap://127.0.0.1:12346/',
     ...     user='',
@@ -140,9 +143,6 @@ file, so calling either ucfg, gcfg or props writes all of them::
     >>> settings['ugm_server']()
 
 Test invalidate::
-
-    >>> import cone.app
-    >>> import cone.ugm
 
     >>> root = cone.app.root
 
