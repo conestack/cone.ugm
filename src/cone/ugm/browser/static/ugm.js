@@ -7,32 +7,18 @@
 (function($) {
 
     $(document).ready(function() {
-
-        // initial binding
         ugm.key_binder();
-        ugm.left_listing_nav_binder();
-        ugm.right_listing_nav_binder();
-        ugm.listing_filter_binder();
-        ugm.listing_sort_binder();
-        ugm.listing_actions_binder();
-        ugm.listing_related_binder();
         ugm.scroll_listings_to_selected();
-        ugm.inout_actions_binder();
-        ugm.inout_filter_binder();
-        ugm.inout_select_binder();
 
-        // add after ajax binding to bdajax
-        $.extend(bdajax.binders, {
-            left_listing_nav_binder: ugm.left_listing_nav_binder,
-            right_listing_nav_binder: ugm.right_listing_nav_binder,
-            listing_filter_binder: ugm.listing_filter_binder,
-            listing_sort_binder: ugm.listing_sort_binder,
-            listing_actions_binder: ugm.listing_actions_binder,
-            listing_related_binder: ugm.listing_related_binder,
-            inout_actions_binder: ugm.inout_actions_binder,
-            inout_filter_binder: ugm.inout_filter_binder,
-            inout_select_binder: ugm.inout_select_binder
-        });
+        bdajax.register(ugm.left_listing_nav_binder.bind(ugm), true);
+        bdajax.register(ugm.right_listing_nav_binder.bind(ugm), true);
+        bdajax.register(ugm.listing_filter_binder.bind(ugm), true);
+        bdajax.register(ugm.listing_sort_binder.bind(ugm), true);
+        bdajax.register(ugm.listing_actions_binder.bind(ugm), true);
+        bdajax.register(ugm.listing_related_binder.bind(ugm), true);
+        bdajax.register(ugm.inout_actions_binder.bind(ugm), true);
+        bdajax.register(ugm.inout_filter_binder.bind(ugm), true);
+        bdajax.register(ugm.inout_select_binder.bind(ugm), true);
     });
 
     ugm = {
