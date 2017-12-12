@@ -1,6 +1,5 @@
 from cone.app.model import AdapterNode
 from cone.app.model import Metadata
-from cone.app.model import NodeInfo
 from cone.app.model import Properties
 from cone.app.model import node_info
 from cone.ugm.model.localmanager import LocalManagerUserACL

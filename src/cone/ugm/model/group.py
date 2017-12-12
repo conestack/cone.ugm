@@ -1,23 +1,23 @@
-from plumber import plumber
+from cone.app.model import AdapterNode
+from cone.app.model import Metadata
+from cone.app.model import Properties
+from cone.app.model import node_info
+from cone.ugm.model.localmanager import LocalManagerGroupACL
 from node.locking import locktree
 from node.utils import instance_property
+from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
-from cone.app.model import AdapterNode
-from cone.app.model import Properties
-from cone.app.model import Metadata
-from cone.app.model import NodeInfo
-from cone.app.model import registerNodeInfo
-from cone.ugm.model.localmanager import LocalManagerGroupACL
 
 
 _ = TranslationStringFactory('cone.ugm')
 
 
+@node_info(
+    'group',
+    title=_('group_node', 'Group'),
+    description=_('group_node_description', 'Group'))
+@plumbing(LocalManagerGroupACL)
 class Group(AdapterNode):
-    __metaclass__ = plumber
-    __plumbing__ = LocalManagerGroupACL
-
-    node_info_name = 'group'
 
     @instance_property
     def properties(self):
@@ -34,11 +34,3 @@ class Group(AdapterNode):
     @locktree
     def __call__(self):
         self.model()
-
-
-info = NodeInfo()
-info.title = _('group_node', 'Group')
-info.description = _('group_node_description', 'Group')
-info.node = Group
-info.addables = []
-registerNodeInfo('group', info)

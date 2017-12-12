@@ -1,6 +1,5 @@
 from cone.app.model import BaseNode
 from cone.app.model import Metadata
-from cone.app.model import NodeInfo
 from cone.app.model import Properties
 from cone.app.model import node_info
 from cone.ugm.browser.utils import unquote_slash
