@@ -42,7 +42,7 @@ class PrincipalRolesForm(Behavior):
             name='principal_roles',
             value=value,
             props={
-                'label': _('roles', 'Roles'),
+                'label': _('roles', default='Roles'),
                 'multivalued': True,
                 'vocabulary': self.roles_vocab,
                 'format': 'single',

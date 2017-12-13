@@ -16,7 +16,7 @@ _ = TranslationStringFactory('cone.ugm')
 @tile('leftcolumn', 'templates/left_column.pt',
       interface=Users, permission='view')
 class UsersLeftColumn(Tile):
-    add_label = _('add_user', 'Add User')
+    add_label = _('add_user', default='Add User')
 
     @property
     def add_target(self):
@@ -48,7 +48,7 @@ class UsersColumnListing(PrincipalsListing):
     sort_attr = PrincipalsListing.user_default_sort_column
     css = 'users'
     batchname = 'leftbatch'
-    delete_label = _('delete_user', 'Delete User')
+    delete_label = _('delete_user', default='Delete User')
     delete_permission = 'delete_user'
 
     @property

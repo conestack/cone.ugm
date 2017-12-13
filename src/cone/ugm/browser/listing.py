@@ -190,7 +190,7 @@ class ColumnListing(Tile):
 class PrincipalsListing(ColumnListing):
     """Column listing for principals.
     """
-    delete_label = _('delete_principal', 'Delete Principal')
+    delete_label = _('delete_principal', default='Delete Principal')
     delete_permission = 'delete_principal'  # inexistent permission
     listing_attrs = []
     listing_criteria = None

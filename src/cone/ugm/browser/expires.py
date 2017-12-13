@@ -152,7 +152,7 @@ class ExpirationForm(Behavior):
             name='active',
             value=value,
             props={
-                'label': _('active', 'Active')
+                'label': _('active', default='Active')
             },
             mode=mode
         )

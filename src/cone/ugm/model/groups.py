@@ -24,10 +24,10 @@ def groups_factory():
 
 @node_info(
     'groups',
-    title=_('groups_node', 'Groups'),
+    title=_('groups_node', default='Groups'),
     description=_(
         'groups_node_description',
-        'Container for Groups'),
+        default='Container for Groups'),
     icon='ion-person-stalker',
     addables=['group'])
 @plumbing(LocalManagerGroupsACL)
@@ -42,10 +42,10 @@ class Groups(BaseNode):
     @instance_property
     def metadata(self):
         metadata = Metadata()
-        metadata.title = _('groups_node', 'Groups')
+        metadata.title = _('groups_node', default='Groups')
         metadata.description = _(
             'groups_node_description',
-            'Container for Groups'
+            default='Container for Groups'
         )
         return metadata
 

@@ -30,7 +30,7 @@ _ = TranslationStringFactory('cone.ugm')
 @tile('leftcolumn', interface=Group, permission='view')
 class GroupLeftColumn(Column):
 
-    add_label = _('add_group', 'Add Group')
+    add_label = _('add_group', default='Add Group')
 
     @property
     def can_add(self):
@@ -118,7 +118,7 @@ class Principals(object):
                 action_id = 'add_item'
                 action_enabled = not bool(related)
                 action_title = _('add_user_to_selected_group',
-                                 'Add user to selected group')
+                                 default='Add user to selected group')
                 add_item_action = obj.create_action(
                     action_id, action_enabled, action_title, action_target)
                 actions.append(add_item_action)
@@ -126,7 +126,7 @@ class Principals(object):
                 action_id = 'remove_item'
                 action_enabled = bool(related)
                 action_title = _('remove_user_from_selected_group',
-                                 'Remove user from selected group')
+                                 default='Remove user from selected group')
                 remove_item_action = obj.create_action(
                     action_id, action_enabled, action_title, action_target)
                 actions.append(remove_item_action)

@@ -15,8 +15,8 @@ _ = TranslationStringFactory('cone.ugm')
 
 @node_info(
     'group',
-    title=_('group_node', 'Group'),
-    description=_('group_node_description', 'Group'))
+    title=_('group_node', default='Group'),
+    description=_('group_node_description', default='Group'))
 @plumbing(LocalManagerGroupACL)
 class Group(AdapterNode):
 
@@ -28,8 +28,8 @@ class Group(AdapterNode):
     @instance_property
     def metadata(self):
         metadata = Metadata()
-        metadata.title = _('group_node', 'Group')
-        metadata.description = _('group_node_description', 'Group')
+        metadata.title = _('group_node', default='Group')
+        metadata.description = _('group_node_description', default='Group')
         return metadata
 
     @instance_property

@@ -47,11 +47,13 @@ class PrincipalForm(object):
             field = schema.get(key, default)
             chain = field.get('chain', default['chain'])
             props = dict()
-            props['label'] = _(val, val)
+            props['label'] = _(val, default=val)
             if field.get('required'):
                 req = _('no_field_value_defined',
                         default='No ${field} defined',
-                        mapping={'field': localizer.translate(_(val, val))})
+                        mapping={
+                            'field': localizer.translate(_(val, default=val))
+                        })
                 props['required'] = req
             props.update(field.get('props', dict()))
             value = UNSET
@@ -92,7 +94,7 @@ class PrincipalForm(object):
                 'expression': True,
                 'handler': self.save,
                 'next': self.next,
-                'label': _('save', 'Save'),
+                'label': _('save', default='Save'),
             })
         if resource == 'add':
             form['cancel'] = factory(
@@ -102,7 +104,7 @@ class PrincipalForm(object):
                     'expression': True,
                     'handler': None,
                     'next': self.next,
-                    'label': _('cancel', 'Cancel'),
+                    'label': _('cancel', default='Cancel'),
                     'skip': True,
                 })
         self.form = form

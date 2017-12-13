@@ -15,8 +15,8 @@ _ = TranslationStringFactory('cone.ugm')
 
 @node_info(
     'user',
-    title=_('user_node', 'User'),
-    description=_('user_node_description', 'User'))
+    title=_('user_node', default='User'),
+    description=_('user_node_description', default='User'))
 @plumbing(LocalManagerUserACL)
 class User(AdapterNode):
 
@@ -28,8 +28,8 @@ class User(AdapterNode):
     @instance_property
     def metadata(self):
         metadata = Metadata()
-        metadata.title = _('user_node', 'User')
-        metadata.description = _('user_node_description', 'User')
+        metadata.title = _('user_node', default='User')
+        metadata.description = _('user_node_description', default='User')
         return metadata
 
     @instance_property

@@ -83,10 +83,11 @@ class CreateContainerAction(Tile):
             ajax_continue(self.request, continuation)
         except Exception, e:
             localizer = get_localizer(self.request)
-            message = localizer.translate(
-                _('cannot_create_container',
-                  default="Can't create container: ${error}",
-                  mapping={'error': str(e)}))
+            message = localizer.translate(_(
+                'cannot_create_container',
+                default="Can't create container: ${error}",
+                mapping={'error': str(e)}
+            ))
             ajax_message(self.request, message, 'error')
         return u''
 
@@ -94,33 +95,43 @@ class CreateContainerAction(Tile):
         dn = decode_dn(self.request.params.get('dn', ''))
         localizer = get_localizer(self.request)
         if not dn:
-            message = localizer.translate(
-                _('no_container_dn_defined', 'No container DN defined.'))
+            message = localizer.translate(_(
+                'no_container_dn_defined',
+                default='No container DN defined.'
+            ))
             raise Exception(message)
         if not dn.startswith('ou='):
-            message = localizer.translate(
-                _('expected_ou_as_rdn', "Expected 'ou' as RDN Attribute."))
+            message = localizer.translate(_(
+                'expected_ou_as_rdn',
+                default="Expected 'ou' as RDN Attribute."
+            ))
             raise Exception(message)
         props = self.model.parent['ugm_server'].ldap_props
         try:
             parent_dn = ','.join(explode_dn(dn)[1:])
         except Exception:
-            message = localizer.translate(_('invalid_dn', 'Invalid DN.'))
+            message = localizer.translate(_(
+                'invalid_dn',
+                default='Invalid DN.'
+            ))
             raise Exception(message)
         rdn = explode_dn(dn)[0]
         node = LDAPNode(parent_dn, props)
         if node is None:
-            message = localizer.translate(
-                _('parent_not_found', "Parent not found. Can't continue."))
+            message = localizer.translate(_(
+                'parent_not_found',
+                default="Parent not found. Can't continue."
+            ))
             raise Exception(message)
         node[rdn] = LDAPNode()
         node[rdn].attrs['objectClass'] = ['organizationalUnit']
         node()
         self.model.invalidate()
-        message = localizer.translate(
-                _('created_principal_container',
-                  default="Created ${rdn}",
-                  mapping={'rdn': rdn}))
+        message = localizer.translate(_(
+            'created_principal_container',
+            default="Created ${rdn}",
+            mapping={'rdn': rdn}
+        ))
         return message
 
 
@@ -174,7 +185,7 @@ class ServerSettingsTile(ProtectedContentTile):
     def ldap_status(self):
         if self.model.ldap_connectivity:
             return 'OK'
-        return _('server_down', 'Down')
+        return _('server_down', default='Down')
 
 
 @tile('editform', interface=ServerSettings, permission="manage")
@@ -216,7 +227,7 @@ class UsersSettingsTile(ProtectedContentTile, CreateContainerTrigger):
     def ldap_users(self):
         if self.model.ldap_users_container_valid:
             return 'OK'
-        return _('inexistent', 'Inexistent')
+        return _('inexistent', default='Inexistent')
 
 
 @tile('create_container', interface=UsersSettings, permission='manage')
@@ -281,7 +292,7 @@ class GroupsSettingsTile(ProtectedContentTile, CreateContainerTrigger):
     def ldap_groups(self):
         if self.model.ldap_groups_container_valid:
             return 'OK'
-        return _('inexistent', 'Inexistent')
+        return _('inexistent', default='Inexistent')
 
 
 @tile('create_container', interface=GroupsSettings, permission='manage')
@@ -344,7 +355,7 @@ class RolesSettingsTile(ProtectedContentTile, CreateContainerTrigger):
     def ldap_roles(self):
         if self.model.ldap_roles_container_valid:
             return 'OK'
-        return _('inexistent', 'Inexistent')
+        return _('inexistent', default='Inexistent')
 
 
 @tile('create_container', interface=RolesSettings, permission='manage')
@@ -452,7 +463,10 @@ class LocalManagerSettingsForm(Form):
                 continue
             other = val.extracted['source']
             if other in exists:
-                raise ExtractionError(_('localmanager_duplicate_rule_error'))
+                raise ExtractionError(_(
+                    'localmanager_duplicate_rule_error',
+                    default='Duplicate access rule'
+                ))
             exists.append(other)
         return data.extracted
 
@@ -461,7 +475,10 @@ class LocalManagerSettingsForm(Form):
         """
         source = data.parent.parent.parent['source'].extracted
         if source == data.extracted:
-            raise ExtractionError(_('localmanager_target_is_source_error'))
+            raise ExtractionError(_(
+                'localmanager_target_is_source_error',
+                default='Target GID equates source GID'
+            ))
         return data.extracted
 
     def save(self, widget, data):

@@ -16,7 +16,7 @@ _ = TranslationStringFactory('cone.ugm')
 @tile('leftcolumn', 'templates/left_column.pt',
       interface=Groups, permission='view')
 class GroupsLeftColumn(Tile):
-    add_label = _('add_group', 'Add Group')
+    add_label = _('add_group', default='Add Group')
 
     @property
     def add_target(self):
@@ -48,7 +48,7 @@ class GroupsColumnListing(PrincipalsListing):
     sort_attr = PrincipalsListing.group_default_sort_column
     css = 'groups'
     batchname = 'leftbatch'
-    delete_label = _('delete_group', 'Delete Group')
+    delete_label = _('delete_group', default='Delete Group')
     delete_permission = 'delete_group'
 
     @property

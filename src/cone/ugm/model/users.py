@@ -24,10 +24,10 @@ def users_factory():
 
 @node_info(
     'users',
-    title=_('users_node', 'Users'),
+    title=_('users_node', default='Users'),
     description=_(
         'users_node_description',
-        'Container for Users'),
+        default='Container for Users'),
     icon='ion-person',
     addables=['user'])
 @plumbing(LocalManagerUsersACL)
@@ -42,10 +42,10 @@ class Users(BaseNode):
     @instance_property
     def metadata(self):
         metadata = Metadata()
-        metadata.title = _('users_node', 'Users')
+        metadata.title = _('users_node', default='Users')
         metadata.description = _(
             'users_node_description',
-            'Container for Users'
+            default='Container for Users'
         )
         return metadata
 

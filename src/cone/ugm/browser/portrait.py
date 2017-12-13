@@ -75,9 +75,9 @@ class PortraitForm(Behavior):
             name='portrait',
             value=image_value,
             props={
-                'label': _('portrait', 'Portrait'),
+                'label': _('portrait', default='Portrait'),
                 'src': image_url,
-                'alt': _('portrait', 'Portrait'),
+                'alt': _('portrait', default='Portrait'),
                 'accept': image_accept,
                 'minsize': (image_width, image_height),
                 'crop': {

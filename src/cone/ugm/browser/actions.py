@@ -195,7 +195,7 @@ def delete_group_action(model, request):
                 'message': str(e)}
     localizer = get_localizer(request)
     message = localizer.translate(_('deleted_group',
-                                    'Deleted group from database'))
+                                    default='Deleted group from database'))
     return {'success': True,
             'message': message}
 
