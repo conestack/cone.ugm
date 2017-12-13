@@ -2,6 +2,16 @@
     display:none;
 }
 
+/* columns */
+div.left_column {
+    padding-left:0px;
+    padding-right:6px;
+}
+div.right_column {
+    padding-left:6px;
+    padding-right:0px;
+}
+
 /* add button */
 div.add_button {
     float:left;
