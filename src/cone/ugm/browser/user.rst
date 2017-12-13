@@ -54,22 +54,26 @@ Authenticate and render tiles::
     >>> layer.login('manager')
 
     >>> res = render_tile(user, request, 'leftcolumn')
-    >>> res.find('<div class="column left_column box">') > -1
+    >>> res.find('<div class="column left_column col-md-6">') > -1
     True
 
     >>> res = render_tile(user, request, 'rightcolumn')
-    >>> res.find('<div class="column right_column">') > -1
+    >>> res.find('<div class="column right_column col-md-6">') > -1
     True
 
     >>> res = render_tile(user, request, 'columnlisting')
-    >>> expected = \
-    ...     '<li ajax:target="http://example.com/groups/group2"'
+    >>> expected = (
+    ...     '<li class="list-group-item "\n              '
+    ...     'ajax:target="http://example.com/groups/group2">'
+    ... )
     >>> res.find(expected) > -1
     True
 
     >>> res = render_tile(user, request, 'allcolumnlisting')
-    >>> expected = \
-    ...     '<li ajax:target="http://example.com/groups/group1"'
+    >>> expected = (
+    ...     '<li class="list-group-item "\n              '
+    ...     'ajax:target="http://example.com/groups/group1">'
+    ... )
     >>> res.find(expected) > -1
     True
 
@@ -104,7 +108,7 @@ Add::
     >>> request.params['action.userform.save'] = '1'
 
     >>> res = render_tile(users, request, 'add')
-    >>> res.find('class="errormessage">No Id defined') > -1
+    >>> res.find('<div class="text-danger">No Id defined</div>') > -1
     True
 
     >>> request.params['userform.id'] = 'uid99'

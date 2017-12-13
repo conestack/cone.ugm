@@ -30,7 +30,7 @@ Autoincrement support
     >>> vessel = user_vessel(users)
     >>> request = layer.new_request()
     >>> render_tile(vessel, request, 'addform')
-    u'...<input class="required text" id="input-userform-id" 
+    u'...<input class="form-control required text" id="input-userform-id" 
     name="userform.id" required="required" type="text" value="" />...'
 
     >>> cfg.attrs.user_id_autoincrement = u'True'
@@ -38,8 +38,9 @@ Autoincrement support
 
     >>> vessel = user_vessel(users)
     >>> render_tile(vessel, request, 'addform')
-    u'...<input class="text" disabled="disabled" id="input-userform-id" 
-    name="userform.id" type="text" value="auto incremented" />...'
+    u'...<input class="form-control text" disabled="disabled" 
+    id="input-userform-id" name="userform.id" type="text" 
+    value="auto_incremented" />...'
 
     >>> def user_request(cn, sn, mail):
     ...     request = layer.new_request()

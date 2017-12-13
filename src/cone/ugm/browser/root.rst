@@ -37,11 +37,11 @@ Authenticate and render tiles::
     >>> layer.login('editor')
 
     >>> res = render_tile(root, request, 'leftcolumn')
-    >>> res.find('<div class="column left_column box">') > -1
+    >>> res.find('<div class="column left_column col-md-6">') > -1
     True
 
     >>> res = render_tile(root, request, 'rightcolumn')
-    >>> res == u'<div class="column right_column">&nbsp;</div>'
+    >>> res == u'<div class="column right_column col-md-6">&nbsp;</div>'
     True
 
 Site name tile::

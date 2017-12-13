@@ -14,8 +14,9 @@ Edit renderer. Active with no expiration date by default::
     >>> widget()
     u'<div class="expiration-widget"><input checked="checked" 
     id="checkbox-active" name="active.active" type="checkbox" 
-    value="1" /><label>until</label><input class="datepicker expiration" 
-    id="input-active" name="active" size="10" type="text" value="" /></div>'
+    value="1" /><label>until</label><input class="datepicker expiration 
+    form-control" id="input-active" name="active" size="10" type="text" 
+    value="" /></div>'
 
 Active with no expiration date::
 
@@ -29,8 +30,9 @@ Active with no expiration date::
     >>> widget(request=request)
     u'<div class="expiration-widget"><input checked="checked" 
     id="checkbox-active" name="active.active" type="checkbox" 
-    value="1" /><label>until</label><input class="datepicker expiration" 
-    id="input-active" name="active" size="10" type="text" value="" /></div>'
+    value="1" /><label>until</label><input class="datepicker expiration 
+    form-control" id="input-active" name="active" size="10" type="text" 
+    value="" /></div>'
 
 Inactive::
 
@@ -63,7 +65,7 @@ Edit renderer with preset value::
     >>> widget()
     u'<div class="expiration-widget"><input id="checkbox-active" 
     name="active.active" type="checkbox" value="1" /><label>until</label><input 
-    class="datepicker expiration" id="input-active" name="active" 
+    class="datepicker expiration form-control" id="input-active" name="active" 
     size="10" type="text" value="" /></div>'
 
     >>> import datetime
@@ -78,8 +80,8 @@ Edit renderer with preset value::
     >>> widget()
     u'<div class="expiration-widget"><input checked="checked" 
     id="checkbox-active" name="active.active" type="checkbox" 
-    value="1" /><label>until</label><input class="datepicker expiration" 
-    id="input-active" name="active" size="10" type="text" 
+    value="1" /><label>until</label><input class="datepicker expiration 
+    form-control" id="input-active" name="active" size="10" type="text" 
     value="23.12.2012" /></div>'
 
 Display renderer::
@@ -124,5 +126,5 @@ Display renderer::
     >>> widget()
     u'<div class="expiration-widget"><input checked="checked" 
     disabled="disabled" id="checkbox-active" 
-    type="checkbox" /><label>until</label><div class="display-expiration" 
-    id="display-active">2012.12.23</div></div>'
+    type="checkbox" /><label>until</label><div class="display-expiration 
+    form-control" id="display-active">2012.12.23</div></div>'

@@ -95,7 +95,7 @@ New portrait set on user::
     ('sn', u'sn0'), 
     ('mail', u'uid0@users300.my-domain.com'), 
     ('cn', u'cn0'), 
-    (u'jpegPhoto', '\xff\xd8\xff\xe0\x00\x10JFIF\...\x07\xff\xd9')]
+    (u'jpegPhoto', '\xff\xd8\xff\xe0\x00\x10JFIF\...\x03\xff\xd9')]
 
 Portrait present, link to user portrait is shown::
 
