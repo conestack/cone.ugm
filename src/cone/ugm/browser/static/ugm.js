@@ -172,12 +172,12 @@
                 .bind('click', ugm.actions.inout_remove_item);
 
             // bind button add action
-            $('div.inoutlisting input.inout_add_item', context)
+            $('div.inoutlisting button.inout_add_item', context)
                 .unbind()
                 .bind('click', ugm.actions.inout_button_add_item);
 
             // bind button remove action
-            $('div.inoutlisting input.inout_remove_item', context)
+            $('div.inoutlisting button.inout_remove_item', context)
                 .unbind()
                 .bind('click', ugm.actions.inout_button_remove_item);
         },

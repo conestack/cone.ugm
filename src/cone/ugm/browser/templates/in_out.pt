@@ -10,6 +10,7 @@
       <input type="text"
              name="left_column_filter"
              value="filter listing"
+             class="form-control"
              i18n:attributes="value filter_listing" />
     </div>
 
@@ -18,21 +19,22 @@
       <input type="text"
              name="right_column_filter"
              value="filter listing"
+             class="form-control"
              i18n:attributes="value filter_listing" />
     </div>
 
     <div class="inoutlisting"
          tal:define="display_control_buttons context.display_control_buttons">
 
-      <ul class="inoutleftlisting">
+      <ul class="list-group inoutleftlisting">
+
         <tal:item repeat="item context.available_items">
-          <li ajax:target="${item['target']}"
-              tal:define="current_item item['current'] and 'selected' or '';
-                          first_item repeat.item.start and 'first_item' or '';
-                          item_class '%s %s' %(current_item, first_item)"
-              tal:attributes="class item_class">
+          <li class="list-group-item ${item['current'] and 'selected' or ''}"
+              ajax:target="${item['target']}">
+
             <div class="cols li_trigger"
                  tal:content="structure item['content']">cols</div>
+
             <div class="actions">
               <tal:action repeat="action item['actions']">
                 <tal:enabled condition="action['enabled']">
@@ -49,26 +51,29 @@
                 </tal:disabled>
               </tal:action>
             </div>
-            <div style="clear: both;"></div>
+
+            <div class="clearfix"></div>
+
           </li>
         </tal:item>
+
       </ul>
 
       <div class="inoutbuttons"
            tal:condition="display_control_buttons">
-        <input type="button" class="inout_add_item" value=">>" />
-        <input type="button" class="inout_remove_item" value="<<" />
+        <button class="btn btn-default ion-arrow-right-c inout_add_item" />
+        <button class="btn btn-default ion-arrow-left-c inout_remove_item" />
       </div>
 
-      <ul class="inoutrightlisting">
+      <ul class="list-group inoutrightlisting">
+
         <tal:item repeat="item context.selected_items">
-          <li ajax:target="${item['target']}"
-              tal:define="current_item item['current'] and 'selected' or '';
-                          first_item repeat.item.start and 'first_item' or '';
-                          item_class '%s %s' %(current_item, first_item)"
-              tal:attributes="class item_class">
+          <li class="list-group-item ${item['current'] and 'selected' or ''}"
+              ajax:target="${item['target']}">
+
             <div class="cols li_trigger"
                  tal:content="structure item['content']">cols</div>
+
             <div class="actions">
               <tal:action repeat="action item['actions']">
                 <tal:enabled condition="action['enabled']">
@@ -85,9 +90,12 @@
                 </tal:disabled>
               </tal:action>
             </div>
-            <div style="clear: both;"></div>
+
+            <div class="clearfix"></div>
+
           </li>
         </tal:item>
+
       </ul>
     </div>
 
