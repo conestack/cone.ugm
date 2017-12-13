@@ -27,7 +27,7 @@ widgets:
                 source: javascript:ugm.localmanager.autocomplete_gid
                 minLength: 1
                 delay: 300
-                class: source_field
+                field.class: source_field
         - targets:
             factory: error:array
             props:
@@ -35,7 +35,7 @@ widgets:
                 required: i18n:localmanager_no_targets_for_source
                 error.position: after
                 sort: False
-                class: targets_field
+                array.class: targets_field
                 table_class: targets_array
             widgets:
             - target:

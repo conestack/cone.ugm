@@ -345,71 +345,52 @@ div.expiration-widget #input-userform-active {
 }
 
 /* localmanager form */
-#array-localmanager_settings-rules .error {
-    border:none;
-    background-color:transparent;
+#array-localmanager_settings-rules table td.actions {
+    vertical-align:top;
 }
-#array-localmanager_settings-rules .rules_array {
-    width:650px;
-    border:none;
+#array-localmanager_settings-rules th.head_actions,
+#array-localmanager_settings-rules td.actions,
+#array-localmanager_settings-rules div.array_actions {
+    width:4em;
 }
-#array-localmanager_settings-rules .rules_array th {
-    background-color:transparent;
-    text-align:left;
-    padding-bottom:5px;
+#array-localmanager_settings-rules div.array_actions {
+    margin-top:8px;
 }
-#array-localmanager_settings-rules .rules_array .actions {
+#array-localmanager_settings-rules table.rules_array {
+    width:100%;
+}
+#array-localmanager_settings-rules table.rules_array > thead th:first-child {
+    font-size:130%;
+    text-decoration:underline;
+}
+#array-localmanager_settings-rules table.rules_array > tbody > tr {
+    border-top:#ccc 1px solid;
+}
+#array-localmanager_settings-rules table.targets_array {
+    margin-top:0;
+    width:100%;
+}
+#array-localmanager_settings-rules div.source_field {
+    float:left;
+    width:45%;
+    padding-right:6px;
     padding-top:6px;
-    background-color:#efefef;
-    width:45px;
 }
-#array-localmanager_settings-rules .rules_array .widget {
-    padding-top:5px;
-    padding-bottom:8px;
+#array-localmanager_settings-rules div.source_field label {
+    margin-bottom:7px;
 }
-#array-localmanager_settings-rules input {
-    font-size:90%;
-}
-#array-localmanager_settings-rules .source_field {
-    width:240px;
-    float:left;
-    margin-right:30px;
-}
-#array-localmanager_settings-rules label.source_field {
-    margin-bottom:6px;
-}
-#array-localmanager_settings-rules .source_field input {
-    margin-bottom:12px;
-}
-#array-localmanager_settings-rules .targets_field {
-    float:left;
-}
-#array-localmanager_settings-rules .targets_array {
-    border:none;
-    width:290px;
-    margin-bottom:0;
-}
-#array-localmanager_settings-rules .targets_array tr {
-    border:none;
-}
-#array-localmanager_settings-rules .targets_array .actions {
-    vertical-align:bottom;
-    padding-bottom:5px;
-    background-color:transparent;
-}
-#array-localmanager_settings-rules .targets_array .widget {
-    padding-top:0px;
-    padding-bottom:0px;
-}
-#array-localmanager_settings-rules .targets_array .yafowil-widget-autocomplete {
-    float:left;
-    width:220px;
-}
-#array-localmanager_settings-rules .targets_array .yafowil-widget-autocomplete input {
-    width:210px;
-}
-#array-localmanager_settings-rules .targets_array .target_default {
+#array-localmanager_settings-rules div.targets_field {
     float:right;
+    width:55%;
+    padding-left:6px;
+}
+#array-localmanager_settings-rules div.targets_field input[type="text"] {
+    float:left;
+    width:90%;
+}
+#array-localmanager_settings-rules div.targets_field input[type="checkbox"] {
+    float:left;
     position:relative;
-    top:2px;
+    top:5px;
+    margin-left:6px;
 }
