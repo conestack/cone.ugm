@@ -33,17 +33,15 @@ widgets:
         label: i18n:role_attribute_aliases
         required: i18n:role_attribute_aliases_required
         static: True
-        head:
-            key: i18n:reserved_key
-            value: i18n:ldap_attr_name
+        key_label: i18n:reserved_key
+        value_label: i18n:ldap_attr_name
 - roles_form_attrmap:
     factory: field:label:dict
     value: expr:context.model.attrs.roles_form_attrmap
     props:
         label: i18n:role_form_attributes
-        head:
-            key: i18n:ldap_attr_name
-            value: i18n:form_label
+        key_label: i18n:ldap_attr_name
+        value_label: i18n:form_label
 #- roles_relation:
 #    factory: field:label:text
 #    value: expr:context.model.attrs.roles_relation

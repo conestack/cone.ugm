@@ -300,24 +300,48 @@ div.expiration-widget #input-userform-active {
 }
 
 /* users, groups and roles settings */
-#form-ldap_users_settings table,
-#form-ldap_groups_settings table,
-#form-ldap_roles_settings table {
-    width:auto;
+#form-ldap_users_settings .dictwidget th.actions,
+#form-ldap_users_settings .dictwidget td.actions,
+#form-ldap_groups_settings .dictwidget th.actions,
+#form-ldap_groups_settings .dictwidget td.actions,
+#form-ldap_roles_settings .dictwidget th.actions,
+#form-ldap_roles_settings .dictwidget td.actions {
+    width:7em;
+    padding:5px 0 0 0;
 }
-#form-ldap_users_settings .array table {
-    width:340px;
-    border:none;
+#form-ldap_users_settings .dict_actions,
+#form-ldap_groups_settings .dict_actions,
+#form-ldap_roles_settings .dict_actions {
+    margin-top:8px;
+    padding-right:0;
+    width:7em;
 }
-#form-ldap_users_settings .array thead tr:first-child {
-    text-align:left;
+#form-ldap_users_settings tr th:first-child,
+#form-ldap_users_settings tr td:first-child,
+#form-ldap_groups_settings tr th:first-child,
+#form-ldap_groups_settings tr td:first-child,
+#form-ldap_roles_settings tr th:first-child,
+#form-ldap_roles_settings tr td:first-child {
+    padding-left:0;
 }
-#form-ldap_users_settings .array table th {
-    background-color:transparent;
-    font-weight:normal;
+#array-ldap_users_settings-users_exposed_attributes td.widget {
+    padding-bottom:4px;
 }
-#form-ldap_users_settings .array table tr {
-    border:none;
+#array-ldap_users_settings-users_exposed_attributes td.widget input {
+    margin-top:4px;
+}
+#field-ldap_users_settings-users_aliases_attrmap label,
+#field-ldap_users_settings-users_form_attrmap label,
+#field-ldap_users_settings-users_listing_columns label,
+#field-ldap_users_settings-users_exposed_attributes label,
+#field-ldap_groups_settings-groups_aliases_attrmap label,
+#field-ldap_groups_settings-groups_form_attrmap label,
+#field-ldap_groups_settings-groups_listing_columns label,
+#field-ldap_roles_settings-roles_aliases_attrmap label,
+#field-ldap_roles_settings-roles_form_attrmap label {
+    font-size:130%;
+    text-decoration:underline;
+    margin-top:12px;
 }
 
 /* localmanager form */

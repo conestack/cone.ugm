@@ -38,18 +38,16 @@ widgets:
         help: i18n:user_attribute_aliases_help
         required: i18n:user_attribute_aliases_required
         static: True
-        head:
-            key: i18n:reserved_key
-            value: i18n:ldap_attr_name
+        key_label: i18n:reserved_key
+        value_label: i18n:ldap_attr_name
 - users_form_attrmap:
     factory: field:label:dict
     value: expr:context.model.attrs.users_form_attrmap
     props:
         label: i18n:user_form_attributes
         help: i18n:user_form_attributes_help
-        head:
-            key: i18n:ldap_attr_name
-            value: i18n:form_label
+        key_label: i18n:ldap_attr_name
+        value_label: i18n:form_label
 - users_listing_columns:
     factory: field:label:dict
     value: expr:context.model.attrs.users_listing_columns
@@ -57,9 +55,8 @@ widgets:
         label: i18n:column_configuration_for_user_listings
         help: i18n:column_configuration_for_user_listings_help
         required: i18n:column_configuration_for_user_listings_required
-        head:
-            key: i18n:attr_name
-            value: i18n:display_name
+        key_label: i18n:attr_name
+        value_label: i18n:display_name
 - users_listing_default_column:
     factory: field:label:text
     value: expr:context.model.attrs.users_listing_default_column

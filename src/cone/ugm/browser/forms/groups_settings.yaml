@@ -33,17 +33,15 @@ widgets:
         label: i18n:group_attribute_aliases
         required: i18n:group_attribute_aliases_required
         static: True
-        head:
-            key: i18n:reserved_key
-            value: i18n:ldap_attr_name
+        key_label: i18n:reserved_key
+        value_label: i18n:ldap_attr_name
 - groups_form_attrmap:
     factory: field:label:dict
     value: expr:context.model.attrs.groups_form_attrmap
     props:
         label: i18n:group_form_attributes
-        head:
-            key: i18n:ldap_attr_name
-            value: i18n:form_label
+        key_label: i18n:ldap_attr_name
+        value_label: i18n:form_label
 #- groups_relation:
 #    factory: field:label:text
 #    value: expr:context.model.attrs.groups_relation
@@ -55,9 +53,8 @@ widgets:
     props:
         label: i18n:column_configuration_for_groups_listings
         required: i18n:column_configuration_for_groups_listings_required
-        head:
-            key: i18n:attr_name
-            value: i18n:display_name
+        key_label: i18n:attr_name
+        value_label: i18n:display_name
 - groups_listing_default_column:
     factory: field:label:text
     value: expr:context.model.attrs.groups_listing_default_column
