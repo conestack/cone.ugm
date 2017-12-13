@@ -31,8 +31,8 @@
                           first_item repeat.item.start and 'first_item' or '';
                           item_class '%s %s' %(current_item, first_item)"
               tal:attributes="class item_class">
-            <div class="head li_trigger"
-                 tal:content="structure item['content']">head</div>
+            <div class="cols li_trigger"
+                 tal:content="structure item['content']">cols</div>
             <div class="actions">
               <tal:action repeat="action item['actions']">
                 <tal:enabled condition="action['enabled']">
@@ -67,8 +67,8 @@
                           first_item repeat.item.start and 'first_item' or '';
                           item_class '%s %s' %(current_item, first_item)"
               tal:attributes="class item_class">
-            <div class="head li_trigger"
-                 tal:content="structure item['content']">head</div>
+            <div class="cols li_trigger"
+                 tal:content="structure item['content']">cols</div>
             <div class="actions">
               <tal:action repeat="action item['actions']">
                 <tal:enabled condition="action['enabled']">

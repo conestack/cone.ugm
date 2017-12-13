@@ -12,9 +12,11 @@
     <tal:batch replace="structure context.batch" />
 
     <div class="columnsorting btn-group">
+
       <div class="btn btn-default" disabled="disabled">
         <span i18n:translate="sort_by">Sorting</span>:
       </div>
+
       <tal:sortheader repeat="header context.sortheader">
         <button id="${header['id']}"
              class="${header['default'] and 'default' or None} btn btn-default ">
@@ -22,39 +24,47 @@
           <span tal:content="header['name']">name</span>
         </button>
       </tal:sortheader>
+
     </div>
 
-    <div class="columnitems"
-         tal:attributes="class 'columnitems ' + context.css">
-      <ul class="${context.slot}">
+    <div class="columnitems ${context.css}">
+
+      <ul class="list-group ${context.slot}">
+
         <tal:item repeat="item context.items">
-          <li ajax:target="${item['target']}"
-              tal:define="current_item item['current'] and 'selected' or '';
-                          first_item repeat.item.start and 'first_item' or '';
-                          item_class '%s %s' %(current_item, first_item)"
-              tal:attributes="class item_class">
-            <div class="head li_trigger"
-                 tal:content="structure item['content']">head</div>
+          <li class="list-group-item ${item['current'] and 'selected' or ''}"
+              ajax:target="${item['target']}">
+
+            <div class="cols"
+                 tal:content="structure item['content']">cols</div>
+
             <div class="actions">
               <tal:action repeat="action item['actions']">
+
                 <tal:enabled condition="action['enabled']">
                   <a href=""
                      title="${action['title']}"
                      class="${'action %s enabled' % action['id']}"
                      ajax:target="${action['target']}">&nbsp;</a>
                 </tal:enabled>
+
                 <tal:disabled condition="not action['enabled']">
                   <a href=""
                      title="${action['title']}"
                      class="${'action %s_disabled' % action['id']}"
                      ajax:target="${action['target']}">&nbsp;</a>
                 </tal:disabled>
+
               </tal:action>
             </div>
-            <div style="clear: both;"></div>
+
+            <div class="clearfix"></div>
+
           </li>
         </tal:item>
+
       </ul>
+
     </div>
 
   </div>

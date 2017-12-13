@@ -70,14 +70,14 @@
 
         // bind left listing trigger
         left_listing_nav_binder: function(context) {
-            $('ul.leftlisting div.li_trigger', context)
+            $('ul.leftlisting li', context)
                 .unbind()
                 .bind('click', ugm.left_listing_nav_cb);
         },
 
         // left listing trigger callback
         left_listing_nav_cb: function(event) {
-            var li = $(this).parent();
+            var li = $(this);
             ugm.reset_listing_selected(li);
 
             // perform action manually
@@ -94,14 +94,14 @@
 
         // bind right listing trigger
         right_listing_nav_binder: function(context) {
-            $('ul.rightlisting div.li_trigger', context)
+            $('ul.rightlisting li', context)
                 .unbind()
                 .bind('click', ugm.right_listing_nav_cb);
         },
 
         // right listing trigger callback
         right_listing_nav_cb: function(event) {
-            var li = $(this).parent();
+            var li = $(this);
             ugm.reset_listing_selected(li);
 
             // reload context sensitiv tiles and context with new target
@@ -188,8 +188,9 @@
             // delete item from database
             delete_item: function(event) {
                 event.preventDefault();
+                event.stopPropagation();
                 var elem = $(event.currentTarget);
-                var col = $('.head .sort_col_1', elem.parent().parent());
+                var col = $('.cols .sort_col_1', elem.parent().parent());
                 var id = col.text();
                 id = id.replace('<', '&lt;');
                 id = id.replace('>', '&gt;');
@@ -227,6 +228,7 @@
             // add item as member in listing
             listing_add_item: function(event) {
                 event.preventDefault();
+                event.stopPropagation();
                 var elem = $(event.currentTarget);
                 var target = elem.attr('ajax:target');
                 var options = bdajax.parsetarget(target);
@@ -260,6 +262,7 @@
             // remove item from member in listing
             listing_remove_item: function(event) {
                 event.preventDefault();
+                event.stopPropagation();
                 var elem = $(event.currentTarget);
                 var target = elem.attr('ajax:target');
                 var options = bdajax.parsetarget(target);
@@ -293,6 +296,7 @@
             // select item in inout widget
             inout_select_item: function(event) {
                 event.preventDefault();
+                event.stopPropagation();
                 var elem = $(event.currentTarget);
                 var li = elem.parent();
                 if (!ugm.keys.ctrl_down && !ugm.keys.shift_down) {
@@ -364,6 +368,7 @@
             // add item as member in inout widget via button
             inout_button_add_item: function(event) {
                 event.preventDefault();
+                event.stopPropagation();
                 var elems = $('ul.inoutleftlisting li.selected');
                 if (!elems.length) {
                     return;
@@ -404,6 +409,7 @@
             // remove item from member in inout widget via button
             inout_button_remove_item: function(event) {
                 event.preventDefault();
+                event.stopPropagation();
                 var elems = $('ul.inoutrightlisting li.selected');
                 if (!elems.length) {
                     return;
@@ -444,6 +450,7 @@
             // add item as member in inout widget
             inout_add_item: function(event) {
                 event.preventDefault();
+                event.stopPropagation();
                 var elem = $(event.currentTarget);
                 var target = elem.attr('ajax:target');
                 var options = bdajax.parsetarget(target);
@@ -475,6 +482,7 @@
             // remove item from member in inout widget
             inout_remove_item: function(event) {
                 event.preventDefault();
+                event.stopPropagation();
                 var elem = $(event.currentTarget);
                 var target = elem.attr('ajax:target');
                 var options = bdajax.parsetarget(target);
@@ -529,7 +537,7 @@
                 $(listing_selector, $(this).parent().parent())
                     .each(function() {
                         var li = $(this);
-                        var val = $('div.head', li).html().toLowerCase();
+                        var val = $('div.cols', li).html().toLowerCase();
                         if (val.indexOf(current_filter) != -1) {
                             li.removeClass('hidden');
                         } else {
@@ -649,14 +657,6 @@
             ugm.inout_scroll_to_selected(
                 '.selected', new_container);
             $('li', elems.first().parent().parent()).removeClass('selected');
-            $('li', new_container)
-                .removeClass('first_item')
-                .first()
-                .addClass('first_item');
-            $('li', old_container)
-                .removeClass('first_item')
-                .first()
-                .addClass('first_item');
             elems.addClass('selected');
         },
 
@@ -709,10 +709,6 @@
                         return naturalSort(a, b);
                     }
                 });
-                $('li', cont)
-                    .removeClass('first_item')
-                    .first()
-                    .addClass('first_item');
                 ugm.scroll_listings_to_selected();
                 bdajax.spinner.hide();
             });
