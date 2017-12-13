@@ -5,11 +5,21 @@
 /* columns */
 div.left_column {
     padding-left:0px;
-    padding-right:6px;
+    padding-right:0px;
 }
 div.right_column {
-    padding-left:6px;
+    padding-left:0px;
     padding-right:0px;
+}
+@media (min-width: 992px) {
+    div.left_column {
+        padding-left:0px;
+        padding-right:6px;
+    }
+    div.right_column {
+        padding-left:6px;
+        padding-right:0px;
+    }
 }
 
 /* add button */
@@ -243,169 +253,72 @@ div.inoutlisting div.cols div.sort_col_1 {
     width:80%;
 }
 
-/* forms */
-div.help {
-    font-weight:normal;
-}
-.tabpanes form .field {
-    padding:6px;
-}
-div.right_column div.field {
-    width:400px;
-    clear:both;
-    line-height: 1.75em;
-}
-div.right_column div.field label {
-    float:left;
-    font-size:80%;
-}
-div.right_column input {
-    font-size:80%;
-}
-div.right_column div.field input {
-    float:right;
+/* right column listing filter */
+div.right_column div.columnsorting {
+    margin-top:0;
 }
 div.right_column div.column_limit {
     float:right;
-    margin-right:24px;
+    margin-right:12px;
 }
 div.right_column div.column_limit label {
-    display:inline;
-    float:left;
-    font-size:80%;
-    line-height:1.5em;
+    display:inline-block;
+    padding-top:2px;
 }
 div.right_column div.column_limit input {
-    float:right;
-    font-size:80%;
+    display:inline-block;
+    position:relative;
+    top:4px;
 }
-div.right_column div.field div {
-    float:right;
-    font-size:80%;
-    width:160px;
-}
-.column.right_column {
-    margin-top: 82px;
-}
-#form-groupform .error,
-#form-userform .error {
-    width:336px;
-    text-align:left;
-    font-size:100%;
-    margin-bottom:0.2em;
-}
-#form-groupform .errormessage,
-#form-userform .errormessage {
-    line-height:1.2em;
-    padding-left:0.2em;
-    float:left;
-}
-#form-groupform input,
-#form-userform input {
-    width:330px;
-}
-#display-groupform-id,
-#display-userform-id {
-    margin-top: -0.2em;
-}
-#field-groupform-id div,
-#field-userform-id div {
-    width:330px;
-}
-#field-userform-portrait .errormessage {
-    width:334px;
+
+/* principal forms */
+#form-groupform .display-text.form-control,
+#form-userform .display-text.form-control {
+    border:none;
+    box-shadow:none;
+    padding-left:0;
 }
 #image-preview-userform-portrait {
     border-radius:3px 3px 3px 3px;
     box-shadow:0px 0px 4px #666666;
-    margin-left:67px;
-    margin-top:4px;
-    margin-bottom:6px;
-    clear:both;
-}
-div.error img#image-preview-userform-portrait {
-    margin-left:3px;
 }
 #input-userform-portrait {
-    width:336px !important;
-}
-#radio-userform-portrait-keep,
-#radio-userform-portrait-replace,
-#radio-userform-portrait-delete {
-    clear:both;
-    width:340px;
-    position:relative;
-}
-#radio-userform-portrait-keep input,
-#radio-userform-portrait-replace input,
-#radio-userform-portrait-delete input {
-    float:left;
-    position:relative;
-    top:3px;
-}
-div.expiration-widget {
-    font-size:90% !important;
-    width:336px !important;
-}
-div.expiration-widget #input-userform-active {
-    width:120px;
-}
-div.expiration-widget #checkbox-userform-active {
-    width:20px;
-    margin-left:0;
-}
-div.expiration-widget label {
-    margin:7px 5px 0 10px;
-    line-height:1em;
-}
-div.expiration-widget #checkbox-userform-active,
-div.expiration-widget #input-userform-active {
-    float:left;
-}
-div.expiration-widget .ui-datepicker-trigger {
-    margin-top:2px;
-    margin-left:3px;
-}
-#field-groupform-principal_roles,
-#field-userform-principal_roles {
-    text-align:right;
-}
-#field-groupform-principal_roles > label,
-#field-userform-principal_roles > label {
-    position: absolute;
-}
-#field-groupform-principal_roles div label,
-#field-userform-principal_roles div label {
-    margin-top: 1px!important;
+    margin-top:12px;
+    margin-bottom:6px;
 }
 #checkbox-groupform-principal_roles-wrapper,
 #checkbox-userform-principal_roles-wrapper {
-    margin-top:0;
-    margin-bottom:0;
-    width:340px;
-    list-style:none;
-    clear:none;
-    float:right;
+    padding-left:0;
 }
 #checkbox-groupform-principal_roles-wrapper li,
 #checkbox-userform-principal_roles-wrapper li {
-    clear:both;
+    margin-top:0;
+    margin-bottom:0;
+    padding-bottom:4px;
 }
-#checkbox-groupform-principal_roles-wrapper li input,
-#checkbox-userform-principal_roles-wrapper li input {
-    float:left !important;
-    width:16px;
+#checkbox-groupform-principal_roles-wrapper input[type="checkbox"],
+#checkbox-userform-principal_roles-wrapper input[type="checkbox"] {
+    margin-left:0;
 }
-#input-groupform-save,
-#input-userform-save {
-    margin-top:1em;
+div.expiration-widget #input-userform-active {
+    width:35%;
 }
-#input-groupform-save,
-#input-groupform-cancel,
-#input-userform-save,
-#input-userform-cancel {
-    width:100px !important;
+div.expiration-widget #checkbox-userform-active {
+    display:inline-block;
+    position:relative;
+    top:2px;
 }
+div.expiration-widget label {
+    display:inline-block;
+    margin-left:12px;
+    margin-right:12px;
+}
+div.expiration-widget #checkbox-userform-active,
+div.expiration-widget #input-userform-active {
+    display:inline-block;
+}
+
+/* users, groups and roles settings */
 #form-ldap_users_settings table,
 #form-ldap_groups_settings table,
 #form-ldap_roles_settings table {

@@ -100,7 +100,7 @@ factory.doc['blueprint']['expiration'] = \
 """Add-on blueprint UGM expiration widget. Utilizes yafowil.widget.datetime.
 """
 
-factory.defaults['expiration.class'] = 'expiration'
+factory.defaults['expiration.class'] = 'expiration form-control'
 
 factory.defaults['expiration.datepicker_class'] = 'datepicker'
 
@@ -152,7 +152,7 @@ class ExpirationForm(Behavior):
             name='active',
             value=value,
             props={
-                'label': _('active', 'Active'),
+                'label': _('active', 'Active')
             },
             mode=mode
         )

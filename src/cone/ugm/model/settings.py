@@ -127,7 +127,7 @@ class UsersSettings(UgmSettings):
         try:
             node = LDAPNode(self._config.users_dn,
                             self.parent['ugm_server'].ldap_props)
-            return len(node) >= 0
+            return node.exists
         except ldap.LDAPError:
             return False
 
@@ -188,7 +188,7 @@ class GroupsSettings(UgmSettings):
         try:
             node = LDAPNode(self._config.groups_dn,
                             self.parent['ugm_server'].ldap_props)
-            return len(node) >= 0
+            return node.exists
         except ldap.LDAPError:
             return False
 
@@ -233,7 +233,7 @@ class RolesSettings(UgmSettings):
         try:
             node = LDAPNode(self._config.roles_dn,
                             self.parent['ugm_server'].ldap_props)
-            return len(node) >= 0
+            return node.exists
         except ldap.LDAPError:
             return False
 
