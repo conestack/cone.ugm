@@ -52,7 +52,7 @@ Authenticate and render tiles::
     True
 
     >>> res = render_tile(users, request, 'rightcolumn')
-    >>> res == u'<div class="column right_column col-md-6">&nbsp;</div>'
+    >>> res.find('<div class="column right_column col-md-6">') > -1
     True
 
     >>> res = render_tile(users, request, 'columnlisting')

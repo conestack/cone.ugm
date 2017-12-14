@@ -10,7 +10,6 @@ from cone.ugm.browser import form_field_definitions
 from cone.ugm.browser.authoring import AddFormFiddle
 from cone.ugm.browser.authoring import EditFormFiddle
 from cone.ugm.browser.autoincrement import AutoIncrementForm
-from cone.ugm.browser.columns import Column
 from cone.ugm.browser.expires import ExpirationForm
 from cone.ugm.browser.listing import ColumnListing
 from cone.ugm.browser.portrait import PortraitForm
@@ -19,33 +18,30 @@ from cone.ugm.browser.roles import PrincipalRolesForm
 from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_general
 from cone.ugm.model.utils import ugm_users
-from plumber import plumber
+from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 from pyramid.security import has_permission
 from webob.exc import HTTPFound
 from yafowil.base import ExtractionError
 from yafowil.base import UNSET
 import copy
+import urllib2
 
 
 _ = TranslationStringFactory('cone.ugm')
 
 
-@tile('leftcolumn', interface=User, permission='view')
-class UserLeftColumn(Column):
-
-    add_label = _('add_user', default='Add User')
+@tile('leftcolumn', 'templates/principal_left_column.pt',
+      interface=User, permission='view')
+class UserLeftColumn(Tile):
 
     @property
-    def can_add(self):
-        return has_permission('add_user', self.model.parent, self.request)
-
-    def render(self):
-        setattr(self.request, '_curr_listing_id', self.model.name)
-        return self._render(self.model.parent, 'leftcolumn')
+    def principals_target(self):
+        query = make_query(pid=self.model.name)
+        return make_url(self.request, node=self.model.parent, query=query)
 
 
-@tile('rightcolumn', 'templates/right_column.pt',
+@tile('rightcolumn', 'templates/principal_right_column.pt',
       interface=User, permission='view')
 class UserRightColumn(Tile):
 
@@ -150,7 +146,6 @@ class Groups(object):
 @tile('columnlisting', 'templates/column_listing.pt',
       interface=User, permission='view')
 class GroupsOfUserColumnListing(ColumnListing):
-
     slot = 'rightlisting'
     list_columns = ColumnListing.group_list_columns
     css = 'groups'
@@ -161,7 +156,6 @@ class GroupsOfUserColumnListing(ColumnListing):
 @tile('allcolumnlisting', 'templates/column_listing.pt',
       interface=User, permission='view')
 class AllGroupsColumnListing(ColumnListing):
-
     slot = 'rightlisting'
     list_columns = ColumnListing.group_list_columns
     css = 'groups'
@@ -178,6 +172,7 @@ class AllGroupsColumnListing(ColumnListing):
 class InOutListing(ColumnListing):
     selected_items = Groups(related_only=True)
     available_items = Groups(available_only=True)
+    display_control_buttons = True
 
     @property
     def group_attrs(self):
@@ -188,12 +183,6 @@ class InOutListing(ColumnListing):
     def group_default_sort_column(self):
         settings = ugm_general(self.model)
         return settings.attrs['group_display_name_attr']
-
-    @property
-    def display_control_buttons(self):
-        return True
-        #settings = ugm_general(self.model)
-        #return settings.attrs['controls_membership_assignment_widget']
 
 
 class UserForm(PrincipalForm):
@@ -256,17 +245,14 @@ class UserForm(PrincipalForm):
 
 
 @tile('addform', interface=User, permission='add_user')
+@plumbing(
+    AddBehavior,
+    PrincipalRolesForm,
+    PortraitForm,
+    ExpirationForm,
+    AutoIncrementForm,
+    AddFormFiddle)
 class UserAddForm(UserForm, Form):
-    __metaclass__ = plumber
-    __plumbing__ = (
-        AddBehavior,
-        PrincipalRolesForm,
-        PortraitForm,
-        ExpirationForm,
-        AutoIncrementForm,
-        AddFormFiddle,
-    )
-
     show_heading = False
     show_contextmenu = False
 
@@ -306,11 +292,10 @@ class UserAddForm(UserForm, Form):
     def next(self, request):
         next_resource = self.request.environ.get('next_resource')
         if next_resource:
-            url = make_url(request.request,
-                           node=self.model,
-                           resource=next_resource)
+            query = make_query(pid=next_resource)
+            url = make_url(request.request, node=self.model.parent, query=query)
         else:
-            url = make_url(request.request, node=self.model)
+            url = make_url(request.request, node=self.model.parent)
         if self.ajax_request:
             return [
                 AjaxAction(url, 'leftcolumn', 'replace', '.left_column'),
@@ -320,16 +305,13 @@ class UserAddForm(UserForm, Form):
 
 
 @tile('editform', interface=User, permission='edit_user', strict=False)
+@plumbing(
+    EditBehavior,
+    PrincipalRolesForm,
+    PortraitForm,
+    ExpirationForm,
+    EditFormFiddle)
 class UserEditForm(UserForm, Form):
-    __metaclass__ = plumber
-    __plumbing__ = (
-        EditBehavior,
-        PrincipalRolesForm,
-        PortraitForm,
-        ExpirationForm,
-        EditFormFiddle,
-    )
-
     show_heading = False
     show_contextmenu = False
 
@@ -361,7 +343,12 @@ class UserEditForm(UserForm, Form):
             self.model.parent.backend.passwd(uid, None, password)
 
     def next(self, request):
-        url = make_url(request.request, node=self.model)
+        came_from = request.get('came_from')
+        if came_from:
+            came_from = urllib2.unquote(came_from)
+            url = '{}?pid={}'.format(came_from, self.model.name)
+        else:
+            url = make_url(request.request, node=self.model)
         if self.ajax_request:
             return [
                 AjaxAction(url, 'leftcolumn', 'replace', '.left_column'),

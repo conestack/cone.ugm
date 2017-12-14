@@ -1,7 +1,6 @@
 <tal:block xmlns:tal="http://xml.zope.org/namespaces/tal"
            omit-tag="True">
 
-  <!-- XXX: check whether columns container needed in the end -->
   <div class="columns">
 
     <tal:leftcol replace="structure tile('leftcolumn')" />

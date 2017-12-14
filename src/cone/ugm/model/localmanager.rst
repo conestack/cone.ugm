@@ -1,16 +1,24 @@
 Local Manager
 =============
 
+Test imports::
+
+    >>> from cone.app import get_root
+    >>> from cone.app.model import BaseNode
+    >>> from cone.ugm.model.localmanager import LocalManager
+    >>> from cone.ugm.model.localmanager import LocalManagerConfigAttributes
+    >>> from plumber import plumbing
+    >>> import os
+    >>> import shutil
+    >>> import tempfile
+
 Dummy environment::
 
-    >>> import os
-    >>> import tempfile
     >>> tempdir = tempfile.mkdtemp()
     >>> conf_path = os.path.join(tempdir, 'localmanager.xml')
 
 Local manager configuration attributes::
 
-    >>> from cone.ugm.model.localmanager import LocalManagerConfigAttributes
     >>> config = LocalManagerConfigAttributes(conf_path)
     >>> config
     <LocalManagerConfigAttributes object 'None' at ...>
@@ -87,12 +95,10 @@ Recreate on existing conf::
 
 Cleanup dummy environment::
 
-    >>> import shutil
     >>> shutil.rmtree(tempdir)
 
 Local Manager test config::
 
-    >>> from cone.app import get_root
     >>> root = get_root()
 
     >>> config = root['settings']['ugm_localmanager'].attrs
@@ -104,12 +110,9 @@ Local Manager test config::
 
 Local Manager plumbing behavior::
 
-    >>> from plumber import plumber
-    >>> from cone.app.model import BaseNode
-    >>> from cone.ugm.model.localmanager import LocalManager
-    >>> class LocalManagerNode(BaseNode):
-    ...     __metaclass__ = plumber
-    ...     __plumbing__ = LocalManager
+    >>> @plumbing(LocalManager)
+    ... class LocalManagerNode(BaseNode):
+    ...     pass
 
     >>> lm_node = LocalManagerNode(name='lm_node', parent=root)
     >>> lm_node.local_management_enabled

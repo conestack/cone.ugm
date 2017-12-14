@@ -1,3 +1,4 @@
+from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
 from cone.tile import Tile
 from cone.ugm.browser.batch import ColumnBatch
@@ -20,7 +21,6 @@ _ = TranslationStringFactory('cone.ugm')
 class ColumnListing(Tile):
     """Abstract column listing.
     """
-
     current_id = None
     slot = None
     list_columns = []
@@ -211,9 +211,9 @@ class PrincipalsListing(ColumnListing):
                                   attrlist=attrlist,
                                   or_search=True)
             for key, attrs in result:
-                target = make_url(self.request,
-                                  node=self.model,
-                                  resource=key)
+                query = make_query(
+                    pid=key, came_from=make_url(self.request, node=self.model))
+                target = make_url(self.request, node=self.model, query=query)
                 actions = list()
                 if can_delete:
                     action_id = 'delete_item'

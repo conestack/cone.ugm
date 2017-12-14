@@ -253,6 +253,14 @@ div.right_column div.column_limit input {
 }
 
 /* principal forms */
+span.go_to_principal,
+span.go_to_principals {
+    float:right;
+    font-size:220%;
+    margin-right:12px;
+    margin-top:2px;
+    cursor:pointer;
+}
 #form-groupform .display-text.form-control,
 #form-userform .display-text.form-control {
     border:none;

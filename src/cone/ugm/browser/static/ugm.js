@@ -10,6 +10,7 @@
         ugm.key_binder();
         ugm.scroll_listings_to_selected();
 
+        bdajax.register(ugm.add_principal_button_binder.bind(ugm), true);
         bdajax.register(ugm.left_listing_nav_binder.bind(ugm), true);
         bdajax.register(ugm.right_listing_nav_binder.bind(ugm), true);
         bdajax.register(ugm.listing_filter_binder.bind(ugm), true);
@@ -65,6 +66,13 @@
                         ugm.keys.ctrl_down = false;
                         break;
                 }
+            });
+        },
+
+        // bind add principal button
+        add_principal_button_binder: function(context) {
+            $('div.add_button button', context).bind('click', function() {
+                $('.left_column ul.leftlisting li').removeClass('selected');
             });
         },
 

@@ -7,10 +7,6 @@
   <div class="column right_column col-md-6"
        tal:define="default_widget context.default_widget">
 
-    <div class="principal_form">
-      <tal:batch replace="structure tile('editform')" />
-    </div>
-
     <div class="column_filter"
          tal:condition="default_widget == 'listing'">
       <input type="text"

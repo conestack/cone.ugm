@@ -13,7 +13,7 @@ Check layout properties::
     >>> assert(layout.livesearch is False)
     >>> assert(layout.personaltools is True)
     >>> assert(layout.columns_fluid is False)
-    >>> assert(layout.pathbar is True)
+    >>> assert(layout.pathbar is False)
     >>> assert(layout.sidebar_left == [])
     >>> assert(layout.sidebar_left_grid_width == 0)
     >>> assert(layout.content_grid_width == 12)

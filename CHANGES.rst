@@ -5,10 +5,17 @@ Changes
 1.0a1 (unreleased)
 ------------------
 
+- Change UI. Principal form and principal membership are not displayed
+  in right column together any more. When viewing a principals content, left
+  column displays the listing and right column the principal form. When
+  viewing a principal, left column displays the principal form and right
+  column displays the principal membership.
+  [rnix]
+
 - Update to cone.app >= 1.0.
   [rnix]
 
-- Change license to simplified BSD.
+- Change license to LGPLv3.
   [rnix]
 
 

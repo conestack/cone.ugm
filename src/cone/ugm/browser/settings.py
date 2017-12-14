@@ -22,7 +22,7 @@ from node.ext.ldap import LDAPNode
 from node.ext.ldap import ONELEVEL
 from node.ext.ldap import SUBTREE
 from odict import odict
-from plumber import plumber
+from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 from pyramid.i18n import get_localizer
 from pyramid.view import view_config
@@ -142,11 +142,9 @@ registerTile('content',
              permission='manage')
 
 
-@tile('editform', interface=GeneralSettings, permission="manage")
+@tile('editform', interface=GeneralSettings, permission='manage')
+@plumbing(SettingsBehavior, YAMLForm)
 class GeneralSettingsForm(Form):
-    __metaclass__ = plumber
-    __plumbing__ = SettingsBehavior, YAMLForm
-
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/general_settings.yaml'
 
@@ -188,11 +186,9 @@ class ServerSettingsTile(ProtectedContentTile):
         return _('server_down', default='Down')
 
 
-@tile('editform', interface=ServerSettings, permission="manage")
+@tile('editform', interface=ServerSettings, permission='manage')
+@plumbing(SettingsBehavior, YAMLForm)
 class ServerSettingsForm(Form):
-    __metaclass__ = plumber
-    __plumbing__ = SettingsBehavior, YAMLForm
-
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/server_settings.yaml'
 
@@ -239,11 +235,9 @@ class UsersCreateContainerAction(CreateContainerAction):
         return AjaxAction(url, 'content', 'inner', '.ugm_users')
 
 
-@tile('editform', interface=UsersSettings, permission="manage")
+@tile('editform', interface=UsersSettings, permission='manage')
+@plumbing(SettingsBehavior, YAMLForm)
 class UsersSettingsForm(Form, VocabMixin):
-    __metaclass__ = plumber
-    __plumbing__ = SettingsBehavior, YAMLForm
-
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/users_settings.yaml'
 
@@ -304,11 +298,9 @@ class GroupsCreateContainerAction(CreateContainerAction):
         return AjaxAction(url, 'content', 'inner', '.ugm_groups')
 
 
-@tile('editform', interface=GroupsSettings, permission="manage")
+@tile('editform', interface=GroupsSettings, permission='manage')
+@plumbing(SettingsBehavior, YAMLForm)
 class GroupsSettingsForm(Form, VocabMixin):
-    __metaclass__ = plumber
-    __plumbing__ = SettingsBehavior, YAMLForm
-
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/groups_settings.yaml'
 
@@ -367,11 +359,9 @@ class RolesCreateContainerAction(CreateContainerAction):
         return AjaxAction(url, 'content', 'inner', '.ugm_roles')
 
 
-@tile('editform', interface=RolesSettings, permission="manage")
+@tile('editform', interface=RolesSettings, permission='manage')
+@plumbing(SettingsBehavior, YAMLForm)
 class RolesSettingsForm(Form, VocabMixin):
-    __metaclass__ = plumber
-    __plumbing__ = SettingsBehavior, YAMLForm
-
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/roles_settings.yaml'
 
@@ -411,11 +401,9 @@ class LocalManagerSettingsTile(ProtectedContentTile):
     pass
 
 
-@tile('editform', interface=LocalManagerSettings, permission="manage")
+@tile('editform', interface=LocalManagerSettings, permission='manage')
+@plumbing(SettingsBehavior, YAMLForm)
 class LocalManagerSettingsForm(Form):
-    __metaclass__ = plumber
-    __plumbing__ = SettingsBehavior, YAMLForm
-
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/localmanager_settings.yaml'
 

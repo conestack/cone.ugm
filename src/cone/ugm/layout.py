@@ -10,7 +10,7 @@ class UGMLayout(Layout):
         self.livesearch = False
         self.personaltools = True
         self.columns_fluid = False
-        self.pathbar = True
+        self.pathbar = False
         self.sidebar_left = []
         self.sidebar_left_grid_width = 0
         self.content_grid_width = 12

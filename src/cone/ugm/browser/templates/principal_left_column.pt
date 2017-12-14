@@ -1,0 +1,22 @@
+<tal:block xmlns:tal="http://xml.zope.org/namespaces/tal"
+           xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax"
+           xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+           i18n:domain="cone.ugm"
+           omit-tag="True">
+
+  <div class="column left_column col-md-6">
+
+    <div class="principal_form">
+
+      <span class="go_to_principals ion-arrow-left-b"
+            ajax:bind="click"
+            ajax:target="${context.principals_target}"
+            ajax:action="content:.columns:replace"></span>
+
+      <tal:form replace="structure tile('editform')" />
+
+    </div>
+
+  </div>
+
+</tal:block>

@@ -2,6 +2,7 @@ from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
 from cone.tile import Tile
 from cone.tile import tile
+from cone.ugm.browser.columns import Column
 from cone.ugm.browser.listing import PrincipalsListing
 from cone.ugm.model.groups import Groups
 from pyramid.i18n import TranslationStringFactory
@@ -13,7 +14,7 @@ logger = logging.getLogger('cone.ugm')
 _ = TranslationStringFactory('cone.ugm')
 
 
-@tile('leftcolumn', 'templates/left_column.pt',
+@tile('leftcolumn', 'templates/principals_left_column.pt',
       interface=Groups, permission='view')
 class GroupsLeftColumn(Tile):
     add_label = _('add_group', default='Add Group')
@@ -31,11 +32,21 @@ class GroupsLeftColumn(Tile):
         return has_permission('add_group', self.model, self.request)
 
 
-@tile('rightcolumn', interface=Groups, permission='view')
-class GroupsRightColumn(Tile):
+@tile('rightcolumn', 'templates/principals_right_column.pt',
+      interface=Groups, permission='view')
+class GroupsRightColumn(Column):
 
-    def render(self):
-        return u'<div class="column right_column col-md-6">&nbsp;</div>'
+    @property
+    def principal_id(self):
+        return self.request.params.get('pid')
+
+    @property
+    def principal_form(self):
+        return self._render(self.model[self.principal_id], 'editform')
+
+    @property
+    def principal_target(self):
+        return make_url(self.request, node=self.model[self.principal_id])
 
 
 @tile('columnlisting', 'templates/column_listing.pt',
@@ -53,4 +64,4 @@ class GroupsColumnListing(PrincipalsListing):
 
     @property
     def current_id(self):
-        return getattr(self.request, '_curr_listing_id', None)
+        return self.request.params.get('pid')
