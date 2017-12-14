@@ -9,8 +9,6 @@
        ajax:target="${context.nodeurl}"
        ajax:action="${context.ajax_action}:.${context.batchname}sensitiv:replace">
 
-    <tal:batch replace="structure context.batch" />
-
     <div class="columnsorting btn-group">
 
       <div class="btn btn-default" disabled="disabled">
@@ -19,7 +17,7 @@
 
       <tal:sortheader repeat="header context.sortheader">
         <button id="${header['id']}"
-             class="${header['default'] and 'default' or None} btn btn-default ">
+                class="${header['default'] and 'default' or None} btn btn-default ">
           <span class="columnsorticon"></span>
           <span tal:content="header['name']">name</span>
         </button>
@@ -66,6 +64,8 @@
       </ul>
 
     </div>
+
+    <tal:batch replace="structure context.batch" />
 
   </div>
 </tal:block>

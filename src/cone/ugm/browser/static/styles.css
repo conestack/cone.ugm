@@ -151,6 +151,13 @@ div.columnitems div.cols div.sort_col_2 {
 div.columnitems div.actions {
     float:right;
 }
+div.columnlisting .pagination {
+    margin-top:-12px;
+}
+div.columnlisting .pagination > li > a,
+div.columnlisting .pagination > li > span {
+    padding:10px 10px;
+}
 
 /* inout widget */
 div.inoutwidget {

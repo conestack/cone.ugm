@@ -5,7 +5,7 @@ from cone.app.browser.utils import nodepath
 
 
 class ColumnBatch(Batch):
-    """Abstract UGM column batch.
+    """UGM column batch.
     """
 
     def __init__(self, name, items, slicesize):
@@ -37,27 +37,3 @@ class ColumnBatch(Batch):
                 'target': url
             })
         return ret
-
-    @property
-    def firstpage(self):
-        return None
-
-    @property
-    def prevpage(self):
-        return None
-
-    @property
-    def nextpage(self):
-        return None
-
-    @property
-    def lastpage(self):
-        return None
-
-    @property
-    def leftellipsis(self):
-        return ''
-
-    @property
-    def rightellipsis(self):
-        return ''
