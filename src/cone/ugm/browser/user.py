@@ -284,9 +284,9 @@ class UserAddForm(UserForm, Form):
         if password is not UNSET:
             users.passwd(uid, None, password)
         self.model.parent.invalidate()
-        # XXX: access already added user after invalidation.
-        #      if not done, there's some kind of race condition with ajax
-        #      continuation. figure out why.
+        # Access already added user after invalidation. If not done, there's
+        # some kind of race condition with ajax continuation.
+        # XXX: figure out why.
         self.model.parent[uid]
 
     def next(self, request):
@@ -328,6 +328,7 @@ class UserEditForm(UserForm, Form):
             else:
                 self.model.attrs[key] = extracted
         # set object classes if missing
+        # XXX: move to cone.ldap
         ocs = self.model.model.context.attrs['objectClass']
         for oc in settings.attrs.users_object_classes:
             if isinstance(ocs, basestring):

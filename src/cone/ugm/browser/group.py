@@ -225,9 +225,9 @@ class GroupAddForm(GroupForm, Form):
         self.request.environ['next_resource'] = gid
         groups()
         self.model.parent.invalidate()
-        # XXX: access already added user after invalidation.
-        #      if not done, there's some kind of race condition with ajax
-        #      continuation. figure out why.
+        # Access created user after invalidation. if not done, there's
+        # some kind of race condition with ajax continuation. 
+        # XXX: figure out why.
         self.model.parent[gid]
 
     def next(self, request):
