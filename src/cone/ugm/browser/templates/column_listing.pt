@@ -25,6 +25,24 @@
 
     </div>
 
+    <div class="column_filter">
+      <input type="text"
+             name="column_filter"
+             class="form-control"
+             ajax:target="${context.filter_target}"
+             ajax:event="batchclicked:.${context.batchname}sensitiv"
+             tal:attributes="value context.filter_value">
+    </div>
+
+    <div class="column_limit"
+         tal:condition="context.display_limit">
+      <label i18n:translate="list_all">List all</label>
+      <input id="list_all"
+             type="checkbox"
+             name="column_limit"
+             ajax:target="${context.nodeurl}" />
+    </div>
+
     <div class="columnitems ${context.css}">
 
       <ul class="list-group ${context.slot}">
@@ -65,7 +83,7 @@
 
     </div>
 
-    <tal:batch replace="structure context.batch" />
+    <tal:batch replace="structure context.rendered_batch" />
 
   </div>
 </tal:block>

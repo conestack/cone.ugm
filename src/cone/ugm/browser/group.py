@@ -145,6 +145,7 @@ class UsersOfGroupColumnListing(ColumnListing):
     list_columns = ColumnListing.user_list_columns
     query_items = Principals(members_only=True)
     batchname = 'rightbatch'
+    display_limit = True
 
 
 @tile('allcolumnlisting', 'templates/column_listing.pt',
@@ -155,6 +156,7 @@ class AllUsersColumnListing(ColumnListing):
     list_columns = ColumnListing.user_list_columns
     query_items = Principals()
     batchname = 'rightbatch'
+    display_limit = True
 
     @property
     def ajax_action(self):

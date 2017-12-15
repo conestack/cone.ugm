@@ -25,11 +25,7 @@ div.right_column {
 /* add button */
 div.add_button {
     float:left;
-}
-
-/* column filter */
-div.column_filter {
-    float:right;
+    margin-bottom:6px;
 }
 
 /* column batch */
@@ -105,8 +101,30 @@ a.delete_item_disable:hover {
 }
 
 /* column listing */
+div.columnlisting .pagination {
+    margin-top:-12px;
+}
+div.columnlisting .pagination > li > a,
+div.columnlisting .pagination > li > span {
+    padding:10px 10px;
+}
+div.columnlisting div.column_filter {
+    float:right;
+}
+div.columnlisting div.column_limit {
+    float:right;
+    margin-right:12px;
+}
+div.columnlisting div.column_limit label {
+    display:inline-block;
+    padding-top:2px;
+}
+div.columnlisting div.column_limit input {
+    display:inline-block;
+    position:relative;
+    top:4px;
+}
 div.columnsorting {
-    margin-top:6px;
     margin-bottom:6px;
 }
 div.columnsorting div {
@@ -150,13 +168,6 @@ div.columnitems div.cols div.sort_col_2 {
 }
 div.columnitems div.actions {
     float:right;
-}
-div.columnlisting .pagination {
-    margin-top:-12px;
-}
-div.columnlisting .pagination > li > a,
-div.columnlisting .pagination > li > span {
-    padding:10px 10px;
 }
 
 /* inout widget */
@@ -238,24 +249,6 @@ div.inoutlisting div.actions a.hidden {
 }
 div.inoutlisting div.cols div.sort_col_1 {
     width:90%;
-}
-
-/* right column listing filter */
-div.right_column div.columnsorting {
-    margin-top:0;
-}
-div.right_column div.column_limit {
-    float:right;
-    margin-right:12px;
-}
-div.right_column div.column_limit label {
-    display:inline-block;
-    padding-top:2px;
-}
-div.right_column div.column_limit input {
-    display:inline-block;
-    position:relative;
-    top:4px;
 }
 
 /* principal forms */

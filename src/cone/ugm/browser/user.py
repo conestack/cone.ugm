@@ -151,6 +151,7 @@ class GroupsOfUserColumnListing(ColumnListing):
     css = 'groups'
     query_items = Groups(related_only=True)
     batchname = 'rightbatch'
+    display_limit = True
 
 
 @tile('allcolumnlisting', 'templates/column_listing.pt',
@@ -161,6 +162,7 @@ class AllGroupsColumnListing(ColumnListing):
     css = 'groups'
     query_items = Groups(related_only=False)
     batchname = 'rightbatch'
+    display_limit = True
 
     @property
     def ajax_action(self):

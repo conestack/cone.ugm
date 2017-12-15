@@ -21,5 +21,6 @@
 /lib/
 /local/
 /share/
+/coverage/
 /src/cone.ugm.egg-info/
 /paster.log

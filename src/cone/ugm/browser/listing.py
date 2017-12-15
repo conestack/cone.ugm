@@ -1,6 +1,7 @@
 from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
 from cone.app.browser.utils import request_property
+from cone.app.browser.utils import safe_decode
 from cone.tile import Tile
 from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.model.utils import ugm_groups
@@ -31,10 +32,19 @@ class ColumnListing(Tile):
     batchname = ''
     default_sort = None
     default_order = None
+    display_filter = True
+    display_limit = False
 
     @property
     def ajax_action(self):
         return 'columnlisting'
+
+    @property
+    def ajax_event(self):
+        return '{}:{}'.format(
+            self.batch.trigger_event,
+            self.batch.trigger_selector
+        )
 
     @property
     def sortheader(self):
@@ -50,16 +60,21 @@ class ColumnListing(Tile):
 
     @property
     def filter_target(self):
-        return self.make_url({
-            'sort': self.sort_column,
-            'order': self.sort_order
-        })
+        query = make_query(dict(sort=self.sort_column, order=self.sort_order))
+        return safe_decode(make_url(self.request, node=self.model, query=query))
 
     @property
     def filter_term(self):
-        term = self.request.params.get('term')
+        term = self.request.params.get('column_filter')
         return urllib2.unquote(
             term.encode('utf-8')).decode('utf-8') if term else term
+
+    @property
+    def filter_value(self):
+        term = self.filter_term
+        if not term:
+            return _('filter_listing', default='filter listing')
+        return term
 
     @property
     def sort_column(self):
@@ -73,13 +88,13 @@ class ColumnListing(Tile):
     def current_page(self):
         return int(self.request.params.get('b_page', '0'))
 
-    @property
+    @request_property
     def batch(self):
-        batch = ColumnBatch(
-            self.batchname,
-            self.query_items,
-            self.slicesize)
-        return batch(self.model, self.request)
+        return ColumnBatch(self.batchname, self.query_items, self.slicesize)
+
+    @property
+    def rendered_batch(self):
+        return self.batch(self.model, self.request)
 
     @property
     def slice(self):
@@ -93,32 +108,6 @@ class ColumnListing(Tile):
         items = self.query_items
         items = sorted(items, key=lambda x: x['sort_by'].lower())
         return items[start:end]
-
-    def make_query(self, params):
-        """Create query.
-
-        :param params: Dictionary with query parameters.
-        :return: Query as string.
-        """
-        p = dict()
-        for param in self.query_whitelist:
-            p[param] = self.request.params.get(param, '')
-        p.update(params)
-        return make_query(**p)
-
-    def make_url(self, params, path=None):
-        """Create URL.
-
-        :param params: Dictionary with query parameters.
-        :param path: Optional model path, if ``None``, path gets taken from
-            ``self.model``
-        :return: URL as string.
-        """
-        return safe_decode(make_url(
-            self.request,
-            path=path,
-            node=None if path else self.model,
-            query=self.make_query(params)))
 
     @property
     def query_items(self):
@@ -181,6 +170,9 @@ class ColumnListing(Tile):
             i += 1
         return ret
 
+    ############################################################
+    # XXX: users and groups related info to dedicated subclasses
+
     @property
     def user_attrs(self):
         settings = ugm_users(self.model)
@@ -193,6 +185,9 @@ class ColumnListing(Tile):
 
     @property
     def user_listing_criteria(self):
+        term = self.filter_term
+        if term:
+            pass
         if not self.model.local_manager_consider_for_user:
             return None
         ids = self.model.local_manager_target_uids
@@ -202,6 +197,9 @@ class ColumnListing(Tile):
 
     @property
     def group_listing_criteria(self):
+        term = self.filter_term
+        if term:
+            pass
         if not self.model.local_manager_consider_for_user:
             return None
         ids = self.model.local_manager_target_gids
@@ -239,6 +237,9 @@ class ColumnListing(Tile):
             return attrs[0]
         return sort
 
+    # XXX: end move
+    ###########################################################################
+
 
 class PrincipalsListing(ColumnListing):
     """Column listing for principals.
@@ -259,6 +260,11 @@ class PrincipalsListing(ColumnListing):
             attrlist = self.listing_attrs
             criteria = self.listing_criteria
             sort_attr = self.sort_attr
+
+            print attrlist
+            print criteria
+            print sort_attr
+
             ret = list()
             principals = self.model.backend
             result = principals.search(
