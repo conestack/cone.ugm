@@ -65,7 +65,7 @@ class ColumnListing(Tile):
 
     @property
     def filter_term(self):
-        term = self.request.params.get('column_filter')
+        term = self.request.params.get('term')
         return urllib2.unquote(
             term.encode('utf-8')).decode('utf-8') if term else term
 
@@ -90,7 +90,12 @@ class ColumnListing(Tile):
 
     @request_property
     def batch(self):
-        return ColumnBatch(self.batchname, self.query_items, self.slicesize)
+        return ColumnBatch(
+            self.batchname,
+            self.query_items,
+            self.slicesize,
+            self.filter_term
+        )
 
     @property
     def rendered_batch(self):

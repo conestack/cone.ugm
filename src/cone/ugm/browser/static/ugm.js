@@ -562,7 +562,7 @@
             // trigger search
             var trigger_search = function(input) {
                 var term = input.attr('value');
-                cone.batcheditems_handle_filter(input, 'column_filter', term);
+                cone.batcheditems_handle_filter(input, 'term', term);
             };
             // reset filter input field if empty filter
             if (searchfield.hasClass('empty_filter')) {

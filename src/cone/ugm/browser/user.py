@@ -96,7 +96,6 @@ class Groups(object):
                 if not fnmatch.filter(s_attrs, filter_term):
                     continue
             gid = group.name
-            # XXX: resource was only set for alluserlisting
             item_target = make_url(obj.request, path=group.path[1:])
             action_query = make_query(id=gid)
             action_target = make_url(obj.request,

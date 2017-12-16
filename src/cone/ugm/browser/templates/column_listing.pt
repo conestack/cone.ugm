@@ -27,7 +27,7 @@
 
     <div class="column_filter">
       <input type="text"
-             name="column_filter"
+             name="term"
              class="form-control ${'' if context.filter_term else 'empty_filter'}"
              ajax:target="${context.filter_target}"
              ajax:event="batchclicked:.${context.batchname}sensitiv"
