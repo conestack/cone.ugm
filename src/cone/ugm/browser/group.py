@@ -21,6 +21,7 @@ from pyramid.security import has_permission
 from webob.exc import HTTPFound
 from yafowil.base import ExtractionError
 from yafowil.utils import UNSET
+import fnmatch
 import urllib2
 
 
@@ -48,7 +49,7 @@ class GroupRightColumn(Tile):
 
 
 class Principals(object):
-    """Descriptor to return principal items for listing
+    """Descriptor to return principal items for listing.
     """
     def __init__(self,
                  members_only=False,
@@ -59,20 +60,15 @@ class Principals(object):
     def __get__(self, obj, objtype=None):
         if obj is None:
             return self
-
         appgroup = obj.model
         group = appgroup.model
         member_ids = group.keys()
-
-        # always True if we list members only, otherwise will be set
+        # Always True if we list members only, otherwise will be set
         # in the loop below
         related = self.members_only
-
         available_only = self.available_only
-
         if related and available_only:
             raise Exception(u"Invalid object settings.")
-
         # XXX: so far only users as members of groups, for
         # group-in-group we need to prefix groups
         if related:
@@ -82,33 +78,31 @@ class Principals(object):
             users = group.root.users.values()
             if available_only:
                 users = [u for u in users if not u.name in member_ids]
-
         # reduce for local manager
         if obj.model.local_manager_consider_for_user:
             local_uids = obj.model.local_manager_target_uids
             users = [u for u in users if u.name in local_uids]
-
         attrlist = obj.user_attrs
         sort_attr = obj.user_default_sort_column
-
-        ret = list()
-
+        filter_term = obj.filter_term
         can_change = has_permission(
             'manage_membership', obj.model.parent, obj.request)
-
+        ret = list()
         for user in users:
-            uid = user.name
             attrs = user.attrs
-
+            # reduce by search term
+            if filter_term:
+                s_attrs = [attrs[attr] for attr in attrlist]
+                if not fnmatch.filter(s_attrs, filter_term):
+                    continue
+            uid = user.name
             item_target = make_url(obj.request, path=user.path[1:])
             action_query = make_query(id=uid)
             action_target = make_url(obj.request,
                                      node=appgroup,
                                      query=action_query)
-
             if not self.members_only:
                 related = uid in member_ids
-
             actions = list()
             if can_change:
                 action_id = 'add_item'
@@ -126,7 +120,6 @@ class Principals(object):
                 remove_item_action = obj.create_action(
                     action_id, action_enabled, action_title, action_target)
                 actions.append(remove_item_action)
-
             vals = [obj.extract_raw(attrs, attr) for attr in attrlist]
             sort = obj.extract_raw(attrs, sort_attr)
             content = obj.item_content(*vals)
@@ -146,6 +139,7 @@ class UsersOfGroupColumnListing(ColumnListing):
     query_items = Principals(members_only=True)
     batchname = 'rightbatch'
     display_limit = True
+    display_limit_checked = False
 
 
 @tile('allcolumnlisting', 'templates/column_listing.pt',
@@ -157,6 +151,7 @@ class AllUsersColumnListing(ColumnListing):
     query_items = Principals()
     batchname = 'rightbatch'
     display_limit = True
+    display_limit_checked = True
 
     @property
     def ajax_action(self):

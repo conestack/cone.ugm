@@ -33,6 +33,7 @@ class ColumnListing(Tile):
     default_order = None
     display_filter = True
     display_limit = False
+    display_limit_checked = False
 
     @property
     def ajax_action(self):

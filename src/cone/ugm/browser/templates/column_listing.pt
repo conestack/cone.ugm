@@ -39,6 +39,7 @@
       <label i18n:translate="list_all">List all</label>
       <input id="list_all"
              type="checkbox"
+             checked="${context.display_limit_checked and 'checked'|nothing}"
              name="column_limit"
              ajax:target="${context.nodeurl}" />
     </div>

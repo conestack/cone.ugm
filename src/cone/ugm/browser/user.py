@@ -25,6 +25,7 @@ from webob.exc import HTTPFound
 from yafowil.base import ExtractionError
 from yafowil.base import UNSET
 import copy
+import fnmatch
 import urllib2
 
 
@@ -52,10 +53,7 @@ class UserRightColumn(Tile):
 
 
 class Groups(object):
-    """Descriptor to return principal items for listing
-
-    XXX: check also group.Principals, naming here is sometimes newer
-    XXX: speedup!
+    """Descriptor to return principal items for listing.
     """
     def __init__(self,
                  related_only=False,
@@ -66,55 +64,46 @@ class Groups(object):
     def __get__(self, obj, objtype=None):
         if obj is None:
             return self
-
         appuser = obj.model
         user = appuser.model
         groups = user.groups
         related_ids = [g.name for g in groups]
-
-        # always True if we list members only, otherwise will be set
+        # Always True if we list members only, otherwise will be set
         # in the loop below
         related = self.related_only
-
         available_only = self.available_only
-
         if related and available_only:
             raise Exception(u"Invalid object settings.")
-
         if not related:
-            # XXX: LDAP query here.
             groups = obj.model.root['groups'].backend.values()
             if available_only:
                 groups = [g for g in groups if not g.name in related_ids]
-
         # reduce for local manager
         if obj.model.local_manager_consider_for_user:
             local_gids = obj.model.local_manager_target_gids
             groups = [g for g in groups if g.name in local_gids]
-
-        ret = list()
-
-        can_change = has_permission(
-            'manage_membership', obj.model.parent, obj.request)
-
         attrlist = obj.group_attrs
         sort_attr = obj.group_default_sort_column
-
-        # XXX: These should be the mapped attributes - lack of backend support
+        filter_term = obj.filter_term
+        can_change = has_permission(
+            'manage_membership', obj.model.parent, obj.request)
+        ret = list()
         for group in groups:
-            gid = group.name
             attrs = group.attrs
-
+            # reduce by search term
+            if filter_term:
+                s_attrs = [attrs[attr] for attr in attrlist]
+                if not fnmatch.filter(s_attrs, filter_term):
+                    continue
+            gid = group.name
             # XXX: resource was only set for alluserlisting
             item_target = make_url(obj.request, path=group.path[1:])
             action_query = make_query(id=gid)
             action_target = make_url(obj.request,
                                      node=appuser,
                                      query=action_query)
-
             if not self.related_only:
                 related = gid in related_ids
-
             actions = list()
             if can_change:
                 action_id = 'add_item'
@@ -124,7 +113,6 @@ class Groups(object):
                 add_item_action = obj.create_action(
                     action_id, action_enabled, action_title, action_target)
                 actions.append(add_item_action)
-
                 action_id = 'remove_item'
                 action_enabled = bool(related)
                 action_title = _('remove_user_from_selected_group',
@@ -132,7 +120,6 @@ class Groups(object):
                 remove_item_action = obj.create_action(
                     action_id, action_enabled, action_title, action_target)
                 actions.append(remove_item_action)
-
             vals = [obj.extract_raw(attrs, attr) for attr in attrlist]
             sort = obj.extract_raw(attrs, sort_attr)
             content = obj.item_content(*vals)
@@ -152,6 +139,7 @@ class GroupsOfUserColumnListing(ColumnListing):
     query_items = Groups(related_only=True)
     batchname = 'rightbatch'
     display_limit = True
+    display_limit_checked = False
 
 
 @tile('allcolumnlisting', 'templates/column_listing.pt',
@@ -163,6 +151,7 @@ class AllGroupsColumnListing(ColumnListing):
     query_items = Groups(related_only=False)
     batchname = 'rightbatch'
     display_limit = True
+    display_limit_checked = True
 
     @property
     def ajax_action(self):
