@@ -55,7 +55,7 @@ class UsersColumnListing(PrincipalsListing):
     slot = 'leftlisting'
     list_columns = PrincipalsListing.user_list_columns
     listing_attrs = PrincipalsListing.user_attrs
-    listing_criteria = PrincipalsListing.user_listing_criteria
+    localmanager_ids = PrincipalsListing.user_localmanager_ids
     sort_attr = PrincipalsListing.user_default_sort_column
     css = 'users'
     batchname = 'leftbatch'

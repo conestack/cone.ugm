@@ -90,7 +90,7 @@ class LocalManager(Behavior):
         """Group id of local manager group of current authenticated member.
 
         Currently a user can be assigned only to one local manager group. If
-        mode than one local manager group is configured, an error is raised.
+        more than one local manager group is configured, an error is raised.
         """
         config = self.root['settings']['ugm_localmanager'].attrs
         user = security.authenticated_user(get_current_request())

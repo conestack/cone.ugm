@@ -558,27 +558,33 @@
         // bind listing filter
         listing_filter_binder: function(context) {
             var filter_selector = 'div.column_filter input';
-            // reset filter input field
-            $(filter_selector, context).bind('focus', function() {
-                this.value = '';
-                $(this).css('color', '#000');
-            });
+            var searchfield = $(filter_selector, context);
+            // trigger search
             var trigger_search = function(input) {
                 var term = input.attr('value');
                 cone.batcheditems_handle_filter(input, 'column_filter', term);
             };
-            var searchfield = $(filter_selector, context);
+            // reset filter input field if empty filter
+            if (searchfield.hasClass('empty_filter')) {
+                searchfield.bind('focus', function() {
+                    this.value = '';
+                    $(this).css('color', '#000');
+                });
+            }
+            // prevent default action when pressing enter
             searchfield.unbind('keypress').bind('keypress', function(event) {
                 if (event.keyCode == 13) {
                     event.preventDefault();
                 }
             });
+            // trigger search when releasing enter
             searchfield.unbind('keyup').bind('keyup', function(event) {
                 if (event.keyCode == 13) {
                     event.preventDefault();
                     trigger_search($(this));
                 }
             });
+            // trigger search on input change
             searchfield.unbind('change').bind('change', function(event) {
                 event.preventDefault();
                 trigger_search($(this));

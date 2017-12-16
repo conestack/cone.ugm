@@ -12,7 +12,6 @@ from yafowil.utils import Tag
 import logging
 import types
 import urllib2
-import uuid
 
 
 tag = Tag(lambda x: x)
@@ -184,28 +183,16 @@ class ColumnListing(Tile):
         return settings.attrs.groups_listing_columns.keys()
 
     @property
-    def user_listing_criteria(self):
-        term = self.filter_term
-        if term:
-            pass
+    def user_localmanager_ids(self):
         if not self.model.local_manager_consider_for_user:
             return None
-        ids = self.model.local_manager_target_uids
-        if not ids:
-            ids = [str(uuid.uuid4())]  # ensure criteria forces empty result
-        return dict(id=ids)
+        return self.model.local_manager_target_uids
 
     @property
-    def group_listing_criteria(self):
-        term = self.filter_term
-        if term:
-            pass
+    def group_localmanager_ids(self):
         if not self.model.local_manager_consider_for_user:
             return None
-        ids = self.model.local_manager_target_gids
-        if not ids:
-            ids = [str(uuid.uuid4())]  # ensure criteria forces empty result
-        return dict(id=ids)
+        return self.model.local_manager_target_gids
 
     @property
     def user_list_columns(self):
@@ -247,7 +234,7 @@ class PrincipalsListing(ColumnListing):
     delete_label = _('delete_principal', default='Delete Principal')
     delete_permission = 'delete_principal'  # inexistent permission
     listing_attrs = []
-    listing_criteria = None
+    localmanager_ids = None
     sort_attr = None
 
     @request_property
@@ -257,21 +244,30 @@ class PrincipalsListing(ColumnListing):
             self.model,
             self.request)
         try:
-            attrlist = self.listing_attrs
-            criteria = self.listing_criteria
-            sort_attr = self.sort_attr
-
-            print attrlist
-            print criteria
-            print sort_attr
-
             ret = list()
+            localmanager_ids = self.localmanager_ids
+            # if localmanager ids not none but empty, no access to any
+            # principals
+            if localmanager_ids is not None and not localmanager_ids:
+                return ret
+            attrlist = self.listing_attrs
+            sort_attr = self.sort_attr
+            # build criteria from filter term
+            criteria=None
+            filter_term = self.filter_term
+            if filter_term:
+                criteria = dict()
+                for attr in attrlist:
+                    criteria[attr] = filter_term
             principals = self.model.backend
             result = principals.search(
                 criteria=criteria,
                 attrlist=attrlist,
                 or_search=True)
             for key, attrs in result:
+                # reduce result by localmanager ids if not None
+                if localmanager_ids is not None and not key in localmanager_ids:
+                    continue
                 query = make_query(
                     pid=key,
                     came_from=make_url(self.request, node=self.model))
