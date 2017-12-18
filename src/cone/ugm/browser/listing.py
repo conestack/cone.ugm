@@ -10,6 +10,7 @@ from pyramid.i18n import TranslationStringFactory
 from pyramid.security import has_permission
 from yafowil.utils import Tag
 import logging
+import natsort
 import types
 import urllib2
 
@@ -27,7 +28,7 @@ class ColumnListing(Tile):
     slot = None
     list_columns = []
     css = ''
-    slicesize = 5
+    slicesize = 10
     batchname = ''
     default_order = 'asc'
     display_filter = True
@@ -128,9 +129,13 @@ class ColumnListing(Tile):
     def items(self):
         start, end = self.slice
         items = self.query_items
-        items = sorted(items, key=lambda x: x['sort_by'].lower())
-        if self.sort_order == 'desc':
-            items = list(reversed(items))
+        inv = self.sort_order == 'desc'
+        items = natsort.natsorted(
+            items,
+            key=lambda x: x['sort_by'],
+            reverse=inv,
+            alg=natsort.ns.IC
+        )
         return items[start:end]
 
     @property

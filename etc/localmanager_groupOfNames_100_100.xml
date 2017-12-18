@@ -1,0 +1,11 @@
+<localmanager>
+  <group0>
+    <target>
+      <item>group1</item>
+      <item>group2</item>
+    </target>
+    <default>
+      <item>group1</item>
+    </default>
+  </group0>
+</localmanager>

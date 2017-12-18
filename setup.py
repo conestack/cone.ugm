@@ -40,6 +40,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
+        'natsort',
         'cone.app[lxml]',
         'yafowil.widget.array',
         'yafowil.widget.autocomplete',
