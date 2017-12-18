@@ -29,8 +29,7 @@ class ColumnListing(Tile):
     css = ''
     slicesize = 5
     batchname = ''
-    default_sort = None
-    default_order = None
+    default_order = 'asc'
     display_filter = True
     display_limit = False
     display_limit_checked = False
@@ -50,12 +49,15 @@ class ColumnListing(Tile):
     def sortheader(self):
         ret = list()
         for cid, name in self.list_columns:
+            cur_sort = self.sort_column
+            cur_order = self.sort_order
+            selected = cur_sort == sortkey
+            alter = selected and cur_order == 'desc'
+            order = alter and 'asc' or 'desc'
             ret.append({
-                'id': 'sort_%s' % cid,
-                'default': False,
                 'name': name,
+                'target': self.sort_target(column, sort, order) 
             })
-        ret[0]['default'] = True
         return ret
 
     @property
@@ -77,12 +79,24 @@ class ColumnListing(Tile):
         return term
 
     @property
+    def default_sort(self):
+        return self.list_columns[0]
+
+    @property
     def sort_column(self):
         return self.request.params.get('sort', self.default_sort)
 
     @property
     def sort_order(self):
         return self.request.params.get('order', self.default_order)
+
+    def sort_target(self, column, sort, order):
+        query = make_query(
+            term=self.filter_term,
+            b_page=self.current_page,
+            sort=sort,
+            order=order)
+        return make_url(self.request, node=self.model, query=query)
 
     @property
     def current_page(self):
