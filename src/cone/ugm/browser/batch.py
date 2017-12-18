@@ -8,11 +8,13 @@ class ColumnBatch(Batch):
     """UGM column batch.
     """
 
-    def __init__(self, name, items, slicesize, term):
+    def __init__(self, name, items, slicesize, term, sort, order):
         self.name = name
         self.items = items
         self.slicesize = slicesize
         self.term = term
+        self.sort = sort
+        self.order = order
 
     @property
     def display(self):
@@ -28,7 +30,11 @@ class ColumnBatch(Batch):
             pages += 1
         current = self.request.params.get('b_page', '0')
         for i in range(pages):
-            query = make_query(b_page=str(i), term=self.term)
+            query = make_query(
+                b_page=str(i),
+                term=self.term,
+                sort=self.sort,
+                order=self.order)
             url = make_url(self.request, path=path, query=query)
             ret.append({
                 'page': '%i' % (i + 1),

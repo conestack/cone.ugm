@@ -14,7 +14,6 @@
         bdajax.register(ugm.left_listing_nav_binder.bind(ugm), true);
         bdajax.register(ugm.right_listing_nav_binder.bind(ugm), true);
         bdajax.register(ugm.listing_filter_binder.bind(ugm), true);
-        bdajax.register(ugm.listing_sort_binder.bind(ugm), true);
         bdajax.register(ugm.listing_actions_binder.bind(ugm), true);
         bdajax.register(ugm.listing_related_binder.bind(ugm), true);
         bdajax.register(ugm.inout_actions_binder.bind(ugm), true);
@@ -712,44 +711,6 @@
 
         listing_sort_value: function(selector, context) {
             return $(selector, context).text();
-        },
-
-        // sort listings binder
-        listing_sort_binder: function(context) {
-            var sort_links = $('.columnsorting button', context);
-            sort_links.unbind().bind('click', function(event) {
-                bdajax.spinner.show();
-                var elem = $(this);
-                var inv = elem.hasClass('inv');
-                var links = elem.parent().parent();
-                $('button', links).removeClass('default')
-                                  .removeClass('inv')
-                                  .removeClass('asc')
-                                  .removeClass('desc');
-                var cont = $('.columnitems', elem.parent().parent().parent());
-                if (inv) {
-                    elem.addClass('asc');
-                } else {
-                    elem.addClass('inv').addClass('desc');
-                }
-                var sortname = elem.attr('id');
-                if ($.browser.msie && ($.browser.version == 7)) {
-                    sortname = sortname.substr(sortname.lastIndexOf('/') + 1);
-                }
-                var sel = '.' + sortname;
-                $('li', cont).sortElements(function(a, b) {
-                    a = ugm.listing_sort_value(sel, a);
-                    b = ugm.listing_sort_value(sel, b);
-                    if (inv) {
-                        return naturalSort(b, a);
-                    } else {
-                        return naturalSort(a, b);
-                    }
-                });
-                ugm.scroll_listings_to_selected();
-                bdajax.spinner.hide();
-            });
-            $('.columnsorting button.default', context).trigger('click');
         }
     };
 

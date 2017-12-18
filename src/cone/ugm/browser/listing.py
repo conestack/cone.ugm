@@ -48,15 +48,16 @@ class ColumnListing(Tile):
     @property
     def sortheader(self):
         ret = list()
-        for cid, name in self.list_columns:
+        for cid, name in self.list_columns.items():
             cur_sort = self.sort_column
             cur_order = self.sort_order
-            selected = cur_sort == sortkey
-            alter = selected and cur_order == 'desc'
-            order = alter and 'asc' or 'desc'
+            selected = cur_sort == cid
+            alter = selected and cur_order == 'asc'
+            order = alter and 'desc' or 'asc'
             ret.append({
-                'name': name,
-                'target': self.sort_target(column, sort, order) 
+                'title': name,
+                'order': order if selected else '',
+                'target': self.sort_target(cid, order)
             })
         return ret
 
@@ -80,7 +81,7 @@ class ColumnListing(Tile):
 
     @property
     def default_sort(self):
-        return self.list_columns[0]
+        return self.list_columns.keys()[0]
 
     @property
     def sort_column(self):
@@ -90,7 +91,7 @@ class ColumnListing(Tile):
     def sort_order(self):
         return self.request.params.get('order', self.default_order)
 
-    def sort_target(self, column, sort, order):
+    def sort_target(self, sort, order):
         query = make_query(
             term=self.filter_term,
             b_page=self.current_page,
@@ -108,7 +109,9 @@ class ColumnListing(Tile):
             self.batchname,
             self.query_items,
             self.slicesize,
-            self.filter_term
+            self.filter_term,
+            self.sort_column,
+            self.sort_order
         )
 
     @property
@@ -126,6 +129,8 @@ class ColumnListing(Tile):
         start, end = self.slice
         items = self.query_items
         items = sorted(items, key=lambda x: x['sort_by'].lower())
+        if self.sort_order == 'desc':
+            items = list(reversed(items))
         return items[start:end]
 
     @property
@@ -181,14 +186,6 @@ class ColumnListing(Tile):
             return raw[0]
         return raw and raw or ''
 
-    def calc_list_columns(self, defs):
-        ret = list()
-        i = 1
-        for val in defs.values():
-            ret.append(('col_%i' % i, val))
-            i += 1
-        return ret
-
     ############################################################
     # XXX: users and groups related info to dedicated subclasses
 
@@ -217,14 +214,12 @@ class ColumnListing(Tile):
     @property
     def user_list_columns(self):
         settings = ugm_users(self.model)
-        defs = settings.attrs.users_listing_columns
-        return self.calc_list_columns(defs)
+        return settings.attrs.users_listing_columns
 
     @property
     def group_list_columns(self):
         settings = ugm_groups(self.model)
-        defs = settings.attrs.groups_listing_columns
-        return self.calc_list_columns(defs)
+        return settings.attrs.groups_listing_columns
 
     @property
     def user_default_sort_column(self):
