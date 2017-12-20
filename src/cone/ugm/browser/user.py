@@ -12,6 +12,7 @@ from cone.ugm.browser.authoring import EditFormFiddle
 from cone.ugm.browser.autoincrement import AutoIncrementForm
 from cone.ugm.browser.expires import ExpirationForm
 from cone.ugm.browser.listing import ColumnListing
+from cone.ugm.browser.listing import InOutListing
 from cone.ugm.browser.portrait import PortraitForm
 from cone.ugm.browser.principal import PrincipalForm
 from cone.ugm.browser.roles import PrincipalRolesForm
@@ -53,8 +54,9 @@ class UserRightColumn(Tile):
 
 
 class Groups(object):
-    """Descriptor to return principal items for listing.
+    """Descriptor to return groups related to user for listing.
     """
+
     def __init__(self,
                  related_only=False,
                  available_only=False):
@@ -159,7 +161,7 @@ class AllGroupsColumnListing(ColumnListing):
 
 @tile('inoutlisting', 'templates/in_out.pt',
       interface=User, permission='view')
-class InOutListing(ColumnListing):
+class GroupsInOutListing(InOutListing):
     selected_items = Groups(related_only=True)
     available_items = Groups(available_only=True)
     display_control_buttons = True

@@ -529,79 +529,29 @@
             }
         },
 
-        // bind filter
-        filter_binder: function(context, input_selector, listing_selector) {
-
-            // reset filter input field
-            $(input_selector, context).bind('focus', function() {
-                this.value = '';
-                $(this).css('color', '#000');
-            });
-
-            // refresh related column with filtered listing
-            $(input_selector, context).bind('keyup', function() {
-                var current_filter = this.value.toLowerCase();
-                $(listing_selector, $(this).parent().parent())
-                    .each(function() {
-                        var li = $(this);
-                        var val = $('div.cols', li).html().toLowerCase();
-                        if (val.indexOf(current_filter) != -1) {
-                            li.removeClass('hidden');
-                        } else {
-                            li.addClass('hidden');    
-                        }
-                    });
-            });
-        },
-
         // bind listing filter
         listing_filter_binder: function(context) {
             var filter_selector = 'div.column_filter input';
-            var searchfield = $(filter_selector, context);
-            // trigger search
-            var trigger_search = function(input) {
-                var term = input.attr('value');
-                cone.batcheditems_handle_filter(input, 'term', term);
-            };
-            // reset filter input field if empty filter
-            if (searchfield.hasClass('empty_filter')) {
-                searchfield.bind('focus', function() {
-                    this.value = '';
-                    $(this).css('color', '#000');
-                });
-            }
-            // prevent default action when pressing enter
-            searchfield.unbind('keypress').bind('keypress', function(event) {
-                if (event.keyCode == 13) {
-                    event.preventDefault();
-                }
-            });
-            // trigger search when releasing enter
-            searchfield.unbind('keyup').bind('keyup', function(event) {
-                if (event.keyCode == 13) {
-                    event.preventDefault();
-                    trigger_search($(this));
-                }
-            });
-            // trigger search on input change
-            searchfield.unbind('change').bind('change', function(event) {
-                event.preventDefault();
-                trigger_search($(this));
-            });
+            cone.batcheditems_filter_binder(context, filter_selector);
         },
 
         // bind inout filter
         inout_filter_binder: function(context) {
+            var left_filter_selector = 'div.left_column_filter input';
+            var left_filter_name = 'left_filter';
+            cone.batcheditems_filter_binder(
+                context,
+                left_filter_selector,
+                left_filter_name
+            );
 
-            // left listing
-            ugm.filter_binder(context,
-                              'div.left_column_filter input',
-                              'ul.inoutleftlisting li');
-
-            // right listing
-            ugm.filter_binder(context,
-                              'div.right_column_filter input',
-                              'ul.inoutrightlisting li');
+            var right_filter_selector = 'div.right_column_filter input';
+            var right_filter_name = 'right_filter';
+            cone.batcheditems_filter_binder(
+                context,
+                right_filter_selector,
+                right_filter_name
+            );
         },
 
         // reset selcted item in listing

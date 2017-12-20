@@ -28,24 +28,6 @@ div.add_button {
     margin-bottom:6px;
 }
 
-/* column batch */
-div.column .batch {
-    clear:both;
-    padding-top:12px;
-}
-div.column .batch span {
-    color:#ccc;
-}
-div.column .batch a {
-    color:#49539f;
-    text-decoration:none;
-}
-div.column .batch strong {
-    font-weight:bold;
-    font-size:110%;
-    color:#333;
-}
-
 /* action icons */
 a.action {
     line-height:16px;
@@ -198,7 +180,6 @@ div.right_column_filter strong {
 }
 div.left_column_filter input,
 div.right_column_filter input {
-    color:#ccc;
     margin-bottom:6px;
     float:right;
     width:50%;

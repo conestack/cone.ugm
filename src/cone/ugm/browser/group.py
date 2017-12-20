@@ -10,6 +10,7 @@ from cone.ugm.browser import form_field_definitions
 from cone.ugm.browser.authoring import AddFormFiddle
 from cone.ugm.browser.authoring import EditFormFiddle
 from cone.ugm.browser.listing import ColumnListing
+from cone.ugm.browser.listing import InOutListing
 from cone.ugm.browser.principal import PrincipalForm
 from cone.ugm.browser.roles import PrincipalRolesForm
 from cone.ugm.model.group import Group
@@ -48,9 +49,10 @@ class GroupRightColumn(Tile):
         return settings.attrs['default_membership_assignment_widget']
 
 
-class Principals(object):
-    """Descriptor to return principal items for listing.
+class Users(object):
+    """Descriptor to return users related to group for listing.
     """
+
     def __init__(self,
                  members_only=False,
                  available_only=False):
@@ -136,7 +138,7 @@ class UsersOfGroupColumnListing(ColumnListing):
     css = 'users'
     slot = 'rightlisting'
     list_columns = ColumnListing.user_list_columns
-    query_items = Principals(members_only=True)
+    query_items = Users(members_only=True)
     batchname = 'rightbatch'
     display_limit = True
     display_limit_checked = False
@@ -148,7 +150,7 @@ class AllUsersColumnListing(ColumnListing):
     css = 'users'
     slot = 'rightlisting'
     list_columns = ColumnListing.user_list_columns
-    query_items = Principals()
+    query_items = Users()
     batchname = 'rightbatch'
     display_limit = True
     display_limit_checked = True
@@ -160,9 +162,9 @@ class AllUsersColumnListing(ColumnListing):
 
 @tile('inoutlisting', 'templates/in_out.pt',
       interface=Group, permission='view')
-class InOutListing(ColumnListing):
-    selected_items = Principals(members_only=True)
-    available_items = Principals(available_only=True)
+class UsersInOutListing(InOutListing):
+    selected_items = Users(members_only=True)
+    available_items = Users(available_only=True)
     display_control_buttons = True
 
     @property

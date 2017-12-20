@@ -28,7 +28,7 @@ class ColumnListing(Tile):
     slot = None
     list_columns = []
     css = ''
-    slicesize = 10
+    slicesize = 8
     batchname = ''
     default_order = 'asc'
     display_filter = True
@@ -98,7 +98,8 @@ class ColumnListing(Tile):
             b_page=self.current_page,
             sort=sort,
             order=order)
-        return make_url(self.request, node=self.model, query=query)
+        url = make_url(self.request, node=self.model, query=query)
+        return url.decode('utf-8')
 
     @property
     def current_page(self):
@@ -194,27 +195,7 @@ class ColumnListing(Tile):
     ############################################################
     # XXX: users and groups related info to dedicated subclasses
 
-    @property
-    def user_attrs(self):
-        settings = ugm_users(self.model)
-        return settings.attrs.users_listing_columns.keys()
-
-    @property
-    def group_attrs(self):
-        settings = ugm_groups(self.model)
-        return settings.attrs.groups_listing_columns.keys()
-
-    @property
-    def user_localmanager_ids(self):
-        if not self.model.local_manager_consider_for_user:
-            return None
-        return self.model.local_manager_target_uids
-
-    @property
-    def group_localmanager_ids(self):
-        if not self.model.local_manager_consider_for_user:
-            return None
-        return self.model.local_manager_target_gids
+    # USERS RELATED
 
     @property
     def user_list_columns(self):
@@ -222,9 +203,15 @@ class ColumnListing(Tile):
         return settings.attrs.users_listing_columns
 
     @property
-    def group_list_columns(self):
-        settings = ugm_groups(self.model)
-        return settings.attrs.groups_listing_columns
+    def user_attrs(self):
+        settings = ugm_users(self.model)
+        return settings.attrs.users_listing_columns.keys()
+
+    @property
+    def user_localmanager_ids(self):
+        if not self.model.local_manager_consider_for_user:
+            return None
+        return self.model.local_manager_target_uids
 
     @property
     def user_default_sort_column(self):
@@ -234,6 +221,24 @@ class ColumnListing(Tile):
         if not sort in attrs:
             return attrs[0]
         return sort
+
+    # GROUPS RELATED
+
+    @property
+    def group_list_columns(self):
+        settings = ugm_groups(self.model)
+        return settings.attrs.groups_listing_columns
+
+    @property
+    def group_attrs(self):
+        settings = ugm_groups(self.model)
+        return settings.attrs.groups_listing_columns.keys()
+
+    @property
+    def group_localmanager_ids(self):
+        if not self.model.local_manager_consider_for_user:
+            return None
+        return self.model.local_manager_target_gids
 
     @property
     def group_default_sort_column(self):
@@ -245,7 +250,7 @@ class ColumnListing(Tile):
         return sort
 
     # XXX: end move
-    ###########################################################################
+    ############################################################
 
 
 class PrincipalsListing(ColumnListing):
@@ -309,3 +314,45 @@ class PrincipalsListing(ColumnListing):
         except Exception as e:
             logger.error(str(e))
         return list()
+
+
+class InOutListing(ColumnListing):
+    selected_items = None
+    available_items = None
+    display_control_buttons = True
+
+    @property
+    def left_filter_target(self):
+        query = make_query(right_filter=self.right_filter_term)
+        return safe_decode(make_url(self.request, node=self.model, query=query))
+
+    @property
+    def left_filter_term(self):
+        term = self.request.params.get('left_filter')
+        return urllib2.unquote(
+            term.encode('utf-8')).decode('utf-8') if term else term
+
+    @property
+    def left_filter_value(self):
+        term = self.left_filter_term
+        if not term:
+            return _('filter_listing', default='filter listing')
+        return term
+
+    @property
+    def right_filter_target(self):
+        query = make_query(left_filter=self.left_filter_term)
+        return safe_decode(make_url(self.request, node=self.model, query=query))
+
+    @property
+    def right_filter_term(self):
+        term = self.request.params.get('right_filter')
+        return urllib2.unquote(
+            term.encode('utf-8')).decode('utf-8') if term else term
+
+    @property
+    def right_filter_value(self):
+        term = self.right_filter_term
+        if not term:
+            return _('filter_listing', default='filter listing')
+        return term

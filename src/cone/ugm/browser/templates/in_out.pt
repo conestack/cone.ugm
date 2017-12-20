@@ -3,24 +3,28 @@
            xmlns:i18n="http://xml.zope.org/namespaces/i18n"
            i18n:domain="cone.ugm"
            omit-tag="True">
-  <div class="inoutwidget">
+  <div class="inoutwidget"
+       ajax:bind="inoutfilterchanged"
+       ajax:action="inoutlisting:.inoutwidget:replace">
 
     <div class="inout_column_filter left_column_filter">
       <strong i18n:translate="available">Available</strong>
       <input type="text"
-             name="left_column_filter"
-             value="filter listing"
-             class="form-control"
-             i18n:attributes="value filter_listing" />
+             name="left_filter"
+             class="form-control ${'' if context.left_filter_term else 'empty_filter'}"
+             ajax:target="${context.left_filter_target}"
+             ajax:event="inoutfilterchanged:.inoutwidget"
+             tal:attributes="value context.left_filter_value">
     </div>
 
     <div class="inout_column_filter right_column_filter">
       <strong i18n:translate="recent">Recent</strong>
       <input type="text"
-             name="right_column_filter"
-             value="filter listing"
-             class="form-control"
-             i18n:attributes="value filter_listing" />
+             name="right_filter"
+             class="form-control ${'' if context.right_filter_term else 'empty_filter'}"
+             ajax:target="${context.right_filter_target}"
+             ajax:event="inoutfilterchanged:.inoutwidget"
+             tal:attributes="value context.right_filter_value">
     </div>
 
     <div class="inoutlisting"
