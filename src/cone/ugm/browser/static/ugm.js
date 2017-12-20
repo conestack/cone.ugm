@@ -532,7 +532,12 @@
         // bind listing filter
         listing_filter_binder: function(context) {
             var filter_selector = 'div.column_filter input';
-            cone.batcheditems_filter_binder(context, filter_selector);
+            var filter_name = 'filter';
+            cone.batcheditems_filter_binder(
+                context,
+                filter_selector,
+                filter_name
+            );
         },
 
         // bind inout filter

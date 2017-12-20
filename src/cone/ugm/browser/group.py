@@ -55,9 +55,11 @@ class Users(object):
 
     def __init__(self,
                  members_only=False,
-                 available_only=False):
+                 available_only=False,
+                 filter_param='filter'):
         self.members_only = members_only
         self.available_only = available_only
+        self.filter_param = filter_param
 
     def __get__(self, obj, objtype=None):
         if obj is None:
@@ -86,7 +88,7 @@ class Users(object):
             users = [u for u in users if u.name in local_uids]
         attrlist = obj.user_attrs
         sort_attr = obj.user_default_sort_column
-        filter_term = obj.filter_term
+        filter_term = obj.unquoted_param_value(self.filter_param)
         can_change = has_permission(
             'manage_membership', obj.model.parent, obj.request)
         ret = list()
@@ -163,8 +165,8 @@ class AllUsersColumnListing(ColumnListing):
 @tile('inoutlisting', 'templates/in_out.pt',
       interface=Group, permission='view')
 class UsersInOutListing(InOutListing):
-    selected_items = Users(members_only=True)
-    available_items = Users(available_only=True)
+    available_items = Users(available_only=True, filter_param='left_filter')
+    selected_items = Users(members_only=True, filter_param='right_filter')
     display_control_buttons = True
 
     @property

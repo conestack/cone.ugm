@@ -3,6 +3,7 @@
            xmlns:i18n="http://xml.zope.org/namespaces/i18n"
            i18n:domain="cone.ugm"
            omit-tag="True">
+
   <div class="inoutwidget"
        ajax:bind="inoutfilterchanged"
        ajax:action="inoutlisting:.inoutwidget:replace">

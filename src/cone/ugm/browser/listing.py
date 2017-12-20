@@ -1,9 +1,10 @@
+from cone.app.browser.batch import Batch
 from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
+from cone.app.browser.utils import nodepath
 from cone.app.browser.utils import request_property
 from cone.app.browser.utils import safe_decode
 from cone.tile import Tile
-from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.model.utils import ugm_groups
 from cone.ugm.model.utils import ugm_users
 from pyramid.i18n import TranslationStringFactory
@@ -17,8 +18,42 @@ import urllib2
 
 tag = Tag(lambda x: x)
 
+
 logger = logging.getLogger('cone.ugm')
 _ = TranslationStringFactory('cone.ugm')
+
+
+class ColumnListingBatch(Batch):
+    """Column listing batch.
+    """
+
+    def __init__(self, listing):
+        self.listing = listing
+        self.name = listing.batchname
+        self.items = listing.query_items
+        self.slicesize = listing.slicesize
+
+    @property
+    def display(self):
+        return len(self.vocab) > 1
+
+    @property
+    def vocab(self):
+        ret = list()
+        path = nodepath(self.model)
+        count = len(self.items)
+        pages = count / self.slicesize
+        if count % self.slicesize != 0:
+            pages += 1
+        current = self.listing.current_page
+        for i in range(pages):
+            ret.append({
+                'page': '%i' % (i + 1),
+                'current': current == i,
+                'visible': True,
+                'target': self.listing.batch_target(path, i)
+            })
+        return ret
 
 
 class ColumnListing(Tile):
@@ -62,6 +97,15 @@ class ColumnListing(Tile):
             })
         return ret
 
+    def unquoted_param_value(self, name):
+        value = self.request.params.get(name)
+        return urllib2.unquote(
+            value.encode('utf-8')).decode('utf-8') if value else value
+
+    def filter_value_or_default(self, name):
+        value = self.unquoted_param_value(name)
+        return value if value else _('filter_listing', default='filter listing')
+
     @property
     def filter_target(self):
         query = make_query(dict(sort=self.sort_column, order=self.sort_order))
@@ -69,16 +113,11 @@ class ColumnListing(Tile):
 
     @property
     def filter_term(self):
-        term = self.request.params.get('term')
-        return urllib2.unquote(
-            term.encode('utf-8')).decode('utf-8') if term else term
+        return self.unquoted_param_value('filter')
 
     @property
     def filter_value(self):
-        term = self.filter_term
-        if not term:
-            return _('filter_listing', default='filter listing')
-        return term
+        return self.filter_value_or_default('filter')
 
     @property
     def default_sort(self):
@@ -94,12 +133,11 @@ class ColumnListing(Tile):
 
     def sort_target(self, sort, order):
         query = make_query(
-            term=self.filter_term,
+            filter=self.filter_term,
             b_page=self.current_page,
             sort=sort,
             order=order)
-        url = make_url(self.request, node=self.model, query=query)
-        return url.decode('utf-8')
+        return safe_decode(make_url(self.request, node=self.model, query=query))
 
     @property
     def current_page(self):
@@ -107,18 +145,19 @@ class ColumnListing(Tile):
 
     @request_property
     def batch(self):
-        return ColumnBatch(
-            self.batchname,
-            self.query_items,
-            self.slicesize,
-            self.filter_term,
-            self.sort_column,
-            self.sort_order
-        )
+        return ColumnListingBatch(self)
 
     @property
     def rendered_batch(self):
         return self.batch(self.model, self.request)
+
+    def batch_target(self, path, b_page):
+        query = make_query(
+            b_page=str(b_page),
+            filter=self.filter_term,
+            sort=self.sort_column,
+            order=self.sort_order)
+        return safe_decode(make_url(self.request, path=path, query=query))
 
     @property
     def slice(self):
@@ -317,8 +356,8 @@ class PrincipalsListing(ColumnListing):
 
 
 class InOutListing(ColumnListing):
-    selected_items = None
     available_items = None
+    selected_items = None
     display_control_buttons = True
 
     @property
@@ -328,16 +367,11 @@ class InOutListing(ColumnListing):
 
     @property
     def left_filter_term(self):
-        term = self.request.params.get('left_filter')
-        return urllib2.unquote(
-            term.encode('utf-8')).decode('utf-8') if term else term
+        return self.unquoted_param_value('left_filter')
 
     @property
     def left_filter_value(self):
-        term = self.left_filter_term
-        if not term:
-            return _('filter_listing', default='filter listing')
-        return term
+        return self.filter_value_or_default('left_filter')
 
     @property
     def right_filter_target(self):
@@ -346,13 +380,8 @@ class InOutListing(ColumnListing):
 
     @property
     def right_filter_term(self):
-        term = self.request.params.get('right_filter')
-        return urllib2.unquote(
-            term.encode('utf-8')).decode('utf-8') if term else term
+        return self.unquoted_param_value('right_filter')
 
     @property
     def right_filter_value(self):
-        term = self.right_filter_term
-        if not term:
-            return _('filter_listing', default='filter listing')
-        return term
+        return self.filter_value_or_default('right_filter')

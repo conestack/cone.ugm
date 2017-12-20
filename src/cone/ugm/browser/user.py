@@ -59,9 +59,11 @@ class Groups(object):
 
     def __init__(self,
                  related_only=False,
-                 available_only=False):
+                 available_only=False,
+                 filter_param='filter'):
         self.related_only = related_only
         self.available_only = available_only
+        self.filter_param = filter_param
 
     def __get__(self, obj, objtype=None):
         if obj is None:
@@ -86,7 +88,7 @@ class Groups(object):
             groups = [g for g in groups if g.name in local_gids]
         attrlist = obj.group_attrs
         sort_attr = obj.group_default_sort_column
-        filter_term = obj.filter_term
+        filter_term = obj.unquoted_param_value(self.filter_param)
         can_change = has_permission(
             'manage_membership', obj.model.parent, obj.request)
         ret = list()
@@ -162,8 +164,8 @@ class AllGroupsColumnListing(ColumnListing):
 @tile('inoutlisting', 'templates/in_out.pt',
       interface=User, permission='view')
 class GroupsInOutListing(InOutListing):
-    selected_items = Groups(related_only=True)
-    available_items = Groups(available_only=True)
+    available_items = Groups(available_only=True, filter_param='left_filter')
+    selected_items = Groups(related_only=True, filter_param='right_filter')
     display_control_buttons = True
 
     @property
