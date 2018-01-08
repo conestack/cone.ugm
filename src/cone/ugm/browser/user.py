@@ -60,10 +60,12 @@ class Groups(object):
     def __init__(self,
                  related_only=False,
                  available_only=False,
-                 filter_param='filter'):
+                 filter_param='filter',
+                 pagination=False):
         self.related_only = related_only
         self.available_only = available_only
         self.filter_param = filter_param
+        self.pagination = pagination
 
     def __get__(self, obj, objtype=None):
         if obj is None:
@@ -130,6 +132,11 @@ class Groups(object):
             item = obj.create_item(sort, item_target,
                                    content, current, actions)
             ret.append(item)
+        # XXX: sort
+        if self.pagination:
+            start = 0
+            end = 0
+            ret = ret[start:end]
         return ret
 
 
@@ -164,8 +171,16 @@ class AllGroupsColumnListing(ColumnListing):
 @tile('inoutlisting', 'templates/in_out.pt',
       interface=User, permission='view')
 class GroupsInOutListing(InOutListing):
-    available_items = Groups(available_only=True, filter_param='left_filter')
-    selected_items = Groups(related_only=True, filter_param='right_filter')
+    available_items = Groups(
+        available_only=True,
+        filter_param='left_filter',
+        pagination=True
+    )
+    selected_items = Groups(
+        related_only=True,
+        filter_param='right_filter',
+        pagination=True
+    )
     display_control_buttons = True
 
     @property
