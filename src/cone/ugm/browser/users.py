@@ -6,7 +6,6 @@ from cone.ugm.browser.columns import Column
 from cone.ugm.browser.listing import PrincipalsListing
 from cone.ugm.model.users import Users
 from pyramid.i18n import TranslationStringFactory
-from pyramid.security import has_permission
 import logging
 
 
@@ -14,8 +13,11 @@ logger = logging.getLogger('cone.ugm')
 _ = TranslationStringFactory('cone.ugm')
 
 
-@tile('leftcolumn', 'templates/principals_left_column.pt',
-      interface=Users, permission='view')
+@tile(
+    name='leftcolumn',
+    path='templates/principals_left_column.pt',
+    interface=Users,
+    permission='view')
 class UsersLeftColumn(Tile):
     add_label = _('add_user', default='Add User')
 
@@ -29,11 +31,14 @@ class UsersLeftColumn(Tile):
 
     @property
     def can_add(self):
-        return has_permission('add_user', self.model, self.request)
+        return self.request.has_permission('add_user', self.model)
 
 
-@tile('rightcolumn', 'templates/principals_right_column.pt',
-      interface=Users, permission='view')
+@tile(
+    name='rightcolumn',
+    path='templates/principals_right_column.pt',
+    interface=Users,
+    permission='view')
 class UsersRightColumn(Column):
 
     @property
@@ -49,13 +54,16 @@ class UsersRightColumn(Column):
         return make_url(self.request, node=self.model[self.principal_id])
 
 
-@tile('columnlisting', 'templates/column_listing.pt',
-      interface=Users, permission='view')
+@tile(
+    name='columnlisting',
+    path='templates/column_listing.pt',
+    interface=Users,
+    permission='view')
 class UsersColumnListing(PrincipalsListing):
     slot = 'leftlisting'
     list_columns = PrincipalsListing.user_list_columns
     listing_attrs = PrincipalsListing.user_attrs
-    listing_criteria = PrincipalsListing.user_listing_criteria
+    localmanager_ids = PrincipalsListing.user_localmanager_ids
     sort_attr = PrincipalsListing.user_default_sort_column
     css = 'users'
     batchname = 'leftbatch'

@@ -5,6 +5,12 @@ Changes
 1.0a1 (unreleased)
 ------------------
 
+- Use ``cone.tile.tile`` decorator instead of ``cone.tile.registerTile``.
+  [rnix]
+
+- Use ``request.has_permission`` instead of ``pyramid.security.has_permission``.
+  [rnix]
+
 - Change UI. Principal form and principal membership are not displayed
   in right column together any more. When viewing a principals content, left
   column displays the listing and right column the principal form. When

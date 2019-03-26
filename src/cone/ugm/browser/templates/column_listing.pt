@@ -9,8 +9,6 @@
        ajax:target="${context.nodeurl}"
        ajax:action="${context.ajax_action}:.${context.batchname}sensitiv:replace">
 
-    <tal:batch replace="structure context.batch" />
-
     <div class="columnsorting btn-group">
 
       <div class="btn btn-default" disabled="disabled">
@@ -18,13 +16,34 @@
       </div>
 
       <tal:sortheader repeat="header context.sortheader">
-        <button id="${header['id']}"
-             class="${header['default'] and 'default' or None} btn btn-default ">
-          <span class="columnsorticon"></span>
-          <span tal:content="header['name']">name</span>
+        <button class="btn btn-default ${header['order']}"
+                ajax:bind="click"
+                ajax:event="${context.ajax_event}"
+                ajax:target="${header['target']}">
+          <span class="columnsorticon ${header['order']}"></span>
+          <span tal:content="header['title']">name</span>
         </button>
       </tal:sortheader>
 
+    </div>
+
+    <div class="column_filter">
+      <input type="text"
+             name="filter"
+             class="form-control ${'' if context.filter_term else 'empty_filter'}"
+             ajax:target="${context.filter_target}"
+             ajax:event="batchclicked:.${context.batchname}sensitiv"
+             tal:attributes="value context.filter_value">
+    </div>
+
+    <div class="column_limit"
+         tal:condition="context.display_limit">
+      <label i18n:translate="list_all">List all</label>
+      <input id="list_all"
+             type="checkbox"
+             checked="${context.display_limit_checked and 'checked'|nothing}"
+             name="column_limit"
+             ajax:target="${context.nodeurl}" />
     </div>
 
     <div class="columnitems ${context.css}">
@@ -66,6 +85,8 @@
       </ul>
 
     </div>
+
+    <tal:batch replace="structure context.rendered_batch" />
 
   </div>
 </tal:block>

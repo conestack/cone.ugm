@@ -79,7 +79,7 @@ Authenticate and render tiles::
 
     >>> expected = (
     ...     '<li class="list-group-item "\n              '
-    ...     'ajax:target="http://example.com/users/uid9">'
+    ...     'ajax:target="http://example.com/users/uid6">'
     ... )
     >>> res.find(expected) > -1
     True

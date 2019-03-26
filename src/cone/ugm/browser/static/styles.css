@@ -25,29 +25,7 @@ div.right_column {
 /* add button */
 div.add_button {
     float:left;
-}
-
-/* column filter */
-div.column_filter {
-    float:right;
-}
-
-/* column batch */
-div.column .batch {
-    clear:both;
-    padding-top:12px;
-}
-div.column .batch span {
-    color:#ccc;
-}
-div.column .batch a {
-    color:#49539f;
-    text-decoration:none;
-}
-div.column .batch strong {
-    font-weight:bold;
-    font-size:110%;
-    color:#333;
+    margin-bottom:6px;
 }
 
 /* action icons */
@@ -105,8 +83,30 @@ a.delete_item_disable:hover {
 }
 
 /* column listing */
+div.columnlisting .pagination {
+    margin-top:-12px;
+}
+div.columnlisting .pagination > li > a,
+div.columnlisting .pagination > li > span {
+    padding:10px 10px;
+}
+div.columnlisting div.column_filter {
+    float:right;
+}
+div.columnlisting div.column_limit {
+    float:right;
+    margin-right:12px;
+}
+div.columnlisting div.column_limit label {
+    display:inline-block;
+    padding-top:2px;
+}
+div.columnlisting div.column_limit input {
+    display:inline-block;
+    position:relative;
+    top:4px;
+}
 div.columnsorting {
-    margin-top:6px;
     margin-bottom:6px;
 }
 div.columnsorting div {
@@ -180,7 +180,6 @@ div.right_column_filter strong {
 }
 div.left_column_filter input,
 div.right_column_filter input {
-    color:#ccc;
     margin-bottom:6px;
     float:right;
     width:50%;
@@ -231,24 +230,6 @@ div.inoutlisting div.actions a.hidden {
 }
 div.inoutlisting div.cols div.sort_col_1 {
     width:90%;
-}
-
-/* right column listing filter */
-div.right_column div.columnsorting {
-    margin-top:0;
-}
-div.right_column div.column_limit {
-    float:right;
-    margin-right:12px;
-}
-div.right_column div.column_limit label {
-    display:inline-block;
-    padding-top:2px;
-}
-div.right_column div.column_limit input {
-    display:inline-block;
-    position:relative;
-    top:4px;
 }
 
 /* principal forms */

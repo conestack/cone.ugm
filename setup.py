@@ -40,6 +40,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
+        'natsort',
         'cone.app[lxml]',
         'yafowil.widget.array',
         'yafowil.widget.autocomplete',
@@ -49,7 +50,7 @@ setup(
         'yafowil.yaml',
         'node.ext.ldap'
     ],
-    extras_require = dict(
+    extras_require=dict(
         test=[
             'cone.app[test]',
         ]

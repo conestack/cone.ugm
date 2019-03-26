@@ -210,9 +210,9 @@ class GroupsSettings(UgmSettings):
                 scope=int(config.groups_scope),
                 queryFilter=config.groups_query,
                 objectClasses=config.groups_object_classes,
-                #member_relation=config.groups_relation,
-                defaults=cone.ugm.model.factory_defaults.group,
-                )
+                # member_relation=config.groups_relation,
+                defaults=cone.ugm.model.factory_defaults.group
+            )
         return self._ldap_gcfg
 
 
@@ -255,9 +255,9 @@ class RolesSettings(UgmSettings):
                 scope=int(config.roles_scope),
                 queryFilter=config.roles_query,
                 objectClasses=config.roles_object_classes,
-                #member_relation=config.roles_relation,
-                defaults=cone.ugm.model.factory_defaults.role,
-                )
+                # member_relation=config.roles_relation,
+                defaults=cone.ugm.model.factory_defaults.role
+            )
         return self._ldap_rcfg
 
 

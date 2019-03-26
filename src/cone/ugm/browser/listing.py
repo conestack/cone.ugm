@@ -1,21 +1,58 @@
+from cone.app.browser.batch import Batch
 from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
+from cone.app.browser.utils import nodepath
+from cone.app.browser.utils import request_property
+from cone.app.browser.utils import safe_decode
 from cone.tile import Tile
-from cone.ugm.browser.batch import ColumnBatch
 from cone.ugm.model.utils import ugm_groups
 from cone.ugm.model.utils import ugm_users
 from pyramid.i18n import TranslationStringFactory
-from pyramid.security import has_permission
 from yafowil.utils import Tag
 import logging
+import natsort
 import types
-import uuid
+import urllib2
 
 
 tag = Tag(lambda x: x)
 
+
 logger = logging.getLogger('cone.ugm')
 _ = TranslationStringFactory('cone.ugm')
+
+
+class ColumnListingBatch(Batch):
+    """Column listing batch.
+    """
+
+    def __init__(self, listing):
+        self.listing = listing
+        self.name = listing.batchname
+        self.items = listing.query_items
+        self.slicesize = listing.slicesize
+
+    @property
+    def display(self):
+        return len(self.vocab) > 1
+
+    @property
+    def vocab(self):
+        ret = list()
+        path = nodepath(self.model)
+        count = len(self.items)
+        pages = count / self.slicesize
+        if count % self.slicesize != 0:
+            pages += 1
+        current = self.listing.current_page
+        for i in range(pages):
+            ret.append({
+                'page': '%i' % (i + 1),
+                'current': current == i,
+                'visible': True,
+                'target': self.listing.batch_target(path, i)
+            })
+        return ret
 
 
 class ColumnListing(Tile):
@@ -25,37 +62,105 @@ class ColumnListing(Tile):
     slot = None
     list_columns = []
     css = ''
-    # XXX: Batch is effectively disabled, if enabled, the sorting
-    # needs to be fixed before slicing
-    slicesize = 100000
+    slicesize = 8
     batchname = ''
+    default_order = 'asc'
+    display_filter = True
+    display_limit = False
+    display_limit_checked = False
 
     @property
     def ajax_action(self):
         return 'columnlisting'
 
     @property
-    def sortheader(self):
-        ret = list()
-        for cid, name in self.list_columns:
-            ret.append({
-                'id': 'sort_%s' % cid,
-                'default': False,
-                'name': name,
-            })
-        ret[0]['default'] = True
-        return ret
+    def ajax_event(self):
+        return '{}:{}'.format(
+            self.batch.trigger_event,
+            self.batch.trigger_selector
+        )
 
     @property
+    def sortheader(self):
+        ret = list()
+        for cid, name in self.list_columns.items():
+            cur_sort = self.sort_column
+            cur_order = self.sort_order
+            selected = cur_sort == cid
+            alter = selected and cur_order == 'asc'
+            order = alter and 'desc' or 'asc'
+            ret.append({
+                'title': name,
+                'order': order if selected else '',
+                'target': self.sort_target(cid, order)
+            })
+        return ret
+
+    def unquoted_param_value(self, name):
+        value = self.request.params.get(name)
+        return urllib2.unquote(
+            value.encode('utf-8')).decode('utf-8') if value else value
+
+    def filter_value_or_default(self, name):
+        value = self.unquoted_param_value(name)
+        return value if value else _('filter_listing', default='filter listing')
+
+    @property
+    def filter_target(self):
+        query = make_query(dict(sort=self.sort_column, order=self.sort_order))
+        return safe_decode(make_url(self.request, node=self.model, query=query))
+
+    @property
+    def filter_term(self):
+        return self.unquoted_param_value('filter')
+
+    @property
+    def filter_value(self):
+        return self.filter_value_or_default('filter')
+
+    @property
+    def default_sort(self):
+        return self.list_columns.keys()[0]
+
+    @property
+    def sort_column(self):
+        return self.request.params.get('sort', self.default_sort)
+
+    @property
+    def sort_order(self):
+        return self.request.params.get('order', self.default_order)
+
+    def sort_target(self, sort, order):
+        query = make_query(
+            filter=self.filter_term,
+            b_page=self.current_page,
+            sort=sort,
+            order=order)
+        return safe_decode(make_url(self.request, node=self.model, query=query))
+
+    @property
+    def current_page(self):
+        return int(self.request.params.get('b_page', '0'))
+
+    @request_property
     def batch(self):
-        return ColumnBatch(self.batchname,
-                           self.query_items,
-                           self.slicesize)(self.model, self.request)
+        return ColumnListingBatch(self)
+
+    @property
+    def rendered_batch(self):
+        return self.batch(self.model, self.request)
+
+    def batch_target(self, path, b_page):
+        query = make_query(
+            b_page=str(b_page),
+            filter=self.filter_term,
+            sort=self.sort_column,
+            order=self.sort_order)
+        return safe_decode(make_url(self.request, path=path, query=query))
 
     @property
     def slice(self):
-        current = int(self.request.params.get('b_page', '0'))
-        start = current * self.slicesize
+        start = self.current_page * self.slicesize
         end = start + self.slicesize
         return start, end
 
@@ -63,7 +168,13 @@ class ColumnListing(Tile):
     def items(self):
         start, end = self.slice
         items = self.query_items
-        items = sorted(items, key=lambda x: x['sort_by'].lower())
+        inv = self.sort_order == 'desc'
+        items = natsort.natsorted(
+            items,
+            key=lambda x: x['sort_by'],
+            reverse=inv,
+            alg=natsort.ns.IC
+        )
         return items[start:end]
 
     @property
@@ -85,9 +196,8 @@ class ColumnListing(Tile):
             ],
         }
         """
-        raise NotImplementedError(                         #pragma NO COVERAGE
-            u"Abstract ``ColumnListing`` does not "        #pragma NO COVERAGE
-            u"implement ``items`` property")               #pragma NO COVERAGE
+        raise NotImplementedError(
+            'Abstract ``ColumnListing`` does not implement ``items``')
 
     def item_content(self, *args):
         ret = u''
@@ -120,13 +230,15 @@ class ColumnListing(Tile):
             return raw[0]
         return raw and raw or ''
 
-    def calc_list_columns(self, defs):
-        ret = list()
-        i = 1
-        for val in defs.values():
-            ret.append(('col_%i' % i, val))
-            i += 1
-        return ret
+    ############################################################
+    # XXX: users and groups related info to dedicated subclasses
+
+    # USERS RELATED
+
+    @property
+    def user_list_columns(self):
+        settings = ugm_users(self.model)
+        return settings.attrs.users_listing_columns
 
     @property
     def user_attrs(self):
@@ -134,57 +246,49 @@ class ColumnListing(Tile):
         return settings.attrs.users_listing_columns.keys()
 
     @property
-    def group_attrs(self):
-        settings = ugm_groups(self.model)
-        return settings.attrs.groups_listing_columns.keys()
-
-    @property
-    def user_listing_criteria(self):
+    def user_localmanager_ids(self):
         if not self.model.local_manager_consider_for_user:
             return None
-        ids = self.model.local_manager_target_uids
-        if not ids:
-            ids = [str(uuid.uuid4())]  # ensure criteria forces empty result
-        return dict(id=ids)
-
-    @property
-    def group_listing_criteria(self):
-        if not self.model.local_manager_consider_for_user:
-            return None
-        ids = self.model.local_manager_target_gids
-        if not ids:
-            ids = [str(uuid.uuid4())]  # ensure criteria forces empty result
-        return dict(id=ids)
-
-    @property
-    def user_list_columns(self):
-        settings = ugm_users(self.model)
-        defs = settings.attrs.users_listing_columns
-        return self.calc_list_columns(defs)
-
-    @property
-    def group_list_columns(self):
-        settings = ugm_groups(self.model)
-        defs = settings.attrs.groups_listing_columns
-        return self.calc_list_columns(defs)
+        return self.model.local_manager_target_uids
 
     @property
     def user_default_sort_column(self):
         settings = ugm_users(self.model)
         attrs = self.user_attrs
         sort = settings.attrs.users_listing_default_column
-        if not sort in attrs:
+        if sort not in attrs:
             return attrs[0]
         return sort
+
+    # GROUPS RELATED
+
+    @property
+    def group_list_columns(self):
+        settings = ugm_groups(self.model)
+        return settings.attrs.groups_listing_columns
+
+    @property
+    def group_attrs(self):
+        settings = ugm_groups(self.model)
+        return settings.attrs.groups_listing_columns.keys()
+
+    @property
+    def group_localmanager_ids(self):
+        if not self.model.local_manager_consider_for_user:
+            return None
+        return self.model.local_manager_target_gids
 
     @property
     def group_default_sort_column(self):
         settings = ugm_groups(self.model)
         attrs = self.group_attrs
         sort = settings.attrs.groups_listing_default_column
-        if not sort in attrs:
+        if sort not in attrs:
             return attrs[0]
         return sort
+
+    # XXX: end move
+    ############################################################
 
 
 class PrincipalsListing(ColumnListing):
@@ -193,26 +297,42 @@ class PrincipalsListing(ColumnListing):
     delete_label = _('delete_principal', default='Delete Principal')
     delete_permission = 'delete_principal'  # inexistent permission
     listing_attrs = []
-    listing_criteria = None
+    localmanager_ids = None
     sort_attr = None
 
-    @property
+    @request_property
     def query_items(self):
-        can_delete = has_permission(self.delete_permission,
-                                    self.model,
-                                    self.request)
+        can_delete = self.request.has_permission(
+            self.delete_permission,
+            self.model)
         try:
-            attrlist = self.listing_attrs
-            criteria = self.listing_criteria
-            sort_attr = self.sort_attr
             ret = list()
-            users = self.model.backend
-            result = users.search(criteria=criteria,
-                                  attrlist=attrlist,
-                                  or_search=True)
+            localmanager_ids = self.localmanager_ids
+            # if localmanager ids not none but empty, no access to any
+            # principals
+            if localmanager_ids is not None and not localmanager_ids:
+                return ret
+            attrlist = self.listing_attrs
+            sort_attr = self.sort_attr
+            # build criteria from filter term
+            criteria = None
+            filter_term = self.filter_term
+            if filter_term:
+                criteria = dict()
+                for attr in attrlist:
+                    criteria[attr] = filter_term
+            principals = self.model.backend
+            result = principals.search(
+                criteria=criteria,
+                attrlist=attrlist,
+                or_search=True)
             for key, attrs in result:
+                # reduce result by localmanager ids if not None
+                if localmanager_ids is not None and key not in localmanager_ids:
+                    continue
                 query = make_query(
-                    pid=key, came_from=make_url(self.request, node=self.model))
+                    pid=key,
+                    came_from=make_url(self.request, node=self.model))
                 target = make_url(self.request, node=self.model, query=query)
                 actions = list()
                 if can_delete:
@@ -221,15 +341,45 @@ class PrincipalsListing(ColumnListing):
                     delete_action = self.create_action(
                         action_id, True, action_title, target)
                     actions = [delete_action]
-
                 vals = [self.extract_raw(attrs, attr) for attr in attrlist]
                 sort = self.extract_raw(attrs, sort_attr)
                 content = self.item_content(*vals)
                 current = self.current_id == key
-                item = self.create_item(
-                    sort, target, content, current, actions)
-                ret.append(item)
+                ret.append(self.create_item(
+                    sort, target, content, current, actions))
             return ret
-        except Exception, e:
+        except Exception as e:
             logger.error(str(e))
         return list()
+
+
+class InOutListing(ColumnListing):
+    available_items = None
+    selected_items = None
+    display_control_buttons = True
+
+    @property
+    def left_filter_target(self):
+        query = make_query(right_filter=self.right_filter_term)
+        return safe_decode(make_url(self.request, node=self.model, query=query))
+
+    @property
+    def left_filter_term(self):
+        return self.unquoted_param_value('left_filter')
+
+    @property
+    def left_filter_value(self):
+        return self.filter_value_or_default('left_filter')
+
+    @property
+    def right_filter_target(self):
+        query = make_query(left_filter=self.left_filter_term)
+        return safe_decode(make_url(self.request, node=self.model, query=query))
+
+    @property
+    def right_filter_term(self):
+        return self.unquoted_param_value('right_filter')
+
+    @property
+    def right_filter_value(self):
+        return self.filter_value_or_default('right_filter')

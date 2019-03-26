@@ -3,8 +3,12 @@ from cone.ugm.model.utils import ugm_users
 from pyramid.view import view_config
 
 
-@view_config('remote_add_user', accept='application/json',
-             renderer='json', context=Users, permission='add_user')
+@view_config(
+    name='remote_add_user',
+    accept='application/json',
+    renderer='json',
+    context=Users,
+    permission='add_user')
 def remote_add_user(model, request):
     """Add user via remote service.
 
@@ -89,14 +93,14 @@ def remote_add_user(model, request):
         from cone.app.security import DEFAULT_ROLES
         available_roles = [role[0] for role in DEFAULT_ROLES]
         for role in add_roles:
-            if not role in available_roles:
+            if role not in available_roles:
                 message += u"Role '%s' given but inexistent. " % role
                 continue
             user.add_role(role)
 
         groups = users.parent.groups
         for group in add_groups:
-            if not group in groups:
+            if group not in groups:
                 message += u"Group '%s' given but inexistent. " % group
                 continue
             groups[group].add(uid)
@@ -120,8 +124,12 @@ def remote_add_user(model, request):
         model.invalidate()
 
 
-@view_config('remote_delete_user', accept='application/json',
-             renderer='json', context=Users, permission='delete_user')
+@view_config(
+    name='remote_delete_user',
+    accept='application/json',
+    renderer='json',
+    context=Users,
+    permission='delete_user')
 def remote_delete_user(model, request):
     """Remove user via remote service.
 
@@ -148,7 +156,7 @@ def remote_delete_user(model, request):
         }
 
     users = model.backend
-    if not uid in users:
+    if uid not in users:
         return {
             'success': False,
             'message': u"User with given ID not exists.",

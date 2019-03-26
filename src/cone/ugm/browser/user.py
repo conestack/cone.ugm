@@ -12,6 +12,7 @@ from cone.ugm.browser.authoring import EditFormFiddle
 from cone.ugm.browser.autoincrement import AutoIncrementForm
 from cone.ugm.browser.expires import ExpirationForm
 from cone.ugm.browser.listing import ColumnListing
+from cone.ugm.browser.listing import InOutListing
 from cone.ugm.browser.portrait import PortraitForm
 from cone.ugm.browser.principal import PrincipalForm
 from cone.ugm.browser.roles import PrincipalRolesForm
@@ -20,19 +21,22 @@ from cone.ugm.model.utils import ugm_general
 from cone.ugm.model.utils import ugm_users
 from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
-from pyramid.security import has_permission
 from webob.exc import HTTPFound
 from yafowil.base import ExtractionError
 from yafowil.base import UNSET
 import copy
+import fnmatch
 import urllib2
 
 
 _ = TranslationStringFactory('cone.ugm')
 
 
-@tile('leftcolumn', 'templates/principal_left_column.pt',
-      interface=User, permission='view')
+@tile(
+    name='leftcolumn',
+    path='templates/principal_left_column.pt',
+    interface=User,
+    permission='view')
 class UserLeftColumn(Tile):
 
     @property
@@ -41,8 +45,11 @@ class UserLeftColumn(Tile):
         return make_url(self.request, node=self.model.parent, query=query)
 
 
-@tile('rightcolumn', 'templates/principal_right_column.pt',
-      interface=User, permission='view')
+@tile(
+    name='rightcolumn',
+    path='templates/principal_right_column.pt',
+    interface=User,
+    permission='view')
 class UserRightColumn(Tile):
 
     @property
@@ -52,69 +59,62 @@ class UserRightColumn(Tile):
 
 
 class Groups(object):
-    """Descriptor to return principal items for listing
-
-    XXX: check also group.Principals, naming here is sometimes newer
-    XXX: speedup!
+    """Descriptor to return groups related to user for listing.
     """
+
     def __init__(self,
                  related_only=False,
-                 available_only=False):
+                 available_only=False,
+                 filter_param='filter',
+                 pagination=False):
         self.related_only = related_only
         self.available_only = available_only
+        self.filter_param = filter_param
+        self.pagination = pagination
 
     def __get__(self, obj, objtype=None):
         if obj is None:
             return self
-
         appuser = obj.model
         user = appuser.model
         groups = user.groups
         related_ids = [g.name for g in groups]
-
-        # always True if we list members only, otherwise will be set
+        # Always True if we list members only, otherwise will be set
         # in the loop below
         related = self.related_only
-
         available_only = self.available_only
-
         if related and available_only:
             raise Exception(u"Invalid object settings.")
-
         if not related:
-            # XXX: LDAP query here.
             groups = obj.model.root['groups'].backend.values()
             if available_only:
-                groups = [g for g in groups if not g.name in related_ids]
-
+                groups = [g for g in groups if g.name not in related_ids]
         # reduce for local manager
         if obj.model.local_manager_consider_for_user:
             local_gids = obj.model.local_manager_target_gids
             groups = [g for g in groups if g.name in local_gids]
-
-        ret = list()
-
-        can_change = has_permission(
-            'manage_membership', obj.model.parent, obj.request)
-
         attrlist = obj.group_attrs
         sort_attr = obj.group_default_sort_column
-
-        # XXX: These should be the mapped attributes - lack of backend support
+        filter_term = obj.unquoted_param_value(self.filter_param)
+        can_change = obj.request.has_permission(
+            'manage_membership',
+            obj.model.parent)
+        ret = list()
         for group in groups:
-            gid = group.name
             attrs = group.attrs
-
-            # XXX: resource was only set for alluserlisting
+            # reduce by search term
+            if filter_term:
+                s_attrs = [attrs[attr] for attr in attrlist]
+                if not fnmatch.filter(s_attrs, filter_term):
+                    continue
+            gid = group.name
             item_target = make_url(obj.request, path=group.path[1:])
             action_query = make_query(id=gid)
             action_target = make_url(obj.request,
                                      node=appuser,
                                      query=action_query)
-
             if not self.related_only:
                 related = gid in related_ids
-
             actions = list()
             if can_change:
                 action_id = 'add_item'
@@ -124,7 +124,6 @@ class Groups(object):
                 add_item_action = obj.create_action(
                     action_id, action_enabled, action_title, action_target)
                 actions.append(add_item_action)
-
                 action_id = 'remove_item'
                 action_enabled = bool(related)
                 action_title = _('remove_user_from_selected_group',
@@ -132,7 +131,6 @@ class Groups(object):
                 remove_item_action = obj.create_action(
                     action_id, action_enabled, action_title, action_target)
                 actions.append(remove_item_action)
-
             vals = [obj.extract_raw(attrs, attr) for attr in attrlist]
             sort = obj.extract_raw(attrs, sort_attr)
             content = obj.item_content(*vals)
@@ -140,38 +138,64 @@ class Groups(object):
             item = obj.create_item(sort, item_target,
                                    content, current, actions)
             ret.append(item)
+        # XXX: sort
+        if self.pagination:
+            start = 0
+            end = 0
+            ret = ret[start:end]
         return ret
 
 
-@tile('columnlisting', 'templates/column_listing.pt',
-      interface=User, permission='view')
+@tile(
+    name='columnlisting',
+    path='templates/column_listing.pt',
+    interface=User,
+    permission='view')
 class GroupsOfUserColumnListing(ColumnListing):
     slot = 'rightlisting'
     list_columns = ColumnListing.group_list_columns
     css = 'groups'
     query_items = Groups(related_only=True)
     batchname = 'rightbatch'
+    display_limit = True
+    display_limit_checked = False
 
 
-@tile('allcolumnlisting', 'templates/column_listing.pt',
-      interface=User, permission='view')
+@tile(
+    name='allcolumnlisting',
+    path='templates/column_listing.pt',
+    interface=User,
+    permission='view')
 class AllGroupsColumnListing(ColumnListing):
     slot = 'rightlisting'
     list_columns = ColumnListing.group_list_columns
     css = 'groups'
     query_items = Groups(related_only=False)
     batchname = 'rightbatch'
+    display_limit = True
+    display_limit_checked = True
 
     @property
     def ajax_action(self):
         return 'allcolumnlisting'
 
 
-@tile('inoutlisting', 'templates/in_out.pt',
-      interface=User, permission='view')
-class InOutListing(ColumnListing):
-    selected_items = Groups(related_only=True)
-    available_items = Groups(available_only=True)
+@tile(
+    name='inoutlisting',
+    path='templates/in_out.pt',
+    interface=User,
+    permission='view')
+class GroupsInOutListing(InOutListing):
+    available_items = Groups(
+        available_only=True,
+        filter_param='left_filter',
+        pagination=True
+    )
+    selected_items = Groups(
+        related_only=True,
+        filter_param='right_filter',
+        pagination=True
+    )
     display_control_buttons = True
 
     @property
@@ -244,7 +268,7 @@ class UserForm(PrincipalForm):
         return aliases['id'], aliases['login']
 
 
-@tile('addform', interface=User, permission='add_user')
+@tile(name='addform', interface=User, permission='add_user')
 @plumbing(
     AddBehavior,
     PrincipalRolesForm,
@@ -284,9 +308,9 @@ class UserAddForm(UserForm, Form):
         if password is not UNSET:
             users.passwd(uid, None, password)
         self.model.parent.invalidate()
-        # XXX: access already added user after invalidation.
-        #      if not done, there's some kind of race condition with ajax
-        #      continuation. figure out why.
+        # Access already added user after invalidation. If not done, there's
+        # some kind of race condition with ajax continuation.
+        # XXX: figure out why.
         self.model.parent[uid]
 
     def next(self, request):
@@ -304,7 +328,7 @@ class UserAddForm(UserForm, Form):
         return HTTPFound(location=url)
 
 
-@tile('editform', interface=User, permission='edit_user', strict=False)
+@tile(name='editform', interface=User, permission='edit_user', strict=False)
 @plumbing(
     EditBehavior,
     PrincipalRolesForm,
@@ -328,11 +352,12 @@ class UserEditForm(UserForm, Form):
             else:
                 self.model.attrs[key] = extracted
         # set object classes if missing
+        # XXX: move to cone.ldap
         ocs = self.model.model.context.attrs['objectClass']
         for oc in settings.attrs.users_object_classes:
             if isinstance(ocs, basestring):
                 ocs = [ocs]
-            if not oc in ocs:
+            if oc not in ocs:
                 ocs.append(oc)
         if ocs != self.model.model.context.attrs['objectClass']:
             self.model.model.context.attrs['objectClass'] = ocs

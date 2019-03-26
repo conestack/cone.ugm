@@ -7,24 +7,6 @@
   <div class="column right_column col-md-6"
        tal:define="default_widget context.default_widget">
 
-    <div class="column_filter"
-         tal:condition="default_widget == 'listing'">
-      <input type="text"
-             name="column_filter"
-             value="filter listing"
-             class="form-control"
-             i18n:attributes="value filter_listing" />
-    </div>
-
-    <div class="column_limit"
-         tal:condition="default_widget == 'listing'">
-      <label i18n:translate="list_all">List all</label>
-      <input id="list_all"
-             type="checkbox"
-             name="column_limit"
-             ajax:target="${context.nodeurl}" />
-    </div>
-
     <tal:default condition="default_widget == 'listing'">
       <tal:listing replace="structure tile('columnlisting')" />
     </tal:default>

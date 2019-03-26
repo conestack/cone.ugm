@@ -1,16 +1,16 @@
 from cone.app.browser.layout import ProtectedContentTile
-from cone.tile import Tile
-from cone.tile import registerTile
 from cone.tile import render_tile
+from cone.tile import tile
+from cone.tile import Tile
 
 
-registerTile(
-    'content',
-    'cone.ugm:browser/templates/columns.pt',
-    class_=ProtectedContentTile,
+@tile(
+    name='content',
+    path='cone.ugm:browser/templates/columns.pt',
     permission='login',
-    strict=False
-)
+    strict=False)
+class Columns(ProtectedContentTile):
+    pass
 
 
 class Column(Tile):

@@ -7,6 +7,6 @@ TODO
 
 - provide application model for ``node.ext.ugm.file`` implementation as default.
 
-- Listing batches.
+- In-Out listing.
 
 - DnD membership assignment.

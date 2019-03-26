@@ -14,7 +14,6 @@
         bdajax.register(ugm.left_listing_nav_binder.bind(ugm), true);
         bdajax.register(ugm.right_listing_nav_binder.bind(ugm), true);
         bdajax.register(ugm.listing_filter_binder.bind(ugm), true);
-        bdajax.register(ugm.listing_sort_binder.bind(ugm), true);
         bdajax.register(ugm.listing_actions_binder.bind(ugm), true);
         bdajax.register(ugm.listing_related_binder.bind(ugm), true);
         bdajax.register(ugm.inout_actions_binder.bind(ugm), true);
@@ -530,50 +529,34 @@
             }
         },
 
-        // bind filter
-        filter_binder: function(context, input_selector, listing_selector) {
-
-            // reset filter input field
-            $(input_selector, context).bind('focus', function() {
-                this.value = '';
-                $(this).css('color', '#000');
-            });
-
-            // refresh related column with filtered listing
-            $(input_selector, context).bind('keyup', function() {
-                var current_filter = this.value.toLowerCase();
-                $(listing_selector, $(this).parent().parent())
-                    .each(function() {
-                        var li = $(this);
-                        var val = $('div.cols', li).html().toLowerCase();
-                        if (val.indexOf(current_filter) != -1) {
-                            li.removeClass('hidden');
-                        } else {
-                            li.addClass('hidden');    
-                        }
-                    });
-            });
-        },
-
         // bind listing filter
         listing_filter_binder: function(context) {
-            ugm.filter_binder(context,
-                              'div.column_filter input',
-                              'div.columnitems li');
+            var filter_selector = 'div.column_filter input';
+            var filter_name = 'filter';
+            cone.batcheditems_filter_binder(
+                context,
+                filter_selector,
+                filter_name
+            );
         },
 
         // bind inout filter
         inout_filter_binder: function(context) {
+            var left_filter_selector = 'div.left_column_filter input';
+            var left_filter_name = 'left_filter';
+            cone.batcheditems_filter_binder(
+                context,
+                left_filter_selector,
+                left_filter_name
+            );
 
-            // left listing
-            ugm.filter_binder(context,
-                              'div.left_column_filter input',
-                              'ul.inoutleftlisting li');
-
-            // right listing
-            ugm.filter_binder(context,
-                              'div.right_column_filter input',
-                              'ul.inoutrightlisting li');
+            var right_filter_selector = 'div.right_column_filter input';
+            var right_filter_name = 'right_filter';
+            cone.batcheditems_filter_binder(
+                context,
+                right_filter_selector,
+                right_filter_name
+            );
         },
 
         // reset selcted item in listing
@@ -683,44 +666,6 @@
 
         listing_sort_value: function(selector, context) {
             return $(selector, context).text();
-        },
-
-        // sort listings binder
-        listing_sort_binder: function(context) {
-            var sort_links = $('.columnsorting button', context);
-            sort_links.unbind().bind('click', function(event) {
-                bdajax.spinner.show();
-                var elem = $(this);
-                var inv = elem.hasClass('inv');
-                var links = elem.parent().parent();
-                $('button', links).removeClass('default')
-                                  .removeClass('inv')
-                                  .removeClass('asc')
-                                  .removeClass('desc');
-                var cont = $('.columnitems', elem.parent().parent().parent());
-                if (inv) {
-                    elem.addClass('asc');
-                } else {
-                    elem.addClass('inv').addClass('desc');
-                }
-                var sortname = elem.attr('id');
-                if ($.browser.msie && ($.browser.version == 7)) {
-                    sortname = sortname.substr(sortname.lastIndexOf('/') + 1);
-                }
-                var sel = '.' + sortname;
-                $('li', cont).sortElements(function(a, b) {
-                    a = ugm.listing_sort_value(sel, a);
-                    b = ugm.listing_sort_value(sel, b);
-                    if (inv) {
-                        return naturalSort(b, a);
-                    } else {
-                        return naturalSort(a, b);
-                    }
-                });
-                ugm.scroll_listings_to_selected();
-                bdajax.spinner.hide();
-            });
-            $('.columnsorting button.default', context).trigger('click');
         }
     };
 

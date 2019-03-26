@@ -49,11 +49,13 @@ class PrincipalForm(object):
             props = dict()
             props['label'] = _(val, default=val)
             if field.get('required'):
-                req = _('no_field_value_defined',
-                        default='No ${field} defined',
-                        mapping={
-                            'field': localizer.translate(_(val, default=val))
-                        })
+                req = _(
+                    'no_field_value_defined',
+                    default='No ${field} defined',
+                    mapping={
+                        'field': localizer.translate(_(val, default=val))
+                    }
+                )
                 props['required'] = req
             props.update(field.get('props', dict()))
             value = UNSET

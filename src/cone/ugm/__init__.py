@@ -1,4 +1,3 @@
-from cone.app.model import Properties
 from cone.app.security import acl_registry
 from cone.ugm.browser import static_resources
 from cone.ugm.model.group import Group
@@ -85,6 +84,7 @@ acl_registry.register(ugm_default_acl, Groups, 'groups')
 
 
 # application startup hooks
+@cone.app.main_hook
 def initialize_ugm(config, global_config, local_config):
     """Initialize UGM.
     """
@@ -92,15 +92,13 @@ def initialize_ugm(config, global_config, local_config):
     config.add_translation_dirs('cone.ugm:locale/')
 
     # static resources
-    config.add_view('cone.ugm.browser.static_resources',
-                    name='cone.ugm.static')
+    config.add_view(static_resources, name='cone.ugm.static')
 
     # scan browser package
     config.scan('cone.ugm.browser')
 
-cone.app.register_main_hook(initialize_ugm)
 
-
+@cone.app.main_hook
 def initialize_auth_impl(config, global_config, local_config):
     """Initialize LDAP based UGM implementation for cone.app as
     authentication implementation.
@@ -115,8 +113,6 @@ def initialize_auth_impl(config, global_config, local_config):
     if not ldap_auth:
         return
     reset_ldap_auth_impl()
-
-cone.app.register_main_hook(initialize_auth_impl)
 
 
 def reset_auth_impl():

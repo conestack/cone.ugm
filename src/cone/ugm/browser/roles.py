@@ -3,7 +3,6 @@ from plumber import Behavior
 from plumber import default
 from plumber import plumb
 from pyramid.i18n import TranslationStringFactory
-from pyramid.security import has_permission
 from yafowil.base import factory
 
 
@@ -31,7 +30,7 @@ class PrincipalRolesForm(Behavior):
         _next(self)
         if not self.roles_support:
             return
-        if not has_permission('manage', self.model.parent, self.request):
+        if not self.request.has_permission('manage', self.model.parent):
             # XXX: yafowil selection display renderer
             return
         value = []
@@ -48,8 +47,7 @@ class PrincipalRolesForm(Behavior):
                 'format': 'single',
                 'listing_tag': 'ul',
                 'listing_label_position': 'after',
-            },
-        )
+            })
         save_widget = self.form['save']
         self.form.insertbefore(roles_widget, save_widget)
 
@@ -58,7 +56,7 @@ class PrincipalRolesForm(Behavior):
         _next(self, widget, data)
         if not self.roles_support:
             return
-        if not has_permission('manage', self.model.parent, self.request):
+        if not self.request.has_permission('manage', self.model.parent):
             return
         existing_roles = list()
         if self.action_resource == 'edit':
@@ -70,12 +68,12 @@ class PrincipalRolesForm(Behavior):
         new_roles = data.fetch('%s.principal_roles' % self.form_name).extracted
         removed_roles = list()
         for role in existing_roles:
-            if not role in new_roles:
+            if role not in new_roles:
                 principal.remove_role(role)
                 removed_roles.append(role)
         for role in removed_roles:
             existing_roles.remove(role)
         for role in new_roles:
-            if not role in existing_roles:
+            if role not in existing_roles:
                 principal.add_role(role)
         principal.parent.parent()

@@ -89,13 +89,14 @@ Submit portrait::
 
 New portrait set on user::
 
-    >>> user.attrs.items()
-    [('login', u'uid0'), 
-    ('userPassword', u'secret0'), 
-    ('sn', u'sn0'), 
-    ('mail', u'uid0@users300.my-domain.com'), 
-    ('cn', u'cn0'), 
-    (u'jpegPhoto', '\xff\xd8\xff\xe0\x00\x10JFIF\...\x03\xff\xd9')]
+    >>> sorted(user.attrs.items())
+    [('cn', u'cn0'),
+    (u'jpegPhoto', '\xff\xd8\xff\xe0\x00\x10JFIF\...\x03\xff\xd9'),
+    ('login', u'uid0'),
+    ('mail', u'uid0@users300.my-domain.com'),
+    ('sn', u'sn0'),
+    ('userPassword', u'secret0')]
+
 
 Portrait present, link to user portrait is shown::
 

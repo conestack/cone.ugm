@@ -90,7 +90,7 @@ class LocalManager(Behavior):
         """Group id of local manager group of current authenticated member.
 
         Currently a user can be assigned only to one local manager group. If
-        mode than one local manager group is configured, an error is raised.
+        more than one local manager group is configured, an error is raised.
         """
         config = self.root['settings']['ugm_localmanager'].attrs
         user = security.authenticated_user(get_current_request())
@@ -163,7 +163,7 @@ class LocalManager(Behavior):
         """
         config = self.root['settings']['ugm_localmanager'].attrs
         rule = config[adm_gid]
-        if not gid in rule['target']:
+        if gid not in rule['target']:
             raise Exception(u"group '%s' not managed by '%s'" % (gid, adm_gid))
         return gid in rule['default']
 
@@ -208,7 +208,7 @@ class LocalManagerUserACL(LocalManagerACL):
     def local_manager_acl(self):
         # if self.name is None, User object was created by add model factory
         if self.name is not None:
-            if not self.name in self.local_manager_target_uids:
+            if self.name not in self.local_manager_target_uids:
                 return []
         permissions = ['view', 'add', 'add_user', 'edit', 'edit_user',
                        'manage_expiration', 'manage_membership']
@@ -235,7 +235,7 @@ class LocalManagerGroupACL(LocalManagerACL):
     @finalize
     @property
     def local_manager_acl(self):
-        if not self.name in self.local_manager_target_gids:
+        if self.name not in self.local_manager_target_gids:
             return []
         permissions = ['view', 'manage_membership']
         return [(Allow,
