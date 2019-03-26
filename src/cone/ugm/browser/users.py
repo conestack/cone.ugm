@@ -14,8 +14,11 @@ logger = logging.getLogger('cone.ugm')
 _ = TranslationStringFactory('cone.ugm')
 
 
-@tile('leftcolumn', 'templates/principals_left_column.pt',
-      interface=Users, permission='view')
+@tile(
+    name='leftcolumn',
+    path='templates/principals_left_column.pt',
+    interface=Users,
+    permission='view')
 class UsersLeftColumn(Tile):
     add_label = _('add_user', default='Add User')
 
@@ -32,8 +35,11 @@ class UsersLeftColumn(Tile):
         return has_permission('add_user', self.model, self.request)
 
 
-@tile('rightcolumn', 'templates/principals_right_column.pt',
-      interface=Users, permission='view')
+@tile(
+    name='rightcolumn',
+    path='templates/principals_right_column.pt',
+    interface=Users,
+    permission='view')
 class UsersRightColumn(Column):
 
     @property
@@ -49,8 +55,11 @@ class UsersRightColumn(Column):
         return make_url(self.request, node=self.model[self.principal_id])
 
 
-@tile('columnlisting', 'templates/column_listing.pt',
-      interface=Users, permission='view')
+@tile(
+    name='columnlisting',
+    path='templates/column_listing.pt',
+    interface=Users,
+    permission='view')
 class UsersColumnListing(PrincipalsListing):
     slot = 'leftlisting'
     list_columns = PrincipalsListing.user_list_columns

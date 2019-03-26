@@ -34,7 +34,6 @@ _ = TranslationStringFactory('cone.ugm')
 
 
 class VocabMixin(object):
-
     scope_vocab = [
         (str(BASE), 'BASE'),
         (str(ONELEVEL), 'ONELEVEL'),
@@ -135,14 +134,15 @@ class CreateContainerAction(Tile):
         return message
 
 
-registerTile('content',
-             'cone.ugm:browser/templates/general_settings.pt',
-             class_=ProtectedContentTile,
-             interface=GeneralSettings,
-             permission='manage')
+registerTile(
+    name='content',
+    path='cone.ugm:browser/templates/general_settings.pt',
+    class_=ProtectedContentTile,
+    interface=GeneralSettings,
+    permission='manage')
 
 
-@tile('editform', interface=GeneralSettings, permission='manage')
+@tile(name='editform', interface=GeneralSettings, permission='manage')
 @plumbing(SettingsBehavior, YAMLForm)
 class GeneralSettingsForm(Form):
     action_resource = u'edit'
@@ -154,29 +154,34 @@ class GeneralSettingsForm(Form):
 
     def save(self, widget, data):
         model = self.model
-        for attr_name in ['default_membership_assignment_widget',
-                          'user_display_name_attr',
-                          'group_display_name_attr',
-                          'users_account_expiration',
-                          'users_expires_attr',
-                          'users_expires_unit',
-                          'user_id_autoincrement',
-                          'user_id_autoincrement_prefix',
-                          'user_id_autoincrement_start',
-                          'users_portrait',
-                          'users_portrait_attr',
-                          'users_portrait_accept',
-                          'users_portrait_width',
-                          'users_portrait_height',
-                          'users_local_management_enabled']:
+        for attr_name in [
+            'default_membership_assignment_widget',
+            'user_display_name_attr',
+            'group_display_name_attr',
+            'users_account_expiration',
+            'users_expires_attr',
+            'users_expires_unit',
+            'user_id_autoincrement',
+            'user_id_autoincrement_prefix',
+            'user_id_autoincrement_start',
+            'users_portrait',
+            'users_portrait_attr',
+            'users_portrait_accept',
+            'users_portrait_width',
+            'users_portrait_height',
+            'users_local_management_enabled'
+        ]:
             val = data.fetch('ugm_general.%s' % attr_name).extracted
             setattr(model.attrs, attr_name, val)
         model()
         model.invalidate()
 
 
-@tile('content', 'templates/server_settings.pt',
-      interface=ServerSettings, permission='manage')
+@tile(
+    name='content',
+    path='templates/server_settings.pt',
+    interface=ServerSettings,
+    permission='manage')
 class ServerSettingsTile(ProtectedContentTile):
 
     @property
@@ -186,7 +191,7 @@ class ServerSettingsTile(ProtectedContentTile):
         return _('server_down', default='Down')
 
 
-@tile('editform', interface=ServerSettings, permission='manage')
+@tile(name='editform', interface=ServerSettings, permission='manage')
 @plumbing(SettingsBehavior, YAMLForm)
 class ServerSettingsForm(Form):
     action_resource = u'edit'
@@ -211,8 +216,11 @@ class ServerSettingsForm(Form):
         model.invalidate()
 
 
-@tile('content', 'templates/users_settings.pt',
-      interface=UsersSettings, permission='manage')
+@tile(
+    name='content',
+    path='templates/users_settings.pt',
+    interface=UsersSettings,
+    permission='manage')
 class UsersSettingsTile(ProtectedContentTile, CreateContainerTrigger):
 
     @property
@@ -226,7 +234,7 @@ class UsersSettingsTile(ProtectedContentTile, CreateContainerTrigger):
         return _('inexistent', default='Inexistent')
 
 
-@tile('create_container', interface=UsersSettings, permission='manage')
+@tile(name='create_container', interface=UsersSettings, permission='manage')
 class UsersCreateContainerAction(CreateContainerAction):
 
     @property
@@ -235,7 +243,7 @@ class UsersCreateContainerAction(CreateContainerAction):
         return AjaxAction(url, 'content', 'inner', '.ugm_users')
 
 
-@tile('editform', interface=UsersSettings, permission='manage')
+@tile(name='editform', interface=UsersSettings, permission='manage')
 @plumbing(SettingsBehavior, YAMLForm)
 class UsersSettingsForm(Form, VocabMixin):
     action_resource = u'edit'
@@ -257,15 +265,17 @@ class UsersSettingsForm(Form, VocabMixin):
 
     def save(self, widget, data):
         model = self.model
-        for attr_name in ['users_dn',
-                          'users_scope',
-                          'users_query',
-                          'users_object_classes',
-                          'users_aliases_attrmap',
-                          'users_form_attrmap',
-                          'users_listing_columns',
-                          'users_listing_default_column',
-                          'users_exposed_attributes']:
+        for attr_name in [
+            'users_dn',
+            'users_scope',
+            'users_query',
+            'users_object_classes',
+            'users_aliases_attrmap',
+            'users_form_attrmap',
+            'users_listing_columns',
+            'users_listing_default_column',
+            'users_exposed_attributes'
+        ]:
             val = data.fetch('ldap_users_settings.%s' % attr_name).extracted
             if attr_name == 'users_object_classes':
                 val = [v.strip() for v in val.split(',') if v.strip()]
@@ -274,8 +284,11 @@ class UsersSettingsForm(Form, VocabMixin):
         model.invalidate()
 
 
-@tile('content', 'templates/groups_settings.pt',
-      interface=GroupsSettings, permission='manage')
+@tile(
+    name='content',
+    path='templates/groups_settings.pt',
+    interface=GroupsSettings,
+    permission='manage')
 class GroupsSettingsTile(ProtectedContentTile, CreateContainerTrigger):
 
     @property
@@ -289,7 +302,7 @@ class GroupsSettingsTile(ProtectedContentTile, CreateContainerTrigger):
         return _('inexistent', default='Inexistent')
 
 
-@tile('create_container', interface=GroupsSettings, permission='manage')
+@tile(name='create_container', interface=GroupsSettings, permission='manage')
 class GroupsCreateContainerAction(CreateContainerAction):
 
     @property
@@ -298,7 +311,7 @@ class GroupsCreateContainerAction(CreateContainerAction):
         return AjaxAction(url, 'content', 'inner', '.ugm_groups')
 
 
-@tile('editform', interface=GroupsSettings, permission='manage')
+@tile(name='editform', interface=GroupsSettings, permission='manage')
 @plumbing(SettingsBehavior, YAMLForm)
 class GroupsSettingsForm(Form, VocabMixin):
     action_resource = u'edit'
@@ -318,15 +331,17 @@ class GroupsSettingsForm(Form, VocabMixin):
 
     def save(self, widget, data):
         model = self.model
-        for attr_name in ['groups_dn',
-                          'groups_scope',
-                          'groups_query',
-                          'groups_object_classes',
-                          'groups_aliases_attrmap',
-                          'groups_form_attrmap',
-                          #'groups_relation',
-                          'groups_listing_columns',
-                          'groups_listing_default_column']:
+        for attr_name in [
+            'groups_dn',
+            'groups_scope',
+            'groups_query',
+            'groups_object_classes',
+            'groups_aliases_attrmap',
+            'groups_form_attrmap',
+            # 'groups_relation',
+            'groups_listing_columns',
+            'groups_listing_default_column'
+        ]:
             val = data.fetch('ldap_groups_settings.%s' % attr_name).extracted
             if attr_name == 'groups_object_classes':
                 val = [v.strip() for v in val.split(',') if v.strip()]
@@ -335,8 +350,11 @@ class GroupsSettingsForm(Form, VocabMixin):
         model.invalidate()
 
 
-@tile('content', 'templates/roles_settings.pt',
-      interface=RolesSettings, permission='manage')
+@tile(
+    name='content',
+    path='templates/roles_settings.pt',
+    interface=RolesSettings,
+    permission='manage')
 class RolesSettingsTile(ProtectedContentTile, CreateContainerTrigger):
 
     @property
@@ -350,7 +368,7 @@ class RolesSettingsTile(ProtectedContentTile, CreateContainerTrigger):
         return _('inexistent', default='Inexistent')
 
 
-@tile('create_container', interface=RolesSettings, permission='manage')
+@tile(name='create_container', interface=RolesSettings, permission='manage')
 class RolesCreateContainerAction(CreateContainerAction):
 
     @property
@@ -359,7 +377,7 @@ class RolesCreateContainerAction(CreateContainerAction):
         return AjaxAction(url, 'content', 'inner', '.ugm_roles')
 
 
-@tile('editform', interface=RolesSettings, permission='manage')
+@tile(name='editform', interface=RolesSettings, permission='manage')
 @plumbing(SettingsBehavior, YAMLForm)
 class RolesSettingsForm(Form, VocabMixin):
     action_resource = u'edit'
@@ -379,14 +397,15 @@ class RolesSettingsForm(Form, VocabMixin):
 
     def save(self, widget, data):
         model = self.model
-        for attr_name in ['roles_dn',
-                          'roles_scope',
-                          'roles_query',
-                          'roles_object_classes',
-                          'roles_aliases_attrmap',
-                          'roles_form_attrmap',
-                          #'roles_relation',
-                          ]:
+        for attr_name in [
+            'roles_dn',
+            'roles_scope',
+            'roles_query',
+            'roles_object_classes',
+            'roles_aliases_attrmap',
+            'roles_form_attrmap',
+            # 'roles_relation',
+        ]:
             val = data.fetch('ldap_roles_settings.%s' % attr_name).extracted
             if attr_name == 'roles_object_classes':
                 val = [v.strip() for v in val.split(',') if v.strip()]
@@ -395,13 +414,16 @@ class RolesSettingsForm(Form, VocabMixin):
         model.invalidate()
 
 
-@tile('content', 'templates/localmanager_settings.pt',
-      interface=LocalManagerSettings, permission='manage')
+@tile(
+    name='content',
+    path='templates/localmanager_settings.pt',
+    interface=LocalManagerSettings,
+    permission='manage')
 class LocalManagerSettingsTile(ProtectedContentTile):
     pass
 
 
-@tile('editform', interface=LocalManagerSettings, permission='manage')
+@tile(name='editform', interface=LocalManagerSettings, permission='manage')
 @plumbing(SettingsBehavior, YAMLForm)
 class LocalManagerSettingsForm(Form):
     action_resource = u'edit'
@@ -495,8 +517,11 @@ class LocalManagerSettingsForm(Form):
         self.model()
 
 
-@view_config(name='group_id_vocab', accept='application/json',
-             renderer='json', permission='manage')
+@view_config(
+    name='group_id_vocab',
+    accept='application/json',
+    renderer='json',
+    permission='manage')
 def group_id_vocab(model, request):
     term = request.params['term']
     if len(term) < 2:

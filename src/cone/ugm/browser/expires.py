@@ -4,9 +4,9 @@ from plumber import Behavior
 from plumber import plumb
 from pyramid.i18n import TranslationStringFactory
 from pyramid.security import has_permission
-from yafowil.base import UNSET
 from yafowil.base import factory
 from yafowil.base import fetch_value
+from yafowil.base import UNSET
 from yafowil.common import generic_extractor
 from yafowil.common import generic_required_extractor
 from yafowil.utils import cssid

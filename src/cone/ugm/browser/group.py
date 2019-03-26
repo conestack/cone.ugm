@@ -29,8 +29,11 @@ import urllib2
 _ = TranslationStringFactory('cone.ugm')
 
 
-@tile('leftcolumn', 'templates/principal_left_column.pt',
-      interface=Group, permission='view')
+@tile(
+    name='leftcolumn',
+    path='templates/principal_left_column.pt',
+    interface=Group,
+    permission='view')
 class GroupLeftColumn(Tile):
 
     @property
@@ -39,8 +42,11 @@ class GroupLeftColumn(Tile):
         return make_url(self.request, node=self.model.parent, query=query)
 
 
-@tile('rightcolumn', 'templates/principal_right_column.pt',
-      interface=Group, permission='view')
+@tile(
+    name='rightcolumn',
+    path='templates/principal_right_column.pt',
+    interface=Group,
+    permission='view')
 class GroupRightColumn(Tile):
 
     @property
@@ -83,7 +89,7 @@ class Users(object):
             # XXX: LDAP query here.
             users = group.root.users.values()
             if available_only:
-                users = [u for u in users if not u.name in member_ids]
+                users = [u for u in users if u.name not in member_ids]
         # reduce for local manager
         if obj.model.local_manager_consider_for_user:
             local_uids = obj.model.local_manager_target_uids
@@ -141,8 +147,11 @@ class Users(object):
         return ret
 
 
-@tile('columnlisting', 'templates/column_listing.pt',
-      interface=Group, permission='view')
+@tile(
+    name='columnlisting',
+    path='templates/column_listing.pt',
+    interface=Group,
+    permission='view')
 class UsersOfGroupColumnListing(ColumnListing):
     css = 'users'
     slot = 'rightlisting'
@@ -153,8 +162,11 @@ class UsersOfGroupColumnListing(ColumnListing):
     display_limit_checked = False
 
 
-@tile('allcolumnlisting', 'templates/column_listing.pt',
-      interface=Group, permission='view')
+@tile(
+    name='allcolumnlisting',
+    path='templates/column_listing.pt',
+    interface=Group,
+    permission='view')
 class AllUsersColumnListing(ColumnListing):
     css = 'users'
     slot = 'rightlisting'
@@ -169,8 +181,11 @@ class AllUsersColumnListing(ColumnListing):
         return 'allcolumnlisting'
 
 
-@tile('inoutlisting', 'templates/in_out.pt',
-      interface=Group, permission='view')
+@tile(
+    name='inoutlisting',
+    path='templates/in_out.pt',
+    interface=Group,
+    permission='view')
 class UsersInOutListing(InOutListing):
     available_items = Users(
         available_only=True,
@@ -219,7 +234,7 @@ class GroupForm(PrincipalForm):
         return data.extracted
 
 
-@tile('addform', interface=Group, permission="add_group")
+@tile(name='addform', interface=Group, permission="add_group")
 @plumbing(AddBehavior, PrincipalRolesForm, AddFormFiddle)
 class GroupAddForm(GroupForm, Form):
     show_heading = False
@@ -236,13 +251,13 @@ class GroupAddForm(GroupForm, Form):
             extracted[key] = val
         groups = self.model.parent.backend
         gid = extracted.pop('id')
-        #group = groups.create(gid, **extracted)
+        # group = groups.create(gid, **extracted)
         groups.create(gid, **extracted)
         self.request.environ['next_resource'] = gid
         groups()
         self.model.parent.invalidate()
         # Access created user after invalidation. if not done, there's
-        # some kind of race condition with ajax continuation. 
+        # some kind of race condition with ajax continuation.
         # XXX: figure out why.
         self.model.parent[gid]
 
@@ -261,7 +276,7 @@ class GroupAddForm(GroupForm, Form):
         return HTTPFound(location=url)
 
 
-@tile('editform', interface=Group, permission="edit_group", strict=False)
+@tile(name='editform', interface=Group, permission="edit_group", strict=False)
 @plumbing(EditBehavior, PrincipalRolesForm, EditFormFiddle)
 class GroupEditForm(GroupForm, Form):
     show_heading = False

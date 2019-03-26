@@ -48,8 +48,7 @@ class PrincipalRolesForm(Behavior):
                 'format': 'single',
                 'listing_tag': 'ul',
                 'listing_label_position': 'after',
-            },
-        )
+            })
         save_widget = self.form['save']
         self.form.insertbefore(roles_widget, save_widget)
 
@@ -70,12 +69,12 @@ class PrincipalRolesForm(Behavior):
         new_roles = data.fetch('%s.principal_roles' % self.form_name).extracted
         removed_roles = list()
         for role in existing_roles:
-            if not role in new_roles:
+            if role not in new_roles:
                 principal.remove_role(role)
                 removed_roles.append(role)
         for role in removed_roles:
             existing_roles.remove(role)
         for role in new_roles:
-            if not role in existing_roles:
+            if role not in existing_roles:
                 principal.add_role(role)
         principal.parent.parent()

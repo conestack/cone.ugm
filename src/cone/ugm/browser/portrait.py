@@ -16,7 +16,10 @@ from yafowil.base import factory
 _ = TranslationStringFactory('cone.ugm')
 
 
-@view_config('portrait_image', context=User, permission='view_portrait')
+@view_config(
+    name='portrait_image',
+    context=User,
+    permission='view_portrait')
 def portrait_image(model, request):
     """XXX: needs polishing. Return configured default portrait if not set
     on user.
@@ -92,7 +95,7 @@ class PortraitForm(Behavior):
     @plumb
     def save(_next, self, widget, data):
         if not self.portrait_support or \
-          not has_permission('edit_user', self.model.parent, self.request):
+                not has_permission('edit_user', self.model.parent, self.request):
             _next(self, widget, data)
             return
         cfg = ugm_general(self.model)

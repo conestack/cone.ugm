@@ -33,8 +33,11 @@ import urllib2
 _ = TranslationStringFactory('cone.ugm')
 
 
-@tile('leftcolumn', 'templates/principal_left_column.pt',
-      interface=User, permission='view')
+@tile(
+    name='leftcolumn',
+    path='templates/principal_left_column.pt',
+    interface=User,
+    permission='view')
 class UserLeftColumn(Tile):
 
     @property
@@ -43,8 +46,11 @@ class UserLeftColumn(Tile):
         return make_url(self.request, node=self.model.parent, query=query)
 
 
-@tile('rightcolumn', 'templates/principal_right_column.pt',
-      interface=User, permission='view')
+@tile(
+    name='rightcolumn',
+    path='templates/principal_right_column.pt',
+    interface=User,
+    permission='view')
 class UserRightColumn(Tile):
 
     @property
@@ -83,7 +89,7 @@ class Groups(object):
         if not related:
             groups = obj.model.root['groups'].backend.values()
             if available_only:
-                groups = [g for g in groups if not g.name in related_ids]
+                groups = [g for g in groups if g.name not in related_ids]
         # reduce for local manager
         if obj.model.local_manager_consider_for_user:
             local_gids = obj.model.local_manager_target_gids
@@ -140,8 +146,11 @@ class Groups(object):
         return ret
 
 
-@tile('columnlisting', 'templates/column_listing.pt',
-      interface=User, permission='view')
+@tile(
+    name='columnlisting',
+    path='templates/column_listing.pt',
+    interface=User,
+    permission='view')
 class GroupsOfUserColumnListing(ColumnListing):
     slot = 'rightlisting'
     list_columns = ColumnListing.group_list_columns
@@ -152,8 +161,11 @@ class GroupsOfUserColumnListing(ColumnListing):
     display_limit_checked = False
 
 
-@tile('allcolumnlisting', 'templates/column_listing.pt',
-      interface=User, permission='view')
+@tile(
+    name='allcolumnlisting',
+    path='templates/column_listing.pt',
+    interface=User,
+    permission='view')
 class AllGroupsColumnListing(ColumnListing):
     slot = 'rightlisting'
     list_columns = ColumnListing.group_list_columns
@@ -168,8 +180,11 @@ class AllGroupsColumnListing(ColumnListing):
         return 'allcolumnlisting'
 
 
-@tile('inoutlisting', 'templates/in_out.pt',
-      interface=User, permission='view')
+@tile(
+    name='inoutlisting',
+    path='templates/in_out.pt',
+    interface=User,
+    permission='view')
 class GroupsInOutListing(InOutListing):
     available_items = Groups(
         available_only=True,
@@ -253,7 +268,7 @@ class UserForm(PrincipalForm):
         return aliases['id'], aliases['login']
 
 
-@tile('addform', interface=User, permission='add_user')
+@tile(name='addform', interface=User, permission='add_user')
 @plumbing(
     AddBehavior,
     PrincipalRolesForm,
@@ -313,7 +328,7 @@ class UserAddForm(UserForm, Form):
         return HTTPFound(location=url)
 
 
-@tile('editform', interface=User, permission='edit_user', strict=False)
+@tile(name='editform', interface=User, permission='edit_user', strict=False)
 @plumbing(
     EditBehavior,
     PrincipalRolesForm,
@@ -342,7 +357,7 @@ class UserEditForm(UserForm, Form):
         for oc in settings.attrs.users_object_classes:
             if isinstance(ocs, basestring):
                 ocs = [ocs]
-            if not oc in ocs:
+            if oc not in ocs:
                 ocs.append(oc)
         if ocs != self.model.model.context.attrs['objectClass']:
             self.model.model.context.attrs['objectClass'] = ocs

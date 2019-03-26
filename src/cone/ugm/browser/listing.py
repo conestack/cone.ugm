@@ -257,7 +257,7 @@ class ColumnListing(Tile):
         settings = ugm_users(self.model)
         attrs = self.user_attrs
         sort = settings.attrs.users_listing_default_column
-        if not sort in attrs:
+        if sort not in attrs:
             return attrs[0]
         return sort
 
@@ -284,7 +284,7 @@ class ColumnListing(Tile):
         settings = ugm_groups(self.model)
         attrs = self.group_attrs
         sort = settings.attrs.groups_listing_default_column
-        if not sort in attrs:
+        if sort not in attrs:
             return attrs[0]
         return sort
 
@@ -317,7 +317,7 @@ class PrincipalsListing(ColumnListing):
             attrlist = self.listing_attrs
             sort_attr = self.sort_attr
             # build criteria from filter term
-            criteria=None
+            criteria = None
             filter_term = self.filter_term
             if filter_term:
                 criteria = dict()
@@ -330,7 +330,7 @@ class PrincipalsListing(ColumnListing):
                 or_search=True)
             for key, attrs in result:
                 # reduce result by localmanager ids if not None
-                if localmanager_ids is not None and not key in localmanager_ids:
+                if localmanager_ids is not None and key not in localmanager_ids:
                     continue
                 query = make_query(
                     pid=key,

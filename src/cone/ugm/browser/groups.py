@@ -14,8 +14,11 @@ logger = logging.getLogger('cone.ugm')
 _ = TranslationStringFactory('cone.ugm')
 
 
-@tile('leftcolumn', 'templates/principals_left_column.pt',
-      interface=Groups, permission='view')
+@tile(
+    name='leftcolumn',
+    path='templates/principals_left_column.pt',
+    interface=Groups,
+    permission='view')
 class GroupsLeftColumn(Tile):
     add_label = _('add_group', default='Add Group')
 
@@ -32,8 +35,11 @@ class GroupsLeftColumn(Tile):
         return has_permission('add_group', self.model, self.request)
 
 
-@tile('rightcolumn', 'templates/principals_right_column.pt',
-      interface=Groups, permission='view')
+@tile(
+    name='rightcolumn',
+    path='templates/principals_right_column.pt',
+    interface=Groups,
+    permission='view')
 class GroupsRightColumn(Column):
 
     @property
@@ -49,8 +55,11 @@ class GroupsRightColumn(Column):
         return make_url(self.request, node=self.model[self.principal_id])
 
 
-@tile('columnlisting', 'templates/column_listing.pt',
-      interface=Groups, permission='view')
+@tile(
+    name='columnlisting',
+    path='templates/column_listing.pt',
+    interface=Groups,
+    permission='view')
 class GroupsColumnListing(PrincipalsListing):
     slot = 'leftlisting'
     list_columns = PrincipalsListing.group_list_columns
