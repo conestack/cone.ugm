@@ -6,7 +6,7 @@ import interlude
 import os
 import pkg_resources
 import pprint
-import unittest2 as unittest
+import unittest
 
 
 class UGMLayer(Security):
@@ -92,13 +92,15 @@ DOCFILES = [
     ('../browser/expires.rst', ugm_layer),
     ('../browser/roles.rst', ugm_layer),
     ('../browser/autoincrement.rst', ugm_layer),
-    ('../browser/portrait.rst', ugm_layer),
+    ('../browser/portrait.rst', ugm_layer)
 ]
 
 
-optionflags = doctest.NORMALIZE_WHITESPACE | \
-              doctest.ELLIPSIS | \
-              doctest.REPORT_ONLY_FIRST_FAILURE
+optionflags = (
+    doctest.NORMALIZE_WHITESPACE |
+    doctest.ELLIPSIS |
+    doctest.REPORT_ONLY_FIRST_FAILURE
+)
 
 
 print """
@@ -119,14 +121,15 @@ def test_suite():
                     'interact': interlude.interact,
                     'pprint': pprint.pprint,
                     'pp': pprint.pprint,
-                    },
-                optionflags=optionflags,
-                ),
+                },
+                optionflags=optionflags
+            ),
             layer=layer,
-            )
+        )
         for docfile, layer in DOCFILES
-        ])
+    ])
     return suite
 
+
 if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')                 #pragma NO COVERAGE
+    unittest.main(defaultTest='test_suite')
