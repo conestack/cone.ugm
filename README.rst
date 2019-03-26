@@ -207,5 +207,5 @@ Contributors
 Copyright
 =========
 
-Copyright (c) 2009-2017, BlueDynamics Alliance, Austria
+Copyright (c) 2009-2019, BlueDynamics Alliance, Austria
 All rights reserved.

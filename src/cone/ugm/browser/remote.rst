@@ -50,7 +50,7 @@ Need add permission::
     Traceback (most recent call last):
       ...
     HTTPForbidden: 
-    Unauthorized: <function remote_add_user at ...> 
+    Unauthorized: remote_add_user
     failed permission check
 
 No id given::
@@ -77,8 +77,8 @@ Try to add user just by id. Fails since some attributes are mandatory.::
     >>> request.params['id'] = 'uid99'
     >>> res = render_view_to_response(users, request, name='remote_add_user')
     >>> res.body
-    '{"message": "{\'info\': \\"object class \'inetOrgPerson\' 
-    requires attribute \'sn\'\\", \'desc\': \'Object class violation\'}", 
+    '{"message": "{\'info\': u\\"object class \'inetOrgPerson\' requires
+    attribute \'sn\'\\", \'desc\': u\'Object class violation\'}",
     "success": false}'
 
 Add minimal valid user.::
@@ -189,7 +189,7 @@ Need add permission::
     Traceback (most recent call last):
       ...
     HTTPForbidden: 
-    Unauthorized: <function remote_delete_user at ...> 
+    Unauthorized: remote_delete_user
     failed permission check
 
 No id given::

@@ -50,7 +50,7 @@ setup(
         'yafowil.yaml',
         'node.ext.ldap'
     ],
-    extras_require = dict(
+    extras_require=dict(
         test=[
             'cone.app[test]',
         ]

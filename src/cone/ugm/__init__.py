@@ -98,7 +98,7 @@ def initialize_ugm(config, global_config, local_config):
     config.scan('cone.ugm.browser')
 
 
-# application startup hooks
+@cone.app.main_hook
 def initialize_auth_impl(config, global_config, local_config):
     """Initialize LDAP based UGM implementation for cone.app as
     authentication implementation.
