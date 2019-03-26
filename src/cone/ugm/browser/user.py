@@ -21,7 +21,6 @@ from cone.ugm.model.utils import ugm_general
 from cone.ugm.model.utils import ugm_users
 from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
-from pyramid.security import has_permission
 from webob.exc import HTTPFound
 from yafowil.base import ExtractionError
 from yafowil.base import UNSET
@@ -97,8 +96,9 @@ class Groups(object):
         attrlist = obj.group_attrs
         sort_attr = obj.group_default_sort_column
         filter_term = obj.unquoted_param_value(self.filter_param)
-        can_change = has_permission(
-            'manage_membership', obj.model.parent, obj.request)
+        can_change = obj.request.has_permission(
+            'manage_membership',
+            obj.model.parent)
         ret = list()
         for group in groups:
             attrs = group.attrs

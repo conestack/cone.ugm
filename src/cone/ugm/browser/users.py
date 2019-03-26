@@ -6,7 +6,6 @@ from cone.ugm.browser.columns import Column
 from cone.ugm.browser.listing import PrincipalsListing
 from cone.ugm.model.users import Users
 from pyramid.i18n import TranslationStringFactory
-from pyramid.security import has_permission
 import logging
 
 
@@ -32,7 +31,7 @@ class UsersLeftColumn(Tile):
 
     @property
     def can_add(self):
-        return has_permission('add_user', self.model, self.request)
+        return self.request.has_permission('add_user', self.model)
 
 
 @tile(

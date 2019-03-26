@@ -8,7 +8,6 @@ from cone.app.browser.settings import SettingsBehavior
 from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
 from cone.tile import Tile
-from cone.tile import registerTile
 from cone.tile import tile
 from cone.ugm.model.settings import GeneralSettings
 from cone.ugm.model.settings import GroupsSettings
@@ -134,12 +133,13 @@ class CreateContainerAction(Tile):
         return message
 
 
-registerTile(
+@tile(
     name='content',
     path='cone.ugm:browser/templates/general_settings.pt',
-    class_=ProtectedContentTile,
     interface=GeneralSettings,
     permission='manage')
+class GeneralSettingsContent(ProtectedContentTile):
+    pass
 
 
 @tile(name='editform', interface=GeneralSettings, permission='manage')

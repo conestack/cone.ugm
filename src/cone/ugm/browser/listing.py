@@ -8,7 +8,6 @@ from cone.tile import Tile
 from cone.ugm.model.utils import ugm_groups
 from cone.ugm.model.utils import ugm_users
 from pyramid.i18n import TranslationStringFactory
-from pyramid.security import has_permission
 from yafowil.utils import Tag
 import logging
 import natsort
@@ -303,10 +302,9 @@ class PrincipalsListing(ColumnListing):
 
     @request_property
     def query_items(self):
-        can_delete = has_permission(
+        can_delete = self.request.has_permission(
             self.delete_permission,
-            self.model,
-            self.request)
+            self.model)
         try:
             ret = list()
             localmanager_ids = self.localmanager_ids

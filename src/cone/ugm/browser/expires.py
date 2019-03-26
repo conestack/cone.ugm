@@ -3,7 +3,6 @@ from datetime import datetime
 from plumber import Behavior
 from plumber import plumb
 from pyramid.i18n import TranslationStringFactory
-from pyramid.security import has_permission
 from yafowil.base import factory
 from yafowil.base import fetch_value
 from yafowil.base import UNSET
@@ -134,9 +133,8 @@ class ExpirationForm(Behavior):
         if cfg.attrs['users_account_expiration'] != 'True':
             return
         mode = 'edit'
-        if not has_permission('manage_expiration',
-                              self.model.parent,
-                              self.request):
+        if not self.request.has_permission(
+                'manage_expiration', self.model.parent):
             mode = 'display'
         if self.action_resource == 'edit':
             attr = cfg.attrs['users_expires_attr']
@@ -161,9 +159,8 @@ class ExpirationForm(Behavior):
 
     @plumb
     def save(_next, self, widget, data):
-        if has_permission('manage_expiration',
-                          self.model.parent,
-                          self.request):
+        if self.request.has_permission(
+                'manage_expiration', self.model.parent):
             cfg = ugm_general(self.model)
             if cfg.attrs['users_account_expiration'] == 'True':
                 attr = cfg.attrs['users_expires_attr']
