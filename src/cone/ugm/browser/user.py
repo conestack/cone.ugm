@@ -176,35 +176,6 @@ class AllGroupsColumnListing(ColumnListing):
         return 'allcolumnlisting'
 
 
-@tile(
-    name='inoutlisting',
-    path='templates/in_out.pt',
-    interface=User,
-    permission='view')
-class GroupsInOutListing(InOutListing):
-    available_items = Groups(
-        available_only=True,
-        filter_param='left_filter',
-        pagination=True
-    )
-    selected_items = Groups(
-        related_only=True,
-        filter_param='right_filter',
-        pagination=True
-    )
-    display_control_buttons = True
-
-    @property
-    def group_attrs(self):
-        settings = ugm_general(self.model)
-        return [settings.attrs['group_display_name_attr']]
-
-    @property
-    def group_default_sort_column(self):
-        settings = ugm_general(self.model)
-        return settings.attrs['group_display_name_attr']
-
-
 class UserForm(PrincipalForm):
     form_name = 'userform'
 
