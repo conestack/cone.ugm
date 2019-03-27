@@ -58,11 +58,9 @@ class Groups(object):
 
     def __init__(self,
                  related_only=False,
-                 available_only=False,
                  filter_param='filter',
                  pagination=False):
         self.related_only = related_only
-        self.available_only = available_only
         self.filter_param = filter_param
         self.pagination = pagination
 
@@ -76,13 +74,8 @@ class Groups(object):
         # Always True if we list members only, otherwise will be set
         # in the loop below
         related = self.related_only
-        available_only = self.available_only
-        if related and available_only:
-            raise Exception(u"Invalid object settings.")
         if not related:
             groups = obj.model.root['groups'].backend.values()
-            if available_only:
-                groups = [g for g in groups if g.name not in related_ids]
         # reduce for local manager
         if obj.model.local_manager_consider_for_user:
             local_gids = obj.model.local_manager_target_gids

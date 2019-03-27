@@ -54,11 +54,9 @@ class Users(object):
 
     def __init__(self,
                  members_only=False,
-                 available_only=False,
                  filter_param='filter',
                  pagination=False):
         self.members_only = members_only
-        self.available_only = available_only
         self.filter_param = filter_param
         self.pagination = pagination
 
@@ -71,9 +69,6 @@ class Users(object):
         # Always True if we list members only, otherwise will be set
         # in the loop below
         related = self.members_only
-        available_only = self.available_only
-        if related and available_only:
-            raise Exception(u"Invalid object settings.")
         # XXX: so far only users as members of groups, for
         # group-in-group we need to prefix groups
         if related:
@@ -81,8 +76,6 @@ class Users(object):
         else:
             # XXX: LDAP query here.
             users = group.root.users.values()
-            if available_only:
-                users = [u for u in users if u.name not in member_ids]
         # reduce for local manager
         if obj.model.local_manager_consider_for_user:
             local_uids = obj.model.local_manager_target_uids
