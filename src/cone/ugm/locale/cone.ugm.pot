@@ -240,16 +240,6 @@ msgstr ""
 msgid "create_groups_container_now"
 msgstr ""
 
-#. Default: Available
-#: src/cone/ugm/browser/templates/in_out.pt:9
-msgid "available"
-msgstr ""
-
-#. Default: Recent
-#: src/cone/ugm/browser/templates/in_out.pt:17
-msgid "recent"
-msgstr ""
-
 #. Default: Local User Management is not enabled.
 #: src/cone/ugm/browser/templates/localmanager_settings.pt:9
 msgid "localmanager_disabled_warning"

@@ -351,35 +351,3 @@ class PrincipalsListing(ColumnListing):
         except Exception as e:
             logger.error(str(e))
         return list()
-
-
-class InOutListing(ColumnListing):
-    available_items = None
-    selected_items = None
-    display_control_buttons = True
-
-    @property
-    def left_filter_target(self):
-        query = make_query(right_filter=self.right_filter_term)
-        return safe_decode(make_url(self.request, node=self.model, query=query))
-
-    @property
-    def left_filter_term(self):
-        return self.unquoted_param_value('left_filter')
-
-    @property
-    def left_filter_value(self):
-        return self.filter_value_or_default('left_filter')
-
-    @property
-    def right_filter_target(self):
-        query = make_query(left_filter=self.left_filter_term)
-        return safe_decode(make_url(self.request, node=self.model, query=query))
-
-    @property
-    def right_filter_term(self):
-        return self.unquoted_param_value('right_filter')
-
-    @property
-    def right_filter_value(self):
-        return self.filter_value_or_default('right_filter')

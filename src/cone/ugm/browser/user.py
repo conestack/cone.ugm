@@ -12,12 +12,10 @@ from cone.ugm.browser.authoring import EditFormFiddle
 from cone.ugm.browser.autoincrement import AutoIncrementForm
 from cone.ugm.browser.expires import ExpirationForm
 from cone.ugm.browser.listing import ColumnListing
-from cone.ugm.browser.listing import InOutListing
 from cone.ugm.browser.portrait import PortraitForm
 from cone.ugm.browser.principal import PrincipalForm
 from cone.ugm.browser.roles import PrincipalRolesForm
 from cone.ugm.model.user import User
-from cone.ugm.model.utils import ugm_general
 from cone.ugm.model.utils import ugm_users
 from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
