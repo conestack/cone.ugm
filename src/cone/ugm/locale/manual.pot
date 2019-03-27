@@ -7,14 +7,6 @@
 msgid "filter_listing"
 msgstr ""
 
-# User display name attribute
-msgid "user_display_name_attribute"
-msgstr ""
-
-# Group display name attribute
-msgid "group_display_name_attribute"
-msgstr ""
-
 # User Accounts expires?
 msgid "user_accounts_expires"
 msgstr ""

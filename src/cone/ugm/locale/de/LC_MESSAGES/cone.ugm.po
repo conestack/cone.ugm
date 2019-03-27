@@ -465,14 +465,6 @@ msgstr "Benutzercontainer"
 msgid "filter_listing"
 msgstr "Liste filtern"
 
-# User display name attribute
-msgid "user_display_name_attribute"
-msgstr "Anzeigename für Benutzer"
-
-# Group display name attribute
-msgid "group_display_name_attribute"
-msgstr "Anzeigename für Gruppen"
-
 # User Accounts expires?
 msgid "user_accounts_expires"
 msgstr "Benutzer läuft ab?"

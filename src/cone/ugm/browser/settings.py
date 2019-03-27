@@ -155,8 +155,6 @@ class GeneralSettingsForm(Form):
     def save(self, widget, data):
         model = self.model
         for attr_name in [
-            'user_display_name_attr',
-            'group_display_name_attr',
             'users_account_expiration',
             'users_expires_attr',
             'users_expires_unit',

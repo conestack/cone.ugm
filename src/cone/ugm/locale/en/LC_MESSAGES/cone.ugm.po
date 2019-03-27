@@ -465,14 +465,6 @@ msgstr "Container for Users"
 msgid "filter_listing"
 msgstr "filter listing"
 
-# User display name attribute
-msgid "user_display_name_attribute"
-msgstr "User display name attribute"
-
-# Group display name attribute
-msgid "group_display_name_attribute"
-msgstr "Group display name attribute"
-
 # User Accounts expires?
 msgid "user_accounts_expires"
 msgstr "User Accounts expires?"
