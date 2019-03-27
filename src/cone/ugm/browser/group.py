@@ -51,14 +51,10 @@ class GroupRightColumn(Tile):
 class Users(object):
     """Descriptor to return users related to group for listing.
     """
+    filter_param = 'filter'
 
-    def __init__(self,
-                 members_only=False,
-                 filter_param='filter',
-                 pagination=False):
+    def __init__(self, members_only=False):
         self.members_only = members_only
-        self.filter_param = filter_param
-        self.pagination = pagination
 
     def __get__(self, obj, objtype=None):
         if obj is None:
@@ -126,11 +122,6 @@ class Users(object):
             item = obj.create_item(sort, item_target, content,
                                    current, actions)
             ret.append(item)
-        # XXX: sort
-        if self.pagination:
-            start = 0
-            end = 0
-            ret = ret[start:end]
         return ret
 
 
@@ -158,7 +149,7 @@ class AllUsersColumnListing(ColumnListing):
     css = 'users'
     slot = 'rightlisting'
     list_columns = ColumnListing.user_list_columns
-    query_items = Users()
+    query_items = Users(members_only=False)
     batchname = 'rightbatch'
     display_limit = True
     display_limit_checked = True

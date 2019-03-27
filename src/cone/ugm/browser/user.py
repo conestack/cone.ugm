@@ -55,14 +55,10 @@ class UserRightColumn(Tile):
 class Groups(object):
     """Descriptor to return groups related to user for listing.
     """
+    filter_param = 'filter'
 
-    def __init__(self,
-                 related_only=False,
-                 filter_param='filter',
-                 pagination=False):
+    def __init__(self, related_only=False):
         self.related_only = related_only
-        self.filter_param = filter_param
-        self.pagination = pagination
 
     def __get__(self, obj, objtype=None):
         if obj is None:
@@ -125,11 +121,6 @@ class Groups(object):
             item = obj.create_item(sort, item_target,
                                    content, current, actions)
             ret.append(item)
-        # XXX: sort
-        if self.pagination:
-            start = 0
-            end = 0
-            ret = ret[start:end]
         return ret
 
 
