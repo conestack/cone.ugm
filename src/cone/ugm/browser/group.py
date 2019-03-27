@@ -47,11 +47,7 @@ class GroupLeftColumn(Tile):
     interface=Group,
     permission='view')
 class GroupRightColumn(Tile):
-
-    @property
-    def default_widget(self):
-        settings = ugm_general(self.model)
-        return settings.attrs['default_membership_assignment_widget']
+    pass
 
 
 class Users(object):

@@ -4,12 +4,6 @@ props:
     action: context.form_action
     class: ajax
 widgets:
-- default_membership_assignment_widget:
-    factory: field:label:select
-    value: expr:context.model.attrs.default_membership_assignment_widget
-    props:
-        label: i18n:default_membership_assignment_widget
-        vocabulary: expr:[('listing', 'Listing'), ('inout', 'In-Out')]
 - user_display_name_attr:
     factory: field:label:text
     value: expr:context.model.attrs.user_display_name_attr

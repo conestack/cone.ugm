@@ -465,10 +465,6 @@ msgstr "Container for Users"
 msgid "filter_listing"
 msgstr "filter listing"
 
-# Default membership assignment widget
-msgid "default_membership_assignment_widget"
-msgstr "Default membership assignment widget"
-
 # User display name attribute
 msgid "user_display_name_attribute"
 msgstr "User display name attribute"

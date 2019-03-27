@@ -7,10 +7,6 @@
 msgid "filter_listing"
 msgstr ""
 
-# Default membership assignment widget
-msgid "default_membership_assignment_widget"
-msgstr ""
-
 # User display name attribute
 msgid "user_display_name_attribute"
 msgstr ""

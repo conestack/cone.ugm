@@ -129,7 +129,6 @@
     </elem>
   </roles_form_attrmap>
   <roles_relation></roles_relation>
-  <default_membership_assignment_widget>inout</default_membership_assignment_widget>
   <user_display_name_attr>cn</user_display_name_attr>
   <group_display_name_attr>id</group_display_name_attr>
 </properties>
