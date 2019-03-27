@@ -11,6 +11,12 @@ Changes
 - Use ``request.has_permission`` instead of ``pyramid.security.has_permission``.
   [rnix]
 
+- Remove inout widget. Listing widget is the only principal membership now.
+  Remove corresponding ``default_membership_assignment_widget``,
+  ``user_display_name_attribute`` and ``group_display_name_attribute`` from
+  settings
+  [rnix]
+
 - Change UI. Principal form and principal membership are not displayed
   in right column together any more. When viewing a principals content, left
   column displays the listing and right column the principal form. When
