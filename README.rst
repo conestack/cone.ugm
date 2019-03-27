@@ -199,37 +199,40 @@ Example configuration:
 Coverage Report
 ===============
 
-   92    92%   cone.ugm.__init__
-   43   100%   cone.ugm.browser.__init__.py)
-  278    68%   cone.ugm.browser.actions
-   13   100%   cone.ugm.browser.authoring
-   49    97%   cone.ugm.browser.autoincrement
-   14   100%   cone.ugm.browser.columns
-  138    71%   cone.ugm.browser.expires
-  245    85%   cone.ugm.browser.group
-   55    96%   cone.ugm.browser.groups
-  261    94%   cone.ugm.browser.listing
-   88    88%   cone.ugm.browser.portrait
-   90    94%   cone.ugm.browser.principal
-  100    96%   cone.ugm.browser.remote
-   62    87%   cone.ugm.browser.roles
-   15   100%   cone.ugm.browser.root
-  390    42%   cone.ugm.browser.settings
-  310    85%   cone.ugm.browser.user
-   55    96%   cone.ugm.browser.users
-    4   100%   cone.ugm.browser.utils
-   13   100%   cone.ugm.layout
-    9   100%   cone.ugm.model.__init__
-   29   100%   cone.ugm.model.group
-   75    90%   cone.ugm.model.groups
-  166    91%   cone.ugm.model.localmanager
-  215    83%   cone.ugm.model.settings
-   29   100%   cone.ugm.model.user
-   75    92%   cone.ugm.model.users
-   22   100%   cone.ugm.model.utils
-   58   100%   cone.ugm.testing.__init__
-    1   100%   cone.ugm.tests.__init__
-   44    97%   cone.ugm.tests.test_ugm
+::
+
+    lines   cov%   module
+       92    92%   cone.ugm.__init__
+       43   100%   cone.ugm.browser.__init__
+      278    68%   cone.ugm.browser.actions
+       13   100%   cone.ugm.browser.authoring
+       49    97%   cone.ugm.browser.autoincrement
+       15   100%   cone.ugm.browser.columns
+      135    71%   cone.ugm.browser.expires
+      206    83%   cone.ugm.browser.group
+       54    96%   cone.ugm.browser.groups
+      241    94%   cone.ugm.browser.listing
+       87    88%   cone.ugm.browser.portrait
+       90    94%   cone.ugm.browser.principal
+      100    96%   cone.ugm.browser.remote
+       61    86%   cone.ugm.browser.roles
+       15   100%   cone.ugm.browser.root
+      387    42%   cone.ugm.browser.settings
+      271    83%   cone.ugm.browser.user
+       54    96%   cone.ugm.browser.users
+        4   100%   cone.ugm.browser.utils
+       13   100%   cone.ugm.layout
+        9   100%   cone.ugm.model.__init__
+       29   100%   cone.ugm.model.group
+       75    90%   cone.ugm.model.groups
+      166    91%   cone.ugm.model.localmanager
+      215    83%   cone.ugm.model.settings
+       29   100%   cone.ugm.model.user
+       75    92%   cone.ugm.model.users
+       22   100%   cone.ugm.model.utils
+       58   100%   cone.ugm.testing.__init__
+        1   100%   cone.ugm.tests.__init__
+       44    97%   cone.ugm.tests.test_ugm
 
 
 Contributors
