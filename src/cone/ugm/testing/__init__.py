@@ -1,4 +1,5 @@
 from cone.app.testing import Security
+from cone.app.ugm import ugm_backend
 from node.ext.ldap.testing import LDIF_groupOfNames_10_10
 from plone.testing import Layer
 import os
@@ -14,8 +15,9 @@ class UGMLayer(Security, Layer):
     def setUp(self, args=None):
         super(UGMLayer, self).setUp(args)
         path = pkg_resources.resource_filename('cone.ugm.testing', 'ldap.xml')
-        cone.ugm.model.settings._invalidate_ugm_settings(cone.app.get_root())
-        ugm = cone.ugm.model.utils.ugm_backend(cone.app.get_root())
+        ugm_backend.load('ldap', {'ldap.config': path})
+        ugm_backend.initialize()
+        ugm = ugm_backend.ugm
         roles = ['viewer', 'editor', 'admin', 'manager']
 
         def create_user(uid):
@@ -42,8 +44,7 @@ class UGMLayer(Security, Layer):
 
     def tearDown(self):
         super(UGMLayer, self).tearDown()
-        import cone.app
-        ugm = cone.app.cfg.auth
+        ugm = ugm_backend.ugm
         for uid in ['viewer', 'editor', 'admin', 'manager', 'max', 'sepp',
                     'localmanager_1', 'localmanager_2']:
             del ugm.users[uid]
