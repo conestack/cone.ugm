@@ -5,6 +5,7 @@ Remote calls for 3rd party integration. Test bootstrapping::
 
     >>> from pyramid.view import render_view_to_response
     >>> from cone.app import root
+    >>> from cone.app.ugm import ugm_backend
     >>> from cone.ugm.model.utils import ugm_server, ugm_roles
     >>> from node.ext.ldap import LDAPNode, ONELEVEL
     >>> from node.ext.ldap.ugm import RolesConfig
@@ -29,9 +30,7 @@ Remote calls for 3rd party integration. Test bootstrapping::
     >>> roles = ugm_roles(root)
     >>> roles._ldap_rcfg = rcfg
 
-    >>> import cone.ugm
-    >>> cone.ugm.backend = None
-    >>> cone.ugm.model.utils.ugm_backend(root)
+    >>> ugm_backend.ugm
     <Ugm object 'ldap_ugm' at ...>
 
     >>> users = root['users']
@@ -232,7 +231,7 @@ Cleanup::
     >>> del users['uid101']
     >>> users()
     >>> roles._ldap_rcfg = None
-    >>> cone.ugm.model.utils.ugm_backend(root)
+    >>> ugm_backend.ugm
     <Ugm object 'ldap_ugm' at ...>
 
     >>> layer.logout()

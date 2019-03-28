@@ -5,6 +5,9 @@ Changes
 1.0a1 (unreleased)
 ------------------
 
+- Use ``cone.app.ugm.ugm_backend`` instead of ``cone.app.cfg.auth``.
+  [rnix]
+
 - Use ``cone.tile.tile`` decorator instead of ``cone.tile.registerTile``.
   [rnix]
 

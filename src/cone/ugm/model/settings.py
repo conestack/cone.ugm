@@ -1,6 +1,7 @@
 from cone.app.model import BaseNode
 from cone.app.model import Metadata
 from cone.app.model import XMLProperties
+from cone.app.ugm import ugm_backend
 from cone.ugm.model.localmanager import LocalManagerConfigAttributes
 from cone.ugm.model.utils import ldap_cfg_file
 from cone.ugm.model.utils import localmanager_cfg_file
@@ -13,7 +14,6 @@ from node.ext.ldap.ugm import UsersConfig as LDAPUsersConfig
 from node.ext.ldap.ugm._api import EXPIRATION_DAYS
 from node.utils import instance_property
 from pyramid.i18n import TranslationStringFactory
-import cone.ugm
 import ldap
 import os
 
@@ -40,8 +40,7 @@ def _invalidate_ugm_settings(model):
     settings['ugm_groups']._xml_config = None
     settings['ugm_roles']._ldap_gcfg = None
     settings['ugm_roles']._xml_config = None
-    import cone.app
-    cone.app.cfg.auth = None
+    ugm_backend.initialize()
 
 
 class UgmSettings(BaseNode):

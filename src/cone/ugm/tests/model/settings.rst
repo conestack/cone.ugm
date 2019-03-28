@@ -162,13 +162,13 @@ Test invalidate::
     >>> gcfg
     <node.ext.ldap.ugm._api.GroupsConfig object at ...>
 
-    >>> from cone.ugm.model.utils import ugm_backend
-    >>> backend = ugm_backend(root)
+    >>> from cone.app.ugm import ugm_backend
+    >>> backend = ugm_backend.ugm
 
     >>> backend
     <Ugm object 'ldap_ugm' at ...>
 
-    >>> backend is ugm_backend(root)
+    >>> backend is ugm_backend.ugm
     True
 
     >>> settings = root['settings']
@@ -186,7 +186,7 @@ Test invalidate::
     True
 
     >>> settings['ugm_server'].invalidate()
-    >>> backend is ugm_backend(root)
+    >>> backend is ugm_backend.ugm
     False
 
     >>> props is settings['ugm_server'].ldap_props
@@ -200,7 +200,6 @@ Test invalidate::
 
 Cleanup. Reset backend and prepare settings for following tests::
 
-    >>> cone.ugm.backend = None
     >>> settings['ugm_server']._ldap_props = layer['props']
     >>> settings['ugm_users']._ldap_ucfg = layer['ucfg']
     >>> settings['ugm_groups']._ldap_gcfg = layer['gcfg']

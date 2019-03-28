@@ -4,7 +4,7 @@ cone.ugm.model.utils
 ::
 
     >>> from cone.app import root
-    >>> from cone.ugm.model.utils import ugm_backend
+    >>> from cone.app.ugm import ugm_backend
     >>> from cone.ugm.model.utils import ugm_groups
     >>> from cone.ugm.model.utils import ugm_server
     >>> from cone.ugm.model.utils import ugm_users
@@ -18,17 +18,16 @@ cone.ugm.model.utils
     >>> ugm_groups(root)
     <GroupsSettings object 'ugm_groups' at ...>
 
-    >>> import cone.app
-    >>> cone.app.backend = None
+    >>> ugm_backend.name
+    'ldap'
 
-    >>> backend = ugm_backend(root)
+    >>> backend = ugm_backend.ugm
     >>> backend
     <Ugm object 'ldap_ugm' at ...>
 
-    >>> backend is ugm_backend(root)
+    >>> backend is ugm_backend.ugm
     True
 
-    >>> import cone.app
-    >>> cone.app.cfg.auth = None
-    >>> backend is ugm_backend(root)
+    >>> ugm_backend.initialize()
+    >>> backend is ugm_backend.ugm
     False

@@ -13,9 +13,7 @@ class UGMLayer(Security, Layer):
 
     def setUp(self, args=None):
         super(UGMLayer, self).setUp(args)
-        import cone.ugm
         path = pkg_resources.resource_filename('cone.ugm.testing', 'ldap.xml')
-        cone.ugm.model.utils.LDAP_CFG_FILE = path
         cone.ugm.model.settings._invalidate_ugm_settings(cone.app.get_root())
         ugm = cone.ugm.model.utils.ugm_backend(cone.app.get_root())
         roles = ['viewer', 'editor', 'admin', 'manager']
@@ -58,10 +56,10 @@ class UGMLayer(Security, Layer):
         ldap_config = os.path.join(base_path, 'ldap.xml')
         localmanager_config = os.path.join(base_path, 'localmanager.xml')
         super(UGMLayer, self).make_app(**{
-            'cone.auth_impl': 'node.ext.ldap',
-            'cone.plugins': 'node.ext.ugm\ncone.ugm',
-            'cone.ugm.ldap_config': ldap_config,
-            'cone.ugm.localmanager_config': localmanager_config,
+            'cone.plugins': 'cone.ugm',
+            'ugm.backend': 'ldap',
+            'ugm.localmanager_config': localmanager_config,
+            'ldap.config': ldap_config,
         })
         LDIF_groupOfNames_10_10.gcfg.attrmap['cn'] = 'cn'
 

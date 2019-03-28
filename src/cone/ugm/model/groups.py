@@ -1,12 +1,12 @@
 from cone.app.model import BaseNode
 from cone.app.model import Metadata
-from cone.app.model import Properties
 from cone.app.model import node_info
+from cone.app.model import Properties
+from cone.app.ugm import ugm_backend
 from cone.ugm.browser.utils import unquote_slash
 from cone.ugm.layout import UGMLayout
 from cone.ugm.model.group import Group
 from cone.ugm.model.localmanager import LocalManagerGroupsACL
-from cone.ugm.model.utils import ugm_backend
 from node.locking import locktree
 from node.utils import instance_property
 from plumber import plumbing
@@ -55,7 +55,7 @@ class Groups(BaseNode):
 
     @property
     def backend(self):
-        return ugm_backend(self).groups
+        return ugm_backend.ugm.groups
 
     @locktree
     def invalidate(self, key=None):

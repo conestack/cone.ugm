@@ -1,4 +1,7 @@
+from cone.app import get_root
 from cone.app.security import acl_registry
+from cone.app.ugm import ugm_backend
+from cone.app.ugm import UGMBackend
 from cone.ugm.browser import static_resources
 from cone.ugm.model.group import Group
 from cone.ugm.model.groups import Groups
@@ -12,7 +15,7 @@ from cone.ugm.model.settings import UsersSettings
 from cone.ugm.model.user import User
 from cone.ugm.model.users import Users
 from cone.ugm.model.users import users_factory
-from node.ext.ldap.ugm import Ugm
+from node.ext.ldap.ugm import Ugm as LdapUgm
 from pyramid.security import ALL_PERMISSIONS
 from pyramid.security import Allow
 from pyramid.security import Deny
@@ -88,6 +91,10 @@ acl_registry.register(ugm_default_acl, Groups, 'groups')
 def initialize_ugm(config, global_config, local_config):
     """Initialize UGM.
     """
+    # localmanager config file location
+    lm_config = local_config.get('ugm.localmanager_config', '')
+    os.environ['LOCAL_MANAGER_CFG_FILE'] = lm_config
+
     # add translation
     config.add_translation_dirs('cone.ugm:locale/')
 
@@ -98,59 +105,58 @@ def initialize_ugm(config, global_config, local_config):
     config.scan('cone.ugm.browser')
 
 
+###############################################################################
+# XXX: move to cone.ldap
+###############################################################################
+
 @cone.app.main_hook
-def initialize_auth_impl(config, global_config, local_config):
-    """Initialize LDAP based UGM implementation for cone.app as
-    authentication implementation.
-
-    XXX: move to cone.ldap later
+def initialize_ldap(config, global_config, local_config):
+    """Initialize cone.ldap.
     """
-    os.environ['LDAP_CFG_FILE'] = local_config.get('cone.ugm.ldap_config', '')
-    os.environ['LOCAL_MANAGER_CFG_FILE'] = \
-        local_config.get('cone.ugm.localmanager_config', '')
-    import cone.ugm
-    ldap_auth = local_config.get('cone.auth_impl') == 'node.ext.ldap'
-    if not ldap_auth:
-        return
-    reset_ldap_auth_impl()
+    os.environ['LDAP_CFG_FILE'] = local_config.get('ldap.config', '')
 
 
-def reset_auth_impl():
-    """LDAP only at the moment.
+@ugm_backend('ldap')
+class LDAPUGMBackend(UGMBackend):
+    """UGM backend factory for file based UGM implementation.
     """
-    return reset_ldap_auth_impl()
 
+    def __init__(self, settings):
+        self.users_file = settings.get('ugm.users_file')
+        self.groups_file = settings.get('ugm.groups_file')
+        self.roles_file = settings.get('ugm.roles_file')
+        self.datadir = settings.get('ugm.datadir')
 
-def reset_ldap_auth_impl():
-    """XXX: Move to ``cone.ldap``.
-    """
-    import cone.app
-    root = cone.app.get_root()
-    settings = root['settings']
-    server_settings = settings['ugm_server']
-    if not server_settings.ldap_connectivity:
-        logger.error(u"Could not initialize authentication implementation. "
-                     u"LDAP Server is not available or invalid credentials.")
-        return
-    props = server_settings.ldap_props
-    users_settings = settings['ugm_users']
-    if not users_settings.ldap_users_container_valid:
-        logger.error(u"Could not initialize authentication implementation. "
-                     u"Configured users container invalid.")
-        return
-    ucfg = users_settings.ldap_ucfg
-    groups_settings = settings['ugm_groups']
-    gcfg = None
-    if groups_settings.ldap_groups_container_valid:
-        gcfg = groups_settings.ldap_gcfg
-    else:
-        logger.warning(u"Configured groups container invalid.")
-    roles_settings = settings['ugm_roles']
-    rcfg = None
-    if roles_settings.ldap_roles_container_valid:
-        rcfg = roles_settings.ldap_rcfg
-    else:
-        logger.warning(u"Configured roles container invalid.")
-    ugm = Ugm(name='ldap_ugm', props=props, ucfg=ucfg, gcfg=gcfg, rcfg=rcfg)
-    cone.app.cfg.auth = ugm
-    return ugm
+    def __call__(self):
+        settings = get_root()['settings']
+        server_settings = settings['ugm_server']
+        if not server_settings.ldap_connectivity:
+            logger.error(u"Could not initialize authentication implementation. "
+                         u"LDAP Server is not available or invalid credentials.")
+            return
+        props = server_settings.ldap_props
+        users_settings = settings['ugm_users']
+        if not users_settings.ldap_users_container_valid:
+            logger.error(u"Could not initialize authentication implementation. "
+                         u"Configured users container invalid.")
+            return
+        ucfg = users_settings.ldap_ucfg
+        groups_settings = settings['ugm_groups']
+        gcfg = None
+        if groups_settings.ldap_groups_container_valid:
+            gcfg = groups_settings.ldap_gcfg
+        else:
+            logger.warning(u"Configured groups container invalid.")
+        roles_settings = settings['ugm_roles']
+        rcfg = None
+        if roles_settings.ldap_roles_container_valid:
+            rcfg = roles_settings.ldap_rcfg
+        else:
+            logger.warning(u"Configured roles container invalid.")
+        return LdapUgm(
+            name='ldap_ugm',
+            props=props,
+            ucfg=ucfg,
+            gcfg=gcfg,
+            rcfg=rcfg
+        )
