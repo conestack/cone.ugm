@@ -1,7 +1,7 @@
 from cone.app import get_root
 from cone.app.security import acl_registry
 from cone.app.ugm import ugm_backend
-from cone.app.ugm import UGMBackend
+from cone.app.ugm import UGMFactory
 from cone.ugm.browser import static_resources
 from cone.ugm.model.group import Group
 from cone.ugm.model.groups import Groups
@@ -117,7 +117,7 @@ def initialize_ldap(config, global_config, local_config):
 
 
 @ugm_backend('ldap')
-class LDAPUGMBackend(UGMBackend):
+class LDAPUGMFactory(UGMFactory):
     """UGM backend factory for file based UGM implementation.
     """
 
