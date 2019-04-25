@@ -77,7 +77,7 @@ class Users(BaseNode):
     def __iter__(self):
         try:
             return self.backend.__iter__()
-        except Exception, e:
+        except Exception as e:
             logger.error(str(e))
             return iter(list())
 

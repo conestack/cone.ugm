@@ -4,6 +4,7 @@ from cone.app.browser.utils import make_url
 from cone.app.browser.utils import nodepath
 from cone.app.browser.utils import request_property
 from cone.app.browser.utils import safe_decode
+from cone.app.compat import unquote
 from cone.tile import Tile
 from cone.ugm.model.utils import ugm_groups
 from cone.ugm.model.utils import ugm_users
@@ -12,7 +13,6 @@ from yafowil.utils import Tag
 import logging
 import natsort
 import types
-import urllib2
 
 
 tag = Tag(lambda x: x)
@@ -98,8 +98,7 @@ class ColumnListing(Tile):
 
     def unquoted_param_value(self, name):
         value = self.request.params.get(name)
-        return urllib2.unquote(
-            value.encode('utf-8')).decode('utf-8') if value else value
+        return unquote(value.encode('utf-8')).decode('utf-8') if value else value
 
     def filter_value_or_default(self, name):
         value = self.unquoted_param_value(name)

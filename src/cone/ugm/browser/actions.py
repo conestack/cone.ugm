@@ -83,7 +83,7 @@ def delete_user_action(model, request):
             'success': True,
             'message': message
         }
-    except Exception, e:
+    except Exception as e:
         return {
             'success': False,
             'message': str(e)
@@ -125,7 +125,7 @@ def user_add_to_group_action(model, request):
             'success': True,
             'message': message
         }
-    except ManageMembershipError, e:
+    except ManageMembershipError as e:
         if e.reason is not LM_TARGET_GID_NOT_ALLOWED:
             raise Exception(u"Unknown ManageMembershipError reason.")
         localizer = get_localizer(request)
@@ -144,7 +144,7 @@ def user_add_to_group_action(model, request):
             'success': False,
             'message': message
         }
-    except Exception, e:
+    except Exception as e:
         return {
             'success': False,
             'message': str(e)
@@ -186,7 +186,7 @@ def user_remove_from_group_action(model, request):
             'success': True,
             'message': message
         }
-    except ManageMembershipError, e:
+    except ManageMembershipError as e:
         localizer = get_localizer(request)
         if e.reason is LM_TARGET_GID_NOT_ALLOWED:
             message = localizer.translate(_(
@@ -217,7 +217,7 @@ def user_remove_from_group_action(model, request):
             'success': False,
             'message': message
         }
-    except Exception, e:
+    except Exception as e:
         return {
             'success': False,
             'message': str(e)
@@ -243,7 +243,7 @@ def delete_group_action(model, request):
         del groups[uid]
         groups()
         model.parent.invalidate()
-    except Exception, e:
+    except Exception as e:
         return {
             'success': False,
             'message': str(e)
@@ -293,7 +293,7 @@ def group_add_user_action(model, request):
             'success': True,
             'message': message
         }
-    except ManageMembershipError, e:
+    except ManageMembershipError as e:
         if e.reason is not LM_TARGET_UID_NOT_ALLOWED:
             raise Exception(u"Unknown ManageMembershipError reason.")
         localizer = get_localizer(request)
@@ -312,7 +312,7 @@ def group_add_user_action(model, request):
             'success': False,
             'message': message
         }
-    except Exception, e:
+    except Exception as e:
         return {
             'success': False,
             'message': str(e)
@@ -353,7 +353,7 @@ def group_remove_user_action(model, request):
             'success': True,
             'message': message
         }
-    except ManageMembershipError, e:
+    except ManageMembershipError as e:
         localizer = get_localizer(request)
         if e.reason is LM_TARGET_UID_NOT_ALLOWED:
             message = localizer.translate(_(
@@ -385,7 +385,7 @@ def group_remove_user_action(model, request):
             'success': False,
             'message': message
         }
-    except Exception, e:
+    except Exception as e:
         return {
             'success': False,
             'message': str(e)

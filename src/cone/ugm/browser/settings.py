@@ -79,7 +79,7 @@ class CreateContainerAction(Tile):
             ajax_message(self.request, message, 'info')
             continuation = self.continuation
             ajax_continue(self.request, continuation)
-        except Exception, e:
+        except Exception as e:
             localizer = get_localizer(self.request)
             message = localizer.translate(_(
                 'cannot_create_container',

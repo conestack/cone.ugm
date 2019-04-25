@@ -115,7 +115,7 @@ def remote_add_user(model, request):
             'success': True,
             'message': message,
         }
-    except Exception, e:
+    except Exception as e:
         return {
             'success': False,
             'message': str(e),
@@ -171,7 +171,7 @@ def remote_delete_user(model, request):
             'success': True,
             'message': message,
         }
-    except Exception, e:
+    except Exception as e:
         return {
             'success': False,
             'message': str(e),

@@ -1,4 +1,7 @@
-from StringIO import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 from cone.app.browser.utils import make_url
 from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_general

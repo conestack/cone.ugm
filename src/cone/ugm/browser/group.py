@@ -4,6 +4,7 @@ from cone.app.browser.authoring import EditBehavior
 from cone.app.browser.form import Form
 from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
+from cone.app.compat import unquote
 from cone.tile import Tile
 from cone.tile import tile
 from cone.ugm.browser import form_field_definitions
@@ -20,7 +21,6 @@ from webob.exc import HTTPFound
 from yafowil.base import ExtractionError
 from yafowil.utils import UNSET
 import fnmatch
-import urllib2
 
 
 _ = TranslationStringFactory('cone.ugm')
@@ -248,7 +248,7 @@ class GroupEditForm(GroupForm, Form):
     def next(self, request):
         came_from = request.get('came_from')
         if came_from:
-            came_from = urllib2.unquote(came_from)
+            came_from = unquote(came_from)
             url = '{}?pid={}'.format(came_from, self.model.name)
         else:
             url = make_url(request.request, node=self.model)

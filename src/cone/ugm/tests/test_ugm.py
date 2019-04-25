@@ -2,6 +2,8 @@ from cone.ugm.testing import ugm_layer
 import doctest
 import interlude
 import pprint
+import re
+import six
 import unittest
 
 
@@ -38,12 +40,26 @@ optionflags = (
 )
 
 
-print """
+print("""
 *******************************************************************************
 If testing while development fails, please check if memcached is installed and
 stop it if running.
 *******************************************************************************
-"""
+""")
+
+
+class Py23DocChecker(doctest.OutputChecker):
+
+    def check_output(self, want, got, optionflags):
+        if want != got and six.PY2:
+            # if running on py2, ignore any "u" prefixes in the output
+            got = re.sub("(\\W|^)u'(.*?)'", "\\1'\\2'", got)
+            got = re.sub("(\\W|^)u\"(.*?)\"", "\\1\"\\2\"", got)
+            # also ignore "b" prefixes in the expected output
+            # want = re.sub("b'(.*?)'", "'\\1'", want)
+            # want = want.lstrip('ldap.')
+
+        return doctest.OutputChecker.check_output(self, want, got, optionflags)
 
 
 def test_suite():
@@ -59,7 +75,8 @@ def test_suite():
         doctest.DocFileSuite(
             docfile,
             globs=globs,
-            optionflags=optionflags
+            optionflags=optionflags,
+            checker=Py23DocChecker(),
         )
         for docfile in DOCFILES
     ])
