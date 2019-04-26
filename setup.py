@@ -1,5 +1,6 @@
 from setuptools import find_packages
 from setuptools import setup
+from setuptools.command.test import test
 import os
 
 
@@ -15,6 +16,13 @@ longdesc = '\n\n'.join([read_file(name) for name in [
     'CHANGES.rst',
     'LICENSE.rst'
 ]])
+
+
+class Test(test):
+
+    def run_tests(self):
+        from cone.ugm import tests
+        tests.run_tests()
 
 
 setup(
@@ -55,5 +63,5 @@ setup(
             'cone.app[test]',
         ]
     ),
-    test_suite='cone.ugm.tests.test_suite'
+    cmdclass=dict(test=Test)
 )
