@@ -6,12 +6,14 @@ def test_suite():
     from cone.ugm.tests import test_layout
 
     from cone.ugm.tests import test_model_group
+    from cone.ugm.tests import test_model_groups
 
     suite = unittest.TestSuite()
 
     suite.addTest(unittest.findTestCases(test_layout))
 
     suite.addTest(unittest.findTestCases(test_model_group))
+    suite.addTest(unittest.findTestCases(test_model_groups))
 
     return suite
 

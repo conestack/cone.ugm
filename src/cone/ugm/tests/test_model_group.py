@@ -13,8 +13,6 @@ class TestModelGroup(unittest.TestCase):
     layer = testing.ugm_layer
 
     def test_group(self):
-        self.layer.login('manager')
-
         # Group node
         groups = root['groups']
         group = groups['group0']
