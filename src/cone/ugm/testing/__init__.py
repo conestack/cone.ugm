@@ -62,7 +62,6 @@ class UGMLayer(Security, Layer):
             'ugm.localmanager_config': localmanager_config,
             'ldap.config': ldap_config,
         })
-        LDIF_groupOfNames_10_10.gcfg.attrmap['cn'] = 'cn'
 
 
 ugm_layer = UGMLayer()
