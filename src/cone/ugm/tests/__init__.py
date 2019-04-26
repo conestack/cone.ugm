@@ -8,6 +8,7 @@ def test_suite():
     from cone.ugm.tests import test_model_group
     from cone.ugm.tests import test_model_groups
     from cone.ugm.tests import test_model_localmanager
+    from cone.ugm.tests import test_model_settings
 
     suite = unittest.TestSuite()
 
@@ -16,6 +17,7 @@ def test_suite():
     suite.addTest(unittest.findTestCases(test_model_group))
     suite.addTest(unittest.findTestCases(test_model_groups))
     suite.addTest(unittest.findTestCases(test_model_localmanager))
+    suite.addTest(unittest.findTestCases(test_model_settings))
 
     return suite
 
