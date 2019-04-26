@@ -11,6 +11,7 @@ def test_suite():
     from cone.ugm.tests import test_model_settings
     from cone.ugm.tests import test_model_user
     from cone.ugm.tests import test_model_users
+    from cone.ugm.tests import test_model_utils
 
     suite = unittest.TestSuite()
 
@@ -22,6 +23,7 @@ def test_suite():
     suite.addTest(unittest.findTestCases(test_model_settings))
     suite.addTest(unittest.findTestCases(test_model_user))
     suite.addTest(unittest.findTestCases(test_model_users))
+    suite.addTest(unittest.findTestCases(test_model_utils))
 
     return suite
 
