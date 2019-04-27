@@ -20,6 +20,7 @@ def test_suite():
     from cone.ugm.tests import test_browser_groups
     from cone.ugm.tests import test_browser_portrait
     from cone.ugm.tests import test_browser_remote
+    from cone.ugm.tests import test_browser_roles
 
     suite = unittest.TestSuite()
 
@@ -40,6 +41,7 @@ def test_suite():
     suite.addTest(unittest.findTestCases(test_browser_groups))
     suite.addTest(unittest.findTestCases(test_browser_portrait))
     suite.addTest(unittest.findTestCases(test_browser_remote))
+    suite.addTest(unittest.findTestCases(test_browser_roles))
 
     return suite
 
