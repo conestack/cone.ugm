@@ -17,6 +17,8 @@ def test_suite():
     from cone.ugm.tests import test_browser_autoincrement
     from cone.ugm.tests import test_browser_expires
     from cone.ugm.tests import test_browser_group
+    from cone.ugm.tests import test_browser_groups
+    from cone.ugm.tests import test_browser_portrait
 
     suite = unittest.TestSuite()
 
@@ -34,6 +36,8 @@ def test_suite():
     suite.addTest(unittest.findTestCases(test_browser_autoincrement))
     suite.addTest(unittest.findTestCases(test_browser_expires))
     suite.addTest(unittest.findTestCases(test_browser_group))
+    suite.addTest(unittest.findTestCases(test_browser_groups))
+    suite.addTest(unittest.findTestCases(test_browser_portrait))
 
     return suite
 
