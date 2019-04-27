@@ -1,9 +1,48 @@
+from cone.app import root
 from cone.app.testing import Security
 from cone.app.ugm import ugm_backend
 from node.ext.ldap.testing import LDIF_groupOfNames_10_10
 from plone.testing import Layer
 import os
 import pkg_resources
+
+
+class temp_principals(object):
+
+    def __init__(self, users={}, groups={}):
+        self.users = users
+        self.groups = groups
+
+    def __call__(self, fn):
+        def wrapper(inst):
+            ugm = ugm_backend.ugm
+            for user_id, user_kw in self.users.items():
+                ugm['users'].create(user_id, **user_kw)
+            for group_id, group_kw in self.groups.items():
+                ugm['groups'].create(group_id, **group_kw)
+            ugm()
+            root['users'].invalidate()
+            root['groups'].invalidate()
+            try:
+                fn(inst, root['users'], root['groups'])
+            finally:
+                root['users'].invalidate()
+                root['groups'].invalidate()
+                ugm = ugm_backend.ugm
+                for user_id in self.users:
+                    try:
+                        del ugm['users'][user_id]
+                    except KeyError:
+                        # ignore, user_id already deleted
+                        pass
+                for group_id in self.groups:
+                    try:
+                        del ugm['groups'][group_id]
+                    except KeyError:
+                        # ignore, group_id already deleted
+                        pass
+                ugm()
+        return wrapper
 
 
 class UGMLayer(Security, Layer):
