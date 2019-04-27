@@ -1,6 +1,5 @@
 from cone.app import get_root
 from cone.app.model import BaseNode
-from cone.app.ugm import ugm_backend
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
@@ -26,37 +25,25 @@ def user_request(layer, cn, sn, mail):
     return request
 
 
-def cleanup_autoincrement_tests(fn):
-    def del_user(name):
-        try:
-            del ugm_backend.ugm['users'][name]
-        except KeyError:
-            pass
+class cleanup_autoincrement_test(testing.remove_principals):
 
-    def wrapper(inst):
-        try:
-            fn(inst)
-        finally:
-            del_user('100')
-            del_user('101')
-            del_user('uid100')
-            del_user('uid101')
-            ugm_backend.ugm()
+    def __call__(self, fn):
+        w = super(cleanup_autoincrement_test, self).__call__(fn)
 
-            root = get_root()
-            root['users'].invalidate()
+        def wrapper(inst):
+            w(inst)
 
-            cfg = ugm_general(root)
+            cfg = ugm_general(get_root())
             cfg.attrs.user_id_autoincrement = 'False'
             cfg.attrs.user_id_autoincrement_prefix = ''
             cfg()
-    return wrapper
+        return wrapper
 
 
 class TestBrowserAutoincrement(TileTestCase):
     layer = testing.ugm_layer
 
-    @cleanup_autoincrement_tests
+    @cleanup_autoincrement_test(users=['100', '101', 'uid100', 'uid101'])
     def test_autoincrement(self):
         root = get_root()
         users = root['users']

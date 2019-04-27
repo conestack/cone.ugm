@@ -7,7 +7,60 @@ import os
 import pkg_resources
 
 
-class temp_principals(object):
+class principals_decorator(object):
+
+    @property
+    def ugm(self):
+        return ugm_backend.ugm
+
+    def create_user(self, user_id, **user_kw):
+        self.ugm['users'].create(user_id, **user_kw)
+
+    def create_group(self, group_id, **group_kw):
+        self.ugm['groups'].create(group_id, **group_kw)
+
+    def del_principal(self, principals, name):
+        try:
+            del principals[name]
+        except KeyError:
+            # ignore principal. either not created or already removed
+            pass
+
+    def del_user(self, name):
+        self.del_principal(self.ugm['users'], name)
+
+    def del_group(self, name):
+        self.del_principal(self.ugm['groups'], name)
+
+    def invalidate(self):
+        root['users'].invalidate()
+        root['groups'].invalidate()
+
+    def apply(self):
+        self.ugm()
+        self.invalidate()
+
+
+class remove_principals(principals_decorator):
+
+    def __init__(self, users=[], groups=[]):
+        self.users = users
+        self.groups = groups
+
+    def __call__(self, fn):
+        def wrapper(inst):
+            try:
+                fn(inst)
+            finally:
+                for user_id in self.users:
+                    self.del_user(user_id)
+                for group_id in self.groups:
+                    self.del_group(group_id)
+                self.apply()
+        return wrapper
+
+
+class temp_principals(principals_decorator):
 
     def __init__(self, users={}, groups={}):
         self.users = users
@@ -15,33 +68,19 @@ class temp_principals(object):
 
     def __call__(self, fn):
         def wrapper(inst):
-            ugm = ugm_backend.ugm
             for user_id, user_kw in self.users.items():
-                ugm['users'].create(user_id, **user_kw)
+                self.create_user(user_id, **user_kw)
             for group_id, group_kw in self.groups.items():
-                ugm['groups'].create(group_id, **group_kw)
-            ugm()
-            root['users'].invalidate()
-            root['groups'].invalidate()
+                self.create_group(group_id, **group_kw)
+            self.apply()
             try:
                 fn(inst, root['users'], root['groups'])
             finally:
-                root['users'].invalidate()
-                root['groups'].invalidate()
-                ugm = ugm_backend.ugm
                 for user_id in self.users:
-                    try:
-                        del ugm['users'][user_id]
-                    except KeyError:
-                        # ignore, user_id already deleted
-                        pass
+                    self.del_user(user_id)
                 for group_id in self.groups:
-                    try:
-                        del ugm['groups'][group_id]
-                    except KeyError:
-                        # ignore, group_id already deleted
-                        pass
-                ugm()
+                    self.del_group(group_id)
+                self.apply()
         return wrapper
 
 
