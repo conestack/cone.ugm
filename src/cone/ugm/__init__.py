@@ -1,4 +1,8 @@
+from cone.app import cfg
 from cone.app import get_root
+from cone.app import main_hook
+from cone.app import register_config
+from cone.app import register_entry
 from cone.app.security import acl_registry
 from cone.app.ugm import ugm_backend
 from cone.app.ugm import UGMFactory
@@ -20,37 +24,11 @@ from pyramid.security import ALL_PERMISSIONS
 from pyramid.security import Allow
 from pyramid.security import Deny
 from pyramid.security import Everyone
-import cone.app
 import logging
 import os
 
 
 logger = logging.getLogger('cone.ugm')
-
-
-# custom UGM styles
-cone.app.cfg.merged.css.protected.append((static_resources, 'styles.css'))
-
-# custom UGM javascript
-cone.app.cfg.merged.js.protected.append(
-    (static_resources, 'jQuery.sortElements.js')
-)
-cone.app.cfg.merged.js.protected.append((static_resources, 'naturalSort.js'))
-cone.app.cfg.merged.js.protected.append((static_resources, 'ugm.js'))
-
-# UGM settings
-cone.app.register_plugin_config('ugm_general', GeneralSettings)
-cone.app.register_plugin_config('ugm_server', ServerSettings)
-cone.app.register_plugin_config('ugm_users', UsersSettings)
-cone.app.register_plugin_config('ugm_groups', GroupsSettings)
-cone.app.register_plugin_config('ugm_roles', RolesSettings)
-cone.app.register_plugin_config('ugm_localmanager', LocalManagerSettings)
-
-# Users container
-cone.app.register_plugin('users', users_factory)
-
-# Groups container
-cone.app.register_plugin('groups', groups_factory)
 
 # security
 management_permissions = [
@@ -78,19 +56,41 @@ ugm_user_acl = [
     (Allow, 'system.Authenticated', ['view_portrait']),
 ] + ugm_default_acl
 
-# register default acl's
-# XXX: define permissions referring users, user, groups respective group only,
-acl_registry.register(ugm_user_acl, User, 'user')
-acl_registry.register(ugm_default_acl, Users, 'users')
-acl_registry.register(ugm_default_acl, Group, 'group')
-acl_registry.register(ugm_default_acl, Groups, 'groups')
-
 
 # application startup hooks
-@cone.app.main_hook
+@main_hook
 def initialize_ugm(config, global_config, local_config):
     """Initialize UGM.
     """
+    # custom UGM styles
+    cfg.merged.css.protected.append((static_resources, 'styles.css'))
+
+    # custom UGM javascript
+    cfg.merged.js.protected.append((static_resources, 'jQuery.sortElements.js'))
+    cfg.merged.js.protected.append((static_resources, 'naturalSort.js'))
+    cfg.merged.js.protected.append((static_resources, 'ugm.js'))
+
+    # UGM settings
+    register_config('ugm_general', GeneralSettings)
+    register_config('ugm_server', ServerSettings)
+    register_config('ugm_users', UsersSettings)
+    register_config('ugm_groups', GroupsSettings)
+    register_config('ugm_roles', RolesSettings)
+    register_config('ugm_localmanager', LocalManagerSettings)
+
+    # Users container
+    register_entry('users', users_factory)
+
+    # Groups container
+    register_entry('groups', groups_factory)
+
+    # register default acl's
+    # XXX: define permissions referring users, user, groups respective group only
+    acl_registry.register(ugm_user_acl, User, 'user')
+    acl_registry.register(ugm_default_acl, Users, 'users')
+    acl_registry.register(ugm_default_acl, Group, 'group')
+    acl_registry.register(ugm_default_acl, Groups, 'groups')
+
     # localmanager config file location
     lm_config = local_config.get('ugm.localmanager_config', '')
     os.environ['LOCAL_MANAGER_CFG_FILE'] = lm_config
@@ -109,7 +109,7 @@ def initialize_ugm(config, global_config, local_config):
 # XXX: move to cone.ldap
 ###############################################################################
 
-@cone.app.main_hook
+@main_hook
 def initialize_ldap(config, global_config, local_config):
     """Initialize cone.ldap.
     """
@@ -122,10 +122,8 @@ class LDAPUGMFactory(UGMFactory):
     """
 
     def __init__(self, settings):
-        self.users_file = settings.get('ugm.users_file')
-        self.groups_file = settings.get('ugm.groups_file')
-        self.roles_file = settings.get('ugm.roles_file')
-        self.datadir = settings.get('ugm.datadir')
+        """
+        """
 
     def __call__(self):
         settings = get_root()['settings']
