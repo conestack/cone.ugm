@@ -138,9 +138,7 @@ class TestBrowserGroup(TileTestCase):
         with self.layer.authenticated('manager'):
             res = render_tile(groups, request, 'add')
         self.assertEqual(res, '')
-
         self.assertTrue(isinstance(request.environ['redirect'], HTTPFound))
-
         self.assertEqual(sorted(groups.keys()), [
             'admin_group_1', 'admin_group_2', 'group0', 'group1', 'group2',
             'group3', 'group4', 'group5', 'group6', 'group7', 'group8',
