@@ -25,6 +25,7 @@ def test_suite():
     from cone.ugm.tests import test_browser_settings
     from cone.ugm.tests import test_browser_user
     from cone.ugm.tests import test_browser_users
+    from cone.ugm.tests import test_browser_utils
 
     suite = unittest.TestSuite()
 
@@ -50,6 +51,7 @@ def test_suite():
     suite.addTest(unittest.findTestCases(test_browser_settings))
     suite.addTest(unittest.findTestCases(test_browser_user))
     suite.addTest(unittest.findTestCases(test_browser_users))
+    suite.addTest(unittest.findTestCases(test_browser_utils))
 
     return suite
 
