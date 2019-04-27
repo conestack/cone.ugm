@@ -7,7 +7,7 @@ from pyramid.httpexceptions import HTTPForbidden
 from webob.exc import HTTPFound
 
 
-class TestBrowserGroup(TileTestCase):
+class TestBrowserUser(TileTestCase):
     layer = testing.ugm_layer
 
     def test_content_tile(self):
@@ -99,7 +99,7 @@ class TestBrowserGroup(TileTestCase):
         self.assertTrue(res.find(expected) > -1)
 
     @testing.remove_principals(users=['uid99'])
-    def test_add_group(self):
+    def test_add_user(self):
         users = root['users']
         request = self.layer.new_request()
         request.params['factory'] = 'user'
@@ -154,7 +154,7 @@ class TestBrowserGroup(TileTestCase):
         """, str(sorted(user.attrs.items())))
 
     @testing.temp_principals(users={'uid99': {'sn': 'Uid99', 'cn': 'Uid99'}})
-    def test_edit_group(self, users, groups):
+    def test_edit_user(self, users, groups):
         user = users['uid99']
         request = self.layer.new_request()
 
