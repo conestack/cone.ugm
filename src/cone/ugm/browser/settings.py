@@ -57,9 +57,32 @@ class GeneralSettingsForm(Form):
         return extracted
 
     def save(self, widget, data):
-        data.write(self.model)
-        self.model()
-        self.model.invalidate()
+        model = self.model
+        for attr_name in [
+            'users_account_expiration',
+            'users_expires_attr',
+            'users_expires_unit',
+            'user_id_autoincrement',
+            'user_id_autoincrement_prefix',
+            'user_id_autoincrement_start',
+            'users_portrait',
+            'users_portrait_attr',
+            'users_portrait_accept',
+            'users_portrait_width',
+            'users_portrait_height',
+            'users_local_management_enabled',
+            'users_exposed_attributes',
+            'users_form_attrmap',
+            'users_listing_columns',
+            'users_listing_default_column',
+            'groups_form_attrmap',
+            'groups_listing_columns',
+            'groups_listing_default_column'
+        ]:
+            val = data.fetch('ugm_settings.%s' % attr_name).extracted
+            setattr(model.attrs, attr_name, val)
+        model()
+        model.invalidate()
 
 
 @tile(

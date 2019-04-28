@@ -3,7 +3,6 @@ name: ugm_settings
 props:
     action: context.form_action
     class: ajax
-    persist_writer: yafowil.persistence.node_attribute_writer
 widgets:
 - users_heading:
     factory: tag
@@ -118,7 +117,6 @@ widgets:
         array.label: i18n:users_exposed_attributes_array:Click '+' to add attributes
         help: i18n:users_exposed_attributes_help:Attributes which can be set via remote API
         sort: False
-        persist: True
     widgets:
     - exposed:
         factory: error:text
@@ -133,7 +131,6 @@ widgets:
         help: i18n:users_form_attrmap_help:Attributes exposed in user form
         key_label: i18n:principal_attr_name:Attribute name
         value_label: i18n:form_label:Form label
-        persist: True
 - users_listing_columns:
     factory: field:label:help:dict
     value: expr:context.model.attrs.users_listing_columns
@@ -144,7 +141,6 @@ widgets:
             listings values are mandatory
         key_label: i18n:principal_attr_name:Attribute name
         value_label: i18n:display_name:Display name
-        persist: True
 - users_listing_default_column:
     factory: field:label:help:error:text
     value: expr:context.model.attrs.users_listing_default_column
@@ -166,7 +162,6 @@ widgets:
         help: i18n:groups_form_attrmap_help:Attributes exposed in group form
         key_label: i18n:principal_attr_name:Attribute name
         value_label: i18n:form_label:Form label
-        persist: True
 - groups_listing_columns:
     factory: field:label:help:dict
     value: expr:context.model.attrs.groups_listing_columns
@@ -177,7 +172,6 @@ widgets:
             group listings value are mandatory
         key_label: i18n:principal_attr_name:Attribute name
         value_label: i18n:display_name:Display name
-        persist: True
 - groups_listing_default_column:
     factory: field:label:help:text
     value: expr:context.model.attrs.groups_listing_default_column
