@@ -1,12 +1,11 @@
+from cone.app import compat
 from cone.app.browser.batch import Batch
 from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
 from cone.app.browser.utils import nodepath
 from cone.app.browser.utils import request_property
 from cone.app.browser.utils import safe_decode
-from cone.app.compat import unquote
 from cone.tile import Tile
-from cone.ugm import compat
 from cone.ugm.model.utils import ugm_groups
 from cone.ugm.model.utils import ugm_users
 from pyramid.i18n import TranslationStringFactory
@@ -98,7 +97,11 @@ class ColumnListing(Tile):
 
     def unquoted_param_value(self, name):
         value = self.request.params.get(name)
-        return unquote(value.encode('utf-8')).decode('utf-8') if value else value
+        if value:
+            value = value.encode('utf-8') if compat.IS_PY2 else value
+            value = compat.unquote(value)
+            value = value.decode('utf-8') if compat.IS_PY2 else value
+        return value
 
     def filter_value_or_default(self, name):
         value = self.unquoted_param_value(name)

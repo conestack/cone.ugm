@@ -1,13 +1,12 @@
+from cone.app import compat
 from cone.app.browser.ajax import AjaxAction
 from cone.app.browser.authoring import AddBehavior
 from cone.app.browser.authoring import EditBehavior
 from cone.app.browser.form import Form
 from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
-from cone.app.compat import unquote
 from cone.tile import Tile
 from cone.tile import tile
-from cone.ugm import compat
 from cone.ugm.browser import form_field_definitions
 from cone.ugm.browser.authoring import AddFormFiddle
 from cone.ugm.browser.authoring import EditFormFiddle
@@ -320,7 +319,7 @@ class UserEditForm(UserForm, Form):
     def next(self, request):
         came_from = request.get('came_from')
         if came_from:
-            came_from = unquote(came_from)
+            came_from = compat.unquote(came_from)
             url = '{}?pid={}'.format(came_from, self.model.name)
         else:
             url = make_url(request.request, node=self.model)

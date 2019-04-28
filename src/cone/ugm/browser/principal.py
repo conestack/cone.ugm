@@ -1,5 +1,5 @@
+from cone.app import compat
 from cone.app.browser.utils import make_url
-from cone.ugm import compat
 from pyramid.i18n import get_localizer
 from pyramid.i18n import TranslationStringFactory
 from yafowil.base import factory

@@ -1,5 +1,5 @@
+from cone.app import compat
 from cone.tile.tests import TileTestCase
-from cone.ugm import compat
 from cone.ugm import testing
 from pyramid.exceptions import HTTPForbidden
 from pyramid.view import render_view_to_response
