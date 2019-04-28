@@ -56,7 +56,7 @@ class GroupsListing(ColumnListing):
     related_only = False
 
     @property
-    def query_items(self):
+    def listing_items(self):
         appuser = self.model
         user = appuser.model
         groups = user.groups

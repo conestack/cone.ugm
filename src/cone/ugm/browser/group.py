@@ -52,7 +52,7 @@ class UsersListing(ColumnListing):
     members_only = False
 
     @property
-    def query_items(self):
+    def listing_items(self):
         appgroup = self.model
         group = appgroup.model
         member_ids = group.keys()

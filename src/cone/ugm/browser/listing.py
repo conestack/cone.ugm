@@ -28,7 +28,7 @@ class ColumnListingBatch(Batch):
     def __init__(self, listing):
         self.listing = listing
         self.name = listing.batchname
-        self.items = listing.query_items
+        self.items = listing.listing_items
         self.slicesize = listing.slicesize
 
     @property
@@ -169,7 +169,7 @@ class ColumnListing(Tile):
     @property
     def items(self):
         start, end = self.slice
-        items = self.query_items
+        items = self.listing_items
         inv = self.sort_order == 'desc'
         items = natsort.natsorted(
             items,
@@ -180,7 +180,7 @@ class ColumnListing(Tile):
         return items[start:end]
 
     @property
-    def query_items(self):
+    def listing_items(self):
         """Return list of dicts like:
 
         {
@@ -199,7 +199,7 @@ class ColumnListing(Tile):
         }
         """
         raise NotImplementedError(
-            'Abstract ``ColumnListing`` does not implement ``items``')
+            'Abstract ``ColumnListing`` does not implement ``listing_items``')
 
     def item_content(self, *args):
         ret = u''
@@ -303,10 +303,11 @@ class PrincipalsListing(ColumnListing):
     sort_attr = None
 
     @request_property
-    def query_items(self):
+    def listing_items(self):
         can_delete = self.request.has_permission(
             self.delete_permission,
-            self.model)
+            self.model
+        )
         try:
             ret = list()
             localmanager_ids = self.localmanager_ids
@@ -327,14 +328,16 @@ class PrincipalsListing(ColumnListing):
             result = principals.search(
                 criteria=criteria,
                 attrlist=attrlist,
-                or_search=True)
+                or_search=True
+            )
             for key, attrs in result:
                 # reduce result by localmanager ids if not None
                 if localmanager_ids is not None and key not in localmanager_ids:
                     continue
                 query = make_query(
                     pid=key,
-                    came_from=make_url(self.request, node=self.model))
+                    came_from=make_url(self.request, node=self.model)
+                )
                 target = make_url(self.request, node=self.model, query=query)
                 actions = list()
                 if can_delete:
@@ -348,7 +351,12 @@ class PrincipalsListing(ColumnListing):
                 content = self.item_content(*vals)
                 current = self.current_id == key
                 ret.append(self.create_item(
-                    sort, target, content, current, actions))
+                    sort,
+                    target,
+                    content,
+                    current,
+                    actions
+                ))
             return ret
         except Exception as e:
             logger.error(str(e))
