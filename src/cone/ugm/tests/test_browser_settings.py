@@ -1,9 +1,9 @@
 from cone.app import get_root
 from cone.app import root
-from cone.app.browser.settings import GeneralSettingsForm
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
+from cone.ugm.browser.settings import GeneralSettingsForm
 from cone.ugm.model.settings import ugm_cfg
 from pyramid.httpexceptions import HTTPForbidden
 import os
@@ -20,7 +20,7 @@ class TestBrowserSettings(TileTestCase):
         with open(config_file, 'w') as f:
             f.write('<properties></properties>')
 
-        model = get_root()['settings']['ugm']
+        model = get_root()['settings']['ugm_general']
         request = self.layer.new_request()
 
         tile = GeneralSettingsForm()
@@ -55,7 +55,7 @@ class TestBrowserSettings(TileTestCase):
         ])
 
     def test_general_settings_tiles(self):
-        general_settings = root['settings']['ugm']
+        general_settings = root['settings']['ugm_general']
         request = self.layer.new_request()
         # Unauthenticated content tile raises error
         self.expectError(
@@ -81,7 +81,7 @@ class TestBrowserSettings(TileTestCase):
         self.assertTrue(res.find(expected) > -1)
 
     def test_localmanager_settings_tiles(self):
-        lm_settings = root['settings']['localmanager']
+        lm_settings = root['settings']['ugm_localmanager']
         request = self.layer.new_request()
         # Unauthenticated content tile raises error
         self.expectError(

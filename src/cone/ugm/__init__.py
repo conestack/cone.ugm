@@ -8,6 +8,7 @@ from cone.ugm.model.group import Group
 from cone.ugm.model.groups import Groups
 from cone.ugm.model.groups import groups_factory
 from cone.ugm.model.settings import GeneralSettings
+from cone.ugm.model.settings import LocalManagerSettings
 from cone.ugm.model.settings import ugm_cfg
 from cone.ugm.model.user import User
 from cone.ugm.model.users import Users
@@ -59,12 +60,13 @@ def initialize_ugm(config, global_config, settings):
     # custom UGM javascript
     cfg.merged.js.protected.append((browser.static_resources, 'ugm.js'))
 
-    # UGM general settings
+    # config file locations
     ugm_cfg.ugm_settings = settings.get('ugm.config', '')
-    register_config('ugm_general', GeneralSettings)
-
-    # Localmanager config file location
     ugm_cfg.lm_settings = settings.get('ugm.localmanager_config', '')
+
+    # UGM settings
+    register_config('ugm_general', GeneralSettings)
+    register_config('ugm_localmanager', LocalManagerSettings)
 
     # Users container
     register_entry('users', users_factory)

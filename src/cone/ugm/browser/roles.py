@@ -20,7 +20,8 @@ class PrincipalRolesForm(Behavior):
     @property
     def roles_support(self):
         # XXX: LDAP
-        return self.model.root['ldap_roles'].ldap_roles_container_valid
+        settings = self.model.root['settings']['ldap_roles']
+        return settings.container_exists
 
     @plumb
     def prepare(_next, self):

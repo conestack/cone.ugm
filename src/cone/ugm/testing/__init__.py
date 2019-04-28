@@ -1,9 +1,12 @@
-from cone.app import root
+from cone.app import get_root
 from cone.app.testing import Security
 from cone.app.ugm import ugm_backend
+from cone.ugm.model.settings import ugm_cfg
 from node.ext.ldap.testing import LDIF_groupOfNames_10_10
 from plone.testing import Layer
 import os
+import shutil
+import tempfile
 
 
 class principals_decorator(object):
@@ -32,6 +35,7 @@ class principals_decorator(object):
         self.del_principal(self.ugm['groups'], name)
 
     def invalidate(self):
+        root = get_root()
         root['users'].invalidate()
         root['groups'].invalidate()
 
@@ -73,6 +77,7 @@ class temp_principals(principals_decorator):
                 self.create_group(group_id, **group_kw)
             self.apply()
             try:
+                root = get_root()
                 fn(inst, root['users'], root['groups'])
             finally:
                 for user_id in self.users:
@@ -81,6 +86,50 @@ class temp_principals(principals_decorator):
                     self.del_group(group_id)
                 self.apply()
         return wrapper
+
+
+def _invalidate_settings():
+    settings = get_root()['settings']
+    settings['ugm_general'].invalidate()
+
+
+def invalidate_settings(fn):
+    """Decorator for tests working on settings nodes.
+    """
+    def wrapper(*a, **kw):
+        _invalidate_settings()
+        try:
+            fn(*a, **kw)
+        finally:
+            _invalidate_settings()
+    return wrapper
+
+
+def custom_config_path(fn):
+    """Decorator for tests writing to config files.
+    """
+    def wrapper(*a, **kw):
+        ugm_settings = ugm_cfg.ugm_settings
+        _invalidate_settings()
+        try:
+            fn(*a, **kw)
+        finally:
+            ugm_cfg.ugm_settings = ugm_settings
+            _invalidate_settings()
+    return wrapper
+
+
+def temp_directory(fn):
+    """Decorator for tests needing a temporary directory.
+    """
+    def wrapper(*a, **kw):
+        tempdir = tempfile.mkdtemp()
+        kw['tempdir'] = tempdir
+        try:
+            fn(*a, **kw)
+        finally:
+            shutil.rmtree(tempdir)
+    return wrapper
 
 
 base_path = os.path.split(__file__)[0]

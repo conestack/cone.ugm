@@ -46,7 +46,7 @@ class TestModelSettings(NodeTestCase):
 
     @testing.invalidate_settings
     def test_UGMGeneralSettings(self):
-        settings = get_root()['settings']['ugm']
+        settings = get_root()['settings']['ugm_general']
 
         self.assertTrue(isinstance(settings, GeneralSettings))
 

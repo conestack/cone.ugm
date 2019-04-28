@@ -18,6 +18,8 @@ ugm_cfg.lm_settings = ''
 
 
 class XMLSettings(BaseNode):
+    """XXX: Duplicate code as cone.ldap.settings.XMLSettings
+    """
     config_file = None
 
     def __call__(self):
