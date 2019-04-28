@@ -52,18 +52,12 @@ class UserRightColumn(Tile):
     pass
 
 
-class Groups(object):
-    """Descriptor to return groups related to user for listing.
-    """
-    filter_param = 'filter'
+class GroupsListing(ColumnListing):
+    related_only = False
 
-    def __init__(self, related_only=False):
-        self.related_only = related_only
-
-    def __get__(self, obj, objtype=None):
-        if obj is None:
-            return self
-        appuser = obj.model
+    @property
+    def query_items(self):
+        appuser = self.model
         user = appuser.model
         groups = user.groups
         related_ids = [g.name for g in groups]
@@ -71,17 +65,18 @@ class Groups(object):
         # in the loop below
         related = self.related_only
         if not related:
-            groups = obj.model.root['groups'].backend.values()
+            groups = self.model.root['groups'].backend.values()
         # reduce for local manager
-        if obj.model.local_manager_consider_for_user:
-            local_gids = obj.model.local_manager_target_gids
+        if self.model.local_manager_consider_for_user:
+            local_gids = self.model.local_manager_target_gids
             groups = [g for g in groups if g.name in local_gids]
-        attrlist = obj.group_attrs
-        sort_attr = obj.group_default_sort_column
-        filter_term = obj.unquoted_param_value(self.filter_param)
-        can_change = obj.request.has_permission(
+        attrlist = self.group_attrs
+        sort_attr = self.group_default_sort_column
+        filter_term = self.unquoted_param_value('filter')
+        can_change = self.request.has_permission(
             'manage_membership',
-            obj.model.parent)
+            self.model.parent
+        )
         ret = list()
         for group in groups:
             attrs = group.attrs
@@ -91,35 +86,54 @@ class Groups(object):
                 if not fnmatch.filter(s_attrs, filter_term):
                     continue
             gid = group.name
-            item_target = make_url(obj.request, path=group.path[1:])
+            item_target = make_url(self.request, path=group.path[1:])
             action_query = make_query(id=gid)
-            action_target = make_url(obj.request,
-                                     node=appuser,
-                                     query=action_query)
+            action_target = make_url(
+                self.request,
+                node=appuser,
+                query=action_query
+            )
             if not self.related_only:
                 related = gid in related_ids
             actions = list()
             if can_change:
                 action_id = 'add_item'
                 action_enabled = not bool(related)
-                action_title = _('add_user_to_selected_group',
-                                 default='Add user to selected group')
-                add_item_action = obj.create_action(
-                    action_id, action_enabled, action_title, action_target)
+                action_title = _(
+                    'add_user_to_selected_group',
+                    default='Add user to selected group'
+                )
+                add_item_action = self.create_action(
+                    action_id,
+                    action_enabled,
+                    action_title,
+                    action_target
+                )
                 actions.append(add_item_action)
                 action_id = 'remove_item'
                 action_enabled = bool(related)
-                action_title = _('remove_user_from_selected_group',
-                                 default='Remove user from selected group')
-                remove_item_action = obj.create_action(
-                    action_id, action_enabled, action_title, action_target)
+                action_title = _(
+                    'remove_user_from_selected_group',
+                    default='Remove user from selected group'
+                )
+                remove_item_action = self.create_action(
+                    action_id,
+                    action_enabled,
+                    action_title,
+                    action_target
+                )
                 actions.append(remove_item_action)
-            vals = [obj.extract_raw(attrs, attr) for attr in attrlist]
-            sort = obj.extract_raw(attrs, sort_attr)
-            content = obj.item_content(*vals)
+            vals = [self.extract_raw(attrs, attr) for attr in attrlist]
+            sort = self.extract_raw(attrs, sort_attr)
+            content = self.item_content(*vals)
             current = False
-            item = obj.create_item(sort, item_target,
-                                   content, current, actions)
+            item = self.create_item(
+                sort,
+                item_target,
+                content,
+                current,
+                actions
+            )
             ret.append(item)
         return ret
 
@@ -129,11 +143,11 @@ class Groups(object):
     path='templates/column_listing.pt',
     interface=User,
     permission='view')
-class GroupsOfUserColumnListing(ColumnListing):
+class GroupsOfUserColumnListing(GroupsListing):
     slot = 'rightlisting'
     list_columns = ColumnListing.group_list_columns
     css = 'groups'
-    query_items = Groups(related_only=True)
+    related_only = True
     batchname = 'rightbatch'
     display_limit = True
     display_limit_checked = False
@@ -144,11 +158,10 @@ class GroupsOfUserColumnListing(ColumnListing):
     path='templates/column_listing.pt',
     interface=User,
     permission='view')
-class AllGroupsColumnListing(ColumnListing):
+class AllGroupsColumnListing(GroupsListing):
     slot = 'rightlisting'
     list_columns = ColumnListing.group_list_columns
     css = 'groups'
-    query_items = Groups(related_only=False)
     batchname = 'rightbatch'
     display_limit = True
     display_limit_checked = True

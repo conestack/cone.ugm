@@ -48,18 +48,12 @@ class GroupRightColumn(Tile):
     pass
 
 
-class Users(object):
-    """Descriptor to return users related to group for listing.
-    """
-    filter_param = 'filter'
+class UsersListing(ColumnListing):
+    members_only = False
 
-    def __init__(self, members_only=False):
-        self.members_only = members_only
-
-    def __get__(self, obj, objtype=None):
-        if obj is None:
-            return self
-        appgroup = obj.model
+    @property
+    def query_items(self):
+        appgroup = self.model
         group = appgroup.model
         member_ids = group.keys()
         # Always True if we list members only, otherwise will be set
@@ -73,15 +67,16 @@ class Users(object):
             # XXX: LDAP query here.
             users = group.root.users.values()
         # reduce for local manager
-        if obj.model.local_manager_consider_for_user:
-            local_uids = obj.model.local_manager_target_uids
+        if self.model.local_manager_consider_for_user:
+            local_uids = self.model.local_manager_target_uids
             users = [u for u in users if u.name in local_uids]
-        attrlist = obj.user_attrs
-        sort_attr = obj.user_default_sort_column
-        filter_term = obj.unquoted_param_value(self.filter_param)
-        can_change = obj.request.has_permission(
+        attrlist = self.user_attrs
+        sort_attr = self.user_default_sort_column
+        filter_term = self.unquoted_param_value('filter')
+        can_change = self.request.has_permission(
             'manage_membership',
-            obj.model.parent)
+            self.model.parent
+        )
         ret = list()
         for user in users:
             attrs = user.attrs
@@ -91,36 +86,54 @@ class Users(object):
                 if not fnmatch.filter(s_attrs, filter_term):
                     continue
             uid = user.name
-            item_target = make_url(obj.request, path=user.path[1:])
+            item_target = make_url(self.request, path=user.path[1:])
             action_query = make_query(id=uid)
-            action_target = make_url(obj.request,
-                                     node=appgroup,
-                                     query=action_query)
+            action_target = make_url(
+                self.request,
+                node=appgroup,
+                query=action_query
+            )
             if not self.members_only:
                 related = uid in member_ids
             actions = list()
             if can_change:
                 action_id = 'add_item'
                 action_enabled = not bool(related)
-                action_title = _('add_user_to_selected_group',
-                                 default='Add user to selected group')
-                add_item_action = obj.create_action(
-                    action_id, action_enabled, action_title, action_target)
+                action_title = _(
+                    'add_user_to_selected_group',
+                    default='Add user to selected group'
+                )
+                add_item_action = self.create_action(
+                    action_id,
+                    action_enabled,
+                    action_title,
+                    action_target
+                )
                 actions.append(add_item_action)
-
                 action_id = 'remove_item'
                 action_enabled = bool(related)
-                action_title = _('remove_user_from_selected_group',
-                                 default='Remove user from selected group')
-                remove_item_action = obj.create_action(
-                    action_id, action_enabled, action_title, action_target)
+                action_title = _(
+                    'remove_user_from_selected_group',
+                    default='Remove user from selected group'
+                )
+                remove_item_action = self.create_action(
+                    action_id,
+                    action_enabled,
+                    action_title,
+                    action_target
+                )
                 actions.append(remove_item_action)
-            vals = [obj.extract_raw(attrs, attr) for attr in attrlist]
-            sort = obj.extract_raw(attrs, sort_attr)
-            content = obj.item_content(*vals)
+            vals = [self.extract_raw(attrs, attr) for attr in attrlist]
+            sort = self.extract_raw(attrs, sort_attr)
+            content = self.item_content(*vals)
             current = False
-            item = obj.create_item(sort, item_target, content,
-                                   current, actions)
+            item = self.create_item(
+                sort,
+                item_target,
+                content,
+                current,
+                actions
+            )
             ret.append(item)
         return ret
 
@@ -130,11 +143,11 @@ class Users(object):
     path='templates/column_listing.pt',
     interface=Group,
     permission='view')
-class UsersOfGroupColumnListing(ColumnListing):
+class UsersOfGroupColumnListing(UsersListing):
     css = 'users'
     slot = 'rightlisting'
     list_columns = ColumnListing.user_list_columns
-    query_items = Users(members_only=True)
+    members_only = True
     batchname = 'rightbatch'
     display_limit = True
     display_limit_checked = False
@@ -145,11 +158,10 @@ class UsersOfGroupColumnListing(ColumnListing):
     path='templates/column_listing.pt',
     interface=Group,
     permission='view')
-class AllUsersColumnListing(ColumnListing):
+class AllUsersColumnListing(UsersListing):
     css = 'users'
     slot = 'rightlisting'
     list_columns = ColumnListing.user_list_columns
-    query_items = Users(members_only=False)
     batchname = 'rightbatch'
     display_limit = True
     display_limit_checked = True
