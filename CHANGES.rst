@@ -5,6 +5,26 @@ Changes
 1.0a1 (unreleased)
 ------------------
 
+- Rename ``cone.ugm.browser.listing.ColumnListing.query_items`` to
+  ``listing_items``.
+  [rnix]
+
+- Turn ``cone.ugm.browser.group.Users`` and ``cone.ugm.browser.user.Groups``
+  property descriptors into ``ColumnListing`` deriving tiles.
+  [rnix]
+
+- Remove superfluous ``jQuery.sortElements.js`` and ``naturalSort.js``.
+  [rnix]
+
+- Move plugin config code inside main hook function.
+  [rnix]
+
+- Python 3 Support.
+  [rnix]
+
+- Convert doctests to unittests.
+  [rnix]
+
 - Use ``cone.app.ugm.ugm_backend`` instead of ``cone.app.cfg.auth``.
   [rnix]
 

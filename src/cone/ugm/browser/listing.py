@@ -344,7 +344,11 @@ class PrincipalsListing(ColumnListing):
                     action_id = 'delete_item'
                     action_title = self.delete_label
                     delete_action = self.create_action(
-                        action_id, True, action_title, target)
+                        action_id,
+                        True,
+                        action_title,
+                        target
+                    )
                     actions = [delete_action]
                 vals = [self.extract_raw(attrs, attr) for attr in attrlist]
                 sort = self.extract_raw(attrs, sort_attr)
