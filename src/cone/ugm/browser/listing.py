@@ -6,13 +6,13 @@ from cone.app.browser.utils import request_property
 from cone.app.browser.utils import safe_decode
 from cone.app.compat import unquote
 from cone.tile import Tile
+from cone.ugm import compat
 from cone.ugm.model.utils import ugm_groups
 from cone.ugm.model.utils import ugm_users
 from pyramid.i18n import TranslationStringFactory
 from yafowil.utils import Tag
 import logging
 import natsort
-import types
 
 
 tag = Tag(lambda x: x)
@@ -41,7 +41,7 @@ class ColumnListingBatch(Batch):
         ret = list()
         path = nodepath(self.model)
         count = len(self.items)
-        pages = count / self.slicesize
+        pages = count // self.slicesize
         if count % self.slicesize != 0:
             pages += 1
         current = self.listing.current_page
@@ -225,7 +225,7 @@ class ColumnListing(Tile):
 
     def extract_raw(self, attrs, name):
         raw = attrs.get(name)
-        if type(raw) in [types.ListType, types.TupleType]:
+        if type(raw) in compat.ITER_TYPES:
             return raw[0]
         return raw and raw or ''
 

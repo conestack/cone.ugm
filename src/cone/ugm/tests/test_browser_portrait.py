@@ -3,7 +3,7 @@ from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
 from cone.ugm.model.utils import ugm_general
-from StringIO import StringIO
+from io import BytesIO
 import pkg_resources
 
 
@@ -24,7 +24,7 @@ def dummy_file_data(filename):
         'yafowil.widget.image',
         'testing/{}'.format(filename)
     )
-    with open(path) as file:
+    with open(path, 'rb') as file:
         data = file.read()
     return data
 
@@ -71,7 +71,7 @@ class TestBrowserPortrait(TileTestCase):
         # Submit portrait
         dummy_jpg = dummy_file_data('dummy.jpg')
         portrait = {
-            'file': StringIO(dummy_jpg),
+            'file': BytesIO(dummy_jpg),
             'mimetype': 'image/jpeg',
         }
 
@@ -80,7 +80,7 @@ class TestBrowserPortrait(TileTestCase):
             res = render_tile(user, request, 'editform')
 
         # New portrait set on user
-        self.assertTrue(user.attrs['jpegPhoto'].startswith('\xff\xd8\xff\xe0\x00\x10JFIF'))
+        self.assertTrue(user.attrs['jpegPhoto'].startswith(b'\xff\xd8\xff\xe0\x00\x10JFIF'))
 
         # Portrait present, link to user portrait is shown
         request = self.layer.new_request()

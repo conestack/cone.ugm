@@ -1,18 +1,15 @@
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
 from cone.app.browser.utils import make_url
 from cone.ugm.model.user import User
 from cone.ugm.model.utils import ugm_general
+from io import BytesIO
 from plumber import Behavior
 from plumber import default
 from plumber import plumb
 from pyramid.i18n import TranslationStringFactory
 from pyramid.response import Response
 from pyramid.view import view_config
-from yafowil.base import UNSET
 from yafowil.base import factory
+from yafowil.base import UNSET
 
 
 _ = TranslationStringFactory('cone.ugm')
@@ -66,7 +63,7 @@ class PortraitForm(Behavior):
         image_data = model.attrs.get(image_attr)
         if image_data:
             image_value = {
-                'file': StringIO(image_data),
+                'file': BytesIO(image_data),
                 'mimetype': 'image/jpeg',
             }
             image_url = make_url(request, node=model,
@@ -106,7 +103,7 @@ class PortraitForm(Behavior):
         if portrait:
             if portrait['action'] in ['new', 'replace']:
                 cropped = portrait['cropped']
-                image_data = StringIO()
+                image_data = BytesIO()
                 cropped.save(image_data, 'jpeg', quality=100)
                 image_data.seek(0)
                 self.model.attrs[image_attr] = image_data.read()

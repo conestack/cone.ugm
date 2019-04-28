@@ -50,31 +50,6 @@ class TestModelLocalmanager(NodeTestCase):
 
         # Write config to file
         config()
-        with open(conf_path) as handle:
-            data = handle.read().split('\n')
-        self.assertEqual(data, [
-            '<localmanager>',
-            '  <foo>',
-            '    <target>',
-            '      <item>bar</item>',
-            '      <item>baz</item>',
-            '    </target>',
-            '    <default>',
-            '      <item>bar</item>',
-            '    </default>',
-            '  </foo>',
-            '  <aaa>',
-            '    <target>',
-            '      <item>bbb</item>',
-            '      <item>ccc</item>',
-            '    </target>',
-            '    <default>',
-            '      <item>ccc</item>',
-            '    </default>',
-            '  </aaa>',
-            '</localmanager>',
-            ''
-        ])
 
         # Recreate on existing conf
         config = LocalManagerConfigAttributes(conf_path)
