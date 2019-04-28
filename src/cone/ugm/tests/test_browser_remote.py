@@ -2,7 +2,6 @@ from cone.app import root
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
 from cone.ugm.model.utils import ugm_roles
-from cone.ugm.model.utils import ugm_server
 from node.ext.ldap import LDAPNode
 from node.ext.ldap import ONELEVEL
 from node.ext.ldap.ugm import RolesConfig
@@ -15,7 +14,7 @@ import json
 class remote_user_test(testing.remove_principals):
 
     def prepare_roles(self):
-        props = ugm_server(root).ldap_props
+        props = root['settings']['ldap_server'].ldap_props
         node = LDAPNode('dc=my-domain,dc=com', props)
         node['ou=roles'] = LDAPNode()
         node['ou=roles'].attrs['objectClass'] = ['organizationalUnit']
@@ -29,11 +28,11 @@ class remote_user_test(testing.remove_principals):
             objectClasses=['groupOfNames'],
             defaults={},
         )
-        roles = ugm_roles(root)
+        roles = root['settings']['ldap_roles']
         roles._ldap_rcfg = rcfg
 
     def cleanup_roles(self):
-        roles = ugm_roles(root)
+        roles = root['settings']['ldap_roles']
         roles._ldap_rcfg = None
 
     def __call__(self, fn):

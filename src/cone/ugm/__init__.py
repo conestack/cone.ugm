@@ -7,8 +7,8 @@ from cone.ugm import browser
 from cone.ugm.model.group import Group
 from cone.ugm.model.groups import Groups
 from cone.ugm.model.groups import groups_factory
-from cone.ugm.settings import ugm_cfg
-from cone.ugm.settings import GeneralSettings
+from cone.ugm.model.settings import GeneralSettings
+from cone.ugm.model.settings import ugm_cfg
 from cone.ugm.model.user import User
 from cone.ugm.model.users import Users
 from cone.ugm.model.users import users_factory
@@ -17,7 +17,6 @@ from pyramid.security import Allow
 from pyramid.security import Deny
 from pyramid.security import Everyone
 import logging
-import os
 
 
 logger = logging.getLogger('cone.ugm')
@@ -62,10 +61,10 @@ def initialize_ugm(config, global_config, settings):
 
     # UGM general settings
     ugm_cfg.ugm_settings = settings.get('ugm.config', '')
-    register_config('ugm', GeneralSettings)
+    register_config('ugm_general', GeneralSettings)
 
     # Localmanager config file location
-    ugm_cfg.lm_config = settings.get('ugm.localmanager_config', '')
+    ugm_cfg.lm_settings = settings.get('ugm.localmanager_config', '')
 
     # Users container
     register_entry('users', users_factory)

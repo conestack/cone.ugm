@@ -13,7 +13,7 @@ _ = TranslationStringFactory('cone.ugm')
 
 ugm_cfg = Properties()
 ugm_cfg.ugm_settings = ''
-ugm_cfg.lm_config = ''
+ugm_cfg.lm_settings = ''
 
 
 class XMLSettings(BaseNode):
@@ -60,7 +60,7 @@ class GeneralSettings(XMLSettings):
 class LocalManagerSettings(BaseNode):
 
     def attributes_factory(self, name=None, parent=None):
-        return LocalManagerConfigAttributes(ugm_cfg.lm_config)
+        return LocalManagerConfigAttributes(ugm_cfg.lm_settings)
 
     @instance_property
     def metadata(self):

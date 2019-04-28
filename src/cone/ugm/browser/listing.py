@@ -6,8 +6,7 @@ from cone.app.browser.utils import nodepath
 from cone.app.browser.utils import request_property
 from cone.app.browser.utils import safe_decode
 from cone.tile import Tile
-from cone.ugm.model.utils import ugm_groups
-from cone.ugm.model.utils import ugm_users
+from cone.ugm.model.utils import ugm_general
 from pyramid.i18n import TranslationStringFactory
 from yafowil.utils import Tag
 import logging
@@ -239,13 +238,13 @@ class ColumnListing(Tile):
 
     @property
     def user_list_columns(self):
-        settings = ugm_users(self.model)
-        return settings.attrs.users_listing_columns
+        cfg = ugm_general(self.model)
+        return cfg.attrs.users_listing_columns
 
     @property
     def user_attrs(self):
-        settings = ugm_users(self.model)
-        return settings.attrs.users_listing_columns.keys()
+        cfg = ugm_general(self.model)
+        return cfg.attrs.users_listing_columns.keys()
 
     @property
     def user_localmanager_ids(self):
@@ -255,9 +254,9 @@ class ColumnListing(Tile):
 
     @property
     def user_default_sort_column(self):
-        settings = ugm_users(self.model)
+        cfg = ugm_general(self.model)
         attrs = self.user_attrs
-        sort = settings.attrs.users_listing_default_column
+        sort = cfg.attrs.users_listing_default_column
         if sort not in attrs:
             return attrs[0]
         return sort
@@ -266,13 +265,13 @@ class ColumnListing(Tile):
 
     @property
     def group_list_columns(self):
-        settings = ugm_groups(self.model)
-        return settings.attrs.groups_listing_columns
+        cfg = ugm_general(self.model)
+        return cfg.attrs.groups_listing_columns
 
     @property
     def group_attrs(self):
-        settings = ugm_groups(self.model)
-        return settings.attrs.groups_listing_columns.keys()
+        cfg = ugm_general(self.model)
+        return cfg.attrs.groups_listing_columns.keys()
 
     @property
     def group_localmanager_ids(self):
@@ -282,9 +281,9 @@ class ColumnListing(Tile):
 
     @property
     def group_default_sort_column(self):
-        settings = ugm_groups(self.model)
+        cfg = ugm_general(self.model)
         attrs = self.group_attrs
-        sort = settings.attrs.groups_listing_default_column
+        sort = cfg.attrs.groups_listing_default_column
         if sort not in attrs:
             return attrs[0]
         return sort
