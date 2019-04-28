@@ -44,7 +44,7 @@ class LocalManagerConfig(DictStorage):
                 for gid in rule[tag_name]:
                     item = etree.SubElement(elem, 'item')
                     item.text = gid
-        with open(self.file_path, 'w') as handle:
+        with open(self.file_path, 'wb') as handle:
             handle.write(etree.tostring(root, pretty_print=True))
 
 

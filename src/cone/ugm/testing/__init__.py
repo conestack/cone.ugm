@@ -114,8 +114,10 @@ class UGMLayer(Security, Layer):
                 user.add_role(uid)
         for uid in ['localmanager_1', 'localmanager_2']:
             create_user(uid)
-        for gid, uid in [('admin_group_1', 'localmanager_1'),
-                         ('admin_group_2', 'localmanager_2')]:
+        for gid, uid in [
+            ('admin_group_1', 'localmanager_1'),
+            ('admin_group_2', 'localmanager_2')
+        ]:
             group = ugm.groups.create(gid)
             group.add(uid)
         ugm()
@@ -123,8 +125,10 @@ class UGMLayer(Security, Layer):
     def tearDown(self):
         super(UGMLayer, self).tearDown()
         ugm = ugm_backend.ugm
-        for uid in ['viewer', 'editor', 'admin', 'manager', 'max', 'sepp',
-                    'localmanager_1', 'localmanager_2']:
+        for uid in [
+            'viewer', 'editor', 'admin', 'manager', 'max', 'sepp',
+            'localmanager_1', 'localmanager_2'
+        ]:
             del ugm.users[uid]
         for gid in ['admin_group_1', 'admin_group_2']:
             del ugm.groups[gid]

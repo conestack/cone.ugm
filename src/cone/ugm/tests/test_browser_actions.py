@@ -1,4 +1,5 @@
 from cone.tile.tests import TileTestCase
+from cone.ugm import compat
 from cone.ugm import testing
 from pyramid.exceptions import HTTPForbidden
 from pyramid.view import render_view_to_response
@@ -45,7 +46,7 @@ class TestBrowserActions(TileTestCase):
         with self.layer.authenticated('editor'):
             res = render_view_to_response(group, request, name='add_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "u'uid100'",
+            'message': "u'uid100'" if compat.IS_PY2 else "'uid100'",
             'success': False
         })
 
@@ -71,7 +72,7 @@ class TestBrowserActions(TileTestCase):
         with self.layer.authenticated('editor'):
             res = render_view_to_response(group, request, name='remove_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "u'uid100'",
+            'message': "u'uid100'" if compat.IS_PY2 else "'uid100'",
             'success': False
         })
 
@@ -111,7 +112,7 @@ class TestBrowserActions(TileTestCase):
         with self.layer.authenticated('editor'):
             res = render_view_to_response(user, request, name='add_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "u'group100'",
+            'message': "u'group100'" if compat.IS_PY2 else "'group100'",
             'success': False
         })
 
@@ -139,7 +140,7 @@ class TestBrowserActions(TileTestCase):
         with self.layer.authenticated('editor'):
             res = render_view_to_response(user, request, name='remove_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "u'group100'",
+            'message': "u'group100'" if compat.IS_PY2 else "'group100'",
             'success': False
         })
 
@@ -181,7 +182,7 @@ class TestBrowserActions(TileTestCase):
         with self.layer.authenticated('admin'):
             res = render_view_to_response(user, request, name='delete_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "u'uid99'",
+            'message': "u'uid99'" if compat.IS_PY2 else "'uid99'",
             'success': False
         })
 
@@ -211,7 +212,7 @@ class TestBrowserActions(TileTestCase):
         with self.layer.authenticated('admin'):
             res = render_view_to_response(group, request, name='delete_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "u'group99'",
+            'message': "u'group99'" if compat.IS_PY2 else "'group99'",
             'success': False
         })
 
