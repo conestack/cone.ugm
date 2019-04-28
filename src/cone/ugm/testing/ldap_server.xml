@@ -1,0 +1,6 @@
+<properties>
+  <uri>ldap://127.0.0.1:12345</uri>
+  <user>cn=Manager,dc=my-domain,dc=com</user>
+  <password>secret</password>
+  <cache>0</cache>
+</properties>

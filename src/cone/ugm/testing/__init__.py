@@ -4,7 +4,6 @@ from cone.app.ugm import ugm_backend
 from node.ext.ldap.testing import LDIF_groupOfNames_10_10
 from plone.testing import Layer
 import os
-import pkg_resources
 
 
 class principals_decorator(object):
@@ -84,6 +83,14 @@ class temp_principals(principals_decorator):
         return wrapper
 
 
+base_path = os.path.split(__file__)[0]
+ugm_config = os.path.join(base_path, 'ugm.xml')
+ldap_server_config = os.path.join(base_path, 'ldap_server.xml')
+ldap_users_config = os.path.join(base_path, 'ldap_users.xml')
+ldap_groups_config = os.path.join(base_path, 'ldap_groups.xml')
+ldap_roles_config = os.path.join(base_path, 'ldap_roles.xml')
+
+
 class UGMLayer(Security, Layer):
     defaultBases = (LDIF_groupOfNames_10_10,)
 
@@ -92,8 +99,12 @@ class UGMLayer(Security, Layer):
 
     def setUp(self, args=None):
         super(UGMLayer, self).setUp(args)
-        path = pkg_resources.resource_filename('cone.ugm.testing', 'ldap.xml')
-        ugm_backend.load('ldap', {'ldap.config': path})
+        ugm_backend.load('ldap', {
+            'ldap.server_config': ldap_server_config,
+            'ldap.users_config': ldap_users_config,
+            'ldap.groups_config': ldap_groups_config,
+            'ldap.roles_config': ldap_roles_config
+        })
         ugm_backend.initialize()
         ugm = ugm_backend.ugm
         roles = ['viewer', 'editor', 'admin', 'manager']
@@ -136,13 +147,16 @@ class UGMLayer(Security, Layer):
 
     def make_app(self):
         base_path = os.path.split(__file__)[0]
-        ldap_config = os.path.join(base_path, 'ldap.xml')
         localmanager_config = os.path.join(base_path, 'localmanager.xml')
         super(UGMLayer, self).make_app(**{
-            'cone.plugins': 'cone.ugm',
+            'cone.plugins': 'cone.ldap\ncone.ugm',
             'ugm.backend': 'ldap',
+            'ugm.config': ugm_config,
             'ugm.localmanager_config': localmanager_config,
-            'ldap.config': ldap_config,
+            'ldap.server_config': ldap_server_config,
+            'ldap.users_config': ldap_users_config,
+            'ldap.groups_config': ldap_groups_config,
+            'ldap.roles_config': ldap_roles_config
         })
 
 
