@@ -66,8 +66,6 @@ def initialize_ugm(config, global_config, local_config):
     cfg.merged.css.protected.append((static_resources, 'styles.css'))
 
     # custom UGM javascript
-    cfg.merged.js.protected.append((static_resources, 'jQuery.sortElements.js'))
-    cfg.merged.js.protected.append((static_resources, 'naturalSort.js'))
     cfg.merged.js.protected.append((static_resources, 'ugm.js'))
 
     # UGM settings
