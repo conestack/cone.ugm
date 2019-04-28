@@ -13,6 +13,7 @@ from node.ext.ldap.ugm import RolesConfig as LDAPRolesConfig
 from node.ext.ldap.ugm import UsersConfig as LDAPUsersConfig
 from node.ext.ldap.ugm._api import EXPIRATION_DAYS
 from node.utils import instance_property
+from odict import odict
 from pyramid.i18n import TranslationStringFactory
 import ldap
 import os
@@ -134,7 +135,7 @@ class UsersSettings(UgmSettings):
     def ldap_ucfg(self):
         if not hasattr(self, '_ldap_ucfg') or self._ldap_ucfg is None:
             config = self._config
-            map = dict()
+            map = odict()
             for key in config.users_aliases_attrmap.keys():
                 map[key] = config.users_aliases_attrmap[key]
             for key in config.users_form_attrmap.keys():
@@ -195,7 +196,7 @@ class GroupsSettings(UgmSettings):
     def ldap_gcfg(self):
         if not hasattr(self, '_ldap_gcfg') or self._ldap_gcfg is None:
             config = self._config
-            map = dict()
+            map = odict()
             for key in config.groups_aliases_attrmap.keys():
                 map[key] = config.groups_aliases_attrmap[key]
             for key in config.groups_form_attrmap.keys():
@@ -240,7 +241,7 @@ class RolesSettings(UgmSettings):
     def ldap_rcfg(self):
         if not hasattr(self, '_ldap_rcfg') or self._ldap_rcfg is None:
             config = self._config
-            map = dict()
+            map = odict()
             for key in config.roles_aliases_attrmap.keys():
                 map[key] = config.roles_aliases_attrmap[key]
             for key in config.roles_form_attrmap.keys():

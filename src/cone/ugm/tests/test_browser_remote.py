@@ -6,6 +6,7 @@ from cone.ugm.model.utils import ugm_server
 from node.ext.ldap import LDAPNode
 from node.ext.ldap import ONELEVEL
 from node.ext.ldap.ugm import RolesConfig
+from odict import odict
 from pyramid.httpexceptions import HTTPForbidden
 from pyramid.view import render_view_to_response
 import json
@@ -22,10 +23,7 @@ class remote_user_test(testing.remove_principals):
 
         rcfg = RolesConfig(
             baseDN='ou=roles,dc=my-domain,dc=com',
-            attrmap={
-                'id': 'cn',
-                'rdn': 'cn',
-            },
+            attrmap=odict([('id', 'cn'), ('rdn', 'cn')]),
             scope=ONELEVEL,
             queryFilter='(objectClass=groupOfNames)',
             objectClasses=['groupOfNames'],
@@ -88,13 +86,11 @@ class TestBrowserRemote(TileTestCase):
         request.params['id'] = 'uid99'
         with self.layer.authenticated('manager'):
             res = render_view_to_response(users, request, name='remote_add_user')
-        self.assertEqual(json.loads(res.text), {
-            'message': (
-                '{\'info\': u"object class \'inetOrgPerson\' requires attribute '
-                '\'sn\'", \'desc\': u\'Object class violation\'}'
-            ),
-            'success': False
-        })
+        res = json.loads(res.text)
+        self.assertFalse(res['success'])
+        self.assertTrue(
+            res['message'].find("object class 'inetOrgPerson' requires attribute 'sn'") > -1
+        )
 
         # Add minimal valid user
         request.params['id'] = 'uid99'

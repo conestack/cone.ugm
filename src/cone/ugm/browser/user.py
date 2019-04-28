@@ -7,6 +7,7 @@ from cone.app.browser.utils import make_url
 from cone.app.compat import unquote
 from cone.tile import Tile
 from cone.tile import tile
+from cone.ugm import compat
 from cone.ugm.browser import form_field_definitions
 from cone.ugm.browser.authoring import AddFormFiddle
 from cone.ugm.browser.authoring import EditFormFiddle
@@ -304,7 +305,7 @@ class UserEditForm(UserForm, Form):
         # XXX: move to cone.ldap
         ocs = self.model.model.context.attrs['objectClass']
         for oc in settings.attrs.users_object_classes:
-            if isinstance(ocs, basestring):
+            if isinstance(ocs, compat.STR_TYPE):
                 ocs = [ocs]
             if oc not in ocs:
                 ocs.append(oc)

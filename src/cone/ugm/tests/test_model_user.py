@@ -37,11 +37,11 @@ class TestModelUser(unittest.TestCase):
 
         # Attributes of the user are wrapped
         self.assertEqual(sorted(user.attrs.items()), [
-            ('cn', u'cn0'),
-            ('login', u'uid0'),
-            ('mail', u'uid0@groupOfNames_10_10.com'),
-            ('sn', u'sn0'),
-            ('userPassword', u'secret0')
+            ('cn', 'cn0'),
+            ('mail', 'uid0@groupOfNames_10_10.com'),
+            ('rdn', 'uid0'),
+            ('sn', 'sn0'),
+            ('userPassword', 'secret0')
         ])
 
         # ACL

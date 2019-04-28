@@ -1,8 +1,9 @@
 from cone.app.browser.utils import make_url
-from pyramid.i18n import TranslationStringFactory
+from cone.ugm import compat
 from pyramid.i18n import get_localizer
-from yafowil.base import UNSET
+from pyramid.i18n import TranslationStringFactory
 from yafowil.base import factory
+from yafowil.base import UNSET
 
 
 _ = TranslationStringFactory('cone.ugm')
@@ -72,10 +73,10 @@ class PrincipalForm(object):
                     for c_chain in v:
                         chain_parsed = list()
                         for part in c_chain:
-                            if isinstance(part, basestring):
+                            if isinstance(part, compat.STR_TYPE):
                                 if not part.startswith('context.'):
-                                    raise Exception(
-                                        u"chain callable definition invalid")
+                                    msg = 'chain callable definition invalid'
+                                    raise Exception(msg)
                                 attrname = part[part.index('.') + 1:]
                                 clb = getattr(self, attrname)
                             else:

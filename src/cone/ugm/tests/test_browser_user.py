@@ -145,13 +145,12 @@ class TestBrowserUser(TileTestCase):
 
         user = users['uid99']
         self.assertTrue(isinstance(user, User))
-        self.checkOutput("""
-        [('cn', u'cn99'),
-        ('login', u'uid99'),
-        ('mail', u'uid99@example.com'),
-        ('sn', u'sn99'),
-        ('userPassword', u'{SSHA}...')]
-        """, str(sorted(user.attrs.items())))
+        self.assertEqual(user.attrs['cn'], 'cn99')
+        self.assertEqual(user.attrs['mail'], 'uid99@example.com')
+        self.assertEqual(user.attrs['rdn'], 'uid99')
+        self.assertEqual(user.attrs['login'], 'uid99')
+        self.assertEqual(user.attrs['sn'], 'sn99')
+        self.assertTrue(user.attrs['userPassword'].startswith('{SSHA}'))
 
     @testing.temp_principals(users={'uid99': {'sn': 'Uid99', 'cn': 'Uid99'}})
     def test_edit_user(self, users, groups):
@@ -172,9 +171,9 @@ class TestBrowserUser(TileTestCase):
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'edit')
         self.assertEqual(res, '')
-        self.checkOutput("""
-        [('cn', u'cn99'),
-        ('login', u'uid99'),
-        ('mail', u'changed@example.com'),
-        ('sn', u'sn changed')]
-        """, str(sorted(user.attrs.items())))
+        self.assertEqual(sorted(user.attrs.items()), [
+            ('cn', 'cn99'),
+            ('mail', 'changed@example.com'),
+            ('rdn', 'uid99'),
+            ('sn', 'sn changed')
+        ])
