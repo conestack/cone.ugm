@@ -1,4 +1,3 @@
-from cone.ugm.model.utils import ugm_roles
 from plumber import Behavior
 from plumber import default
 from plumber import plumb
@@ -20,7 +19,8 @@ class PrincipalRolesForm(Behavior):
     @default
     @property
     def roles_support(self):
-        return ugm_roles(self.model).ldap_roles_container_valid
+        # XXX: LDAP
+        return self.model.root['ldap_roles'].ldap_roles_container_valid
 
     @plumb
     def prepare(_next, self):

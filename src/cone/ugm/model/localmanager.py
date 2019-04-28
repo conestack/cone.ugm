@@ -1,4 +1,5 @@
 from cone.app import security
+from cone.ugm.model.utils import ugm_localmanager
 from lxml import etree
 from node.behaviors import DictStorage
 from node.behaviors import Nodify
@@ -92,7 +93,7 @@ class LocalManager(Behavior):
         Currently a user can be assigned only to one local manager group. If
         more than one local manager group is configured, an error is raised.
         """
-        config = self.root['settings']['ugm_localmanager'].attrs
+        config = ugm_localmanager(self.root).attrs
         user = security.authenticated_user(get_current_request())
         if not user:
             return None
@@ -121,7 +122,7 @@ class LocalManager(Behavior):
         adm_gid = self.local_manager_gid
         if not adm_gid:
             return None
-        config = self.root['settings']['ugm_localmanager'].attrs
+        config = ugm_localmanager(self.root).attrs
         return config[adm_gid]
 
     @finalize
@@ -161,7 +162,7 @@ class LocalManager(Behavior):
     def local_manager_is_default(self, adm_gid, gid):
         """Check whether gid is default group for local manager group.
         """
-        config = self.root['settings']['ugm_localmanager'].attrs
+        config = ugm_localmanager(self.root).attrs
         rule = config[adm_gid]
         if gid not in rule['target']:
             raise Exception(u"group '%s' not managed by '%s'" % (gid, adm_gid))

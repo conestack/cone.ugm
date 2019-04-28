@@ -14,7 +14,7 @@ from cone.ugm.browser.listing import ColumnListing
 from cone.ugm.browser.principal import PrincipalForm
 from cone.ugm.browser.roles import PrincipalRolesForm
 from cone.ugm.model.group import Group
-from cone.ugm.model.utils import ugm_groups
+from cone.ugm.model.utils import ugm_general
 from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 from webob.exc import HTTPFound
@@ -176,8 +176,8 @@ class GroupForm(PrincipalForm):
 
     @property
     def form_attrmap(self):
-        settings = ugm_groups(self.model)
-        return settings.attrs.groups_form_attrmap
+        cfg = ugm_general(self.model)
+        return cfg.attrs.groups_form_attrmap
 
     @property
     def form_field_definitions(self):
@@ -202,8 +202,8 @@ class GroupAddForm(GroupForm, Form):
     show_contextmenu = False
 
     def save(self, widget, data):
-        settings = ugm_groups(self.model)
-        attrmap = settings.attrs.groups_form_attrmap
+        cfg = ugm_general(self.model)
+        attrmap = cfg.attrs.groups_form_attrmap
         extracted = dict()
         for key, val in attrmap.items():
             val = data.fetch('groupform.%s' % key).extracted
@@ -244,8 +244,8 @@ class GroupEditForm(GroupForm, Form):
     show_contextmenu = False
 
     def save(self, widget, data):
-        settings = ugm_groups(self.model)
-        attrmap = settings.attrs.groups_form_attrmap
+        cfg = ugm_general(self.model)
+        attrmap = cfg.attrs.groups_form_attrmap
         for key in attrmap:
             if key in ['id']:
                 continue

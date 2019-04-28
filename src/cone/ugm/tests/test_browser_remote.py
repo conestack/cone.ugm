@@ -1,7 +1,6 @@
 from cone.app import root
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
-from cone.ugm.model.utils import ugm_roles
 from node.ext.ldap import LDAPNode
 from node.ext.ldap import ONELEVEL
 from node.ext.ldap.ugm import RolesConfig
