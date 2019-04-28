@@ -1,6 +1,6 @@
 from cone.app.browser.utils import make_url
 from cone.ugm.model.user import User
-from cone.ugm.model.utils import ugm_general
+from cone.ugm.model.utils import general_settings
 from io import BytesIO
 from plumber import Behavior
 from plumber import default
@@ -24,8 +24,8 @@ def portrait_image(model, request):
     on user.
     """
     response = Response()
-    cfg = ugm_general(model)
-    response.body = model.attrs[cfg.attrs['users_portrait_attr']]
+    settings = general_settings(model)
+    response.body = model.attrs[settings.attrs.users_portrait_attr]
     response.headers['Content-Type'] = 'image/jpeg'
     response.headers['Cache-Control'] = 'max-age=0'
     return response
@@ -38,8 +38,8 @@ class PortraitForm(Behavior):
     @default
     @property
     def portrait_support(self):
-        cfg = ugm_general(self.model)
-        return cfg.attrs['users_portrait'] == 'True'
+        settings = general_settings(self.model)
+        return settings.attrs.users_portrait == 'True'
 
     @plumb
     def prepare(_next, self):
@@ -55,11 +55,11 @@ class PortraitForm(Behavior):
             mode = 'edit'
         else:
             mode = 'display'
-        cfg = ugm_general(model)
-        image_attr = cfg.attrs['users_portrait_attr']
-        image_accept = cfg.attrs['users_portrait_accept']
-        image_width = int(cfg.attrs['users_portrait_width'])
-        image_height = int(cfg.attrs['users_portrait_height'])
+        settings = general_settings(model)
+        image_attr = settings.attrs.users_portrait_attr
+        image_accept = settings.attrs.users_portrait_accept
+        image_width = int(settings.attrs.users_portrait_width)
+        image_height = int(settings.attrs.users_portrait_height)
         image_data = model.attrs.get(image_attr)
         if image_data:
             image_value = {
@@ -97,8 +97,8 @@ class PortraitForm(Behavior):
                 not self.request.has_permission('edit_user', self.model.parent):
             _next(self, widget, data)
             return
-        cfg = ugm_general(self.model)
-        image_attr = cfg.attrs['users_portrait_attr']
+        settings = general_settings(self.model)
+        image_attr = settings.attrs.users_portrait_attr
         portrait = data.fetch('userform.portrait').extracted
         if portrait:
             if portrait['action'] in ['new', 'replace']:

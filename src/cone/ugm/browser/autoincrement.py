@@ -1,4 +1,4 @@
-from cone.ugm.model.utils import ugm_general
+from cone.ugm.model.utils import general_settings
 from plumber import Behavior
 from plumber import default
 from plumber import plumb
@@ -17,15 +17,15 @@ class AutoIncrementForm(Behavior):
     @default
     @property
     def autoincrement_support(self):
-        cfg = ugm_general(self.model)
-        return cfg.attrs['user_id_autoincrement'] == 'True'
+        settings = general_settings(self.model)
+        return settings.attrs.user_id_autoincrement == 'True'
 
     @default
     @property
     def next_principal_id(self):
-        cfg = ugm_general(self.model)
-        prefix = cfg.attrs['user_id_autoincrement_prefix']
-        default = int(cfg.attrs['user_id_autoincrement_start'])
+        settings = general_settings(self.model)
+        prefix = settings.attrs.user_id_autoincrement_prefix
+        default = int(settings.attrs.user_id_autoincrement_start)
         search = u'%s*' % prefix
         backend = self.model.parent.backend
         backend.invalidate()

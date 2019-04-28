@@ -3,7 +3,7 @@ from cone.app.model import Metadata
 from cone.app.model import Properties
 from cone.app.model import XMLProperties
 from cone.ugm.model.localmanager import LocalManagerConfigAttributes
-from cone.ugm.model.utils import ugm_general
+from cone.ugm.model.utils import general_settings
 from node.utils import instance_property
 from pyramid.i18n import TranslationStringFactory
 import os
@@ -78,8 +78,8 @@ class LocalManagerSettings(BaseNode):
 
     @property
     def enabled(self):
-        cfg = ugm_general(self.root)
-        return cfg.attrs.users_local_management_enabled == 'True'
+        settings = general_settings(self.root)
+        return settings.attrs.users_local_management_enabled == 'True'
 
     def __call__(self):
         self.attrs()

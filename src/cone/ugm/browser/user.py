@@ -17,7 +17,7 @@ from cone.ugm.browser.portrait import PortraitForm
 from cone.ugm.browser.principal import PrincipalForm
 from cone.ugm.browser.roles import PrincipalRolesForm
 from cone.ugm.model.user import User
-from cone.ugm.model.utils import ugm_general
+from cone.ugm.model.utils import general_settings
 from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 from webob.exc import HTTPFound
@@ -176,8 +176,8 @@ class UserForm(PrincipalForm):
 
     @property
     def form_attrmap(self):
-        cfg = ugm_general(self.model)
-        return cfg.attrs.users_form_attrmap
+        settings = general_settings(self.model)
+        return settings.attrs.users_form_attrmap
 
     @property
     def form_field_definitions(self):
@@ -226,8 +226,8 @@ class UserForm(PrincipalForm):
 
     def _get_auth_attrs(self):
         # XXX: LDAP related
-        cfg = self.model.root['settings']['ldap_users']
-        aliases = cfg.attrs.users_aliases_attrmap
+        settings = self.model.root['settings']['ldap_users']
+        aliases = settings.attrs.users_aliases_attrmap
         return aliases['id'], aliases['login']
 
 
@@ -244,8 +244,8 @@ class UserAddForm(UserForm, Form):
     show_contextmenu = False
 
     def save(self, widget, data):
-        cfg = ugm_general(self.model)
-        attrmap = cfg.attrs.users_form_attrmap
+        settings = general_settings(self.model)
+        attrmap = settings.attrs.users_form_attrmap
         extracted = dict()
         for key, val in attrmap.items():
             val = data.fetch('userform.%s' % key).extracted
@@ -303,8 +303,8 @@ class UserEditForm(UserForm, Form):
     show_contextmenu = False
 
     def save(self, widget, data):
-        cfg = ugm_general(self.model)
-        attrmap = cfg.attrs.users_form_attrmap
+        settings = general_settings(self.model)
+        attrmap = settings.attrs.users_form_attrmap
         for key in attrmap:
             if key in ['id', 'login', 'userPassword']:
                 continue
@@ -317,8 +317,8 @@ class UserEditForm(UserForm, Form):
         # set object classes if missing
         # XXX: move to cone.ldap
         ocs = self.model.model.context.attrs['objectClass']
-        ldap_cfg = self.model.root['settings']['ldap_users']
-        for oc in ldap_cfg.attrs.users_object_classes:
+        ldap_settings = self.model.root['settings']['ldap_users']
+        for oc in ldap_settings.attrs.users_object_classes:
             if isinstance(ocs, compat.STR_TYPE):
                 ocs = [ocs]
             if oc not in ocs:

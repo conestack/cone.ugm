@@ -1,4 +1,4 @@
-from cone.ugm.model.utils import ugm_general
+from cone.ugm.model.utils import general_settings
 from datetime import datetime
 from plumber import Behavior
 from plumber import plumb
@@ -129,16 +129,16 @@ class ExpirationForm(Behavior):
         ``self.form``.
         """
         _next(self)
-        cfg = ugm_general(self.model)
-        if cfg.attrs['users_account_expiration'] != 'True':
+        settings = general_settings(self.model)
+        if settings.attrs.users_account_expiration != 'True':
             return
         mode = 'edit'
         if not self.request.has_permission(
                 'manage_expiration', self.model.parent):
             mode = 'display'
         if self.action_resource == 'edit':
-            attr = cfg.attrs['users_expires_attr']
-            unit = int(cfg.attrs['users_expires_unit'])
+            attr = settings.attrs.users_expires_attr
+            unit = int(settings.attrs.users_expires_unit)
             value = int(self.model.attrs.get(attr, 0))
             # if format days, convert to seconds
             if unit == 0:
@@ -161,10 +161,10 @@ class ExpirationForm(Behavior):
     def save(_next, self, widget, data):
         if self.request.has_permission(
                 'manage_expiration', self.model.parent):
-            cfg = ugm_general(self.model)
-            if cfg.attrs['users_account_expiration'] == 'True':
-                attr = cfg.attrs['users_expires_attr']
-                unit = int(cfg.attrs['users_expires_unit'])
+            settings = general_settings(self.model)
+            if settings.attrs.users_account_expiration == 'True':
+                attr = settings.attrs.users_expires_attr
+                unit = int(settings.attrs.users_expires_unit)
                 value = data.fetch('userform.active').extracted
                 if value is UNSET:
                     if unit == 0:

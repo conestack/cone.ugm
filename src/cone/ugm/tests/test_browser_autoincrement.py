@@ -4,7 +4,7 @@ from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
 from cone.ugm.model.user import User
-from cone.ugm.model.utils import ugm_general
+from cone.ugm.model.utils import general_settings
 
 
 def user_vessel(users):
@@ -33,10 +33,10 @@ class cleanup_autoincrement_test(testing.remove_principals):
         def wrapper(inst):
             w(inst)
 
-            cfg = ugm_general(get_root())
-            cfg.attrs.user_id_autoincrement = 'False'
-            cfg.attrs.user_id_autoincrement_prefix = ''
-            cfg()
+            settings = general_settings(get_root())
+            settings.attrs.user_id_autoincrement = 'False'
+            settings.attrs.user_id_autoincrement_prefix = ''
+            settings()
         return wrapper
 
 
@@ -48,9 +48,9 @@ class TestBrowserAutoincrement(TileTestCase):
         root = get_root()
         users = root['users']
 
-        cfg = ugm_general(users)
-        self.assertEqual(cfg.attrs.user_id_autoincrement, 'False')
-        self.assertEqual(cfg.attrs.user_id_autoincrement_prefix, '')
+        settings = general_settings(users)
+        self.assertEqual(settings.attrs.user_id_autoincrement, 'False')
+        self.assertEqual(settings.attrs.user_id_autoincrement_prefix, '')
 
         vessel = user_vessel(users)
         request = self.layer.new_request()
@@ -61,8 +61,8 @@ class TestBrowserAutoincrement(TileTestCase):
         name="userform.id" required="required" type="text" value="" />...
         """, res)
 
-        cfg.attrs.user_id_autoincrement = 'True'
-        cfg()
+        settings.attrs.user_id_autoincrement = 'True'
+        settings()
 
         vessel = user_vessel(users)
         with self.layer.authenticated('manager'):
@@ -103,8 +103,8 @@ class TestBrowserAutoincrement(TileTestCase):
             'uid4', 'uid5', 'uid6', 'uid7', 'uid8', 'uid9', 'viewer'
         ])
 
-        cfg.attrs.user_id_autoincrement_prefix = 'uid'
-        cfg()
+        settings.attrs.user_id_autoincrement_prefix = 'uid'
+        settings()
         request = user_request(
             self.layer,
             'Ander Er',

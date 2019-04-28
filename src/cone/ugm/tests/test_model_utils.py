@@ -2,7 +2,7 @@ from cone.app import root
 from cone.app.ugm import ugm_backend
 from cone.ugm import testing
 from cone.ugm.model.settings import GeneralSettings
-from cone.ugm.model.utils import ugm_general
+from cone.ugm.model.utils import general_settings
 from node.ext.ldap.ugm._api import Ugm
 import unittest
 
@@ -10,11 +10,12 @@ import unittest
 class TestModelUtils(unittest.TestCase):
     layer = testing.ugm_layer
 
-    def test_utils(self):
-        general_settings = ugm_general(root)
-        self.assertTrue(isinstance(general_settings, GeneralSettings))
-        self.assertEqual(general_settings.name, 'ugm_general')
+    def test_general_settings(self):
+        settings = general_settings(root)
+        self.assertTrue(isinstance(settings, GeneralSettings))
+        self.assertEqual(settings.name, 'ugm_general')
 
+    def test_ugm_backend(self):
         self.assertEqual(ugm_backend.name, 'ldap')
 
         backend = ugm_backend.ugm

@@ -1,6 +1,6 @@
-def ugm_general(model):
+def general_settings(model):
     return model.root['settings']['ugm_general']
 
 
-def ugm_localmanager(model):
+def localmanager_settings(model):
     return model.root['settings']['ugm_localmanager']

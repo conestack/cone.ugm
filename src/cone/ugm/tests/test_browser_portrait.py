@@ -2,7 +2,7 @@ from cone.app import get_root
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
-from cone.ugm.model.utils import ugm_general
+from cone.ugm.model.utils import general_settings
 from io import BytesIO
 import pkg_resources
 
@@ -37,9 +37,9 @@ class cleanup_portrait_test(testing.temp_principals):
         def wrapper(inst):
             w(inst)
 
-            cfg = ugm_general(get_root())
-            cfg.attrs.users_portrait = u'True'
-            cfg()
+            settings = general_settings(get_root())
+            settings.attrs.users_portrait = u'True'
+            settings()
         return wrapper
 
 
@@ -51,12 +51,12 @@ class TestBrowserPortrait(TileTestCase):
         user = users['uid99']
 
         # Portrait related config properties
-        cfg = ugm_general(users)
-        self.assertEqual(cfg.attrs.users_portrait, 'True')
-        self.assertEqual(cfg.attrs.users_portrait_attr, 'jpegPhoto')
-        self.assertEqual(cfg.attrs.users_portrait_accept, 'image/jpeg')
-        self.assertEqual(cfg.attrs.users_portrait_width, '50')
-        self.assertEqual(cfg.attrs.users_portrait_height, '50')
+        settings = general_settings(users)
+        self.assertEqual(settings.attrs.users_portrait, 'True')
+        self.assertEqual(settings.attrs.users_portrait_attr, 'jpegPhoto')
+        self.assertEqual(settings.attrs.users_portrait_accept, 'image/jpeg')
+        self.assertEqual(settings.attrs.users_portrait_width, '50')
+        self.assertEqual(settings.attrs.users_portrait_height, '50')
 
         # Portrait enabled, widget is rendered
         request = self.layer.new_request()
@@ -90,8 +90,8 @@ class TestBrowserPortrait(TileTestCase):
         self.assertTrue(res.find(expected) > -1)
 
         # Portrait disabled, widget is skipped
-        cfg.attrs.users_portrait = u'False'
-        cfg()
+        settings.attrs.users_portrait = u'False'
+        settings()
 
         request = self.layer.new_request()
         with self.layer.authenticated('manager'):
