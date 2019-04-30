@@ -173,11 +173,13 @@ widgets:
         key_label: i18n:principal_attr_name:Attribute name
         value_label: i18n:display_name:Display name
 - groups_listing_default_column:
-    factory: field:label:help:text
+    factory: field:label:help:error:text
     value: expr:context.model.attrs.groups_listing_default_column
     props:
         label: i18n:groups_listing_default_column:Groups listing default column
         help: i18n:groups_listing_default_column_help:Default sort column in user listing
+        required: i18n:groups_listing_default_column_required:Default sort column in
+            groups listing is required
 - save:
     factory: submit
     props:

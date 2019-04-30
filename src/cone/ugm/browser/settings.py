@@ -58,6 +58,7 @@ class GeneralSettingsForm(Form):
         return extracted
 
     def save(self, widget, data):
+        # XXX: user data.write(model)
         model = self.model
         for attr_name in [
             'users_account_expiration',
