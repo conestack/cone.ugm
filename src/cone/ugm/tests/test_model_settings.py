@@ -2,25 +2,24 @@ from cone.app import get_root
 from cone.app.model import XMLProperties
 from cone.ugm import testing
 from cone.ugm.model.settings import GeneralSettings
-from cone.ugm.model.settings import XMLSettings
+from cone.ugm.model.settings import UGMSettings
 from node.tests import NodeTestCase
 import os
-import shutil
-import tempfile
 
 
 class TestModelSettings(NodeTestCase):
     layer = testing.ugm_layer
 
-    def test_XMLSettings(self):
-        tempdir = tempfile.mkdtemp()
+    @testing.temp_directory
+    def test_UGMSettings(self, tempdir):
         path = os.path.join(tempdir, 'settings.xml')
 
-        class MyXMLSettings(XMLSettings):
+        class MyUGMSettings(UGMSettings):
             config_file = path
+            initialize_ugm_on_invalidate = False
 
-        settings = MyXMLSettings()
-        expected = 'LDAP configuration {} does not exist.'.format(path)
+        settings = MyUGMSettings()
+        expected = 'Configuration file {} not exists.'.format(path)
         err = self.expect_error(ValueError, lambda: settings.attrs)
         self.assertEqual(str(err), expected)
 
@@ -41,8 +40,6 @@ class TestModelSettings(NodeTestCase):
         self.assertTrue(attrs is settings.attrs)
         settings.invalidate()
         self.assertFalse(attrs is settings.attrs)
-
-        shutil.rmtree(tempdir)
 
     @testing.invalidate_settings
     def test_UGMGeneralSettings(self):

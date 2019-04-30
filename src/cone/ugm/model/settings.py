@@ -17,9 +17,7 @@ ugm_cfg.ugm_settings = ''
 ugm_cfg.lm_settings = ''
 
 
-class XMLSettings(BaseNode):
-    """XXX: Duplicate code as cone.ldap.settings.XMLSettings
-    """
+class UGMSettings(BaseNode):
     config_file = None
 
     def __call__(self):
@@ -29,7 +27,7 @@ class XMLSettings(BaseNode):
     def attrs(self):
         config_file = self.config_file
         if not os.path.isfile(config_file):
-            msg = 'LDAP configuration {} does not exist.'.format(config_file)
+            msg = 'Configuration file {} not exists.'.format(config_file)
             raise ValueError(msg)
         return XMLProperties(config_file)
 
@@ -41,7 +39,7 @@ class XMLSettings(BaseNode):
                 delattr(self, _attr)
 
 
-class GeneralSettings(XMLSettings):
+class GeneralSettings(UGMSettings):
 
     @property
     def config_file(self):

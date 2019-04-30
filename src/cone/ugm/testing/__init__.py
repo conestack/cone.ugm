@@ -9,6 +9,15 @@ import shutil
 import tempfile
 
 
+base_path = os.path.split(__file__)[0]
+ugm_config = os.path.join(base_path, 'ugm.xml')
+localmanager_config = os.path.join(base_path, 'localmanager.xml')
+ldap_server_config = os.path.join(base_path, 'ldap_server.xml')
+ldap_users_config = os.path.join(base_path, 'ldap_users.xml')
+ldap_groups_config = os.path.join(base_path, 'ldap_groups.xml')
+ldap_roles_config = os.path.join(base_path, 'ldap_roles.xml')
+
+
 class principals_decorator(object):
 
     @property
@@ -130,15 +139,6 @@ def temp_directory(fn):
         finally:
             shutil.rmtree(tempdir)
     return wrapper
-
-
-base_path = os.path.split(__file__)[0]
-ugm_config = os.path.join(base_path, 'ugm.xml')
-localmanager_config = os.path.join(base_path, 'localmanager.xml')
-ldap_server_config = os.path.join(base_path, 'ldap_server.xml')
-ldap_users_config = os.path.join(base_path, 'ldap_users.xml')
-ldap_groups_config = os.path.join(base_path, 'ldap_groups.xml')
-ldap_roles_config = os.path.join(base_path, 'ldap_roles.xml')
 
 
 class UGMLayer(Security, Layer):

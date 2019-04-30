@@ -2,6 +2,7 @@ from cone.app.browser.form import Form
 from cone.app.browser.form import YAMLForm
 from cone.app.browser.layout import ProtectedContentTile
 from cone.app.browser.settings import SettingsBehavior
+from cone.app.ugm import ugm_backend
 from cone.tile import tile
 from cone.ugm.model.settings import GeneralSettings
 from cone.ugm.model.settings import LocalManagerSettings
@@ -83,6 +84,7 @@ class GeneralSettingsForm(Form):
             setattr(model.attrs, attr_name, val)
         model()
         model.invalidate()
+        ugm_backend.initialize()
 
 
 @tile(
