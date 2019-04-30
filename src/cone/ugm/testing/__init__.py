@@ -147,15 +147,24 @@ class UGMLayer(Security, Layer):
     def __init__(self):
         Layer.__init__(self)
 
-    def setUp(self, args=None):
-        super(UGMLayer, self).setUp(args)
-        ugm_backend.load('ldap', {
+    def tearDown(self):
+        super(UGMLayer, self).tearDown()
+        self._cleanup_test_principals()
+
+    def make_app(self):
+        super(UGMLayer, self).make_app(**{
+            'cone.plugins': 'cone.ldap\ncone.ugm',
+            'ugm.backend': 'ldap',
+            'ugm.config': ugm_config,
+            'ugm.localmanager_config': localmanager_config,
             'ldap.server_config': ldap_server_config,
             'ldap.users_config': ldap_users_config,
             'ldap.groups_config': ldap_groups_config,
             'ldap.roles_config': ldap_roles_config
         })
-        ugm_backend.initialize()
+        self._setup_test_principals()
+
+    def _setup_test_principals(self):
         ugm = ugm_backend.ugm
         roles = ['viewer', 'editor', 'admin', 'manager']
 
@@ -183,8 +192,7 @@ class UGMLayer(Security, Layer):
             group.add(uid)
         ugm()
 
-    def tearDown(self):
-        super(UGMLayer, self).tearDown()
+    def _cleanup_test_principals(self):
         ugm = ugm_backend.ugm
         for uid in [
             'viewer', 'editor', 'admin', 'manager', 'max', 'sepp',
@@ -194,18 +202,6 @@ class UGMLayer(Security, Layer):
         for gid in ['admin_group_1', 'admin_group_2']:
             del ugm.groups[gid]
         ugm.users()
-
-    def make_app(self):
-        super(UGMLayer, self).make_app(**{
-            'cone.plugins': 'cone.ldap\ncone.ugm',
-            'ugm.backend': 'ldap',
-            'ugm.config': ugm_config,
-            'ugm.localmanager_config': localmanager_config,
-            'ldap.server_config': ldap_server_config,
-            'ldap.users_config': ldap_users_config,
-            'ldap.groups_config': ldap_groups_config,
-            'ldap.roles_config': ldap_roles_config
-        })
 
 
 ugm_layer = UGMLayer()
