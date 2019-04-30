@@ -7,12 +7,12 @@ from cone.ugm import browser
 from cone.ugm.model.group import Group
 from cone.ugm.model.groups import Groups
 from cone.ugm.model.groups import groups_factory
-from cone.ugm.model.settings import GeneralSettings
-from cone.ugm.model.settings import LocalManagerSettings
-from cone.ugm.model.settings import ugm_cfg
 from cone.ugm.model.user import User
 from cone.ugm.model.users import Users
 from cone.ugm.model.users import users_factory
+from cone.ugm.settings import GeneralSettings
+from cone.ugm.settings import LocalManagerSettings
+from cone.ugm.settings import ugm_cfg
 from pyramid.security import ALL_PERMISSIONS
 from pyramid.security import Allow
 from pyramid.security import Deny

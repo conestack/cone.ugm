@@ -5,8 +5,8 @@ from cone.app.model import Properties
 from cone.app.ugm import ugm_backend
 from cone.ugm.browser.utils import unquote_slash
 from cone.ugm.layout import UGMLayout
+from cone.ugm.localmanager import LocalManagerGroupsACL
 from cone.ugm.model.group import Group
-from cone.ugm.model.localmanager import LocalManagerGroupsACL
 from node.locking import locktree
 from node.utils import instance_property
 from plumber import plumbing

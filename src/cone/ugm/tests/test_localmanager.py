@@ -1,13 +1,13 @@
 from cone.app import get_root
 from cone.app.model import BaseNode
-from cone.ugm.model.localmanager import LocalManager
-from cone.ugm.model.localmanager import LocalManagerConfigAttributes
+from cone.ugm import testing
+from cone.ugm.localmanager import LocalManager
+from cone.ugm.localmanager import LocalManagerConfigAttributes
+from node.tests import NodeTestCase
 from plumber import plumbing
 import os
 import shutil
 import tempfile
-from cone.ugm import testing
-from node.tests import NodeTestCase
 
 
 class TestModelLocalmanager(NodeTestCase):

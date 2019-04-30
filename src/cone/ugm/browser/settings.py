@@ -4,8 +4,8 @@ from cone.app.browser.layout import ProtectedContentTile
 from cone.app.browser.settings import SettingsBehavior
 from cone.app.ugm import ugm_backend
 from cone.tile import tile
-from cone.ugm.model.settings import GeneralSettings
-from cone.ugm.model.settings import LocalManagerSettings
+from cone.ugm.settings import GeneralSettings
+from cone.ugm.settings import LocalManagerSettings
 from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config

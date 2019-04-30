@@ -4,7 +4,7 @@ from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
 from cone.ugm.model.user import User
-from cone.ugm.model.utils import general_settings
+from cone.ugm.utils import general_settings
 
 
 def user_vessel(users):

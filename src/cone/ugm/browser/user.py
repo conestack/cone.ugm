@@ -17,7 +17,7 @@ from cone.ugm.browser.portrait import PortraitForm
 from cone.ugm.browser.principal import PrincipalForm
 from cone.ugm.browser.roles import PrincipalRolesForm
 from cone.ugm.model.user import User
-from cone.ugm.model.utils import general_settings
+from cone.ugm.utils import general_settings
 from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 from webob.exc import HTTPFound

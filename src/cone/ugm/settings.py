@@ -2,8 +2,8 @@ from cone.app.model import BaseNode
 from cone.app.model import Metadata
 from cone.app.model import Properties
 from cone.app.model import XMLProperties
-from cone.ugm.model.localmanager import LocalManagerConfigAttributes
-from cone.ugm.model.utils import general_settings
+from cone.ugm.localmanager import LocalManagerConfigAttributes
+from cone.ugm.utils import general_settings
 from node.utils import instance_property
 from pyramid.i18n import TranslationStringFactory
 import os
@@ -15,6 +15,8 @@ _ = TranslationStringFactory('cone.ugm')
 ugm_cfg = Properties()
 ugm_cfg.ugm_settings = ''
 ugm_cfg.lm_settings = ''
+
+# XXX: move cone.ugm.model.factory_defaults here
 
 
 class UGMSettings(BaseNode):

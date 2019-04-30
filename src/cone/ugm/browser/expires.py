@@ -1,4 +1,4 @@
-from cone.ugm.model.utils import general_settings
+from cone.ugm.utils import general_settings
 from datetime import datetime
 from plumber import Behavior
 from plumber import plumb

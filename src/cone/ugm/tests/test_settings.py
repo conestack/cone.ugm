@@ -1,8 +1,8 @@
 from cone.app import get_root
 from cone.app.model import XMLProperties
 from cone.ugm import testing
-from cone.ugm.model.settings import GeneralSettings
-from cone.ugm.model.settings import UGMSettings
+from cone.ugm.settings import GeneralSettings
+from cone.ugm.settings import UGMSettings
 from node.tests import NodeTestCase
 import os
 

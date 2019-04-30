@@ -1,5 +1,5 @@
 from cone.ugm.model.users import Users
-from cone.ugm.model.utils import general_settings
+from cone.ugm.utils import general_settings
 from pyramid.view import view_config
 
 

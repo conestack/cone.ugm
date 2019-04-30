@@ -1,6 +1,6 @@
 from cone.app.browser.utils import make_url
 from cone.ugm.model.user import User
-from cone.ugm.model.utils import general_settings
+from cone.ugm.utils import general_settings
 from io import BytesIO
 from plumber import Behavior
 from plumber import default

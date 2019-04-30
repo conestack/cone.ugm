@@ -4,7 +4,7 @@ from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
 from cone.ugm.browser.settings import GeneralSettingsForm
-from cone.ugm.model.settings import ugm_cfg
+from cone.ugm.settings import ugm_cfg
 from pyramid.httpexceptions import HTTPForbidden
 import os
 

@@ -14,7 +14,7 @@ from cone.ugm.browser.listing import ColumnListing
 from cone.ugm.browser.principal import PrincipalForm
 from cone.ugm.browser.roles import PrincipalRolesForm
 from cone.ugm.model.group import Group
-from cone.ugm.model.utils import general_settings
+from cone.ugm.utils import general_settings
 from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 from webob.exc import HTTPFound

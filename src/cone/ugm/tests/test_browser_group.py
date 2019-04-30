@@ -2,7 +2,7 @@ from cone.app import root
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
-from cone.ugm.model import Group
+from cone.ugm.model.group import Group
 from pyramid.httpexceptions import HTTPForbidden
 from webob.exc import HTTPFound
 

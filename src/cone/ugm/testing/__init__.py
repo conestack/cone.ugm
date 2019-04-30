@@ -1,7 +1,7 @@
 from cone.app import get_root
 from cone.app.testing import Security
 from cone.app.ugm import ugm_backend
-from cone.ugm.model.settings import ugm_cfg
+from cone.ugm.settings import ugm_cfg
 from node.ext.ldap.testing import LDIF_groupOfNames_10_10
 from plone.testing import Layer
 import os

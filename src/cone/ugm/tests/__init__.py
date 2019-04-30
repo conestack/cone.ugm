@@ -4,14 +4,14 @@ import unittest
 
 def test_suite():
     from cone.ugm.tests import test_layout
+    from cone.ugm.tests import test_localmanager
+    from cone.ugm.tests import test_settings
+    from cone.ugm.tests import test_utils
 
     from cone.ugm.tests import test_model_group
     from cone.ugm.tests import test_model_groups
-    from cone.ugm.tests import test_model_localmanager
-    from cone.ugm.tests import test_model_settings
     from cone.ugm.tests import test_model_user
     from cone.ugm.tests import test_model_users
-    from cone.ugm.tests import test_model_utils
 
     from cone.ugm.tests import test_browser_actions
     from cone.ugm.tests import test_browser_autoincrement
@@ -30,14 +30,14 @@ def test_suite():
     suite = unittest.TestSuite()
 
     suite.addTest(unittest.findTestCases(test_layout))
+    suite.addTest(unittest.findTestCases(test_localmanager))
+    suite.addTest(unittest.findTestCases(test_settings))
+    suite.addTest(unittest.findTestCases(test_utils))
 
     suite.addTest(unittest.findTestCases(test_model_group))
     suite.addTest(unittest.findTestCases(test_model_groups))
-    suite.addTest(unittest.findTestCases(test_model_localmanager))
-    suite.addTest(unittest.findTestCases(test_model_settings))
     suite.addTest(unittest.findTestCases(test_model_user))
     suite.addTest(unittest.findTestCases(test_model_users))
-    suite.addTest(unittest.findTestCases(test_model_utils))
 
     suite.addTest(unittest.findTestCases(test_browser_actions))
     suite.addTest(unittest.findTestCases(test_browser_autoincrement))

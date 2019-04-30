@@ -1,8 +1,8 @@
 from cone.app import root
 from cone.app.ugm import ugm_backend
 from cone.ugm import testing
-from cone.ugm.model.settings import GeneralSettings
-from cone.ugm.model.utils import general_settings
+from cone.ugm.settings import GeneralSettings
+from cone.ugm.utils import general_settings
 from node.ext.ldap.ugm._api import Ugm
 import unittest
 

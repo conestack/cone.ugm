@@ -2,7 +2,7 @@ from cone.app import get_root
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
-from cone.ugm.model.utils import general_settings
+from cone.ugm.utils import general_settings
 from io import BytesIO
 import pkg_resources
 
