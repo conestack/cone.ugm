@@ -77,7 +77,7 @@ class TestBrowserSettings(TileTestCase):
         # Authenticate and render tile
         with self.layer.authenticated('manager'):
             res = render_tile(general_settings, request, 'editform')
-        expected = 'form action="http://example.com/settings/ugm/edit"'
+        expected = 'form action="http://example.com/settings/ugm_general/edit"'
         self.assertTrue(res.find(expected) > -1)
 
     def test_localmanager_settings_tiles(self):
@@ -103,5 +103,5 @@ class TestBrowserSettings(TileTestCase):
         # Authenticate and render tile
         with self.layer.authenticated('manager'):
             res = render_tile(lm_settings, request, 'editform')
-        expected = 'form action="http://example.com/settings/localmanager/edit"'
+        expected = 'form action="http://example.com/settings/ugm_localmanager/edit"'
         self.assertTrue(res.find(expected) > -1)
