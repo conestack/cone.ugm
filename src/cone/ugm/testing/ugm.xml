@@ -11,7 +11,7 @@
   <users_portrait_accept>image/jpeg</users_portrait_accept>
   <users_portrait_width>50</users_portrait_width>
   <users_portrait_height>50</users_portrait_height>
-  <users_local_management_enabled>True</users_local_management_enabled>
+  <users_local_management_enabled>False</users_local_management_enabled>
   <users_form_attrmap>
     <elem>
       <key>id</key>

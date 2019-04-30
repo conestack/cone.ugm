@@ -134,6 +134,7 @@ def temp_directory(fn):
 
 base_path = os.path.split(__file__)[0]
 ugm_config = os.path.join(base_path, 'ugm.xml')
+localmanager_config = os.path.join(base_path, 'localmanager.xml')
 ldap_server_config = os.path.join(base_path, 'ldap_server.xml')
 ldap_users_config = os.path.join(base_path, 'ldap_users.xml')
 ldap_groups_config = os.path.join(base_path, 'ldap_groups.xml')
@@ -195,8 +196,6 @@ class UGMLayer(Security, Layer):
         ugm.users()
 
     def make_app(self):
-        base_path = os.path.split(__file__)[0]
-        localmanager_config = os.path.join(base_path, 'localmanager.xml')
         super(UGMLayer, self).make_app(**{
             'cone.plugins': 'cone.ldap\ncone.ugm',
             'ugm.backend': 'ldap',
