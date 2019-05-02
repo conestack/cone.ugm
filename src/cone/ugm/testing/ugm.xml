@@ -12,6 +12,16 @@
   <users_portrait_width>50</users_portrait_width>
   <users_portrait_height>50</users_portrait_height>
   <users_local_management_enabled>False</users_local_management_enabled>
+  <users_reserved_attrs>
+    <elem>
+      <key>id</key>
+      <value>uid</value>
+    </elem>
+    <elem>
+      <key>login</key>
+      <value>uid</value>
+    </elem>
+  </users_reserved_attrs>
   <users_form_attrmap>
     <elem>
       <key>id</key>
@@ -49,6 +59,12 @@
     </elem>
   </users_listing_columns>
   <users_listing_default_column>cn</users_listing_default_column>
+  <groups_reserved_attrs>
+    <elem>
+      <key>id</key>
+      <value>cn</value>
+    </elem>
+  </groups_reserved_attrs>
   <groups_form_attrmap>
     <elem>
       <key>id</key>

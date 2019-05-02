@@ -1,5 +1,6 @@
 from cone.app import compat
 from cone.app.browser.utils import make_url
+from cone.ugm.utils import general_settings
 from pyramid.i18n import get_localizer
 from pyramid.i18n import TranslationStringFactory
 from yafowil.base import ExtractionError
@@ -172,12 +173,12 @@ class PrincipalExistsExtractor(object):
         self.model = model
 
     def __call__(self, widget, data):
-        """Check wjetjer principal with ID already exists and raise
+        """Check whether principal with ID already exists and raise
         extraction error if so.
         """
         principal_id = data.extracted
         if principal_id is UNSET:
-            return data.extracted
+            return principal_id
         try:
             self.model.parent.backend[principal_id]
             raise ExtractionError(self.error_message(principal_id))
@@ -254,6 +255,63 @@ user_id_field_factory = user_field('id')(
 group_id_field_factory = group_field('id')(
     PrincipalIdFieldFactory(GroupExistsExtractor)
 )
+
+
+###############################################################################
+# Login name form field factory
+###############################################################################
+
+class LoginNameExtractor(object):
+    """Application model aware yafowil extractor checking whether optional
+    login name is valid.
+    """
+
+    def __init__(self, model, login_attr):
+        self.model = model
+        self.login_attr = login_attr
+
+    def __call__(self, widget, data):
+        """Check whether user login name already exists and raise
+        extraction error if so.
+        """
+        login = data.extracted
+        if not login:
+            return login
+        res = self.model.parent.backend.search(criteria={
+            self.login_attr: login
+        })
+        # no entries found with same login attribute set.
+        if not res:
+            return login
+        # unchanged login attribute of current user
+        if len(res) == 1 and res[0] == self.model.name:
+            return login
+        message = _(
+            'user_login_not_unique',
+            default='User login ${login} not unique.',
+            mapping={'login': data.extracted}
+        )
+        raise ExtractionError(message)
+
+
+@user_field('login')
+def login_name_field_factory(form, label, value):
+    settings = general_settings(form.model).attrs
+    id_attr = settings.users_reserved_attrs['id']
+    login_attr = settings.users_reserved_attrs['login']
+    return factory(
+        'field:label:error:*login:text',
+        value=value,
+        props={
+            'label': label
+        },
+        custom={
+            'login': {
+                'extractors': [LoginNameExtractor(form.model, login_attr)]
+            }
+        },
+        mode='skip' if id_attr == login_attr else 'edit'
+    )
 
 
 ###############################################################################

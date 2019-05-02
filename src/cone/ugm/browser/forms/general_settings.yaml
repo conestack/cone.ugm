@@ -123,6 +123,15 @@ widgets:
         props:
             label: i18n:users_exposed_attributes_attribute:Attribute
             required: i18n:users_exposed_attributes_attribute_required:No attribute given
+- users_reserved_attrs:
+    factory: field:label:help:error:dict
+    value: expr:context.users_reserved_attrs
+    props:
+        label: i18n:users_reserved_attrs:Reserved user attributes
+        help: i18n:users_reserved_attrs_help:Aliases for user ID and login name attributes
+        static: True
+        key_label: i18n:reserved_key:Reserved name
+        value_label: i18n:ldap_attr_name:Real attribute name
 - users_form_attrmap:
     factory: field:label:help:error:dict
     value: expr:context.model.attrs.users_form_attrmap
@@ -154,6 +163,15 @@ widgets:
     props:
         tag: h3
         text: i18n:groups_heading:Group Settings
+- groups_reserved_attrs:
+    factory: field:label:help:error:dict
+    value: expr:context.groups_reserved_attrs
+    props:
+        label: i18n:groups_reserved_attrs:Reserved group attributes
+        help: i18n:groups_reserved_attrs_help:Alias for group ID attribute
+        static: True
+        key_label: i18n:reserved_key:Reserved name
+        value_label: i18n:ldap_attr_name:Real attribute name
 - groups_form_attrmap:
     factory: field:label:help:error:dict
     value: expr:context.model.attrs.groups_form_attrmap

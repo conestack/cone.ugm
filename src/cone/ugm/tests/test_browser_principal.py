@@ -265,6 +265,7 @@ class TestBrowserPrincipal(TileTestCase):
         factory = user_field.factory('id')
         self.assertEqual(factory.attr, None)
         self.assertTrue(isinstance(factory.factory, PrincipalIdFieldFactory))
+        self.assertEqual(factory.factory, user_id_field_factory)
         self.assertEqual(
             factory.factory.principal_exists_extractor,
             UserExistsExtractor
@@ -274,6 +275,7 @@ class TestBrowserPrincipal(TileTestCase):
         factory = group_field.factory('id')
         self.assertEqual(factory.attr, None)
         self.assertTrue(isinstance(factory.factory, PrincipalIdFieldFactory))
+        self.assertEqual(factory.factory, group_id_field_factory)
         self.assertEqual(
             factory.factory.principal_exists_extractor,
             GroupExistsExtractor

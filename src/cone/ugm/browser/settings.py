@@ -6,6 +6,7 @@ from cone.app.ugm import ugm_backend
 from cone.tile import tile
 from cone.ugm.settings import GeneralSettings
 from cone.ugm.settings import LocalManagerSettings
+from odict import odict
 from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
@@ -34,6 +35,21 @@ class GeneralSettingsForm(Form):
     @property
     def message_factory(self):
         return _
+
+    @property
+    def users_reserved_attrs(self):
+        attrs = self.model.attrs
+        value = odict()
+        value['id'] = attrs.users_reserved_attrs.get('id')
+        value['login'] = attrs.users_reserved_attrs.get('login')
+        return value
+
+    @property
+    def groups_reserved_attrs(self):
+        attrs = self.model.attrs
+        value = odict()
+        value['id'] = attrs.groups_reserved_attrs.get('id')
+        return value
 
     def required_if_users_account_expiration(self, widget, data):
         extracted = data.extracted
@@ -74,9 +90,11 @@ class GeneralSettingsForm(Form):
             'users_portrait_height',
             'users_local_management_enabled',
             'users_exposed_attributes',
+            'users_reserved_attrs',
             'users_form_attrmap',
             'users_listing_columns',
             'users_listing_default_column',
+            'groups_reserved_attrs',
             'groups_form_attrmap',
             'groups_listing_columns',
             'groups_listing_default_column'
