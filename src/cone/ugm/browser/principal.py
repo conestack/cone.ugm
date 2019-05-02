@@ -2,24 +2,45 @@ from cone.app import compat
 from cone.app.browser.utils import make_url
 from pyramid.i18n import get_localizer
 from pyramid.i18n import TranslationStringFactory
+from yafowil.base import ExtractionError
 from yafowil.base import factory
 from yafowil.base import UNSET
+from yafowil.common import ascii_extractor
 
 
 _ = TranslationStringFactory('cone.ugm')
 
 
-def default_form_field_factory(model, label, value):
+###############################################################################
+# Form helper functions
+###############################################################################
+
+def default_required_message(request, label):
+    localizer = get_localizer(request)
+    return _(
+        'no_field_value_defined',
+        default='No ${label} defined',
+        mapping={
+            'label': localizer.translate(_(label, default=label))
+        }
+    )
+
+
+###############################################################################
+# Form field factory basics
+###############################################################################
+
+def default_form_field_factory(form, label, value):
     """Default form field factory.
 
-    A form field factory is a callable which gets passed the application model
-    node instance, a label and the preset value of a form field, and returns a
-    widget created by the yafowil factory.
+    A form field factory is a callable which gets passed the form tile instance,
+    a label and the preset value of a form field, and returns a widget created
+    by the yafowil factory.
 
     The default factory creates a simple text field with no validation
     or whatsoever.
 
-    :param model: The application model node instance.
+    :param form: The form tile instance.
     :param label: The form field label.
     :param value: The field preset value.
     :return: ``yafowil.base.Widget`` instance created by
@@ -50,17 +71,21 @@ class FormFieldFactoryProxy(object):
         self.factory = factory
         self.attr = attr
 
-    def __call__(self, model, label, value):
+    def __call__(self, form, label, value):
         """Call proxied form field factory proxy callable.
 
-        :param model: The application model node instance.
+        :param form: The form tile instance.
         :param label: The form field label.
         :param value: The field preset value.
         :return: ``yafowil.base.Widget`` instance created by
             ``yafowil.base.factory``.
         """
-        return self.factory(model, label, value)
+        return self.factory(form, label, value)
 
+
+###############################################################################
+# Form field factory registries
+###############################################################################
 
 SCOPE_USER = 'user'
 SCOPE_GROUP = 'group'
@@ -74,10 +99,10 @@ class _form_field(object):
     scope = None
     """Registration scope."""
 
-    registry = dict(
-        SCOPE_USER={},
-        SCOPE_GROUP={}
-    )
+    registry = {
+        SCOPE_USER: {},
+        SCOPE_GROUP: {}
+    }
     """Form field factory and attribute name registry by scope and UGM backend
     name.
     """
@@ -136,19 +161,123 @@ class group_field(_form_field):
     scope = SCOPE_GROUP
 
 
+###############################################################################
+# Principal ID form field factories
+###############################################################################
+
+class PrincipalExistsExtraction(object):
+    """Abstract application model aware yafowil extractor checking whether
+    principal ID already exists.
+    """
+
+    def __init__(self, model):
+        self.model = model
+
+    def __call__(self, widget, data):
+        """Check wjetjer principal with ID already exists and raise
+        extraction error if so.
+        """
+        principal_id = data.extracted
+        if principal_id is UNSET:
+            return data.extracted
+        try:
+            self.model.parent.backend[principal_id]
+            raise ExtractionError(self.error_message(principal_id))
+        except KeyError:
+            return data.extracted
+
+    def error_message(self, principal_id):
+        raise NotImplementedError(
+            'Abstract ``PrincipalExistsExtraction```does '
+            'not implement ``error_message``'
+        )
+
+
+class UserExistsExtraction(PrincipalExistsExtraction):
+    """Yafowil extractor checking whether user ID already exists.
+    """
+
+    def error_message(self, principal_id):
+        return _(
+            'user_already_exists',
+            default="User ${principal_id} already exists.",
+            mapping={'principal_id': principal_id}
+        )
+
+
+class GroupExistsExtraction(object):
+    """Yafowil extractor checking whether group ID already exists.
+    """
+
+    def error_message(self, principal_id):
+        return _(
+            'group_already_exists',
+            default="Group ${principal_id} already exists.",
+            mapping={'principal_id': principal_id}
+        )
+
+
+class PrincipalIdFieldFactory(object):
+    """Principal ID field factory.
+
+    Creates a form widget which validates an input only contains ASCII
+    characters and principal not exists. If edit form, field is not editable.
+    """
+
+    def __init__(self, principal_id_extractor):
+        self.principal_id_extractor = principal_id_extractor
+
+    def __call__(self, form, label, value):
+        return factory(
+            'field:*ascii:*exists:label:error:text',
+            value=value,
+            props={
+                'required': default_required_message(form.request, label),
+                'ascii': True
+            },
+            custom={
+                'ascii': {
+                    'extractors': [ascii_extractor]
+                },
+                'exists': {
+                    'extractors': [self.principal_id_extractor(form.model)]
+                }
+            },
+            mode='edit' if form.action_resource == 'add' else 'display'
+        )
+
+
+# register user ID field factory
+user_id_field_factory = user_field('id')(
+    PrincipalIdFieldFactory(UserExistsExtraction)
+)
+
+# register group ID field factory
+group_id_field_factory = group_field('id')(
+    PrincipalIdFieldFactory(GroupExistsExtraction)
+)
+
+
+###############################################################################
+# Principal form
+###############################################################################
+
 class PrincipalForm(object):
 
     form_name = None
 
     @property
     def form_attrmap(self):
-        raise NotImplementedError(u"Abstract principal form does not provide "
-                                  u"``form_attrmap``")
+        raise NotImplementedError(
+            'Abstract principal form does not implement ``form_attrmap``'
+        )
 
     @property
     def form_field_definitions(self):
-        raise NotImplementedError(u"Abstract principal form does not provide "
-                                  u"``form_field_definitions``")
+        raise NotImplementedError(
+            'Abstract principal form does not '
+            'implement ``form_field_definitions``'
+        )
 
     def prepare(self):
         resource = self.action_resource

@@ -1,5 +1,6 @@
 # from cone.app import get_root
 from cone.app.model import BaseNode
+from cone.tile import Tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
 from cone.ugm.browser.principal import _form_field
@@ -12,11 +13,11 @@ class TestBrowserPrincipal(TileTestCase):
     layer = testing.ugm_layer
 
     def test_default_form_field_factory(self):
-        model = BaseNode()
+        form = Tile()
         label = 'Field Label'
         value = 'Field Value'
         container = factory('compound', name='container')
-        container['field'] = default_form_field_factory(model, label, value)
+        container['field'] = default_form_field_factory(form, label, value)
         self.assertEqual(container(), (
             '<div class="form-group" id="field-container-field">'
             '<label class="control-label" for="input-container-field">Field Label</label>'
@@ -25,16 +26,16 @@ class TestBrowserPrincipal(TileTestCase):
         ))
 
     def test_FormFieldFactoryProxy(self):
-        def form_field_factory(model, label, value):
+        def form_field_factory(form, label, value):
             return 'FACTORY_CALLED'
 
         factory = FormFieldFactoryProxy(form_field_factory, 'attr')
         self.assertEqual(factory.attr, 'attr')
 
-        model = BaseNode()
+        form = Tile()
         label = 'Field Label'
         value = 'Field Value'
-        self.assertEqual(factory(model, label, value), 'FACTORY_CALLED')
+        self.assertEqual(factory(form, label, value), 'FACTORY_CALLED')
 
     def test__form_field(self):
         self.expectError(AssertionError, _form_field, 'field')
@@ -47,19 +48,19 @@ class TestBrowserPrincipal(TileTestCase):
             scope = SCOPE
 
         @form_field('field')
-        def form_field_factory(model, label, value):
+        def form_field_factory(form, label, value):
             pass
 
         @form_field('attr_field', attr='attr')
-        def attr_form_field_factory(model, label, value):
+        def attr_form_field_factory(form, label, value):
             pass
 
         @form_field('field', backend='backend')
-        def backend_form_field_factory(model, label, value):
+        def backend_form_field_factory(form, label, value):
             pass
 
         @form_field('attr_field', attr='attr', backend='backend')
-        def backend_attr_form_field_factory(model, label, value):
+        def backend_attr_form_field_factory(form, label, value):
             pass
 
         self.assertEqual(_form_field.registry[SCOPE], {
