@@ -19,10 +19,8 @@ def default_required_message(request, label):
     localizer = get_localizer(request)
     return _(
         'no_field_value_defined',
-        default='No ${label} defined',
-        mapping={
-            'label': localizer.translate(_(label, default=label))
-        }
+        default='No ${field} defined',
+        mapping={'field': localizer.translate(_(label, default=label))}
     )
 
 
@@ -165,7 +163,7 @@ class group_field(_form_field):
 # Principal ID form field factories
 ###############################################################################
 
-class PrincipalExistsExtraction(object):
+class PrincipalExistsExtractor(object):
     """Abstract application model aware yafowil extractor checking whether
     principal ID already exists.
     """
@@ -188,12 +186,12 @@ class PrincipalExistsExtraction(object):
 
     def error_message(self, principal_id):
         raise NotImplementedError(
-            'Abstract ``PrincipalExistsExtraction```does '
+            'Abstract ``PrincipalExistsExtractor```does '
             'not implement ``error_message``'
         )
 
 
-class UserExistsExtraction(PrincipalExistsExtraction):
+class UserExistsExtractor(PrincipalExistsExtractor):
     """Yafowil extractor checking whether user ID already exists.
     """
 
@@ -205,7 +203,7 @@ class UserExistsExtraction(PrincipalExistsExtraction):
         )
 
 
-class GroupExistsExtraction(object):
+class GroupExistsExtractor(PrincipalExistsExtractor):
     """Yafowil extractor checking whether group ID already exists.
     """
 
@@ -224,8 +222,8 @@ class PrincipalIdFieldFactory(object):
     characters and principal not exists. If edit form, field is not editable.
     """
 
-    def __init__(self, principal_id_extractor):
-        self.principal_id_extractor = principal_id_extractor
+    def __init__(self, principal_exists_extractor):
+        self.principal_exists_extractor = principal_exists_extractor
 
     def __call__(self, form, label, value):
         return factory(
@@ -240,7 +238,7 @@ class PrincipalIdFieldFactory(object):
                     'extractors': [ascii_extractor]
                 },
                 'exists': {
-                    'extractors': [self.principal_id_extractor(form.model)]
+                    'extractors': [self.principal_exists_extractor(form.model)]
                 }
             },
             mode='edit' if form.action_resource == 'add' else 'display'
@@ -249,12 +247,12 @@ class PrincipalIdFieldFactory(object):
 
 # register user ID field factory
 user_id_field_factory = user_field('id')(
-    PrincipalIdFieldFactory(UserExistsExtraction)
+    PrincipalIdFieldFactory(UserExistsExtractor)
 )
 
 # register group ID field factory
 group_id_field_factory = group_field('id')(
-    PrincipalIdFieldFactory(GroupExistsExtraction)
+    PrincipalIdFieldFactory(GroupExistsExtractor)
 )
 
 
