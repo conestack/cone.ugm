@@ -228,9 +228,11 @@ div.expiration-widget #input-userform-active {
 #array-ugm_settings-users_exposed_attributes td.widget input {
     margin-top:4px;
 }
+#field-ugm_settings-users_reserved_attrs label,
 #field-ugm_settings-users_form_attrmap label,
 #field-ugm_settings-users_listing_columns label,
 #field-ugm_settings-users_exposed_attributes label,
+#field-ugm_settings-groups_reserved_attrs label,
 #field-ugm_settings-groups_form_attrmap label,
 #field-ugm_settings-groups_listing_columns label {
     font-size:130%;

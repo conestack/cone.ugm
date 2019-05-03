@@ -1,3 +1,4 @@
+from cone.app import get_root
 from cone.app.model import BaseNode
 from cone.tile import Tile
 from cone.tile.tests import TileTestCase
@@ -9,11 +10,14 @@ from cone.ugm.browser.principal import FormFieldFactoryProxy
 from cone.ugm.browser.principal import group_field
 from cone.ugm.browser.principal import group_id_field_factory
 from cone.ugm.browser.principal import GroupExistsExtractor
+from cone.ugm.browser.principal import login_name_field_factory
+from cone.ugm.browser.principal import LoginNameExtractor
 from cone.ugm.browser.principal import PrincipalExistsExtractor
 from cone.ugm.browser.principal import PrincipalIdFieldFactory
 from cone.ugm.browser.principal import user_field
 from cone.ugm.browser.principal import user_id_field_factory
 from cone.ugm.browser.principal import UserExistsExtractor
+from cone.ugm.utils import general_settings
 from node.utils import UNSET
 from pyramid.i18n import get_localizer
 from yafowil.base import ExtractionError
@@ -280,3 +284,111 @@ class TestBrowserPrincipal(TileTestCase):
             factory.factory.principal_exists_extractor,
             GroupExistsExtractor
         )
+
+    def test_LoginNameExtractor(self):
+        # dummy backend
+        class UsersBackend(object):
+            def search(self, criteria):
+                if criteria['login_attr'] == 'Login Name':
+                    return ['user_name']
+
+        # dummy model
+        class Users(BaseNode):
+            backend = UsersBackend()
+
+        # adding. users container, add model and form widget
+        users = Users(name='users')
+        add_model = BaseNode(parent=users)
+        extractor = LoginNameExtractor(add_model, 'login_attr')
+        widget = factory(
+            '*login:text',
+            name='login_name',
+            custom={'login': {'extractors': [extractor]}}
+        )
+
+        # test already exists
+        request = {'login_name': 'Login Name'}
+        data = widget.extract(request=request)
+        self.assertTrue(data.has_errors)
+        self.assertEqual(
+            data.errors,
+            [ExtractionError('user_login_not_unique')]
+        )
+
+        # test not already exists
+        request = {'login_name': 'Other Login Name'}
+        data = widget.extract(request=request)
+        self.assertFalse(data.has_errors)
+        self.assertEqual(data.extracted, 'Other Login Name')
+
+        # test empty login name
+        request = {'login_name': ''}
+        data = widget.extract(request=request)
+        self.assertFalse(data.has_errors)
+        self.assertEqual(data.extracted, '')
+
+        # editing. users container, edit model and form widget
+        edit_model = BaseNode(name='user_name', parent=users)
+        extractor = LoginNameExtractor(edit_model, 'login_attr')
+        widget = factory(
+            '*login:text',
+            name='login_name',
+            custom={'login': {'extractors': [extractor]}}
+        )
+
+        # test login name belongs to edited node
+        request = {'login_name': 'Login Name'}
+        data = widget.extract(request=request)
+        self.assertFalse(data.has_errors)
+        self.assertEqual(data.extracted, 'Login Name')
+
+        request = {'login_name': 'Other Login Name'}
+        data = widget.extract(request=request)
+        self.assertFalse(data.has_errors)
+        self.assertEqual(data.extracted, 'Other Login Name')
+
+        # test login name belongs to another user
+        edit_model.__name__ = 'other_user_name'
+        request = {'login_name': 'Login Name'}
+        data = widget.extract(request=request)
+        self.assertTrue(data.has_errors)
+        self.assertEqual(
+            data.errors,
+            [ExtractionError('user_login_not_unique')]
+        )
+
+    @testing.invalidate_settings
+    def test_login_name_field_factory(self):
+        factory = user_field.factory('login')
+        self.assertEqual(factory.attr, None)
+        self.assertEqual(factory.factory, login_name_field_factory)
+
+        users = get_root()['users']
+        user = BaseNode(name='user', parent=users)
+        form = Tile()
+        form.model = user
+        form.request = self.layer.new_request()
+
+        settings = general_settings(users)
+        settings.attrs.users_reserved_attrs = {
+            'id': 'id',
+            'login': 'id'
+        }
+
+        widget = factory(form, 'Login Name', UNSET)
+        self.assertEqual(widget.getter, UNSET)
+        self.assertEqual(widget.properties, {
+            'label': 'Login Name'
+        })
+        self.assertTrue(isinstance(
+            widget.custom['login']['extractors'][0],
+            LoginNameExtractor
+        ))
+        self.assertEqual(widget.mode, 'skip')
+
+        settings.attrs.users_reserved_attrs = {
+            'id': 'id',
+            'login': 'login'
+        }
+        widget = factory(form, 'Login Name', UNSET)
+        self.assertEqual(widget.mode, 'edit')
