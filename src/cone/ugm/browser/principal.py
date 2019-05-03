@@ -350,28 +350,6 @@ def email_field_factory(form, label, value):
 
 
 ###############################################################################
-# LDAP form field factories
-# XXX: move to cone.ldap
-###############################################################################
-
-from functools import partial
-
-
-ldap_password_field_factory = user_field('userPassword', backend='ldap')(
-    password_field_factory
-)
-ldap_email_field_factory = user_field('mail', backend='ldap')(
-    email_field_factory
-)
-ldap_cn_field_factory = user_field('cn', backend='ldap')(
-    partial(default_form_field_factory, required=True)
-)
-ldap_sn_field_factory = user_field('sn', backend='ldap')(
-    partial(default_form_field_factory, required=True)
-)
-
-
-###############################################################################
 # Principal form
 ###############################################################################
 
