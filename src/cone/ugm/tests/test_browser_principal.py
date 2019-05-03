@@ -15,12 +15,14 @@ from cone.ugm.browser.principal import login_name_field_factory
 from cone.ugm.browser.principal import LoginNameExtractor
 from cone.ugm.browser.principal import password_field_factory
 from cone.ugm.browser.principal import PrincipalExistsExtractor
+from cone.ugm.browser.principal import PrincipalForm
 from cone.ugm.browser.principal import PrincipalIdFieldFactory
 from cone.ugm.browser.principal import user_field
 from cone.ugm.browser.principal import user_id_field_factory
 from cone.ugm.browser.principal import UserExistsExtractor
 from cone.ugm.utils import general_settings
 from node.utils import UNSET
+from odict import odict
 from pyramid.i18n import get_localizer
 from yafowil.base import ExtractionError
 from yafowil.base import factory
@@ -113,6 +115,10 @@ class TestBrowserPrincipal(TileTestCase):
         self.assertEqual(factory.attr, 'attr')
         self.assertEqual(factory.factory, attr_form_field_factory)
 
+        factory = form_field.factory('other_field')
+        self.assertEqual(factory.attr, None)
+        self.assertEqual(factory.factory, default_form_field_factory)
+
         factory = form_field.factory('field', backend='backend')
         self.assertEqual(factory.attr, None)
         self.assertEqual(factory.factory, backend_form_field_factory)
@@ -121,6 +127,10 @@ class TestBrowserPrincipal(TileTestCase):
         self.assertEqual(factory.attr, 'attr')
         self.assertEqual(factory.factory, backend_attr_form_field_factory)
 
+        factory = form_field.factory('other_field', backend='backend')
+        self.assertEqual(factory.attr, None)
+        self.assertEqual(factory.factory, default_form_field_factory)
+
         factory = form_field.factory('field', backend='other')
         self.assertEqual(factory.attr, None)
         self.assertEqual(factory.factory, form_field_factory)
@@ -128,6 +138,10 @@ class TestBrowserPrincipal(TileTestCase):
         factory = form_field.factory('attr_field', backend='other')
         self.assertEqual(factory.attr, 'attr')
         self.assertEqual(factory.factory, attr_form_field_factory)
+
+        factory = form_field.factory('other_field', backend='other')
+        self.assertEqual(factory.attr, None)
+        self.assertEqual(factory.factory, default_form_field_factory)
 
         del _form_field.registry[SCOPE]
 
@@ -440,3 +454,68 @@ class TestBrowserPrincipal(TileTestCase):
         ])
         self.assertEqual(widget.getter, UNSET)
         self.assertEqual(widget.properties, {'label': 'Email address'})
+
+    def test_principal_form(self):
+        SCOPE = 'principal'
+        _form_field.registry[SCOPE] = {}
+
+        class form_field(_form_field):
+            scope = SCOPE
+
+        class DummyPrincipalForm(PrincipalForm):
+            form_name = 'principal'
+            reserved_attrs = odict([('reserved_field', 'reserver_field')])
+            form_attrmap = odict([('form_field', 'Form Field')])
+            field_factory_registry = form_field
+
+            def save(self, widget, data):
+                pass
+
+            def next(self, request):
+                pass
+
+        class PrincipalAddForm(DummyPrincipalForm):
+            action_resource = 'add'
+
+        class PrincipalEditForm(DummyPrincipalForm):
+            action_resource = 'edit'
+
+        # users = get_root()['users']
+        model = BaseNode(name='user', parent=None)
+        request = self.layer.new_request()
+
+        form = PrincipalAddForm()
+        form.model = model
+        form.request = request
+        form.prepare()
+
+        self.checkOutput("""
+        <class 'yafowil.base.Widget'>: principal
+          <class 'yafowil.base.Widget'>: reserved_field
+          <class 'yafowil.base.Widget'>: form_field
+          <class 'yafowil.base.Widget'>: save
+          <class 'yafowil.base.Widget'>: cancel
+        """, form.form.treerepr())
+
+        self.assertEqual(form.form['reserved_field'].getter, UNSET)
+        self.assertEqual(form.form['form_field'].getter, UNSET)
+
+        model.attrs['reserved_field'] = 'Reserved Value'
+        model.attrs['form_field'] = 'Field Value'
+
+        form = PrincipalEditForm()
+        form.model = model
+        form.request = request
+        form.prepare()
+
+        self.checkOutput("""
+        <class 'yafowil.base.Widget'>: principal
+          <class 'yafowil.base.Widget'>: reserved_field
+          <class 'yafowil.base.Widget'>: form_field
+          <class 'yafowil.base.Widget'>: save
+        """, form.form.treerepr())
+
+        self.assertEqual(form.form['reserved_field'].getter, 'Reserved Value')
+        self.assertEqual(form.form['form_field'].getter, 'Field Value')
+
+        del _form_field.registry[SCOPE]

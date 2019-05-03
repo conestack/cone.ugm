@@ -1,5 +1,6 @@
 from cone.app import compat
 from cone.app.browser.utils import make_url
+from cone.app.ugm import ugm_backend
 from cone.ugm.utils import general_settings
 from pyramid.i18n import get_localizer
 from pyramid.i18n import TranslationStringFactory
@@ -148,7 +149,7 @@ class _form_field(object):
             entry = backend_reg.get(field)
             if entry:
                 return FormFieldFactoryProxy(*entry)
-        FormFieldFactoryProxy(default_form_field_factory, None)
+        return FormFieldFactoryProxy(default_form_field_factory, None)
 
 
 class user_field(_form_field):
@@ -354,8 +355,13 @@ def email_field_factory(form, label, value):
 ###############################################################################
 
 class PrincipalForm(object):
-
     form_name = None
+
+    @property
+    def reserved_attrs(self):
+        raise NotImplementedError(
+            'Abstract principal form does not implement ``reserved_attrs``'
+        )
 
     @property
     def form_attrmap(self):
@@ -364,79 +370,40 @@ class PrincipalForm(object):
         )
 
     @property
-    def form_field_definitions(self):
+    def field_factory_registry(self):
         raise NotImplementedError(
             'Abstract principal form does not '
-            'implement ``form_field_definitions``'
+            'implement ``field_factory_registry``'
         )
 
     def prepare(self):
-        resource = self.action_resource
-
-        # load props befor edit form is rendered.
-        # XXX: this is LDAP world, not generic UGM
-        if resource == 'edit':
-            self.model.attrs.context.load()
-
-        action = make_url(self.request, node=self.model, resource=resource)
-        form = factory(
+        model = self.model
+        request = self.request
+        scope = self.action_resource
+        self.form = form = factory(
             u'form',
             name=self.form_name,
             props={
-                'action': action,
+                'action': make_url(request, node=model, resource=scope),
             })
-        attrmap = self.form_attrmap
-        if not attrmap:
-            return form
-        schema = self.form_field_definitions
-        default = schema['default']
-        localizer = get_localizer(self.request)
-        for key, val in attrmap.items():
-            field = schema.get(key, default)
-            chain = field.get('chain', default['chain'])
-            props = dict()
-            props['label'] = _(val, default=val)
-            if field.get('required'):
-                req = _(
-                    'no_field_value_defined',
-                    default='No ${field} defined',
-                    mapping={
-                        'field': localizer.translate(_(val, default=val))
-                    }
-                )
-                props['required'] = req
-            props.update(field.get('props', dict()))
-            value = UNSET
-            mode = 'edit'
-            if resource == 'edit':
-                if field.get('protected'):
-                    mode = 'display'
-                value = self.model.attrs.get(key, u'')
-            custom = field.get('custom', dict())
-            custom_parsed = dict()
-            if custom.keys():
-                for k, v in custom.items():
-                    val_parsed = list()
-                    for c_chain in v:
-                        chain_parsed = list()
-                        for part in c_chain:
-                            if isinstance(part, compat.STR_TYPE):
-                                if not part.startswith('context.'):
-                                    msg = 'chain callable definition invalid'
-                                    raise Exception(msg)
-                                attrname = part[part.index('.') + 1:]
-                                clb = getattr(self, attrname)
-                            else:
-                                clb = part
-                            chain_parsed.append(clb)
-                        val_parsed.append(chain_parsed)
-                    custom_parsed[k] = tuple(val_parsed)
-            form[key] = factory(
-                chain,
-                value=value,
-                props=props,
-                custom=custom_parsed,
-                mode=mode)
+        registry = self.field_factory_registry
+        localizer = get_localizer(request)
+        backend_name = ugm_backend.name
+        # add reserved form fields
+        for attr_name in self.reserved_attrs.keys():
+            field_factory = registry.factory(attr_name, backend=backend_name)
+            label = localizer.translate(_(attr_name, default=attr_name))
+            value = model.attrs.get(attr_name, UNSET)
+            form[attr_name] = field_factory(self, label, value)
+        # add custom form fields
+        form_attrmap = self.form_attrmap
+        if not form_attrmap:
+            return
+        for attr_name, label in form_attrmap.items():
+            field_factory = registry.factory(attr_name, backend=backend_name)
+            value = model.attrs.get(attr_name, UNSET)
+            form[attr_name] = field_factory(self, label, value)
+        # add form actions
         form['save'] = factory(
             'submit',
             props={
@@ -444,9 +411,9 @@ class PrincipalForm(object):
                 'expression': True,
                 'handler': self.save,
                 'next': self.next,
-                'label': _('save', default='Save'),
+                'label': _('save', default='Save')
             })
-        if resource == 'add':
+        if scope == 'add':
             form['cancel'] = factory(
                 'submit',
                 props={
@@ -455,6 +422,5 @@ class PrincipalForm(object):
                     'handler': None,
                     'next': self.next,
                     'label': _('cancel', default='Cancel'),
-                    'skip': True,
+                    'skip': True
                 })
-        self.form = form
