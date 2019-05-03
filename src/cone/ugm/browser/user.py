@@ -5,9 +5,9 @@ from cone.app.browser.authoring import EditBehavior
 from cone.app.browser.form import Form
 from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
+from cone.app.ugm import ugm_backend
 from cone.tile import Tile
 from cone.tile import tile
-from cone.ugm.browser import form_field_definitions
 from cone.ugm.browser.authoring import AddFormFiddle
 from cone.ugm.browser.authoring import EditFormFiddle
 from cone.ugm.browser.autoincrement import AutoIncrementForm
@@ -15,16 +15,16 @@ from cone.ugm.browser.expires import ExpirationForm
 from cone.ugm.browser.listing import ColumnListing
 from cone.ugm.browser.portrait import PortraitForm
 from cone.ugm.browser.principal import PrincipalForm
+from cone.ugm.browser.principal import user_field
 from cone.ugm.browser.roles import PrincipalRolesForm
 from cone.ugm.model.user import User
 from cone.ugm.utils import general_settings
 from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 from webob.exc import HTTPFound
-from yafowil.base import ExtractionError
 from yafowil.base import UNSET
-import copy
 import fnmatch
+import itertools
 
 
 _ = TranslationStringFactory('cone.ugm')
@@ -173,61 +173,19 @@ class AllGroupsColumnListing(GroupsListing):
 
 class UserForm(PrincipalForm):
     form_name = 'userform'
+    field_factory_registry = user_field
+
+    @property
+    def settings(self):
+        return general_settings(self.model)
+
+    @property
+    def reserved_attrs(self):
+        return self.settings.attrs.users_reserved_attrs
 
     @property
     def form_attrmap(self):
-        settings = general_settings(self.model)
-        return settings.attrs.users_form_attrmap
-
-    @property
-    def form_field_definitions(self):
-        """Hook optional_login extractor if necessary for form defaults.
-        """
-        schema = copy.deepcopy(form_field_definitions.user)
-        uid, login = self._get_auth_attrs()
-        if uid != login:
-            field = schema.get(login, schema['default'])
-            if field['chain'].find('*optional_login') == -1:
-                field['chain'] = '%s:%s' % (
-                    '*optional_login', field['chain'])
-                if not field.get('custom'):
-                    field['custom'] = dict()
-                field['custom']['optional_login'] = \
-                    (['context.optional_login'], [], [], [], [])
-            schema[login] = field
-        return schema
-
-    def exists(self, widget, data):
-        uid = data.extracted
-        if uid is UNSET:
-            return data.extracted
-        if uid in self.model.parent.backend:
-            message = _('user_already_exists',
-                        default="User ${uid} already exists.",
-                        mapping={'uid': uid})
-            raise ExtractionError(message)
-        return data.extracted
-
-    def optional_login(self, widget, data):
-        login = self._get_auth_attrs()[1]
-        res = self.model.parent.backend.search(
-            criteria={login: data.extracted})
-        # no entries found with same login attribute set.
-        if not res:
-            return data.extracted
-        # 1-lenght result, unchange login attribute
-        if len(res) == 1:
-            if res[0] == self.model.name:
-                return data.extracted
-        message = _('user_login_not_unique',
-                    default="User login ${login} not unique.",
-                    mapping={'login': data.extracted})
-        raise ExtractionError(message)
-
-    def _get_auth_attrs(self):
-        settings = general_settings(self.model)
-        aliases = settings.attrs.users_reserved_attrs
-        return aliases['id'], aliases['login']
+        return self.settings.attrs.users_form_attrmap
 
 
 @tile(name='addform', interface=User, permission='add_user')
@@ -243,37 +201,35 @@ class UserAddForm(UserForm, Form):
     show_contextmenu = False
 
     def save(self, widget, data):
-        settings = general_settings(self.model)
-        attrmap = settings.attrs.users_form_attrmap
         extracted = dict()
-        for key, val in attrmap.items():
-            val = data.fetch('userform.%s' % key).extracted
-            if not val:
+        for attr_name in itertools.chain(self.reserved_attrs, self.form_attrmap):
+            value = data[attr_name].extracted
+            if not value:
                 continue
-            extracted[key] = val
-        # possibly extracted by other behaviors
+            extracted[attr_name] = value
+        # possible values extracted by other user form behaviors
         # XXX: call next at the end in all extension behaviors to reduce
         #      database queries.
-        for key, val in self.model.attrs.items():
-            extracted[key] = val
-        users = self.model.parent.backend
-        uid = extracted.pop('id')
+        extracted.update(self.model.attrs)
+        users = ugm_backend.ugm.users
+        user_id = extracted.pop('id')
         password = extracted.pop('password')
-        users.create(uid, **extracted)
+        users.create(user_id, **extracted)
         users()
         if self.model.local_manager_consider_for_user:
-            groups = users.parent.groups
+            groups = ugm_backend.ugm.groups
             for gid in self.model.local_manager_default_gids:
-                groups[gid].add(uid)
+                groups[gid].add(user_id)
             groups()
-        self.request.environ['next_resource'] = uid
+        self.request.environ['next_resource'] = user_id
         if password is not UNSET:
-            users.passwd(uid, None, password)
+            users.passwd(user_id, None, password)
         self.model.parent.invalidate()
+        # XXX: remove below if possible
         # Access already added user after invalidation. If not done, there's
         # some kind of race condition with ajax continuation.
         # XXX: figure out why.
-        self.model.parent[uid]
+        # self.model.parent[uid]
 
     def next(self, request):
         next_resource = self.request.environ.get('next_resource')
@@ -302,19 +258,21 @@ class UserEditForm(UserForm, Form):
     show_contextmenu = False
 
     def save(self, widget, data):
-        settings = general_settings(self.model)
-        attrmap = settings.attrs.users_form_attrmap
-        for key in attrmap:
-            if key in ['id', 'login', 'password']:
+        attrs = self.model.attrs
+        for attr_name in self.form_attrmap:
+            if attr_name in self.reserved_attrs:
                 continue
-            extracted = data.fetch('userform.%s' % key).extracted
-            if not extracted:
-                if key in self.model.attrs:
-                    del self.model.attrs[key]
+            extracted = data[attr_name].extracted
+            # attr removed from form attr map gets deleted.
+            # XXX: is this really what we want here?
+            if extracted is UNSET:
+                if attr_name in attrs:
+                    del attrs[attr_name]
             else:
-                self.model.attrs[key] = extracted
-        # set object classes if missing
-        # XXX: move to cone.ldap
+                attrs[attr_name] = extracted
+
+        # XXX: move this to node.ext.ldap.ugm
+        # set object classes if missing. happens if principal config changed
         ocs = self.model.model.context.attrs['objectClass']
         ldap_settings = self.model.root['settings']['ldap_users']
         for oc in ldap_settings.attrs.users_object_classes:
@@ -324,11 +282,13 @@ class UserEditForm(UserForm, Form):
                 ocs.append(oc)
         if ocs != self.model.model.context.attrs['objectClass']:
             self.model.model.context.attrs['objectClass'] = ocs
+            self.model.model.context()
+        # XXX: end move
+
         password = data.fetch('userform.password').extracted
-        self.model.model.context()
         if password is not UNSET:
-            uid = self.model.name
-            self.model.parent.backend.passwd(uid, None, password)
+            user_id = self.model.name
+            ugm_backend.ugm.users.passwd(user_id, None, password)
 
     def next(self, request):
         came_from = request.get('came_from')
