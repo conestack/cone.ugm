@@ -29,7 +29,7 @@ def default_required_message(request, label):
 # Form field factory basics
 ###############################################################################
 
-def default_form_field_factory(form, label, value):
+def default_form_field_factory(form, label, value, required=False):
     """Default form field factory.
 
     A form field factory is a callable which gets passed the form tile instance,
@@ -45,11 +45,14 @@ def default_form_field_factory(form, label, value):
     :return: ``yafowil.base.Widget`` instance created by
         ``yafowil.base.factory``.
     """
+    if required and isinstance(required, bool):
+        required = default_required_message(form.request, label)
     return factory(
-        'field:label:text',
+        'field:label:error:text',
         value=value,
         props={
-            'label': label
+            'label': label,
+            'required': required
         })
 
 
@@ -231,6 +234,7 @@ class PrincipalIdFieldFactory(object):
             'field:*ascii:*exists:label:error:text',
             value=value,
             props={
+                'label': label,
                 'required': default_required_message(form.request, label),
                 'ascii': True
             },
@@ -312,6 +316,59 @@ def login_name_field_factory(form, label, value):
         },
         mode='skip' if id_attr == login_attr else 'edit'
     )
+
+
+###############################################################################
+# Password form field factory
+###############################################################################
+
+@user_field('password')
+def password_field_factory(form, label, value):
+    return factory(
+        'field:label:error:password',
+        value=value,
+        props={
+            'label': label,
+            'required': default_required_message(form.request, label),
+            'minlength': 6,
+            'ascii': True
+        })
+
+
+###############################################################################
+# E-Mail form field factory
+###############################################################################
+
+@user_field('email')
+def email_field_factory(form, label, value):
+    return factory(
+        'field:label:error:email',
+        value=value,
+        props={
+            'label': label
+        })
+
+
+###############################################################################
+# LDAP form field factories
+# XXX: move to cone.ldap
+###############################################################################
+
+from functools import partial
+
+
+ldap_password_field_factory = user_field('userPassword', backend='ldap')(
+    password_field_factory
+)
+ldap_email_field_factory = user_field('mail', backend='ldap')(
+    email_field_factory
+)
+ldap_cn_field_factory = user_field('cn', backend='ldap')(
+    partial(default_form_field_factory, required=True)
+)
+ldap_sn_field_factory = user_field('sn', backend='ldap')(
+    partial(default_form_field_factory, required=True)
+)
 
 
 ###############################################################################

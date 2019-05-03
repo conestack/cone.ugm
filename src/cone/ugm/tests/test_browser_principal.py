@@ -6,12 +6,14 @@ from cone.ugm import testing
 from cone.ugm.browser.principal import _form_field
 from cone.ugm.browser.principal import default_form_field_factory
 from cone.ugm.browser.principal import default_required_message
+from cone.ugm.browser.principal import email_field_factory
 from cone.ugm.browser.principal import FormFieldFactoryProxy
 from cone.ugm.browser.principal import group_field
 from cone.ugm.browser.principal import group_id_field_factory
 from cone.ugm.browser.principal import GroupExistsExtractor
 from cone.ugm.browser.principal import login_name_field_factory
 from cone.ugm.browser.principal import LoginNameExtractor
+from cone.ugm.browser.principal import password_field_factory
 from cone.ugm.browser.principal import PrincipalExistsExtractor
 from cone.ugm.browser.principal import PrincipalIdFieldFactory
 from cone.ugm.browser.principal import user_field
@@ -38,16 +40,21 @@ class TestBrowserPrincipal(TileTestCase):
 
     def test_default_form_field_factory(self):
         form = Tile()
+        form.request = self.layer.new_request()
         label = 'Field Label'
         value = 'Field Value'
-        container = factory('compound', name='container')
-        container['field'] = default_form_field_factory(form, label, value)
-        self.assertEqual(container(), (
-            '<div class="form-group" id="field-container-field">'
-            '<label class="control-label" for="input-container-field">Field Label</label>'
-            '<input class="form-control text" id="input-container-field" '
-            'name="container.field" type="text" value="Field Value" /></div>'
-        ))
+        widget = default_form_field_factory(form, label, value)
+        self.assertEqual(widget.getter, 'Field Value')
+        self.assertEqual(widget.blueprints, ['field', 'label', 'error', 'text'])
+        self.assertEqual(widget.properties, {
+            'label': 'Field Label',
+            'required': False
+        })
+        widget = default_form_field_factory(form, label, value, required=True)
+        self.assertEqual(widget.properties, {
+            'label': 'Field Label',
+            'required': 'no_field_value_defined'
+        })
 
     def test_FormFieldFactoryProxy(self):
         def form_field_factory(form, label, value):
@@ -230,8 +237,12 @@ class TestBrowserPrincipal(TileTestCase):
         form.model = BaseNode()
         form.request = self.layer.new_request()
         widget = factory(form, 'Principal ID', UNSET)
+        self.assertEqual(widget.blueprints, [
+            'field', '*ascii', '*exists', 'label', 'error', 'text'
+        ])
         self.assertEqual(widget.getter, UNSET)
         self.assertEqual(widget.properties, {
+            'label': 'Principal ID',
             'required': 'no_field_value_defined',
             'ascii': True
         })
@@ -252,6 +263,7 @@ class TestBrowserPrincipal(TileTestCase):
         widget = factory(form, 'Principal ID', 'pid')
         self.assertEqual(widget.getter, 'pid')
         self.assertEqual(widget.properties, {
+            'label': 'Principal ID',
             'required': 'no_field_value_defined',
             'ascii': True
         })
@@ -377,6 +389,9 @@ class TestBrowserPrincipal(TileTestCase):
 
         widget = factory(form, 'Login Name', UNSET)
         self.assertEqual(widget.getter, UNSET)
+        self.assertEqual(widget.blueprints, [
+            'field', 'label', 'error', '*login', 'text'
+        ])
         self.assertEqual(widget.properties, {
             'label': 'Login Name'
         })
@@ -392,3 +407,36 @@ class TestBrowserPrincipal(TileTestCase):
         }
         widget = factory(form, 'Login Name', UNSET)
         self.assertEqual(widget.mode, 'edit')
+
+    def test_password_field_factory(self):
+        factory = user_field.factory('password')
+        self.assertEqual(factory.attr, None)
+        self.assertEqual(factory.factory, password_field_factory)
+
+        form = Tile()
+        form.request = self.layer.new_request()
+        widget = factory(form, 'User Password', UNSET)
+        self.assertEqual(widget.blueprints, [
+            'field', 'label', 'error', 'password'
+        ])
+        self.assertEqual(widget.getter, UNSET)
+        self.assertEqual(widget.properties, {
+            'ascii': True,
+            'label': 'User Password',
+            'minlength': 6,
+            'required': 'no_field_value_defined'
+        })
+
+    def test_email_field_factory(self):
+        factory = user_field.factory('email')
+        self.assertEqual(factory.attr, None)
+        self.assertEqual(factory.factory, email_field_factory)
+
+        form = Tile()
+        form.request = self.layer.new_request()
+        widget = factory(form, 'Email address', UNSET)
+        self.assertEqual(widget.blueprints, [
+            'field', 'label', 'error', 'email'
+        ])
+        self.assertEqual(widget.getter, UNSET)
+        self.assertEqual(widget.properties, {'label': 'Email address'})

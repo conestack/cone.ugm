@@ -1,6 +1,5 @@
 from cone.app.model import Properties
 from pyramid.static import static_view
-from yafowil.base import factory
 from yafowil.common import ascii_extractor
 
 
