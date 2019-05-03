@@ -16,7 +16,7 @@ def user_vessel(users):
 def user_request(layer, cn, sn, mail):
     request = layer.new_request()
     request.params['userform.id'] = ''
-    request.params['userform.userPassword'] = '123456'
+    request.params['userform.password'] = '123456'
     request.params['userform.cn'] = cn
     request.params['userform.sn'] = sn
     request.params['userform.mail'] = mail

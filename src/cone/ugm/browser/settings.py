@@ -42,6 +42,7 @@ class GeneralSettingsForm(Form):
         value = odict()
         value['id'] = attrs.users_reserved_attrs.get('id')
         value['login'] = attrs.users_reserved_attrs.get('login')
+        value['password'] = attrs.users_reserved_attrs.get('password')
         return value
 
     @property

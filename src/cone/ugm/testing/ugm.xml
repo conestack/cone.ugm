@@ -21,6 +21,10 @@
       <key>login</key>
       <value>uid</value>
     </elem>
+    <elem>
+      <key>password</key>
+      <value>userPassword</value>
+    </elem>
   </users_reserved_attrs>
   <users_form_attrmap>
     <elem>
@@ -28,7 +32,7 @@
       <value>Id</value>
     </elem>
     <elem>
-      <key>userPassword</key>
+      <key>password</key>
       <value>Password</value>
     </elem>
     <elem>

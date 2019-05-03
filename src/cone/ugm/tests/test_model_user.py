@@ -39,9 +39,9 @@ class TestModelUser(unittest.TestCase):
         self.assertEqual(sorted(user.attrs.items()), [
             ('cn', 'cn0'),
             ('mail', 'uid0@groupOfNames_10_10.com'),
+            ('password', 'secret0'),
             ('rdn', 'uid0'),
-            ('sn', 'sn0'),
-            ('userPassword', 'secret0')
+            ('sn', 'sn0')
         ])
 
         # ACL

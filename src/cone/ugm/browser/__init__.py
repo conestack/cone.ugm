@@ -42,13 +42,13 @@ _user['mail']['chain'] = 'field:label:error:email'
 _user['mail']['required'] = False
 _user['mail']['protected'] = False
 
-_user['userPassword'] = dict()
-_user['userPassword']['chain'] = 'field:label:error:password'
-_user['userPassword']['props'] = dict()
-_user['userPassword']['props']['minlength'] = 6
-_user['userPassword']['props']['ascii'] = True
-_user['userPassword']['required'] = True
-_user['userPassword']['protected'] = False
+_user['password'] = dict()
+_user['password']['chain'] = 'field:label:error:password'
+_user['password']['props'] = dict()
+_user['password']['props']['minlength'] = 6
+_user['password']['props']['ascii'] = True
+_user['password']['required'] = True
+_user['password']['protected'] = False
 
 _user['cn'] = dict()
 _user['cn']['chain'] = 'field:label:error:text'

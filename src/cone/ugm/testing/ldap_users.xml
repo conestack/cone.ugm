@@ -13,13 +13,5 @@
       <key>rdn</key>
       <value>uid</value>
     </elem>
-    <elem>
-      <key>id</key>
-      <value>uid</value>
-    </elem>
-    <elem>
-      <key>login</key>
-      <value>uid</value>
-    </elem>
   </users_aliases_attrmap>
 </properties>

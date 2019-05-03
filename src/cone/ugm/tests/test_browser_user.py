@@ -122,7 +122,7 @@ class TestBrowserUser(TileTestCase):
         request.params['userform.cn'] = 'cn99'
         request.params['userform.sn'] = 'sn99'
         request.params['userform.mail'] = 'uid99@example.com'
-        request.params['userform.userPassword'] = 'secret99'
+        request.params['userform.password'] = 'secret99'
         request.params['userform.principal_roles'] = []
         request.params['action.userform.save'] = '1'
 
@@ -150,7 +150,7 @@ class TestBrowserUser(TileTestCase):
         self.assertEqual(user.attrs['rdn'], 'uid99')
         self.assertEqual(user.attrs['login'], 'uid99')
         self.assertEqual(user.attrs['sn'], 'sn99')
-        self.assertTrue(user.attrs['userPassword'].startswith('{SSHA}'))
+        self.assertTrue(user.attrs['password'].startswith('{SSHA}'))
 
     @testing.temp_principals(users={'uid99': {'sn': 'Uid99', 'cn': 'Uid99'}})
     def test_edit_user(self, users, groups):
@@ -165,7 +165,7 @@ class TestBrowserUser(TileTestCase):
         request.params['userform.cn'] = 'cn99'
         request.params['userform.sn'] = 'sn changed'
         request.params['userform.mail'] = 'changed@example.com'
-        request.params['userform.userPassword'] = '_NOCHANGE_'
+        request.params['userform.password'] = '_NOCHANGE_'
         request.params['userform.principal_roles'] = []
         request.params['action.userform.save'] = '1'
         with self.layer.authenticated('manager'):

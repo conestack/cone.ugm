@@ -10,7 +10,7 @@ import pkg_resources
 def user_portrait_request(layer, model, portrait):
     request = layer.new_request()
     request.params['ajax'] = '1'
-    request.params['userform.userPassword'] = '_NOCHANGE_'
+    request.params['userform.password'] = '_NOCHANGE_'
     request.params['userform.cn'] = model.attrs['cn']
     request.params['userform.sn'] = model.attrs['sn']
     request.params['userform.portrait'] = portrait

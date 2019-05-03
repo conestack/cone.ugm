@@ -225,9 +225,8 @@ class UserForm(PrincipalForm):
         raise ExtractionError(message)
 
     def _get_auth_attrs(self):
-        # XXX: LDAP related
-        settings = self.model.root['settings']['ldap_users']
-        aliases = settings.attrs.users_aliases_attrmap
+        settings = general_settings(self.model)
+        aliases = settings.attrs.users_reserved_attrs
         return aliases['id'], aliases['login']
 
 
@@ -259,7 +258,7 @@ class UserAddForm(UserForm, Form):
             extracted[key] = val
         users = self.model.parent.backend
         uid = extracted.pop('id')
-        password = extracted.pop('userPassword')
+        password = extracted.pop('password')
         users.create(uid, **extracted)
         users()
         if self.model.local_manager_consider_for_user:
@@ -306,7 +305,7 @@ class UserEditForm(UserForm, Form):
         settings = general_settings(self.model)
         attrmap = settings.attrs.users_form_attrmap
         for key in attrmap:
-            if key in ['id', 'login', 'userPassword']:
+            if key in ['id', 'login', 'password']:
                 continue
             extracted = data.fetch('userform.%s' % key).extracted
             if not extracted:
@@ -325,7 +324,7 @@ class UserEditForm(UserForm, Form):
                 ocs.append(oc)
         if ocs != self.model.model.context.attrs['objectClass']:
             self.model.model.context.attrs['objectClass'] = ocs
-        password = data.fetch('userform.userPassword').extracted
+        password = data.fetch('userform.password').extracted
         self.model.model.context()
         if password is not UNSET:
             uid = self.model.name

@@ -336,7 +336,7 @@ def password_field_factory(form, label, value):
 
 
 ###############################################################################
-# E-Mail form field factory
+# Email form field factory
 ###############################################################################
 
 @user_field('email')
