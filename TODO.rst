@@ -1,9 +1,13 @@
 TODO
 ====
 
+- merge code from model/*.py in model.py.
+
 - generalize tests
   - generalize and copy tests relevant for LDAP ugm backend testing to cone.ldap
   - use file ugm backend for cone.ugm test layer.
+
+- document principal form field customization.
 
 - provide translations for reserved user and group attributes.
 

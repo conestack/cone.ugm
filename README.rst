@@ -81,24 +81,10 @@ to this three:
     ]
 
 
-Form widgets
-------------
+Principal Forms
+---------------
 
-The widgets used for attributes can also be customized. It expects a
-``yafowil`` factory ``chain``, ``props`` and ``custom`` dicts which are passed
-to ``yafowil`` factory. ``required`` flags field as required, and ``protected``
-defines whether this field is not editable (like user id and group id):
-
-.. code-block:: python
-
-    from cone.ugm.browser import form_field_definitions
-
-    user = form_field_definitions.user
-    user['someField'] = dict()
-    user['someField']['chain'] = 'field:label:error:text'
-    user['someField']['props'] = dict()
-    user['someField']['required'] = True
-    user['someField']['protected'] = False
+XXX
 
 
 Contributors
