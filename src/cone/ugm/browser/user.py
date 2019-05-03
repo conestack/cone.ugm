@@ -225,7 +225,7 @@ class UserAddForm(UserForm, Form):
         if password is not UNSET:
             users.passwd(user_id, None, password)
         self.model.parent.invalidate()
-        # XXX: remove below if possible
+        # XXX: remove below
         # Access already added user after invalidation. If not done, there's
         # some kind of race condition with ajax continuation.
         # XXX: figure out why.
@@ -260,12 +260,13 @@ class UserEditForm(UserForm, Form):
     def save(self, widget, data):
         attrs = self.model.attrs
         for attr_name in self.form_attrmap:
+            # XXX: we don't want to ignore login here
             if attr_name in self.reserved_attrs:
                 continue
             extracted = data[attr_name].extracted
             # attr removed from form attr map gets deleted.
             # XXX: is this really what we want here?
-            if extracted is UNSET:
+            if not extracted:
                 if attr_name in attrs:
                     del attrs[attr_name]
             else:
@@ -282,9 +283,9 @@ class UserEditForm(UserForm, Form):
                 ocs.append(oc)
         if ocs != self.model.model.context.attrs['objectClass']:
             self.model.model.context.attrs['objectClass'] = ocs
-            self.model.model.context()
         # XXX: end move
 
+        self.model()
         password = data.fetch('userform.password').extracted
         if password is not UNSET:
             user_id = self.model.name
