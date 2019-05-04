@@ -7,7 +7,6 @@ from cone.ugm.browser.principal import _form_field
 from cone.ugm.browser.principal import default_form_field_factory
 from cone.ugm.browser.principal import default_required_message
 from cone.ugm.browser.principal import email_field_factory
-from cone.ugm.browser.principal import FormFieldFactoryProxy
 from cone.ugm.browser.principal import group_field
 from cone.ugm.browser.principal import group_id_field_factory
 from cone.ugm.browser.principal import GroupExistsExtractor
@@ -58,18 +57,6 @@ class TestBrowserPrincipal(TileTestCase):
             'required': 'no_field_value_defined'
         })
 
-    def test_FormFieldFactoryProxy(self):
-        def form_field_factory(form, label, value):
-            return 'FACTORY_CALLED'
-
-        factory = FormFieldFactoryProxy(form_field_factory, 'attr')
-        self.assertEqual(factory.attr, 'attr')
-
-        form = Tile()
-        label = 'Field Label'
-        value = 'Field Value'
-        self.assertEqual(factory(form, label, value), 'FACTORY_CALLED')
-
     def test__form_field(self):
         self.expectError(AssertionError, _form_field, 'field')
         self.expectError(AssertionError, _form_field.factory, 'field')
@@ -84,64 +71,36 @@ class TestBrowserPrincipal(TileTestCase):
         def form_field_factory(form, label, value):
             pass
 
-        @form_field('attr_field', attr='attr')
-        def attr_form_field_factory(form, label, value):
-            pass
-
         @form_field('field', backend='backend')
         def backend_form_field_factory(form, label, value):
             pass
 
-        @form_field('attr_field', attr='attr', backend='backend')
-        def backend_attr_form_field_factory(form, label, value):
-            pass
-
         self.assertEqual(_form_field.registry[SCOPE], {
             '__all_backends__': {
-                'field': (form_field_factory, None),
-                'attr_field': (attr_form_field_factory, 'attr')
+                'field': form_field_factory,
             },
             'backend': {
-                'field': (backend_form_field_factory, None),
-                'attr_field': (backend_attr_form_field_factory, 'attr')
+                'field': backend_form_field_factory,
             }
         })
 
         factory = form_field.factory('field')
-        self.assertEqual(factory.attr, None)
-        self.assertEqual(factory.factory, form_field_factory)
-
-        factory = form_field.factory('attr_field')
-        self.assertEqual(factory.attr, 'attr')
-        self.assertEqual(factory.factory, attr_form_field_factory)
+        self.assertEqual(factory, form_field_factory)
 
         factory = form_field.factory('other_field')
-        self.assertEqual(factory.attr, None)
-        self.assertEqual(factory.factory, default_form_field_factory)
+        self.assertEqual(factory, default_form_field_factory)
 
         factory = form_field.factory('field', backend='backend')
-        self.assertEqual(factory.attr, None)
-        self.assertEqual(factory.factory, backend_form_field_factory)
-
-        factory = form_field.factory('attr_field', backend='backend')
-        self.assertEqual(factory.attr, 'attr')
-        self.assertEqual(factory.factory, backend_attr_form_field_factory)
+        self.assertEqual(factory, backend_form_field_factory)
 
         factory = form_field.factory('other_field', backend='backend')
-        self.assertEqual(factory.attr, None)
-        self.assertEqual(factory.factory, default_form_field_factory)
+        self.assertEqual(factory, default_form_field_factory)
 
         factory = form_field.factory('field', backend='other')
-        self.assertEqual(factory.attr, None)
-        self.assertEqual(factory.factory, form_field_factory)
-
-        factory = form_field.factory('attr_field', backend='other')
-        self.assertEqual(factory.attr, 'attr')
-        self.assertEqual(factory.factory, attr_form_field_factory)
+        self.assertEqual(factory, form_field_factory)
 
         factory = form_field.factory('other_field', backend='other')
-        self.assertEqual(factory.attr, None)
-        self.assertEqual(factory.factory, default_form_field_factory)
+        self.assertEqual(factory, default_form_field_factory)
 
         del _form_field.registry[SCOPE]
 
@@ -293,21 +252,19 @@ class TestBrowserPrincipal(TileTestCase):
 
     def test_user_id_field_factory(self):
         factory = user_field.factory('id')
-        self.assertEqual(factory.attr, None)
-        self.assertTrue(isinstance(factory.factory, PrincipalIdFieldFactory))
-        self.assertEqual(factory.factory, user_id_field_factory)
+        self.assertTrue(isinstance(factory, PrincipalIdFieldFactory))
+        self.assertEqual(factory, user_id_field_factory)
         self.assertEqual(
-            factory.factory.principal_exists_extractor,
+            factory.principal_exists_extractor,
             UserExistsExtractor
         )
 
     def test_group_id_field_factory(self):
         factory = group_field.factory('id')
-        self.assertEqual(factory.attr, None)
-        self.assertTrue(isinstance(factory.factory, PrincipalIdFieldFactory))
-        self.assertEqual(factory.factory, group_id_field_factory)
+        self.assertTrue(isinstance(factory, PrincipalIdFieldFactory))
+        self.assertEqual(factory, group_id_field_factory)
         self.assertEqual(
-            factory.factory.principal_exists_extractor,
+            factory.principal_exists_extractor,
             GroupExistsExtractor
         )
 
@@ -386,8 +343,7 @@ class TestBrowserPrincipal(TileTestCase):
     @testing.invalidate_settings
     def test_login_name_field_factory(self):
         factory = user_field.factory('login')
-        self.assertEqual(factory.attr, None)
-        self.assertEqual(factory.factory, login_name_field_factory)
+        self.assertEqual(factory, login_name_field_factory)
 
         users = get_root()['users']
         user = BaseNode(name='user', parent=users)
@@ -418,8 +374,7 @@ class TestBrowserPrincipal(TileTestCase):
 
     def test_password_field_factory(self):
         factory = user_field.factory('password')
-        self.assertEqual(factory.attr, None)
-        self.assertEqual(factory.factory, password_field_factory)
+        self.assertEqual(factory, password_field_factory)
 
         form = Tile()
         form.request = self.layer.new_request()
@@ -437,8 +392,7 @@ class TestBrowserPrincipal(TileTestCase):
 
     def test_email_field_factory(self):
         factory = user_field.factory('email')
-        self.assertEqual(factory.attr, None)
-        self.assertEqual(factory.factory, email_field_factory)
+        self.assertEqual(factory, email_field_factory)
 
         form = Tile()
         form.request = self.layer.new_request()

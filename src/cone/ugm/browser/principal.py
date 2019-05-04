@@ -57,35 +57,6 @@ def default_form_field_factory(form, label, value, required=False):
         })
 
 
-class FormFieldFactoryProxy(object):
-    """Proxy object for form field factories.
-
-    Provides a ``__call__`` function which acts as proxy for the concrete
-    form field factory callable. Additionally holds ``attr`` attribute,
-    which defines the target attribute name of the principal node.
-    """
-
-    def __init__(self, factory, attr):
-        """Create form field factory proxy.
-
-        :param factory: The form field factory proxy callable.
-        :param attr: The target attribute name on the principal node.
-        """
-        self.factory = factory
-        self.attr = attr
-
-    def __call__(self, form, label, value):
-        """Call proxied form field factory proxy callable.
-
-        :param form: The form tile instance.
-        :param label: The form field label.
-        :param value: The field preset value.
-        :return: ``yafowil.base.Widget`` instance created by
-            ``yafowil.base.factory``.
-        """
-        return self.factory(form, label, value)
-
-
 ###############################################################################
 # Form field factory registries
 ###############################################################################
@@ -110,16 +81,14 @@ class _form_field(object):
     name.
     """
 
-    def __init__(self, field, attr=None, backend=BACKEND_ALL):
+    def __init__(self, field, backend=BACKEND_ALL):
         """Initialize decorator by attribute name and backend name.
 
         :param field: The form field name.
-        :param attr: The target attribute name on the principal node.
         :param backend: UGM backend name the form field factory is valid for.
         """
         assert self.scope
         self.field = field
-        self.attr = attr
         self.backend = backend
 
     def __call__(self, factory):
@@ -130,7 +99,7 @@ class _form_field(object):
         """
         scope_reg = self.registry[self.scope]
         backend_reg = scope_reg.setdefault(self.backend, {})
-        backend_reg[self.field] = (factory, self.attr)
+        backend_reg[self.field] = factory
         return factory
 
     @classmethod
@@ -146,10 +115,10 @@ class _form_field(object):
         scope_reg = cls.registry[cls.scope]
         for backend_name in (backend, BACKEND_ALL):
             backend_reg = scope_reg.setdefault(backend_name, {})
-            entry = backend_reg.get(field)
-            if entry:
-                return FormFieldFactoryProxy(*entry)
-        return FormFieldFactoryProxy(default_form_field_factory, None)
+            factory = backend_reg.get(field)
+            if factory:
+                return factory
+        return default_form_field_factory
 
 
 class user_field(_form_field):
