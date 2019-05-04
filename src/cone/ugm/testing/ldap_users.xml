@@ -13,5 +13,13 @@
       <key>rdn</key>
       <value>uid</value>
     </elem>
+    <elem>
+      <key>id</key>
+      <value>uid</value>
+    </elem>
+    <elem>
+      <key>password</key>
+      <value>userPassword</value>
+    </elem>
   </users_aliases_attrmap>
 </properties>

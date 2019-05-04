@@ -16,6 +16,7 @@ from cone.ugm.browser.principal import group_field
 from cone.ugm.browser.roles import PrincipalRolesForm
 from cone.ugm.model.group import Group
 from cone.ugm.utils import general_settings
+from odict import odict
 from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 from webob.exc import HTTPFound
@@ -176,16 +177,14 @@ class GroupForm(PrincipalForm):
     field_factory_registry = group_field
 
     @property
-    def settings(self):
-        return general_settings(self.model)
-
-    @property
     def reserved_attrs(self):
-        return self.settings.attrs.groups_reserved_attrs
+        return odict([
+            ('id', _('group_id', default='Group ID'))
+        ])
 
     @property
     def form_attrmap(self):
-        return self.settings.attrs.groups_form_attrmap
+        return general_settings(self.model).attrs.groups_form_attrmap
 
 
 @tile(name='addform', interface=Group, permission="add_group")
@@ -207,11 +206,6 @@ class GroupAddForm(GroupForm, Form):
         groups()
         self.request.environ['next_resource'] = group_id
         self.model.parent.invalidate()
-        # XXX: remove below
-        # Access created user after invalidation. if not done, there's
-        # some kind of race condition with ajax continuation.
-        # XXX: figure out why.
-        # self.model.parent[gid]
 
     def next(self, request):
         next_resource = self.request.environ.get('next_resource')
@@ -237,7 +231,7 @@ class GroupEditForm(GroupForm, Form):
     def save(self, widget, data):
         attrs = self.model.attrs
         for attr_name in self.form_attrmap:
-            if attr_name in self.reserved_attrs:
+            if attr_name in ['id']:
                 continue
             extracted = data[attr_name].extracted
             # attr removed from form attr map gets deleted.

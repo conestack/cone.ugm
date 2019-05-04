@@ -396,10 +396,7 @@ class TestBrowserPrincipal(TileTestCase):
         form.request = self.layer.new_request()
 
         settings = general_settings(users)
-        settings.attrs.users_reserved_attrs = {
-            'id': 'id',
-            'login': 'id'
-        }
+        settings.attrs.users_login_name_attr = ''
 
         widget = factory(form, 'Login Name', UNSET)
         self.assertEqual(widget.getter, UNSET)
@@ -415,10 +412,7 @@ class TestBrowserPrincipal(TileTestCase):
         ))
         self.assertEqual(widget.mode, 'skip')
 
-        settings.attrs.users_reserved_attrs = {
-            'id': 'id',
-            'login': 'login'
-        }
+        settings.attrs.users_login_name_attr = 'login'
         widget = factory(form, 'Login Name', UNSET)
         self.assertEqual(widget.mode, 'edit')
 

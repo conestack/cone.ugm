@@ -56,7 +56,6 @@ class TestModelSettings(NodeTestCase):
             'groups_form_attrmap',
             'groups_listing_columns',
             'groups_listing_default_column',
-            'groups_reserved_attrs',
             'user_id_autoincrement',
             'user_id_autoincrement_prefix',
             'user_id_autoincrement_start',
@@ -68,12 +67,12 @@ class TestModelSettings(NodeTestCase):
             'users_listing_columns',
             'users_listing_default_column',
             'users_local_management_enabled',
+            'users_login_name_attr',
             'users_portrait',
             'users_portrait_accept',
             'users_portrait_attr',
             'users_portrait_height',
             'users_portrait_width',
-            'users_reserved_attrs'
         ])
 
         self.assertTrue(attrs is settings.attrs)

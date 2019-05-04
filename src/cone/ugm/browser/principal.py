@@ -1,4 +1,3 @@
-from cone.app import compat
 from cone.app.browser.utils import make_url
 from cone.app.ugm import ugm_backend
 from cone.ugm.utils import general_settings
@@ -8,6 +7,7 @@ from yafowil.base import ExtractionError
 from yafowil.base import factory
 from yafowil.base import UNSET
 from yafowil.common import ascii_extractor
+import itertools
 
 
 _ = TranslationStringFactory('cone.ugm')
@@ -302,8 +302,7 @@ class LoginNameExtractor(object):
 @user_field('login')
 def login_name_field_factory(form, label, value):
     settings = general_settings(form.model).attrs
-    id_attr = settings.users_reserved_attrs['id']
-    login_attr = settings.users_reserved_attrs['login']
+    login_attr = settings.users_login_name_attr
     return factory(
         'field:label:error:*login:text',
         value=value,
@@ -315,7 +314,7 @@ def login_name_field_factory(form, label, value):
                 'extractors': [LoginNameExtractor(form.model, login_attr)]
             }
         },
-        mode='skip' if id_attr == login_attr else 'edit'
+        mode='edit' if login_attr else 'skip'
     )
 
 
@@ -387,23 +386,15 @@ class PrincipalForm(object):
                 'action': make_url(request, node=model, resource=scope),
             })
         registry = self.field_factory_registry
-        localizer = get_localizer(request)
         backend_name = ugm_backend.name
-        # add reserved form fields
-        for attr_name in self.reserved_attrs.keys():
-            field_factory = registry.factory(attr_name, backend=backend_name)
-            label = localizer.translate(_(attr_name, default=attr_name))
-            value = model.attrs.get(attr_name, UNSET)
-            form[attr_name] = field_factory(self, label, value)
-        # add custom form fields
-        form_attrmap = self.form_attrmap
-        if not form_attrmap:
-            return
-        for attr_name, label in form_attrmap.items():
+        form_attrs = itertools.chain(
+            self.reserved_attrs.items(),
+            self.form_attrmap.items() if self.form_attrmap else []
+        )
+        for attr_name, label in form_attrs:
             field_factory = registry.factory(attr_name, backend=backend_name)
             value = model.attrs.get(attr_name, UNSET)
             form[attr_name] = field_factory(self, label, value)
-        # add form actions
         form['save'] = factory(
             'submit',
             props={

@@ -12,29 +12,8 @@
   <users_portrait_width>50</users_portrait_width>
   <users_portrait_height>50</users_portrait_height>
   <users_local_management_enabled>False</users_local_management_enabled>
-  <users_reserved_attrs>
-    <elem>
-      <key>id</key>
-      <value>uid</value>
-    </elem>
-    <elem>
-      <key>login</key>
-      <value>uid</value>
-    </elem>
-    <elem>
-      <key>password</key>
-      <value>userPassword</value>
-    </elem>
-  </users_reserved_attrs>
+  <users_login_name_attr></users_login_name_attr>
   <users_form_attrmap>
-    <elem>
-      <key>id</key>
-      <value>Id</value>
-    </elem>
-    <elem>
-      <key>password</key>
-      <value>Password</value>
-    </elem>
     <elem>
       <key>cn</key>
       <value>Fullname</value>
@@ -63,18 +42,7 @@
     </elem>
   </users_listing_columns>
   <users_listing_default_column>cn</users_listing_default_column>
-  <groups_reserved_attrs>
-    <elem>
-      <key>id</key>
-      <value>cn</value>
-    </elem>
-  </groups_reserved_attrs>
-  <groups_form_attrmap>
-    <elem>
-      <key>id</key>
-      <value>Id</value>
-    </elem>
-  </groups_form_attrmap>
+  <groups_form_attrmap></groups_form_attrmap>
   <groups_listing_columns>
     <elem>
       <key>id</key>

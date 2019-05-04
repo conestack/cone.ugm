@@ -19,6 +19,7 @@ from cone.ugm.browser.principal import user_field
 from cone.ugm.browser.roles import PrincipalRolesForm
 from cone.ugm.model.user import User
 from cone.ugm.utils import general_settings
+from odict import odict
 from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 from webob.exc import HTTPFound
@@ -176,16 +177,16 @@ class UserForm(PrincipalForm):
     field_factory_registry = user_field
 
     @property
-    def settings(self):
-        return general_settings(self.model)
-
-    @property
     def reserved_attrs(self):
-        return self.settings.attrs.users_reserved_attrs
+        return odict([
+            ('id', _('user_id', default='User ID')),
+            ('login', _('login_name', default='Login name')),
+            ('password', _('password', default='Password'))
+        ])
 
     @property
     def form_attrmap(self):
-        return self.settings.attrs.users_form_attrmap
+        return general_settings(self.model).attrs.users_form_attrmap
 
 
 @tile(name='addform', interface=User, permission='add_user')
@@ -225,11 +226,6 @@ class UserAddForm(UserForm, Form):
         if password is not UNSET:
             users.passwd(user_id, None, password)
         self.model.parent.invalidate()
-        # XXX: remove below
-        # Access already added user after invalidation. If not done, there's
-        # some kind of race condition with ajax continuation.
-        # XXX: figure out why.
-        # self.model.parent[uid]
 
     def next(self, request):
         next_resource = self.request.environ.get('next_resource')
@@ -260,8 +256,7 @@ class UserEditForm(UserForm, Form):
     def save(self, widget, data):
         attrs = self.model.attrs
         for attr_name in self.form_attrmap:
-            # XXX: we don't want to ignore login here
-            if attr_name in self.reserved_attrs:
+            if attr_name in ['id', 'password']:
                 continue
             extracted = data[attr_name].extracted
             # attr removed from form attr map gets deleted.

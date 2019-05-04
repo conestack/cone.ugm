@@ -36,22 +36,6 @@ class GeneralSettingsForm(Form):
     def message_factory(self):
         return _
 
-    @property
-    def users_reserved_attrs(self):
-        attrs = self.model.attrs
-        value = odict()
-        value['id'] = attrs.users_reserved_attrs.get('id')
-        value['login'] = attrs.users_reserved_attrs.get('login')
-        value['password'] = attrs.users_reserved_attrs.get('password')
-        return value
-
-    @property
-    def groups_reserved_attrs(self):
-        attrs = self.model.attrs
-        value = odict()
-        value['id'] = attrs.groups_reserved_attrs.get('id')
-        return value
-
     def required_if_users_account_expiration(self, widget, data):
         extracted = data.extracted
         if extracted is UNSET:
@@ -90,12 +74,11 @@ class GeneralSettingsForm(Form):
             'users_portrait_width',
             'users_portrait_height',
             'users_local_management_enabled',
+            'users_login_name_attr',
             'users_exposed_attributes',
-            'users_reserved_attrs',
             'users_form_attrmap',
             'users_listing_columns',
             'users_listing_default_column',
-            'groups_reserved_attrs',
             'groups_form_attrmap',
             'groups_listing_columns',
             'groups_listing_default_column'

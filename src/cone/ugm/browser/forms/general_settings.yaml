@@ -109,6 +109,12 @@ widgets:
     props:
         label: i18n:users_local_management_enabled:Local User Management
         help: i18n:users_local_management_enabled_help:Enable local User Management
+- users_login_name_attr:
+    factory: field:label:help:text
+    value: expr:context.model.attrs.users_login_name_attr
+    props:
+        label: i18n:users_login_name_attr:Login name attribute
+        help: i18n:users_login_name_attr_help:Attribute used for optional login name
 - users_exposed_attributes:
     factory: field:label:help:array
     value: expr:context.model.attrs.users_exposed_attributes
@@ -123,19 +129,6 @@ widgets:
         props:
             label: i18n:users_exposed_attributes_attribute:Attribute
             required: i18n:users_exposed_attributes_attribute_required:No attribute given
-- users_reserved_attrs:
-    factory: field:label:help:error:dict
-    value: expr:context.users_reserved_attrs
-    props:
-        label: i18n:users_reserved_attrs:Reserved user attributes
-        help: i18n:users_reserved_attrs_help:Aliases for reserved user attributes.
-            Reserved user attributed can be mapped to real attribute names from the
-            UGM backend. Only change if you know what you are doing. In doubt keep
-            values equal.
-        static: True
-        key_label: i18n:reserved_key:Reserved name
-        value_label: i18n:real_attr_name:Real attribute name
-        required: i18n:users_reserved_attrs_required:Reserved user attributes must be set
 - users_form_attrmap:
     factory: field:label:help:error:dict
     value: expr:context.model.attrs.users_form_attrmap
@@ -167,19 +160,6 @@ widgets:
     props:
         tag: h3
         text: i18n:groups_heading:Group Settings
-- groups_reserved_attrs:
-    factory: field:label:help:error:dict
-    value: expr:context.groups_reserved_attrs
-    props:
-        label: i18n:groups_reserved_attrs:Reserved group attributes
-        help: i18n:groups_reserved_attrs_help:Aliases for reserved group Attributes.
-            Reserved group attributed can be mapped to real attribute names from the
-            UGM backend. Only change if you know what you are doing. In doubt keep
-            values equal.
-        static: True
-        key_label: i18n:reserved_key:Reserved name
-        value_label: i18n:real_attr_name:Real attribute name
-        required: i18n:groups_reserved_attrs_required:Reserved group attributes must be set.
 - groups_form_attrmap:
     factory: field:label:help:error:dict
     value: expr:context.model.attrs.groups_form_attrmap
