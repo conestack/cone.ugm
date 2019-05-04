@@ -270,6 +270,9 @@ class LoginNameExtractor(object):
 
 @user_field('login')
 def login_name_field_factory(form, label, value):
+    # XXX: lookup field factory by login attribute name and hook up login
+    #      extractor there to make sure additional validation takes place,
+    #      e.g. if login attribute is email address
     settings = general_settings(form.model).attrs
     login_attr = settings.users_login_name_attr
     return factory(

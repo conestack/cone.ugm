@@ -1,25 +1,20 @@
 TODO
 ====
 
+- improve login form field factory to hook up login extractor to related
+  login name form field widget.
+
 - merge code from model/*.py in model.py.
 
-- generalize tests
-  - generalize and copy tests relevant for LDAP ugm backend testing to cone.ldap
-  - use file ugm backend for cone.ugm test layer.
+- complete test coverage.
+
+- generalize and copy tests relevant for LDAP ugm backend testing to cone.ldap
+
+- use file ugm backend for cone.ugm test layer.
 
 - document principal form field customization.
 
-- provide translations for reserved user and group attributes.
-
-- rename reserver id on groups to group_id.
-
-- rename reserved id on users to user_id.
-
 - move LDAP related code to ``cone.ldap``.
     - move object class handling from user form to node.ext.ldap
-    - check roles support in browser roles via generic API instead of LDAP
+    - check roles support in browser roles via UGM API instead of LDAP
       settings
-
-- make UI work with any kind of ``node.ext.ugm`` based implementations.
-
-- provide application model for ``node.ext.ugm.file`` implementation as default.
