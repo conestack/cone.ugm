@@ -135,7 +135,6 @@ widgets:
     props:
         label: i18n:users_form_attrmap:User form attributes
         help: i18n:users_form_attrmap_help:Attributes exposed in user form
-        required: i18n:users_form_attrmap_required:User form attributes must not be empty
         key_label: i18n:principal_attr_name:Attribute name
         value_label: i18n:form_label:Form label
 - users_listing_columns:
@@ -166,7 +165,6 @@ widgets:
     props:
         label: i18n:groups_form_attrmap:Group form attributes
         help: i18n:groups_form_attrmap_help:Attributes exposed in group form
-        required: i18n:users_form_attrmap_required:Group form attributes must not be empty
         key_label: i18n:principal_attr_name:Attribute name
         value_label: i18n:form_label:Form label
 - groups_listing_columns:

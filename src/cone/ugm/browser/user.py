@@ -209,12 +209,13 @@ class UserAddForm(UserForm, Form):
                 continue
             extracted[attr_name] = value
         # possible values extracted by other user form behaviors
-        # XXX: call next at the end in all extension behaviors to reduce
-        #      database queries.
         extracted.update(self.model.attrs)
         users = ugm_backend.ugm.users
         user_id = extracted.pop('id')
         password = extracted.pop('password')
+        login_name = general_settings(self.model).attrs.users_login_name_attr
+        if login_name:
+            extracted[login_name] = extracted.pop('login')
         users.create(user_id, **extracted)
         users()
         if self.model.local_manager_consider_for_user:
@@ -258,14 +259,7 @@ class UserEditForm(UserForm, Form):
         for attr_name in self.form_attrmap:
             if attr_name in ['id', 'password']:
                 continue
-            extracted = data[attr_name].extracted
-            # attr removed from form attr map gets deleted.
-            # XXX: is this really what we want here?
-            if not extracted:
-                if attr_name in attrs:
-                    del attrs[attr_name]
-            else:
-                attrs[attr_name] = extracted
+            attrs[attr_name] = data[attr_name].extracted
 
         # XXX: move this to node.ext.ldap.ugm
         # set object classes if missing. happens if principal config changed

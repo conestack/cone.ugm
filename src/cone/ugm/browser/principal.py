@@ -6,6 +6,7 @@ from pyramid.i18n import TranslationStringFactory
 from yafowil.base import ExtractionError
 from yafowil.base import factory
 from yafowil.base import UNSET
+from yafowil.common import generic_extractor
 from yafowil.common import ascii_extractor
 import itertools
 
@@ -248,7 +249,7 @@ class LoginNameExtractor(object):
         """Check whether user login name already exists and raise
         extraction error if so.
         """
-        login = data.extracted
+        login = generic_extractor(widget, data)
         if not login:
             return login
         res = self.model.parent.backend.search(criteria={
@@ -270,24 +271,19 @@ class LoginNameExtractor(object):
 
 @user_field('login')
 def login_name_field_factory(form, label, value):
-    # XXX: lookup field factory by login attribute name and hook up login
-    #      extractor there to make sure additional validation takes place,
-    #      e.g. if login attribute is email address
     settings = general_settings(form.model).attrs
     login_attr = settings.users_login_name_attr
-    return factory(
-        'field:label:error:*login:text',
-        value=value,
-        props={
-            'label': label
-        },
-        custom={
-            'login': {
-                'extractors': [LoginNameExtractor(form.model, login_attr)]
-            }
-        },
-        mode='edit' if login_attr else 'skip'
-    )
+    if login_attr == 'login':
+        factory = default_form_field_factory
+    else:
+        factory = user_field.factory(login_attr, backend=ugm_backend.name)
+    widget = factory(form, label, value)
+    login_extractor = LoginNameExtractor(form.model, login_attr)
+    widget.blueprints.append('*login')
+    widget.custom['login'] = dict(extractors=[login_extractor])
+    widget.extractors.insert(0, ('login', login_extractor))
+    widget.mode = 'edit' if login_attr else 'skip'
+    return widget
 
 
 ###############################################################################

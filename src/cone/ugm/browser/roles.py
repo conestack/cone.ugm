@@ -59,14 +59,15 @@ class PrincipalRolesForm(Behavior):
             return
         if not self.request.has_permission('manage', self.model.parent):
             return
+        form_name = self.form_name
         existing_roles = list()
         if self.action_resource == 'edit':
             principal = self.model.model
             existing_roles = principal.roles
         else:
-            uid = data.fetch('%s.id' % self.form_name).extracted
+            uid = data.fetch('{}.id'.format(form_name)).extracted
             principal = self.model.parent[uid].model
-        new_roles = data.fetch('%s.principal_roles' % self.form_name).extracted
+        new_roles = data.fetch('{}.principal_roles'.format(form_name)).extracted
         removed_roles = list()
         for role in existing_roles:
             if role not in new_roles:

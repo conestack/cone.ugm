@@ -233,14 +233,7 @@ class GroupEditForm(GroupForm, Form):
         for attr_name in self.form_attrmap:
             if attr_name in ['id']:
                 continue
-            extracted = data[attr_name].extracted
-            # attr removed from form attr map gets deleted.
-            # XXX: is this really what we want here?
-            if not extracted:
-                if attr_name in attrs:
-                    del attrs[attr_name]
-            else:
-                attrs[attr_name] = extracted
+            attrs[attr_name] = data[attr_name].extracted
         self.model()
 
     def next(self, request):

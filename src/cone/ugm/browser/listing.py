@@ -361,6 +361,6 @@ class PrincipalsListing(ColumnListing):
                     actions
                 ))
             return ret
-        except Exception as e:
-            logger.error(str(e))
+        except Exception:
+            logger.exception('Failed to query listing items')
         return list()

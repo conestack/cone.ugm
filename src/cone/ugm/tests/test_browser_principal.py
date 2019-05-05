@@ -357,10 +357,11 @@ class TestBrowserPrincipal(TileTestCase):
         widget = factory(form, 'Login Name', UNSET)
         self.assertEqual(widget.getter, UNSET)
         self.assertEqual(widget.blueprints, [
-            'field', 'label', 'error', '*login', 'text'
+            'field', 'label', 'error', 'text', '*login'
         ])
         self.assertEqual(widget.properties, {
-            'label': 'Login Name'
+            'label': 'Login Name',
+            'required': False
         })
         self.assertTrue(isinstance(
             widget.custom['login']['extractors'][0],
@@ -371,6 +372,12 @@ class TestBrowserPrincipal(TileTestCase):
         settings.attrs.users_login_name_attr = 'login'
         widget = factory(form, 'Login Name', UNSET)
         self.assertEqual(widget.mode, 'edit')
+
+        settings.attrs.users_login_name_attr = 'mail'
+        widget = factory(form, 'Login Name', UNSET)
+        self.assertEqual(widget.blueprints, [
+            'field', 'label', 'error', 'email', '*login'
+        ])
 
     def test_password_field_factory(self):
         factory = user_field.factory('password')
