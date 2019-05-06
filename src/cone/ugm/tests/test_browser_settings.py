@@ -52,6 +52,8 @@ class TestBrowserSettings(TileTestCase):
             'groups_form_attrmap',
             'groups_listing_columns',
             'groups_listing_default_column',
+            'roles_heading',
+            'roles_principal_roles_enabled',
             'save'
         ])
 

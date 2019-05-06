@@ -50,4 +50,5 @@
     </elem>
   </groups_listing_columns>
   <groups_listing_default_column>id</groups_listing_default_column>
+  <roles_principal_roles_enabled>True</roles_principal_roles_enabled>
 </properties>

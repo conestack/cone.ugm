@@ -56,6 +56,7 @@ class TestModelSettings(NodeTestCase):
             'groups_form_attrmap',
             'groups_listing_columns',
             'groups_listing_default_column',
+            'roles_principal_roles_enabled',
             'user_id_autoincrement',
             'user_id_autoincrement_prefix',
             'user_id_autoincrement_start',

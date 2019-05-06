@@ -1,3 +1,4 @@
+from cone.ugm.utils import general_settings
 from plumber import Behavior
 from plumber import default
 from plumber import plumb
@@ -18,10 +19,9 @@ class PrincipalRolesForm(Behavior):
 
     @default
     @property
-    def roles_support(self):
-        # XXX: LDAP
-        settings = self.model.root['settings']['ldap_roles']
-        return settings.container_exists
+    def roles_enabled(self):
+        settings = general_settings(self.model).attrs
+        return settings.roles_principal_roles_enabled == 'True'
 
     @plumb
     def prepare(_next, self):
@@ -29,7 +29,7 @@ class PrincipalRolesForm(Behavior):
         ``self.form``.
         """
         _next(self)
-        if not self.roles_support:
+        if not self.roles_enabled:
             return
         if not self.request.has_permission('manage', self.model.parent):
             # XXX: yafowil selection display renderer
@@ -55,7 +55,7 @@ class PrincipalRolesForm(Behavior):
     @plumb
     def save(_next, self, widget, data):
         _next(self, widget, data)
-        if not self.roles_support:
+        if not self.roles_enabled:
             return
         if not self.request.has_permission('manage', self.model.parent):
             return

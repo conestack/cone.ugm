@@ -6,7 +6,6 @@ from cone.app.ugm import ugm_backend
 from cone.tile import tile
 from cone.ugm.settings import GeneralSettings
 from cone.ugm.settings import LocalManagerSettings
-from odict import odict
 from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
@@ -81,7 +80,8 @@ class GeneralSettingsForm(Form):
             'users_listing_default_column',
             'groups_form_attrmap',
             'groups_listing_columns',
-            'groups_listing_default_column'
+            'groups_listing_default_column',
+            'roles_principal_roles_enabled'
         ]:
             val = data.fetch('ugm_settings.%s' % attr_name).extracted
             setattr(model.attrs, attr_name, val)
