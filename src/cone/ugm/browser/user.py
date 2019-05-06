@@ -260,20 +260,6 @@ class UserEditForm(UserForm, Form):
             if attr_name in ['id', 'password']:
                 continue
             attrs[attr_name] = data[attr_name].extracted
-
-        # XXX: move this to node.ext.ldap.ugm
-        # set object classes if missing. happens if principal config changed
-        ocs = self.model.model.context.attrs['objectClass']
-        ldap_settings = self.model.root['settings']['ldap_users']
-        for oc in ldap_settings.attrs.users_object_classes:
-            if isinstance(ocs, compat.STR_TYPE):
-                ocs = [ocs]
-            if oc not in ocs:
-                ocs.append(oc)
-        if ocs != self.model.model.context.attrs['objectClass']:
-            self.model.model.context.attrs['objectClass'] = ocs
-        # XXX: end move
-
         self.model()
         password = data.fetch('userform.password').extracted
         if password is not UNSET:
