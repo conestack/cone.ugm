@@ -10,7 +10,6 @@ from plumber import finalize
 from plumber import plumb
 from plumber import plumbing
 from pyramid.security import Allow
-from pyramid.security import authenticated_userid
 from pyramid.threadlocal import get_current_request
 import os
 
@@ -79,7 +78,7 @@ class LocalManager(Behavior):
         if not self.local_management_enabled:
             return False
         request = get_current_request()
-        if authenticated_userid(request) == security.ADMIN_USER:
+        if request.authenticated_userid == security.ADMIN_USER:
             return False
         roles = security.authenticated_user(request).roles
         if 'admin' in roles or 'manager' in roles:
@@ -204,7 +203,7 @@ class LocalManagerUsersACL(LocalManagerACL):
         ]
         return [(
             Allow,
-            authenticated_userid(get_current_request()),
+            get_current_request().authenticated_userid,
             permissions
         )]
 
@@ -224,7 +223,7 @@ class LocalManagerUserACL(LocalManagerACL):
         ]
         return [(
             Allow,
-            authenticated_userid(get_current_request()),
+            get_current_request().authenticated_userid,
             permissions
         )]
 
@@ -239,7 +238,7 @@ class LocalManagerGroupsACL(LocalManagerACL):
         permissions = ['view', 'manage_membership']
         return [(
             Allow,
-            authenticated_userid(get_current_request()),
+            get_current_request().authenticated_userid,
             permissions
         )]
 
@@ -254,6 +253,6 @@ class LocalManagerGroupACL(LocalManagerACL):
         permissions = ['view', 'manage_membership']
         return [(
             Allow,
-            authenticated_userid(get_current_request()),
+            get_current_request().authenticated_userid,
             permissions
         )]
