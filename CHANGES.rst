@@ -5,6 +5,9 @@ Changes
 1.0a1 (unreleased)
 ------------------
 
+- Do not remember users and groups on volatile storage.
+  [rnix]
+
 - Use ``IUgm.invalidate`` for invalidation of users and groups on UGM backend.
   [rnix]
 

@@ -88,13 +88,18 @@ class Groups(BaseNode):
         # XXX: temporary hack until paster/webob/pyramid handle urllib
         # quoted slashes in path components
         name = unquote_slash(name)
+        # try:
+        #     return BaseNode.__getitem__(self, name)
+        # except KeyError:
+        #     try:
+        #         model = self.backend[name]
+        #     except AttributeError:
+        #         raise KeyError(name)
+        #     group = Group(model, name, self)
+        #     self[name] = group
+        #     return group
         try:
-            return BaseNode.__getitem__(self, name)
-        except KeyError:
-            try:
-                model = self.backend[name]
-            except AttributeError:
-                raise KeyError(name)
-            group = Group(model, name, self)
-            self[name] = group
-            return group
+            model = self.backend[name]
+        except AttributeError:
+            raise KeyError(name)
+        return Group(model, name, self)

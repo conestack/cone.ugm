@@ -88,13 +88,18 @@ class Users(BaseNode):
         # XXX: temporary hack until paster/webob/pyramid handle urllib
         # quoted slashes in path components
         name = unquote_slash(name)
+        # try:
+        #     return BaseNode.__getitem__(self, name)
+        # except KeyError:
+        #     try:
+        #         model = self.backend[name]
+        #     except AttributeError:
+        #         raise KeyError(name)
+        #     user = User(model, name, self)
+        #     self[name] = user
+        #     return user
         try:
-            return BaseNode.__getitem__(self, name)
-        except KeyError:
-            try:
-                model = self.backend[name]
-            except AttributeError:
-                raise KeyError(name)
-            user = User(model, name, self)
-            self[name] = user
-            return user
+            model = self.backend[name]
+        except AttributeError:
+            raise KeyError(name)
+        return User(model, name, self)
