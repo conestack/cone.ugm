@@ -226,7 +226,9 @@ class UserAddForm(UserForm, Form):
         self.request.environ['next_resource'] = user_id
         if password is not UNSET:
             users.passwd(user_id, None, password)
-        self.model.parent.invalidate()
+
+        if hasattr(self.model.parent.backend, "storage"):
+            self.model.parent.invalidate()
 
     def next(self, request):
         next_resource = self.request.environ.get('next_resource')
