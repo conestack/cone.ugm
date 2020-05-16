@@ -5,6 +5,9 @@ Changes
 1.0a1 (unreleased)
 ------------------
 
+- Use ``IUgm.invalidate`` for invalidation of users and groups on UGM backend.
+  [rnix]
+
 - Rename ``cone.ugm.browser.listing.ColumnListing.query_items`` to
   ``listing_items``.
   [rnix]

@@ -60,7 +60,7 @@ class Users(BaseNode):
     @locktree
     def invalidate(self, key=None):
         if key is None:
-            del self.backend.parent.storage['users']
+            self.backend.parent.invalidate('users')
             self.clear()
             return
         self.backend.invalidate(key)
