@@ -61,13 +61,13 @@ class Groups(BaseNode):
     def invalidate(self, key=None):
         if key is None:
             self.backend.parent.invalidate('groups')
-            self.clear()
+            # self.clear()
             return
         self.backend.invalidate(key)
-        try:
-            del self[key]
-        except KeyError:
-            pass
+        # try:
+        #     del self[key]
+        # except KeyError:
+        #     pass
 
     @locktree
     def __call__(self):
