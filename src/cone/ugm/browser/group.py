@@ -205,8 +205,7 @@ class GroupAddForm(GroupForm, Form):
         groups.create(group_id, **extracted)
         groups()
         self.request.environ['next_resource'] = group_id
-        if hasattr(self.model.parent.backend, "storage"):
-            self.model.parent.invalidate()
+        self.model.parent.invalidate()
 
     def next(self, request):
         next_resource = self.request.environ.get('next_resource')
