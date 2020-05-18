@@ -149,7 +149,7 @@ class UGMLayer(Security, Layer):
 
     def tearDown(self):
         super(UGMLayer, self).tearDown()
-        self._cleanup_test_principals()
+        self.cleanup_test_principals()
 
     def make_app(self):
         super(UGMLayer, self).make_app(**{
@@ -162,9 +162,9 @@ class UGMLayer(Security, Layer):
             'ldap.groups_config': ldap_groups_config,
             'ldap.roles_config': ldap_roles_config
         })
-        self._setup_test_principals()
+        self.setup_test_principals()
 
-    def _setup_test_principals(self):
+    def setup_test_principals(self):
         ugm = ugm_backend.ugm
         roles = ['viewer', 'editor', 'admin', 'manager']
 
@@ -192,7 +192,7 @@ class UGMLayer(Security, Layer):
             group.add(uid)
         ugm()
 
-    def _cleanup_test_principals(self):
+    def cleanup_test_principals(self):
         ugm = ugm_backend.ugm
         for uid in [
             'viewer', 'editor', 'admin', 'manager', 'max', 'sepp',
