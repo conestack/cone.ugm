@@ -1,4 +1,4 @@
-from cone.app.model import BaseNode
+from cone.app.model import AppNode
 from cone.app.model import Metadata
 from cone.app.model import node_info
 from cone.app.model import Properties
@@ -7,6 +7,7 @@ from cone.ugm.browser.utils import unquote_slash
 from cone.ugm.layout import UGMLayout
 from cone.ugm.localmanager import LocalManagerUsersACL
 from cone.ugm.model.user import User
+from node.behaviors import Nodify
 from node.locking import locktree
 from node.utils import instance_property
 from plumber import plumbing
@@ -30,8 +31,11 @@ def users_factory():
         default='Container for Users'),
     icon='ion-person',
     addables=['user'])
-@plumbing(LocalManagerUsersACL)
-class Users(BaseNode):
+@plumbing(
+    LocalManagerUsersACL,
+    AppNode,
+    Nodify)
+class Users(object):
 
     @instance_property
     def properties(self):
@@ -61,14 +65,8 @@ class Users(BaseNode):
     def invalidate(self, key=None):
         if key is None:
             self.backend.parent.invalidate('users')
-            # self.clear()
             return
         self.backend.invalidate(key)
-
-        # try:
-        #     del self[key]
-        # except KeyError:
-        #     pass
 
     @locktree
     def __call__(self):
@@ -89,16 +87,6 @@ class Users(BaseNode):
         # XXX: temporary hack until paster/webob/pyramid handle urllib
         # quoted slashes in path components
         name = unquote_slash(name)
-        # try:
-        #     return BaseNode.__getitem__(self, name)
-        # except KeyError:
-        #     try:
-        #         model = self.backend[name]
-        #     except AttributeError:
-        #         raise KeyError(name)
-        #     user = User(model, name, self)
-        #     self[name] = user
-        #     return user
         try:
             model = self.backend[name]
         except AttributeError:

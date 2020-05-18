@@ -42,13 +42,11 @@ class TestModelGroups(NodeTestCase):
         group = groups['group0']
         self.assertTrue(isinstance(group, Group))
 
-        # If group gets deleted, it's not deleted from the underlying backend,
-        # this is needed for invalidation
-        del groups['group0']
-        self.assertTrue(isinstance(groups['group0'], Group))
-
+        # Check real UGM backend
         backend = groups.backend
         self.assertTrue(isinstance(backend, LDAPGroups))
+
+        # Check invalidate
         self.assertTrue(backend is groups.backend)
         groups.invalidate()
         self.assertFalse(backend is groups.backend)

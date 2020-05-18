@@ -42,13 +42,11 @@ class TestModelUsers(NodeTestCase):
         user = users['uid0']
         self.assertTrue(isinstance(user, User))
 
-        # If user gets deleted, it's not deleted from underlying backend,
-        # this behavior is expected for app model invalidation
-        del users['uid0']
-        self.assertTrue(isinstance(users['uid0'], User))
-
+        # Check real UGM backend
         backend = users.backend
         self.assertTrue(isinstance(backend, LDAPUsers))
+
+        # Check invalidate
         self.assertTrue(backend is users.backend)
         users.invalidate()
         self.assertFalse(backend is users.backend)
