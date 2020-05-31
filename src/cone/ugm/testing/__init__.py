@@ -30,7 +30,7 @@ class principals_decorator(object):
     def create_group(self, group_id, **group_kw):
         self.ugm['groups'].create(group_id, **group_kw)
 
-    def del_principal(self, principals, name):
+    def _del_principal(self, principals, name):
         try:
             del principals[name]
         except KeyError:
@@ -38,10 +38,10 @@ class principals_decorator(object):
             pass
 
     def del_user(self, name):
-        self.del_principal(self.ugm['users'], name)
+        self._del_principal(self.ugm['users'], name)
 
     def del_group(self, name):
-        self.del_principal(self.ugm['groups'], name)
+        self._del_principal(self.ugm['groups'], name)
 
     def invalidate(self):
         root = get_root()
