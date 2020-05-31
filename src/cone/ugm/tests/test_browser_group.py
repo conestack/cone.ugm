@@ -1,4 +1,4 @@
-from cone.app import root
+from cone.app import get_root
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
@@ -11,6 +11,7 @@ class TestBrowserGroup(TileTestCase):
     layer = testing.ugm_layer
 
     def test_content_tile(self):
+        root = get_root()
         groups = root['groups']
         group = groups['group5']
         request = self.layer.new_request()
@@ -21,6 +22,7 @@ class TestBrowserGroup(TileTestCase):
         self.assertTrue(res.find(expected) > -1)
 
     def test_leftcolumn_tile(self):
+        root = get_root()
         groups = root['groups']
         group = groups['group5']
         request = self.layer.new_request()
@@ -39,6 +41,7 @@ class TestBrowserGroup(TileTestCase):
         self.assertTrue(res.find(expected) > -1)
 
     def test_rightcolumn_tile(self):
+        root = get_root()
         groups = root['groups']
         group = groups['group5']
         request = self.layer.new_request()
@@ -57,6 +60,7 @@ class TestBrowserGroup(TileTestCase):
         self.assertTrue(res.find(expected) > -1)
 
     def test_columnlisting_tile(self):
+        root = get_root()
         groups = root['groups']
         group = groups['group5']
         request = self.layer.new_request()
@@ -78,6 +82,7 @@ class TestBrowserGroup(TileTestCase):
         self.assertTrue(res.find(expected) > -1)
 
     def test_allcolumnlisting_tile(self):
+        root = get_root()
         groups = root['groups']
         group = groups['group5']
         request = self.layer.new_request()
@@ -104,8 +109,9 @@ class TestBrowserGroup(TileTestCase):
         )
         self.assertTrue(res.find(expected) > -1)
 
-    @testing.remove_principals(groups=['group99'])
+    @testing.principals()
     def test_add_group(self):
+        root = get_root()
         groups = root['groups']
         request = self.layer.new_request()
         request.params['factory'] = 'group'
@@ -148,8 +154,10 @@ class TestBrowserGroup(TileTestCase):
         group = groups['group99']
         self.assertTrue(isinstance(group, Group))
 
-    @testing.temp_principals(groups={'group99': {}})
-    def test_edit_group(self, users, groups):
+    @testing.principals(groups={'group99': {}})
+    def test_edit_group(self):
+        root = get_root()
+        groups = root['groups']
         group = groups['group99']
         request = self.layer.new_request()
 

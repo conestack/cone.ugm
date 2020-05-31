@@ -1,4 +1,5 @@
 from cone.app import compat
+from cone.app import get_root
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
 from pyramid.exceptions import HTTPForbidden
@@ -6,22 +7,13 @@ from pyramid.view import render_view_to_response
 import json
 
 
-temp_users = {
-    'uid99': {
-        'sn': 'Uid99',
-        'cn': 'Uid99'
-    }
-}
-temp_groups = {
-    'group99': {}
-}
-
-
 class TestBrowserActions(TileTestCase):
     layer = testing.ugm_layer
 
-    @testing.temp_principals(users=temp_users, groups=temp_groups)
-    def test_group_add_user_action(self, users, groups):
+    @testing.principals(users={'uid99': {}}, groups={'group99': {}})
+    def test_group_add_user_action(self):
+        root = get_root()
+        groups = root['groups']
         group = groups['group99']
 
         request = self.layer.new_request(type='json')
@@ -52,8 +44,10 @@ class TestBrowserActions(TileTestCase):
 
         self.assertEqual(group.model.member_ids, ['uid99'])
 
-    @testing.temp_principals(users=temp_users, groups=temp_groups)
-    def test_group_remove_user_action(self, users, groups):
+    @testing.principals(users={'uid99': {}}, groups={'group99': {}})
+    def test_group_remove_user_action(self):
+        root = get_root()
+        groups = root['groups']
         group = groups['group99']
         group.model.add('uid99')
         group.model()
@@ -86,8 +80,10 @@ class TestBrowserActions(TileTestCase):
 
         self.assertEqual(group.model.users, [])
 
-    @testing.temp_principals(users=temp_users, groups=temp_groups)
-    def test_user_add_to_group_action(self, users, groups):
+    @testing.principals(users={'uid99': {}}, groups={'group99': {}})
+    def test_user_add_to_group_action(self):
+        root = get_root()
+        users = root['users']
         user = users['uid99']
 
         request = self.layer.new_request(type='json')
@@ -118,8 +114,12 @@ class TestBrowserActions(TileTestCase):
 
         self.assertEqual(user.model.group_ids, ['group99'])
 
-    @testing.temp_principals(users=temp_users, groups=temp_groups)
-    def test_user_remove_from_group_action(self, users, groups):
+    @testing.principals(users={'uid99': {}}, groups={'group99': {}})
+    def test_user_remove_from_group_action(self):
+        root = get_root()
+        groups = root['groups']
+        users = root['users']
+
         group = groups['group99']
         group.model.add('uid99')
         group.model()
@@ -154,8 +154,12 @@ class TestBrowserActions(TileTestCase):
 
         self.assertEqual(user.model.groups, [])
 
-    @testing.temp_principals(users=temp_users, groups=temp_groups)
-    def test_delete_user_action(self, users, groups):
+    @testing.principals(users={'uid99': {}}, groups={'group99': {}})
+    def test_delete_user_action(self):
+        root = get_root()
+        groups = root['groups']
+        users = root['users']
+
         group = groups['group99']
         group.model.add('uid99')
         group.model()
@@ -188,8 +192,10 @@ class TestBrowserActions(TileTestCase):
 
         self.assertEqual(group.model.users, [])
 
-    @testing.temp_principals(groups=temp_groups)
-    def test_delete_group_action(self, users, groups):
+    @testing.principals(groups={'group99': {}})
+    def test_delete_group_action(self):
+        root = get_root()
+        groups = root['groups']
         group = groups['group99']
 
         request = self.layer.new_request(type='json')

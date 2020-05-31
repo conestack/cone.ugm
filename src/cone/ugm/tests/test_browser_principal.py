@@ -143,11 +143,10 @@ class TestBrowserPrincipal(TileTestCase):
         self.assertFalse(data.has_errors)
         self.assertEqual(data.extracted, 'new_pid')
 
-    @testing.temp_principals(users={'user_exists': {
-        'sn': 'User Exists',
-        'cn': 'User Exists'
-    }})
-    def test_UserExistsExtractor(self, users, groups):
+    @testing.principals(users={'user_exists': {}})
+    def test_UserExistsExtractor(self):
+        root = get_root()
+        users = root['users']
         add_model = BaseNode(parent=users)
         extractor = UserExistsExtractor(add_model)
         widget = factory(
@@ -171,8 +170,10 @@ class TestBrowserPrincipal(TileTestCase):
         self.assertFalse(data.has_errors)
         self.assertEqual(data.extracted, 'new_user_id')
 
-    @testing.temp_principals(groups={'group_exists': {}})
-    def test_GroupExistsExtractor(self, users, groups):
+    @testing.principals(groups={'group_exists': {}})
+    def test_GroupExistsExtractor(self):
+        root = get_root()
+        groups = root['groups']
         add_model = BaseNode(parent=groups)
         extractor = GroupExistsExtractor(add_model)
         widget = factory(

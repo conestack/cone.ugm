@@ -1,5 +1,5 @@
 <properties>
-  <users_dn>ou=users,ou=groupOfNames_10_10,dc=my-domain,dc=com</users_dn>
+  <users_dn>ou=users,dc=my-domain,dc=com</users_dn>
   <users_scope>1</users_scope>
   <users_query></users_query>
   <users_object_classes>

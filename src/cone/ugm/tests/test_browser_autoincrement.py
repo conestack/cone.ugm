@@ -25,7 +25,7 @@ def user_request(layer, cn, sn, mail):
     return request
 
 
-class cleanup_autoincrement_test(testing.remove_principals):
+class cleanup_autoincrement_test(testing.principals):
 
     def __call__(self, fn):
         w = super(cleanup_autoincrement_test, self).__call__(fn)
@@ -43,7 +43,7 @@ class cleanup_autoincrement_test(testing.remove_principals):
 class TestBrowserAutoincrement(TileTestCase):
     layer = testing.ugm_layer
 
-    @cleanup_autoincrement_test(users=['100', '101', 'uid100', 'uid101'])
+    @cleanup_autoincrement_test()
     def test_autoincrement(self):
         root = get_root()
         users = root['users']

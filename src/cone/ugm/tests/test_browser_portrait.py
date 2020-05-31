@@ -29,7 +29,7 @@ def dummy_file_data(filename):
     return data
 
 
-class cleanup_portrait_test(testing.temp_principals):
+class cleanup_portrait_test(testing.principals):
 
     def __call__(self, fn):
         w = super(cleanup_portrait_test, self).__call__(fn)
@@ -46,8 +46,10 @@ class cleanup_portrait_test(testing.temp_principals):
 class TestBrowserPortrait(TileTestCase):
     layer = testing.ugm_layer
 
-    @cleanup_portrait_test(users={'uid99': {'cn': 'Uid99', 'sn': 'Uid99'}})
-    def test_portrait(self, users, groups):
+    @cleanup_portrait_test(users={'uid99': {}})
+    def test_portrait(self):
+        root = get_root()
+        users = root['users']
         user = users['uid99']
 
         # Portrait related config properties

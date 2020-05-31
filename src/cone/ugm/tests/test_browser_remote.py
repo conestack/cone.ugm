@@ -1,4 +1,4 @@
-from cone.app import root
+from cone.app import get_root
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
 from node.ext.ldap import LDAPNode
@@ -10,9 +10,10 @@ from pyramid.view import render_view_to_response
 import json
 
 
-class remote_user_test(testing.remove_principals):
+class remote_user_test(testing.principals):
 
     def prepare_roles(self):
+        root = get_root()
         props = root['settings']['ldap_server'].ldap_props
         node = LDAPNode('dc=my-domain,dc=com', props)
         node['ou=roles'] = LDAPNode()
@@ -31,6 +32,7 @@ class remote_user_test(testing.remove_principals):
         roles._ldap_rcfg = rcfg
 
     def cleanup_roles(self):
+        root = get_root()
         roles = root['settings']['ldap_roles']
         roles._ldap_rcfg = None
 
@@ -47,8 +49,9 @@ class remote_user_test(testing.remove_principals):
 class TestBrowserRemote(TileTestCase):
     layer = testing.ugm_layer
 
-    @remote_user_test(users=['uid99', 'uid100', 'uid101', 'uid102'])
+    @remote_user_test(users={})
     def test_add_user(self):
+        root = get_root()
         users = root['users']
         request = self.layer.new_request(type='json')
 
@@ -169,8 +172,11 @@ class TestBrowserRemote(TileTestCase):
         self.assertEqual(sorted(user.model.roles), ['editor', 'viewer'])
         self.assertTrue(user.model.authenticate('secret'))
 
-    @testing.temp_principals(users={'uid99': {'cn': 'Uid99', 'sn': 'Uid99'}})
-    def test_delete_user(self, users, groups):
+    @testing.principals(users={'uid99': {}})
+    def test_delete_user(self):
+        root = get_root()
+        users = root['users']
+
         request = self.layer.new_request(type='json')
 
         with self.layer.authenticated('viewer'):

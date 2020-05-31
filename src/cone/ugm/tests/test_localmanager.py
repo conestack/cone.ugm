@@ -61,12 +61,21 @@ class TestModelLocalmanager(NodeTestCase):
         # Cleanup dummy environment
         shutil.rmtree(tempdir)
 
+    @testing.principals(
+        users={
+            'localmanager_1': {},
+            'localmanager_2': {}
+        },
+        groups={
+            'admin_group_1': {},
+            'admin_group_2': {}
+        },
+        membership={
+            'admin_group_1': ['localmanager_1'],
+            'admin_group_2': ['localmanager_2']
+        })
     def test_LocalManager(self):
-        self.layer.new_request()
-
-        # Local Manager test config
         root = get_root()
-
         config = root['settings']['ugm_localmanager'].attrs
         self.assertEqual(sorted(config.items()), [
             ('admin_group_1', {'default': ['group1'], 'target': ['group0', 'group1']}),
@@ -86,11 +95,12 @@ class TestModelLocalmanager(NodeTestCase):
         # management is enabled.
 
         # Unauthenticated
+        self.layer.new_request()
         self.assertEqual(lm_node.local_manager_target_gids, [])
         self.assertEqual(lm_node.local_manager_target_uids, [])
 
         # Authenticated, no local manager
-        with self.layer.authenticated('uid0'):
+        with self.layer.authenticated('inexistent'):
             self.assertEqual(lm_node.local_manager_target_gids, [])
             self.assertEqual(lm_node.local_manager_target_uids, [])
 
@@ -102,7 +112,7 @@ class TestModelLocalmanager(NodeTestCase):
         self.assertEqual(sorted(group.member_ids), ['localmanager_1', 'localmanager_2'])
 
         with self.layer.authenticated('localmanager_1'):
-            err = self.expect_error(
+            err = self.expectError(
                 Exception,
                 lambda: lm_node.local_manager_target_gids
             )
@@ -158,7 +168,20 @@ class TestModelLocalmanager(NodeTestCase):
         self.assertEqual(str(err), expected)
         self.assertTrue(lm_node.local_manager_is_default('admin_group_2', 'group2'))
 
-    def test_LocalManagerACL(self):
+    # @testing.principals(
+    #     users={
+    #         'localmanager_1': {},
+    #         'localmanager_2': {}
+    #     },
+    #     groups={
+    #         'admin_group_1': {},
+    #         'admin_group_2': {}
+    #     },
+    #     membership={
+    #         'admin_group_1': ['localmanager_1'],
+    #         'admin_group_2': ['localmanager_2']
+    #     })
+    def _test_LocalManagerACL(self):
         root = get_root()
         self.layer.new_request()
 

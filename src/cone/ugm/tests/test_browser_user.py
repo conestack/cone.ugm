@@ -1,4 +1,4 @@
-from cone.app import root
+from cone.app import get_root
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
@@ -11,6 +11,7 @@ class TestBrowserUser(TileTestCase):
     layer = testing.ugm_layer
 
     def test_content_tile(self):
+        root = get_root()
         users = root['users']
         user = users['uid2']
         request = self.layer.new_request()
@@ -21,6 +22,7 @@ class TestBrowserUser(TileTestCase):
         self.assertTrue(res.find(expected) > -1)
 
     def test_leftcolumn_tile(self):
+        root = get_root()
         users = root['users']
         user = users['uid2']
         request = self.layer.new_request()
@@ -39,6 +41,7 @@ class TestBrowserUser(TileTestCase):
         self.assertTrue(res.find(expected) > -1)
 
     def test_rightcolumn_tile(self):
+        root = get_root()
         users = root['users']
         user = users['uid2']
         request = self.layer.new_request()
@@ -57,6 +60,7 @@ class TestBrowserUser(TileTestCase):
         self.assertTrue(res.find(expected) > -1)
 
     def test_columnlisting_tile(self):
+        root = get_root()
         users = root['users']
         user = users['uid2']
         request = self.layer.new_request()
@@ -78,6 +82,7 @@ class TestBrowserUser(TileTestCase):
         self.assertTrue(res.find(expected) > -1)
 
     def test_allcolumnlisting_tile(self):
+        root = get_root()
         users = root['users']
         user = users['uid2']
         request = self.layer.new_request()
@@ -98,8 +103,9 @@ class TestBrowserUser(TileTestCase):
         )
         self.assertTrue(res.find(expected) > -1)
 
-    @testing.remove_principals(users=['uid99'])
+    @testing.principals()
     def test_add_user(self):
+        root = get_root()
         users = root['users']
         request = self.layer.new_request()
         request.params['factory'] = 'user'
@@ -152,8 +158,10 @@ class TestBrowserUser(TileTestCase):
         self.assertEqual(user.attrs['sn'], 'sn99')
         self.assertTrue(user.attrs['password'].startswith('{SSHA}'))
 
-    @testing.temp_principals(users={'uid99': {'sn': 'Uid99', 'cn': 'Uid99'}})
-    def test_edit_user(self, users, groups):
+    @testing.principals(users={'uid99': {}})
+    def test_edit_user(self, users):
+        root = get_root()
+        users = root['users']
         user = users['uid99']
         request = self.layer.new_request()
 
