@@ -10,21 +10,33 @@ from webob.exc import HTTPFound
 class TestBrowserUser(TileTestCase):
     layer = testing.ugm_layer
 
+    @testing.principals(
+        users={
+            'user_1': {}
+        })
     def test_content_tile(self):
         root = get_root()
         users = root['users']
-        user = users['uid2']
+        user = users['user_1']
         request = self.layer.new_request()
 
         # Unauthenticated content tile renders login form
-        expected = '<form action="http://example.com/users/uid2/login"'
+        expected = '<form action="http://example.com/users/user_1/login"'
         res = render_tile(user, request, 'content')
         self.assertTrue(res.find(expected) > -1)
 
+    @testing.principals(
+        users={
+            'manager': {},
+            'user_1': {}
+        },
+        roles={
+            'manager': ['manager']
+        })
     def test_leftcolumn_tile(self):
         root = get_root()
         users = root['users']
-        user = users['uid2']
+        user = users['user_1']
         request = self.layer.new_request()
 
         self.expectError(
@@ -40,10 +52,18 @@ class TestBrowserUser(TileTestCase):
         expected = '<div class="column left_column col-md-6">'
         self.assertTrue(res.find(expected) > -1)
 
+    @testing.principals(
+        users={
+            'manager': {},
+            'user_1': {}
+        },
+        roles={
+            'manager': ['manager']
+        })
     def test_rightcolumn_tile(self):
         root = get_root()
         users = root['users']
-        user = users['uid2']
+        user = users['user_1']
         request = self.layer.new_request()
 
         self.expectError(
@@ -59,10 +79,24 @@ class TestBrowserUser(TileTestCase):
         expected = '<div class="column right_column col-md-6">'
         self.assertTrue(res.find(expected) > -1)
 
+    @testing.principals(
+        users={
+            'manager': {},
+            'user_1': {}
+        },
+        groups={
+            'group_1': {}
+        },
+        membership={
+            'group_1': ['user_1']
+        },
+        roles={
+            'manager': ['manager']
+        })
     def test_columnlisting_tile(self):
         root = get_root()
         users = root['users']
-        user = users['uid2']
+        user = users['user_1']
         request = self.layer.new_request()
 
         self.expectError(
@@ -77,14 +111,30 @@ class TestBrowserUser(TileTestCase):
             res = render_tile(user, request, 'columnlisting')
         expected = (
             '<li class="list-group-item "\n              '
-            'ajax:target="http://example.com/groups/group2">'
+            'ajax:target="http://example.com/groups/group_1">'
         )
         self.assertTrue(res.find(expected) > -1)
 
+    @testing.principals(
+        users={
+            'manager': {},
+            'user_1': {}
+        },
+        groups={
+            'group_1': {},
+            'group_2': {}
+
+        },
+        membership={
+            'group_1': ['user_1']
+        },
+        roles={
+            'manager': ['manager']
+        })
     def test_allcolumnlisting_tile(self):
         root = get_root()
         users = root['users']
-        user = users['uid2']
+        user = users['user_1']
         request = self.layer.new_request()
 
         self.expectError(
@@ -99,11 +149,23 @@ class TestBrowserUser(TileTestCase):
             res = render_tile(user, request, 'allcolumnlisting')
         expected = (
             '<li class="list-group-item "\n              '
-            'ajax:target="http://example.com/groups/group1">'
+            'ajax:target="http://example.com/groups/group_1">'
         )
         self.assertTrue(res.find(expected) > -1)
 
-    @testing.principals()
+        expected = (
+            '<li class="list-group-item "\n              '
+            'ajax:target="http://example.com/groups/group_2">'
+        )
+        self.assertTrue(res.find(expected) > -1)
+
+    @testing.principals(
+        users={
+            'manager': {}
+        },
+        roles={
+            'manager': ['manager']
+        })
     def test_add_user(self):
         root = get_root()
         users = root['users']
@@ -125,10 +187,7 @@ class TestBrowserUser(TileTestCase):
         self.assertTrue(res.find(expected) > -1)
 
         request.params['userform.id'] = ''
-        request.params['userform.cn'] = 'cn99'
-        request.params['userform.sn'] = 'sn99'
-        request.params['userform.mail'] = 'uid99@example.com'
-        request.params['userform.password'] = 'secret99'
+        request.params['userform.password'] = 'secret_1'
         request.params['userform.principal_roles'] = []
         request.params['action.userform.save'] = '1'
 
@@ -137,51 +196,42 @@ class TestBrowserUser(TileTestCase):
         expected = '<div class="text-danger">No user_id defined</div>'
         self.assertTrue(res.find(expected) > -1)
 
-        request.params['userform.id'] = 'uid99'
+        request.params['userform.id'] = 'user_1'
 
         with self.layer.authenticated('manager'):
             res = render_tile(users, request, 'add')
         self.assertEqual(res, '')
         self.assertTrue(isinstance(request.environ['redirect'], HTTPFound))
-        self.assertEqual(sorted(users.keys()), [
-            'admin', 'editor', 'localmanager_1', 'localmanager_2', 'manager',
-            'max', 'sepp', 'uid0', 'uid1', 'uid2', 'uid3', 'uid4', 'uid5',
-            'uid6', 'uid7', 'uid8', 'uid9', 'uid99', 'viewer'
-        ])
+        self.assertEqual(sorted(users.keys()), ['manager', 'user_1'])
 
-        user = users['uid99']
+        user = users['user_1']
         self.assertTrue(isinstance(user, User))
-        self.assertEqual(user.attrs['cn'], 'cn99')
-        self.assertEqual(user.attrs['mail'], 'uid99@example.com')
-        self.assertEqual(user.attrs['rdn'], 'uid99')
-        self.assertEqual(user.attrs['login'], 'uid99')
-        self.assertEqual(user.attrs['sn'], 'sn99')
+        self.assertEqual(user.attrs['login'], 'user_1')
         self.assertTrue(user.attrs['password'].startswith('{SSHA}'))
 
-    @testing.principals(users={'uid99': {}})
-    def test_edit_user(self, users):
+    @testing.principals(
+        users={
+            'manager': {},
+            'user_1': {}
+        },
+        roles={
+            'manager': ['manager']
+        })
+    def test_edit_user(self):
         root = get_root()
         users = root['users']
-        user = users['uid99']
+        user = users['user_1']
         request = self.layer.new_request()
 
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'edit')
-        expected = '<form action="http://example.com/users/uid99/edit"'
+        expected = '<form action="http://example.com/users/user_1/edit"'
         self.assertTrue(res.find(expected) > -1)
 
-        request.params['userform.cn'] = 'cn99'
-        request.params['userform.sn'] = 'sn changed'
-        request.params['userform.mail'] = 'changed@example.com'
         request.params['userform.password'] = '_NOCHANGE_'
-        request.params['userform.principal_roles'] = []
+        request.params['userform.principal_roles'] = ['viewer']
         request.params['action.userform.save'] = '1'
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'edit')
         self.assertEqual(res, '')
-        self.assertEqual(sorted(user.attrs.items()), [
-            ('cn', 'cn99'),
-            ('mail', 'changed@example.com'),
-            ('rdn', 'uid99'),
-            ('sn', 'sn changed')
-        ])
+        self.assertEqual(sorted(user.model.roles), ['viewer'])

@@ -17,6 +17,13 @@ class TestBrowserUsers(TileTestCase):
         res = render_tile(users, request, 'content')
         self.assertTrue(res.find(expected) > -1)
 
+    @testing.principals(
+        users={
+            'manager': {},
+        },
+        roles={
+            'manager': ['manager']
+        })
     def test_leftcolumn_tile(self):
         users = root['users']
         request = self.layer.new_request()
@@ -34,6 +41,13 @@ class TestBrowserUsers(TileTestCase):
         expected = '<div class="column left_column col-md-6">'
         self.assertTrue(res.find(expected) > -1)
 
+    @testing.principals(
+        users={
+            'manager': {},
+        },
+        roles={
+            'manager': ['manager']
+        })
     def test_rightcolumn_tile(self):
         users = root['users']
         request = self.layer.new_request()
@@ -51,6 +65,13 @@ class TestBrowserUsers(TileTestCase):
         expected = '<div class="column right_column col-md-6">'
         self.assertTrue(res.find(expected) > -1)
 
+    @testing.principals(
+        users={
+            'manager': {},
+        },
+        roles={
+            'manager': ['manager']
+        })
     def test_columnlisting_tile(self):
         users = root['users']
         request = self.layer.new_request()

@@ -60,7 +60,7 @@ class principals(object):
                 fn(inst)
             finally:
                 try:
-                    for user_id in self.users:
+                    for user_id in ugm_users.keys():
                         try:
                             del ugm_users[user_id]
                             ugm_users()
@@ -71,7 +71,7 @@ class principals(object):
                                 'Error while removing user. Please '
                                 'check underlying UGM implementation: {}'
                             ).format(e))
-                    for group_id in self.groups:
+                    for group_id in ugm_groups.keys():
                         try:
                             del ugm_groups[group_id]
                             ugm_groups()
