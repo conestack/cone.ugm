@@ -15,18 +15,18 @@ def test_suite():
 
     from cone.ugm.tests import test_browser_actions
     from cone.ugm.tests import test_browser_autoincrement
-    # from cone.ugm.tests import test_browser_expires
+    from cone.ugm.tests import test_browser_expires
     # from cone.ugm.tests import test_browser_group
     # from cone.ugm.tests import test_browser_groups
     # from cone.ugm.tests import test_browser_portrait
     # from cone.ugm.tests import test_browser_principal
     # from cone.ugm.tests import test_browser_remote
     # from cone.ugm.tests import test_browser_roles
-    # from cone.ugm.tests import test_browser_root
-    # from cone.ugm.tests import test_browser_settings
+    from cone.ugm.tests import test_browser_root
+    from cone.ugm.tests import test_browser_settings
     # from cone.ugm.tests import test_browser_user
     # from cone.ugm.tests import test_browser_users
-    # from cone.ugm.tests import test_browser_utils
+    from cone.ugm.tests import test_browser_utils
 
     suite = unittest.TestSuite()
 
@@ -42,18 +42,18 @@ def test_suite():
 
     suite.addTest(unittest.findTestCases(test_browser_actions))
     suite.addTest(unittest.findTestCases(test_browser_autoincrement))
-    # suite.addTest(unittest.findTestCases(test_browser_expires))
+    suite.addTest(unittest.findTestCases(test_browser_expires))
     # suite.addTest(unittest.findTestCases(test_browser_group))
     # suite.addTest(unittest.findTestCases(test_browser_groups))
     # suite.addTest(unittest.findTestCases(test_browser_portrait))
     # suite.addTest(unittest.findTestCases(test_browser_principal))
     # suite.addTest(unittest.findTestCases(test_browser_remote))
     # suite.addTest(unittest.findTestCases(test_browser_roles))
-    # suite.addTest(unittest.findTestCases(test_browser_root))
-    # suite.addTest(unittest.findTestCases(test_browser_settings))
+    suite.addTest(unittest.findTestCases(test_browser_root))
+    suite.addTest(unittest.findTestCases(test_browser_settings))
     # suite.addTest(unittest.findTestCases(test_browser_user))
     # suite.addTest(unittest.findTestCases(test_browser_users))
-    # suite.addTest(unittest.findTestCases(test_browser_utils))
+    suite.addTest(unittest.findTestCases(test_browser_utils))
 
     return suite
 

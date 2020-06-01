@@ -22,10 +22,10 @@ def user_request(layer):
     return request
 
 
-class cleanup_autoincrement_test(testing.principals):
+class autoincrement_principals(testing.principals):
 
     def __call__(self, fn):
-        w = super(cleanup_autoincrement_test, self).__call__(fn)
+        w = super(autoincrement_principals, self).__call__(fn)
 
         def wrapper(inst):
             try:
@@ -41,7 +41,7 @@ class cleanup_autoincrement_test(testing.principals):
 class TestBrowserAutoincrement(TileTestCase):
     layer = testing.ugm_layer
 
-    @cleanup_autoincrement_test(
+    @autoincrement_principals(
         users={
             'manager': {}
         },

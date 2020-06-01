@@ -57,9 +57,19 @@ class TestBrowserSettings(TileTestCase):
             'save'
         ])
 
+    @testing.principals(
+        users={
+            'editor': {},
+            'manager': {},
+        },
+        roles={
+            'editor': ['editor'],
+            'manager': ['manager']
+        })
     def test_general_settings_tiles(self):
         general_settings = root['settings']['ugm_general']
         request = self.layer.new_request()
+
         # Unauthenticated content tile raises error
         self.expectError(
             HTTPForbidden,
@@ -68,6 +78,7 @@ class TestBrowserSettings(TileTestCase):
             request,
             'content'
         )
+
         # Form tile raise if not manager
         with self.layer.authenticated('editor'):
             self.expectError(
@@ -77,15 +88,26 @@ class TestBrowserSettings(TileTestCase):
                 request,
                 'editform'
             )
+
         # Authenticate and render tile
         with self.layer.authenticated('manager'):
             res = render_tile(general_settings, request, 'editform')
         expected = 'form action="http://example.com/settings/ugm_general/edit"'
         self.assertTrue(res.find(expected) > -1)
 
+    @testing.principals(
+        users={
+            'editor': {},
+            'manager': {},
+        },
+        roles={
+            'editor': ['editor'],
+            'manager': ['manager']
+        })
     def test_localmanager_settings_tiles(self):
         lm_settings = root['settings']['ugm_localmanager']
         request = self.layer.new_request()
+
         # Unauthenticated content tile raises error
         self.expectError(
             HTTPForbidden,
@@ -94,6 +116,7 @@ class TestBrowserSettings(TileTestCase):
             request,
             'content'
         )
+
         # Form tile raise if not manager
         with self.layer.authenticated('editor'):
             self.expectError(
@@ -103,6 +126,7 @@ class TestBrowserSettings(TileTestCase):
                 request,
                 'editform'
             )
+
         # Authenticate and render tile
         with self.layer.authenticated('manager'):
             res = render_tile(lm_settings, request, 'editform')
