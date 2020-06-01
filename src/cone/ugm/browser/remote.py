@@ -1,5 +1,5 @@
 from cone.ugm.model.users import Users
-from cone.ugm.model.utils import ugm_users
+from cone.ugm.utils import general_settings
 from pyramid.view import view_config
 
 
@@ -73,7 +73,7 @@ def remote_add_user(model, request):
         key = key[key.find('.') + 1:]
         attrs[key] = val
 
-    settings = ugm_users(model)
+    settings = general_settings(model)
     attrmap = settings.attrs.users_form_attrmap
     exposed = settings.attrs.users_exposed_attributes
     if not exposed:

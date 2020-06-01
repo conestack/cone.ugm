@@ -1,4 +1,4 @@
-from cone.ugm.model.utils import ugm_general
+from cone.ugm.utils import general_settings
 from plumber import Behavior
 from plumber import default
 from plumber import plumb
@@ -17,20 +17,25 @@ class AutoIncrementForm(Behavior):
     @default
     @property
     def autoincrement_support(self):
-        cfg = ugm_general(self.model)
-        return cfg.attrs['user_id_autoincrement'] == 'True'
+        settings = general_settings(self.model)
+        return settings.attrs.user_id_autoincrement == 'True'
 
     @default
     @property
     def next_principal_id(self):
-        cfg = ugm_general(self.model)
-        prefix = cfg.attrs['user_id_autoincrement_prefix']
-        default = int(cfg.attrs['user_id_autoincrement_start'])
+        settings = general_settings(self.model)
+        prefix = settings.attrs.user_id_autoincrement_prefix
+        default = int(settings.attrs.user_id_autoincrement_start)
         search = u'%s*' % prefix
         backend = self.model.parent.backend
         backend.invalidate()
         result = backend.search(attrlist=['id'], criteria={'id': search})
-        principlal_ids = [_[1]['id'][0] for _ in result]
+        if result and isinstance(result[0][1]['id'], list):
+            # XXX: is node.ext.ldap behavior attr list values are lists.
+            #      keep until node.ext.ldap supports single valued fields.
+            principlal_ids = [_[1]['id'][0] for _ in result]
+        else:
+            principlal_ids = [_[1]['id'] for _ in result]
         matching = list()
         for principal_id in principlal_ids:
             if prefix:

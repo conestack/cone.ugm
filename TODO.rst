@@ -1,12 +1,11 @@
 TODO
 ====
 
-- move LDAP related code to ``cone.ldap``
+- Improve login form field factory to hook up login extractor to related
+  login name form field widget.
 
-- make UI work with any kind of ``node.ext.ugm`` based implementations.
+- merge code from model/*.py in model.py.
 
-- provide application model for ``node.ext.ugm.file`` implementation as default.
+- complete test coverage.
 
-- In-Out listing.
-
-- DnD membership assignment.
+- document principal form field customization.

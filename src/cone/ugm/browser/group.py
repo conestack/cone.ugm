@@ -5,22 +5,23 @@ from cone.app.browser.authoring import EditBehavior
 from cone.app.browser.form import Form
 from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
+from cone.app.ugm import ugm_backend
 from cone.tile import Tile
 from cone.tile import tile
-from cone.ugm.browser import form_field_definitions
 from cone.ugm.browser.authoring import AddFormFiddle
 from cone.ugm.browser.authoring import EditFormFiddle
 from cone.ugm.browser.listing import ColumnListing
 from cone.ugm.browser.principal import PrincipalForm
+from cone.ugm.browser.principal import group_field
 from cone.ugm.browser.roles import PrincipalRolesForm
 from cone.ugm.model.group import Group
-from cone.ugm.model.utils import ugm_groups
+from cone.ugm.utils import general_settings
+from odict import odict
 from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 from webob.exc import HTTPFound
-from yafowil.base import ExtractionError
-from yafowil.utils import UNSET
 import fnmatch
+import itertools
 
 
 _ = TranslationStringFactory('cone.ugm')
@@ -64,7 +65,7 @@ class UsersListing(ColumnListing):
         if related:
             users = group.users
         else:
-            # XXX: LDAP query here.
+            # XXX: speedup
             users = group.root.users.values()
         # reduce for local manager
         if self.model.local_manager_consider_for_user:
@@ -173,26 +174,17 @@ class AllUsersColumnListing(UsersListing):
 
 class GroupForm(PrincipalForm):
     form_name = 'groupform'
+    field_factory_registry = group_field
+
+    @property
+    def reserved_attrs(self):
+        return odict([
+            ('id', _('group_id', default='Group ID'))
+        ])
 
     @property
     def form_attrmap(self):
-        settings = ugm_groups(self.model)
-        return settings.attrs.groups_form_attrmap
-
-    @property
-    def form_field_definitions(self):
-        return form_field_definitions.group
-
-    def exists(self, widget, data):
-        group_id = data.extracted
-        if group_id is UNSET:
-            return data.extracted
-        if group_id in self.model.parent.backend:
-            message = _('group_already_exists',
-                        default="Group ${gid} already exists.",
-                        mapping={'gid': group_id})
-            raise ExtractionError(message)
-        return data.extracted
+        return general_settings(self.model).attrs.groups_form_attrmap
 
 
 @tile(name='addform', interface=Group, permission="add_group")
@@ -202,25 +194,18 @@ class GroupAddForm(GroupForm, Form):
     show_contextmenu = False
 
     def save(self, widget, data):
-        settings = ugm_groups(self.model)
-        attrmap = settings.attrs.groups_form_attrmap
         extracted = dict()
-        for key, val in attrmap.items():
-            val = data.fetch('groupform.%s' % key).extracted
-            if not val:
+        for attr_name in itertools.chain(self.reserved_attrs, self.form_attrmap):
+            value = data[attr_name].extracted
+            if not value:
                 continue
-            extracted[key] = val
-        groups = self.model.parent.backend
-        gid = extracted.pop('id')
-        # group = groups.create(gid, **extracted)
-        groups.create(gid, **extracted)
-        self.request.environ['next_resource'] = gid
+            extracted[attr_name] = value
+        groups = ugm_backend.ugm.groups
+        group_id = extracted.pop('id')
+        groups.create(group_id, **extracted)
         groups()
+        self.request.environ['next_resource'] = group_id
         self.model.parent.invalidate()
-        # Access created user after invalidation. if not done, there's
-        # some kind of race condition with ajax continuation.
-        # XXX: figure out why.
-        self.model.parent[gid]
 
     def next(self, request):
         next_resource = self.request.environ.get('next_resource')
@@ -244,18 +229,12 @@ class GroupEditForm(GroupForm, Form):
     show_contextmenu = False
 
     def save(self, widget, data):
-        settings = ugm_groups(self.model)
-        attrmap = settings.attrs.groups_form_attrmap
-        for key in attrmap:
-            if key in ['id']:
+        attrs = self.model.attrs
+        for attr_name in self.form_attrmap:
+            if attr_name in ['id']:
                 continue
-            extracted = data.fetch('groupform.%s' % key).extracted
-            if not extracted:
-                if key in self.model.attrs:
-                    del self.model.attrs[key]
-            else:
-                self.model.attrs[key] = extracted
-        self.model.model.context()
+            attrs[attr_name] = data[attr_name].extracted
+        self.model()
 
     def next(self, request):
         came_from = request.get('came_from')

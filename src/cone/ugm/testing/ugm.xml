@@ -1,0 +1,55 @@
+<properties>
+  <users_exposed_attributes></users_exposed_attributes>
+  <users_account_expiration>False</users_account_expiration>
+  <users_expires_attr>shadowExpire</users_expires_attr>
+  <users_expires_unit>0</users_expires_unit>
+  <user_id_autoincrement>False</user_id_autoincrement>
+  <user_id_autoincrement_prefix></user_id_autoincrement_prefix>
+  <user_id_autoincrement_start>100</user_id_autoincrement_start>
+  <users_portrait>True</users_portrait>
+  <users_portrait_attr>portrait</users_portrait_attr>
+  <users_portrait_accept>image/jpeg</users_portrait_accept>
+  <users_portrait_width>50</users_portrait_width>
+  <users_portrait_height>50</users_portrait_height>
+  <users_local_management_enabled>False</users_local_management_enabled>
+  <users_login_name_attr></users_login_name_attr>
+  <users_form_attrmap>
+    <elem>
+      <key>fullname</key>
+      <value>Full Name</value>
+    </elem>
+    <elem>
+      <key>email</key>
+      <value>Email Address</value>
+    </elem>
+  </users_form_attrmap>
+  <users_listing_columns>
+    <elem>
+      <key>id</key>
+      <value>User ID</value>
+    </elem>
+    <elem>
+      <key>email</key>
+      <value>Email Address</value>
+    </elem>
+  </users_listing_columns>
+  <users_listing_default_column>id</users_listing_default_column>
+  <groups_form_attrmap>
+    <elem>
+      <key>groupname</key>
+      <value>Group Name</value>
+    </elem>
+  </groups_form_attrmap>
+  <groups_listing_columns>
+    <elem>
+      <key>id</key>
+      <value>Group ID</value>
+    </elem>
+    <elem>
+      <key>groupname</key>
+      <value>Group Name</value>
+    </elem>
+  </groups_listing_columns>
+  <groups_listing_default_column>id</groups_listing_default_column>
+  <roles_principal_roles_enabled>True</roles_principal_roles_enabled>
+</properties>

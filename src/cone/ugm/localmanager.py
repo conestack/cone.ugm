@@ -1,4 +1,6 @@
 from cone.app import security
+from cone.ugm.utils import general_settings
+from cone.ugm.utils import localmanager_settings
 from lxml import etree
 from node.behaviors import DictStorage
 from node.behaviors import Nodify
@@ -8,7 +10,6 @@ from plumber import finalize
 from plumber import plumb
 from plumber import plumbing
 from pyramid.security import Allow
-from pyramid.security import authenticated_userid
 from pyramid.threadlocal import get_current_request
 import os
 
@@ -65,8 +66,8 @@ class LocalManager(Behavior):
     def local_management_enabled(self):
         """Flag whether local management is enabled.
         """
-        general_settings = self.root['settings']['ugm_general']
-        return general_settings.attrs.users_local_management_enabled == 'True'
+        settings = general_settings(self.root)
+        return settings.attrs.users_local_management_enabled == 'True'
 
     @finalize
     @property
@@ -77,7 +78,7 @@ class LocalManager(Behavior):
         if not self.local_management_enabled:
             return False
         request = get_current_request()
-        if authenticated_userid(request) == security.ADMIN_USER:
+        if request.authenticated_userid == security.ADMIN_USER:
             return False
         roles = security.authenticated_user(request).roles
         if 'admin' in roles or 'manager' in roles:
@@ -92,23 +93,25 @@ class LocalManager(Behavior):
         Currently a user can be assigned only to one local manager group. If
         more than one local manager group is configured, an error is raised.
         """
-        config = self.root['settings']['ugm_localmanager'].attrs
+        settings = localmanager_settings(self.root)
         user = security.authenticated_user(get_current_request())
         if not user:
             return None
         gids = user.group_ids
         adm_gids = list()
         for gid in gids:
-            rule = config.get(gid)
+            rule = settings.attrs.get(gid)
             if rule:
                 adm_gids.append(gid)
         if len(adm_gids) == 0:
             return None
         if len(adm_gids) > 1:
-            msg = (u"Authenticated member defined in local manager "
-                   u"groups %s but only one management group allowed for "
-                   u"each user. Please contact System Administrator in "
-                   u"order to fix this problem.")
+            msg = (
+                u"Authenticated member defined in local manager "
+                u"groups %s but only one management group allowed for "
+                u"each user. Please contact System Administrator in "
+                u"order to fix this problem."
+            )
             exc = msg % ', '.join(["'%s'" % gid for gid in adm_gids])
             raise Exception(exc)
         return adm_gids[0]
@@ -121,8 +124,8 @@ class LocalManager(Behavior):
         adm_gid = self.local_manager_gid
         if not adm_gid:
             return None
-        config = self.root['settings']['ugm_localmanager'].attrs
-        return config[adm_gid]
+        settings = localmanager_settings(self.root)
+        return settings.attrs[adm_gid]
 
     @finalize
     @property
@@ -161,8 +164,8 @@ class LocalManager(Behavior):
     def local_manager_is_default(self, adm_gid, gid):
         """Check whether gid is default group for local manager group.
         """
-        config = self.root['settings']['ugm_localmanager'].attrs
-        rule = config[adm_gid]
+        settings = localmanager_settings(self.root)
+        rule = settings.attrs[adm_gid]
         if gid not in rule['target']:
             raise Exception(u"group '%s' not managed by '%s'" % (gid, adm_gid))
         return gid in rule['default']
@@ -194,11 +197,15 @@ class LocalManagerUsersACL(LocalManagerACL):
     def local_manager_acl(self):
         if not self.local_manager_target_gids:
             return []
-        permissions = ['view', 'add', 'add_user', 'edit', 'edit_user',
-                       'manage_expiration', 'manage_membership']
-        return [(Allow,
-                 authenticated_userid(get_current_request()),
-                 permissions)]
+        permissions = [
+            'view', 'add', 'add_user', 'edit', 'edit_user',
+            'manage_expiration', 'manage_membership'
+        ]
+        return [(
+            Allow,
+            get_current_request().authenticated_userid,
+            permissions
+        )]
 
 
 class LocalManagerUserACL(LocalManagerACL):
@@ -210,11 +217,15 @@ class LocalManagerUserACL(LocalManagerACL):
         if self.name is not None:
             if self.name not in self.local_manager_target_uids:
                 return []
-        permissions = ['view', 'add', 'add_user', 'edit', 'edit_user',
-                       'manage_expiration', 'manage_membership']
-        return [(Allow,
-                 authenticated_userid(get_current_request()),
-                 permissions)]
+        permissions = [
+            'view', 'add', 'add_user', 'edit', 'edit_user',
+            'manage_expiration', 'manage_membership'
+        ]
+        return [(
+            Allow,
+            get_current_request().authenticated_userid,
+            permissions
+        )]
 
 
 class LocalManagerGroupsACL(LocalManagerACL):
@@ -225,9 +236,11 @@ class LocalManagerGroupsACL(LocalManagerACL):
         if not self.local_manager_target_gids:
             return []
         permissions = ['view', 'manage_membership']
-        return [(Allow,
-                 authenticated_userid(get_current_request()),
-                 permissions)]
+        return [(
+            Allow,
+            get_current_request().authenticated_userid,
+            permissions
+        )]
 
 
 class LocalManagerGroupACL(LocalManagerACL):
@@ -238,6 +251,8 @@ class LocalManagerGroupACL(LocalManagerACL):
         if self.name not in self.local_manager_target_gids:
             return []
         permissions = ['view', 'manage_membership']
-        return [(Allow,
-                 authenticated_userid(get_current_request()),
-                 permissions)]
+        return [(
+            Allow,
+            get_current_request().authenticated_userid,
+            permissions
+        )]

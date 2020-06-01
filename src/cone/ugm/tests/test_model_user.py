@@ -5,19 +5,23 @@ from cone.ugm import testing
 from cone.ugm import ugm_user_acl
 from cone.ugm.layout import UGMLayout
 from cone.ugm.model.user import User
-from node.ext.ldap.ugm._api import User as LDAPUser
+from node.ext.ugm.interfaces import IUser
 import unittest
 
 
 class TestModelUser(unittest.TestCase):
     layer = testing.ugm_layer
 
+    @testing.principals(
+        users={
+            'user_1': {},
+        })
     def test_user(self):
         # User node
         users = root['users']
-        user = users['uid0']
+        user = users['user_1']
         self.assertTrue(isinstance(user, User))
-        self.assertEqual(user.name, 'uid0')
+        self.assertEqual(user.name, 'user_1')
 
         # Properties
         self.assertTrue(isinstance(user.properties, Properties))
@@ -32,17 +36,11 @@ class TestModelUser(unittest.TestCase):
         layout = user.layout
         self.assertTrue(isinstance(layout, UGMLayout))
 
-        # Backend user node is available at ``model``
-        self.assertTrue(isinstance(user.model, LDAPUser))
+        # UGM backend user node is available at ``model``
+        self.assertTrue(IUser.providedBy(user.model))
 
         # Attributes of the user are wrapped
-        self.assertEqual(sorted(user.attrs.items()), [
-            ('cn', 'cn0'),
-            ('mail', 'uid0@groupOfNames_10_10.com'),
-            ('rdn', 'uid0'),
-            ('sn', 'sn0'),
-            ('userPassword', 'secret0')
-        ])
+        self.assertTrue(user.attrs is user.model.attrs)
 
         # ACL
         self.assertEqual(user.__acl__, ugm_user_acl)

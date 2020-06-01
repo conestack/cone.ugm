@@ -7,804 +7,624 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-04-24 12:34+0200\n"
+"POT-Creation-Date: 2020-06-01 21:16+0200\n"
 "PO-Revision-Date: 2012-07-30 14:02+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: de <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "Generated-By: Babel 0.9.4\n"
 
+#. Default: UGM Settings
+#: src/cone/ugm/settings.py:53
+msgid "ugm_settings_node"
+msgstr "UGM Einstellungen"
+
+#. Default: General user and group management settings
+#: src/cone/ugm/settings.py:56
+msgid "ugm_settings_node_description"
+msgstr "Allgemeine Benutzer- und Gruppeneinstellungen"
+
+#. Default: Local Manager Settings
+#: src/cone/ugm/settings.py:71
+msgid "localmanager_settings_node"
+msgstr "Benutzeradmin"
+
+#. Default: Local Manager Settings
+#: src/cone/ugm/settings.py:75
+msgid "localmanager_settings_node_description"
+msgstr "Benutzeradmin"
+
+#. Default: Group
+#: src/cone/ugm/model/group.py:18 src/cone/ugm/model/group.py:31
+msgid "group_node"
+msgstr "Gruppe"
+
+#. Default: Group
+#: src/cone/ugm/model/group.py:19 src/cone/ugm/model/group.py:32
+msgid "group_node_description"
+msgstr "Gruppe"
+
+#. Default: Groups
+#: src/cone/ugm/model/groups.py:28 src/cone/ugm/model/groups.py:49
+msgid "groups_node"
+msgstr "Gruppen"
+
+#. Default: Container for Groups
+#: src/cone/ugm/model/groups.py:29 src/cone/ugm/model/groups.py:50
+msgid "groups_node_description"
+msgstr "Gruppencontainer"
+
+#. Default: Users
+#: src/cone/ugm/model/users.py:28 src/cone/ugm/model/users.py:49
+msgid "users_node"
+msgstr "Benutzer"
+
+#. Default: Container for Users
+#: src/cone/ugm/model/users.py:29 src/cone/ugm/model/users.py:50
+msgid "users_node_description"
+msgstr "Benutzercontainer"
+
+#. Default: User
+#: src/cone/ugm/model/user.py:18 src/cone/ugm/model/user.py:31
+msgid "user_node"
+msgstr "Benutzer"
+
+#. Default: User
+#: src/cone/ugm/model/user.py:19 src/cone/ugm/model/user.py:32
+msgid "user_node_description"
+msgstr "Benutzer"
+
+#. Default: auto incremented
+#: src/cone/ugm/browser/autoincrement.py:66
+msgid "auto_incremented"
+msgstr "automatisch"
+
+#. Default: Add user to selected group
+#: src/cone/ugm/browser/group.py:103 src/cone/ugm/browser/user.py:103
+msgid "add_user_to_selected_group"
+msgstr "Benutzer zu Gruppe hinzufügen"
+
+#. Default: Remove user from selected group
+#: src/cone/ugm/browser/group.py:116 src/cone/ugm/browser/user.py:116
+msgid "remove_user_from_selected_group"
+msgstr "Benutzer aus Gruppe entfernen"
+
+#. Default: Group ID
+#: src/cone/ugm/browser/group.py:182
+msgid "group_id"
+msgstr "Gruppen ID"
+
+#. Default: Add Group
+#: src/cone/ugm/browser/groups.py:22
+msgid "add_group"
+msgstr "Gruppe hinzufügen"
+
+#. Default: Delete Group
+#: src/cone/ugm/browser/groups.py:70
+msgid "delete_group"
+msgstr "Gruppe löschen"
+
+#. Default: Active
+#: src/cone/ugm/browser/expires.py:153
+msgid "active"
+msgstr "Aktiv"
+
+# filter listing
+#. Default: filter listing
+#: src/cone/ugm/browser/listing.py:107
+msgid "filter_listing"
+msgstr "Liste filtern"
+
+#. Default: Delete Principal
+#: src/cone/ugm/browser/listing.py:298
+msgid "delete_principal"
+msgstr "Benutzer/Gruppe löschen"
+
+#. Default: Add User
+#: src/cone/ugm/browser/users.py:22
+msgid "add_user"
+msgstr "Benutzer hinzufügen"
+
+#. Default: Delete User
+#: src/cone/ugm/browser/users.py:70
+msgid "delete_user"
+msgstr "Benutzer löschen"
+
+#. Default: Roles
+#: src/cone/ugm/browser/roles.py:45
+msgid "roles"
+msgstr "Rollen"
+
+# User Accounts expires?
+#. Default: Value is required if account expiration is enabled
+#: src/cone/ugm/browser/settings.py:43
+msgid "required_if_users_account_expiration"
+msgstr "Wert erforderlich wenn Ablaufdatum für Benutzerkonto aktiviert ist"
+
+#. Default: Value is required if portrit support is enabled
+#: src/cone/ugm/browser/settings.py:54
+msgid "required_if_users_portrait"
+msgstr ""
+"Wert erforderlich wenn Portrait Unterstützung für Benutzerkonto aktiviert ist"
+
+#. Default: Duplicate access rule
+#: src/cone/ugm/browser/settings.py:152
+msgid "localmanager_duplicate_rule_error"
+msgstr "Doppelte Zugriffsregel definiert"
+
+#. Default: Target GID equates source GID
+#: src/cone/ugm/browser/settings.py:164
+msgid "localmanager_target_is_source_error"
+msgstr "Ziel GID entspricht Administrations GID"
+
+#. Default: User ID
+#: src/cone/ugm/browser/user.py:182
+msgid "user_id"
+msgstr "Benutzer ID"
+
+#. Default: Login name
+#: src/cone/ugm/browser/user.py:183
+msgid "login_name"
+msgstr "Login Name"
+
+#. Default: Password
+#: src/cone/ugm/browser/user.py:184
+msgid "password"
+msgstr "Passwort"
+
+#. Default: No ${field} defined
+#: src/cone/ugm/browser/principal.py:23
+msgid "no_field_value_defined"
+msgstr "Kein Wert für ${field} angegeben"
+
+#. Default: User ${principal_id} already exists.
+#: src/cone/ugm/browser/principal.py:174
+msgid "user_already_exists"
+msgstr "Benutzer ${uid} existiert bereits."
+
+#. Default: Group ${principal_id} already exists.
+#: src/cone/ugm/browser/principal.py:186
+msgid "group_already_exists"
+msgstr "Gruppe ${gid} existiert bereits."
+
+#. Default: User login ${login} not unique.
+#: src/cone/ugm/browser/principal.py:264
+msgid "user_login_not_unique"
+msgstr "Login name ${login} nicht eindeutig"
+
+#. Default: Save
+#.
+#: src/cone/ugm/browser/principal.py:373
+#: src/cone/ugm/browser/forms/general_settings.yaml:205
+#: src/cone/ugm/browser/forms/localmanager_settings.yaml:65
+msgid "save"
+msgstr "Speichern"
+
+#. Default: Cancel
+#: src/cone/ugm/browser/principal.py:383
+msgid "cancel"
+msgstr "Abbrechen"
+
 #. Default: Deleted user '${uid}' from database.
-#: src/cone/ugm/browser/actions.py:75
+#: src/cone/ugm/browser/actions.py:77
 msgid "delete_user_from_database"
 msgstr "Benutzer '${uid}' gelöscht."
 
 #. Default: Added user '${uid}' to group '${gid}'.
-#: src/cone/ugm/browser/actions.py:105 src/cone/ugm/browser/actions.py:223
+#: src/cone/ugm/browser/actions.py:116 src/cone/ugm/browser/actions.py:284
 msgid "added_user_to_group"
 msgstr "Benutzer '${uid}' zu Gruppe '${gid}' hinzugefügt."
 
-#. Default: Failed adding user '${uid}' to group '${gid}'. Manage membership
-#. denied
-#. for target group.
-#: src/cone/ugm/browser/actions.py:116
+#: src/cone/ugm/browser/actions.py:132
 msgid "lm_add_target_gid_not_allowed"
 msgstr ""
 "Hinzufügen von Benutzer '${uid}' zu Gruppe '${gid}' fehlgeschlagen. "
 "Administration Gruppe nicht erlaubt."
 
 #. Default: Removed user '${uid}' from group '${gid}'.
-#: src/cone/ugm/browser/actions.py:148 src/cone/ugm/browser/actions.py:265
+#: src/cone/ugm/browser/actions.py:177 src/cone/ugm/browser/actions.py:344
 msgid "removed_user_from_group"
 msgstr "Benutzer '${uid}' aus Gruppe '${gid}' entfernt."
 
-#. Default: Failed removing user '${uid}' from group '${gid}'. Manage
-#. membership
-#. denied for target group.
-#: src/cone/ugm/browser/actions.py:158
+#: src/cone/ugm/browser/actions.py:192
 msgid "lm_remove_target_gid_not_allowed"
 msgstr ""
 "Entfernen von Benutzer '${uid}' aus Gruppe '${gid}' fehlgeschlagen. "
 "Administration Gruppe nicht erlaubt."
 
-#. Default: Failed removing user '${uid}' from group '${gid}'. Target group is
-#. default group of user.
-#: src/cone/ugm/browser/actions.py:165 src/cone/ugm/browser/actions.py:282
+#: src/cone/ugm/browser/actions.py:203 src/cone/ugm/browser/actions.py:371
 msgid "lm_remove_target_gid_is_default"
 msgstr ""
-"Entfernen von Benutzer '${uid}' aus Gruppe '${gid}' fehlgeschlagen. "
-"Gruppe is Standardgruppe für Benutzer."
+"Entfernen von Benutzer '${uid}' aus Gruppe '${gid}' fehlgeschlagen. Gruppe "
+"is Standardgruppe für Benutzer."
 
 #. Default: Deleted group from database
-#: src/cone/ugm/browser/actions.py:198
+#: src/cone/ugm/browser/actions.py:252
 msgid "deleted_group"
 msgstr "Gruppe gelöscht"
 
-#. Default: Failed adding user '${uid}' to group '${gid}'. Manage membership
-#. denied
-#. for user.
-#: src/cone/ugm/browser/actions.py:234
+#: src/cone/ugm/browser/actions.py:300
 msgid "lm_add_target_uid_not_allowed"
 msgstr ""
 "Hinzufügen von Benutzer '${uid}' zu Gruppe '${gid}' fehlgeschlagen. "
 "Administration Benutzer nicht erlaubt."
 
-#. Default: Failed removing user '${uid}' from group '${gid}'. Manage
-#. membership
-#. denied for user.
-#: src/cone/ugm/browser/actions.py:275
+#: src/cone/ugm/browser/actions.py:359
 msgid "lm_remove_target_uid_not_allowed"
 msgstr ""
 "Entfernen von Benutzer '${uid}' aus Gruppe '${gid}' fehlgeschlagen. "
 "Administration Benutzer nicht erlaubt."
-
-#. Default: auto incremented
-#: src/cone/ugm/browser/autoincrement.py:62
-msgid "auto_incremented"
-msgstr "automatisch"
-
-#. Default: Active
-#: src/cone/ugm/browser/expires.py:162
-msgid "active"
-msgstr "Aktiv"
-
-#. Default: Add Group
-#: src/cone/ugm/browser/group.py:42 src/cone/ugm/browser/groups.py:23
-msgid "add_group"
-msgstr "Gruppe hinzufügen"
-
-#. Default: Add user to selected group
-#: src/cone/ugm/browser/group.py:129 src/cone/ugm/browser/user.py:137
-msgid "add_user_to_selected_group"
-msgstr "Benutzer zu Gruppe hinzufügen"
-
-#. Default: Remove user from selected group
-#: src/cone/ugm/browser/group.py:137 src/cone/ugm/browser/user.py:145
-msgid "remove_user_from_selected_group"
-msgstr "Benutzer aus Gruppe entfernen"
-
-#. Default: Group ${gid} already exists.
-#: src/cone/ugm/browser/group.py:222
-msgid "group_already_exists"
-msgstr "Gruppe ${gid} existiert bereits."
-
-#. Default: Delete Group
-#: src/cone/ugm/browser/groups.py:54
-msgid "delete_group"
-msgstr "Gruppe löschen"
-
-#. Default: Delete Principal
-#: src/cone/ugm/browser/listing.py:194
-msgid "delete_principal"
-msgstr "Benutzer/Gruppe löschen"
 
 #. Default: Portrait
 #: src/cone/ugm/browser/portrait.py:80 src/cone/ugm/browser/portrait.py:82
 msgid "portrait"
 msgstr "Portrait"
 
-#. Default: No ${field} defined
-#: src/cone/ugm/browser/principal.py:55
-msgid "no_field_value_defined"
-msgstr "No ${field} defined"
-
-#. Default: Save
-#: src/cone/ugm/browser/principal.py:98
-msgid "save"
-msgstr "Speichern"
-
-#. Default: Cancel
-#: src/cone/ugm/browser/principal.py:108
-msgid "cancel"
-msgstr "Abbrechen"
-
-#. Default: Roles
-#: src/cone/ugm/browser/roles.py:46
-msgid "roles"
-msgstr "Rollen"
-
-#. Default: Can't create container: ${error}
-#: src/cone/ugm/browser/settings.py:103
-msgid "cannot_create_container"
-msgstr "Kann Knoten nicht erstellen: ${error}"
-
-#. Default: No container DN defined.
-#: src/cone/ugm/browser/settings.py:114
-msgid "no_container_dn_defined"
-msgstr "Kein DN definiert"
-
-#. Default: Expected 'ou' as RDN Attribute.
-#: src/cone/ugm/browser/settings.py:118
-msgid "expected_ou_as_rdn"
-msgstr "'ou' als RDN Attribut erwartet"
-
-#. Default: Invalid DN.
-#: src/cone/ugm/browser/settings.py:124
-msgid "invalid_dn"
-msgstr "Ungültiger DN"
-
-#. Default: Parent not found. Can't continue.
-#: src/cone/ugm/browser/settings.py:130
-msgid "parent_not_found"
-msgstr "Elternelement nicht gefunden. Abbruch"
-
-#. Default: Created ${rdn}
-#: src/cone/ugm/browser/settings.py:137
-msgid "created_principal_container"
-msgstr "${rdn} erstellt"
-
-#. Default: Down
-#: src/cone/ugm/browser/settings.py:193
-msgid "server_down"
-msgstr "Nicht erreichbar"
-
-#. Default: Inexistent
-#: src/cone/ugm/browser/settings.py:235 src/cone/ugm/browser/settings.py:300
-#: src/cone/ugm/browser/settings.py:363
-msgid "inexistent"
-msgstr "Nicht existent"
-
-#: src/cone/ugm/browser/settings.py:468
-msgid "localmanager_duplicate_rule_error"
-msgstr "Doppelte Zugriffsregel definiert"
-
-#: src/cone/ugm/browser/settings.py:477
-msgid "localmanager_target_is_source_error"
-msgstr "Ziel GID entspricht Administrations GID"
-
-#. Default: Add User
-#: src/cone/ugm/browser/user.py:48 src/cone/ugm/browser/users.py:23
-msgid "add_user"
-msgstr "Benutzer hinzufügen"
-
-#. Default: User ${uid} already exists.
-#: src/cone/ugm/browser/user.py:242
-msgid "user_already_exists"
-msgstr "Benutzer ${uid} existiert bereits."
-
-#. Default: User login ${login} not unique.
-#: src/cone/ugm/browser/user.py:258
-msgid "user_login_not_unique"
-msgstr "Login name ${login} nicht eindeutig"
-
-#. Default: Delete User
-#: src/cone/ugm/browser/users.py:54
-msgid "delete_user"
-msgstr "Benutzer löschen"
-
-#. Default: Sorting
-#: src/cone/ugm/browser/templates/column_listing.pt:16
-msgid "sort_by"
-msgstr "Sortieren"
-
-#. Default: Groups Settings
-#: src/cone/ugm/browser/templates/groups_settings.pt:8
-msgid "group_settings"
-msgstr "Gruppeneinstellungen"
-
-#. Default: Check Groups DN:
-#: src/cone/ugm/browser/templates/groups_settings.pt:11
-msgid "check_groups_dn"
-msgstr "Prüfe Gruppen DN"
-
-#. Default: Server not reachable
-#: src/cone/ugm/browser/templates/groups_settings.pt:17
-#: src/cone/ugm/browser/templates/roles_settings.pt:17
-#: src/cone/ugm/browser/templates/users_settings.pt:17
-msgid "server_not_reachable"
-msgstr "Server nich erreichbar"
-
-#. Default: Create groups container?
-#: src/cone/ugm/browser/templates/groups_settings.pt:25
-msgid "create_groups_container"
-msgstr "Knoten für Gruppen erstellen?"
-
-#. Default: The groups container DN does not exist. The Application can try to
-#. create it. This only works if the parent entry of defined DN exists. The
-#. groups
-#. container will be created with objectClass 'organizationalUnit'. Thus, the
-#. RDN
-#. name of DN must be 'ou'.
-#: src/cone/ugm/browser/templates/groups_settings.pt:28
-msgid "create_groups_container_description"
-msgstr ""
-"Knoten für Gruppen existiert nicht. Das Programm kann versuchen den "
-"Knoten zu erstellen. Das funktioniert nur wenn der Elternknoten des zu "
-"erstellenden Knotens existiert. Der neue Knoten wird mit der Objektklasse"
-" 'organizationalUnit' erstellt, das muss im DN berücksichtigt werden"
-
-#. Default: Create groups container now
-#: src/cone/ugm/browser/templates/groups_settings.pt:35
-msgid "create_groups_container_now"
-msgstr "Gruppenknoten erstellen"
-
-#. Default: Local User Management is not enabled.
-#: src/cone/ugm/browser/templates/localmanager_settings.pt:9
-msgid "localmanager_disabled_warning"
-msgstr "Lokale Benutzeradministration ist deaktiviert"
-
-#. Default: List all
-#: src/cone/ugm/browser/templates/right_column.pt:31
-msgid "list_all"
-msgstr "Alle anzeigen"
-
-#. Default: Roles Settings
-#: src/cone/ugm/browser/templates/roles_settings.pt:8
-msgid "roles_settings"
-msgstr "Rolleneinstellungen"
-
-#. Default: Check Roles DN:
-#: src/cone/ugm/browser/templates/roles_settings.pt:11
-msgid "check_roles_dn"
-msgstr "Prüfe Rollen DN"
-
-#. Default: Create roles container?
-#: src/cone/ugm/browser/templates/roles_settings.pt:25
-msgid "create_roles_container"
-msgstr "Knoten für Rollen erstellen?"
-
-#. Default: The roles container DN does not exist. The Application can try to
-#. create it. This only works if the parent entry of defined DN exists. The
-#. roles
-#. container will be created with objectClass 'organizationalUnit'. Thus, the
-#. RDN
-#. name of DN must be 'ou'.
-#: src/cone/ugm/browser/templates/roles_settings.pt:28
-msgid "create_roles_container_description"
-msgstr ""
-"Knoten für Rollen existiert nicht. Das Programm kann versuchen den Knoten"
-" zu erstellen. Das funktioniert nur wenn der Elternknoten des zu "
-"erstellenden Knotens existiert. Der neue Knoten wird mit der Objektklasse"
-" 'organizationalUnit' erstellt, das muss im DN berücksichtigt werden"
-
-#. Default: Create roles container now
-#: src/cone/ugm/browser/templates/roles_settings.pt:35
-msgid "create_roles_container_now"
-msgstr "Rollenknoten erstellen"
-
-#. Default: LDAP Server Settings
-#: src/cone/ugm/browser/templates/server_settings.pt:7
-msgid "ldap_server_settings"
-msgstr "LDAP Server Einstellungen"
-
-#. Default: Server Connection:
-#: src/cone/ugm/browser/templates/server_settings.pt:10
-msgid "server_connection"
-msgstr "Verbindung zum Server"
-
-#. Default: Users Settings
-#: src/cone/ugm/browser/templates/users_settings.pt:8
-msgid "users_settings"
+#. Default: User settings
+#: src/cone/ugm/browser/forms/general_settings.yaml:11
+msgid "users_heading"
 msgstr "Benutzereinstellungen"
-
-#. Default: Check Users DN:
-#: src/cone/ugm/browser/templates/users_settings.pt:11
-msgid "check_users_dn"
-msgstr "Prüfe Benutzer DN"
-
-#. Default: Create users container?
-#: src/cone/ugm/browser/templates/users_settings.pt:25
-msgid "create_users_container"
-msgstr "Knoten für Benutzer erstellen?"
-
-#. Default: The users container DN does not exist. The Application can try to
-#. create it. This only works if the parent entry of defined DN exists. The
-#. users
-#. container will be created with objectClass 'organizationalUnit'. Thus, the
-#. RDN
-#. name of DN must be 'ou'.
-#: src/cone/ugm/browser/templates/users_settings.pt:28
-msgid "create_users_container_description"
-msgstr ""
-"Knoten für Benutzer existiert nicht. Das Programm kann versuchen den "
-"Knoten zu erstellen. Das funktioniert nur wenn der Elternknoten des zu "
-"erstellenden Knotens existiert. Der neue Knoten wird mit der Objektklasse"
-" 'organizationalUnit' erstellt, das muss im DN berücksichtigt werden"
-
-#. Default: Create users container now
-#: src/cone/ugm/browser/templates/users_settings.pt:35
-msgid "create_users_container_now"
-msgstr "Benutzerknoten erstellen"
-
-#. Default: Group
-#: src/cone/ugm/model/group.py:31 src/cone/ugm/model/group.py:41
-msgid "group_node"
-msgstr "Gruppe"
-
-#. Default: Group
-#: src/cone/ugm/model/group.py:32 src/cone/ugm/model/group.py:42
-msgid "group_node_description"
-msgstr "Gruppe"
-
-#. Default: Groups
-#: src/cone/ugm/model/groups.py:41 src/cone/ugm/model/groups.py:94
-msgid "groups_node"
-msgstr "Gruppen"
-
-#. Default: Container for Groups
-#: src/cone/ugm/model/groups.py:42 src/cone/ugm/model/groups.py:95
-msgid "groups_node_description"
-msgstr "Gruppencontainer"
-
-#. Default: UGM Settings
-#: src/cone/ugm/model/settings.py:80
-msgid "ugm_settings_node"
-msgstr "UGM Einstellungen"
-
-#. Default: General user and group management settings
-#: src/cone/ugm/model/settings.py:81
-msgid "ugm_settings_node_description"
-msgstr "Allgemeine Benutzer- und Gruppeneinstellungen"
-
-#. Default: LDAP Props
-#: src/cone/ugm/model/settings.py:91
-msgid "ldap_props_node"
-msgstr "LDAP Einstellungen"
-
-#. Default: LDAP properties
-#: src/cone/ugm/model/settings.py:92
-msgid "ldap_props_node_description"
-msgstr "LDAP Einstellungen"
-
-#. Default: Users Settings
-#: src/cone/ugm/model/settings.py:121
-msgid "user_settings_node"
-msgstr "Benutzereinstellungen"
-
-#. Default: LDAP users settings
-#: src/cone/ugm/model/settings.py:122
-msgid "user_settings_node_description"
-msgstr "LDAP Benutzereinstellungen"
-
-#. Default: Groups Settings
-#: src/cone/ugm/model/settings.py:179
-msgid "group_settings_node"
-msgstr "Gruppeneinstellungen"
-
-#. Default: LDAP groups settings
-#: src/cone/ugm/model/settings.py:180
-msgid "group_settings_node_description"
-msgstr "LDAP Gruppeneinstellungen"
-
-#. Default: Roles Settings
-#: src/cone/ugm/model/settings.py:222
-msgid "role_settings_node"
-msgstr "Rolleneinstellungen"
-
-#. Default: LDAP roles settings
-#: src/cone/ugm/model/settings.py:223
-msgid "role_settings_node_description"
-msgstr "LDAP Rolleneinstellungen"
-
-#. Default: Local Manager Settings
-#: src/cone/ugm/model/settings.py:268
-msgid "localmanager_settings_node"
-msgstr "Benutzeradmin"
-
-#. Default: Local Manager Settings
-#: src/cone/ugm/model/settings.py:270
-msgid "localmanager_settings_node_description"
-msgstr "Benutzeradmin"
-
-#. Default: User
-#: src/cone/ugm/model/user.py:31 src/cone/ugm/model/user.py:41
-msgid "user_node"
-msgstr "Benutzer"
-
-#. Default: User
-#: src/cone/ugm/model/user.py:32 src/cone/ugm/model/user.py:42
-msgid "user_node_description"
-msgstr "Benutzer"
-
-#. Default: Users
-#: src/cone/ugm/model/users.py:41 src/cone/ugm/model/users.py:94
-msgid "users_node"
-msgstr "Benutzer"
-
-#. Default: Container for Users
-#: src/cone/ugm/model/users.py:42 src/cone/ugm/model/users.py:95
-msgid "users_node_description"
-msgstr "Benutzercontainer"
-
-# #############################################################################
-# manually created message strings
-# filter listing
-msgid "filter_listing"
-msgstr "Liste filtern"
 
 # User Accounts expires?
-msgid "user_accounts_expires"
+#. Default: User Accounts expires?
+#: src/cone/ugm/browser/forms/general_settings.yaml:16
+msgid "users_account_expiration"
 msgstr "Benutzer läuft ab?"
 
 # Flag whether to consider user expiration
-msgid "user_accounts_expires_help"
+#. Default: Flag whether to consider user expiration
+#: src/cone/ugm/browser/forms/general_settings.yaml:17
+msgid "users_account_expiration_help"
 msgstr "Benutzerkonten können ein Ablaufdatum haben"
 
-# Attribute containing expiration Time
-msgid "attribute_containing_expiration_time"
-msgstr "Ablaufdatum LDAP Attribut"
+# User Accounts expires?
+#. Default: Attribute containing expiration Time
+#: src/cone/ugm/browser/forms/general_settings.yaml:22
+msgid "users_expires_attr"
+msgstr "Attribut Ablaufdatum"
 
-# LDAP attribute name containing expires information
-msgid "attribute_containing_expiration_time_help"
-msgstr "LDAP Attribut welches das Ablaufdatum enthält"
+# Flag whether to consider user expiration
+#. Default: Attribute name containing expires information
+#: src/cone/ugm/browser/forms/general_settings.yaml:23
+msgid "users_expires_attr_help"
+msgstr "Attributname in dem das Ablaufdatum verspeichert ist"
 
-# Account expiration unit
-msgid "account_expiration_unit"
-msgstr "Format Ablaufdatum"
+# User Accounts expires?
+#. Default: Account expiration unit
+#: src/cone/ugm/browser/forms/general_settings.yaml:32
+msgid "users_expires_unit"
+msgstr "Ablaufdatum einheit"
 
-# Unit of expiration value
-msgid "account_expiration_unit_help"
-msgstr "Format des Ablaufdatum"
+# Flag whether to consider user expiration
+#. Default: Unit of expiration value
+#: src/cone/ugm/browser/forms/general_settings.yaml:33
+msgid "users_expires_unit_help"
+msgstr "Einheit des Ablaufdatums"
 
-# Autoincrement user id
-msgid "autoincrement_user_id"
-msgstr "Benutzer ID's automatisch inkrementieren"
+#. Default: Autoincrement user ID
+#: src/cone/ugm/browser/forms/general_settings.yaml:39
+msgid "user_id_autoincrement"
+msgstr "Automatische Benutzer ID's"
 
 # Flag whether to autoincrement user ids at user creation time.
 # This feature only works for systems using numeric user ID's
-msgid "autoincrement_user_id_help"
-msgstr "Mit dieser Option werden neue Benutzer ID's automatisch hochgezählt"
+#. Default: Flag whether to autoincrement user IDs at user creation time. This
+#. feature only works for systems using numeric user IDs
+#: src/cone/ugm/browser/forms/general_settings.yaml:42
+msgid "user_id_autoincrement_help"
+msgstr ""
+"Mit dieser Option werden neue Benutzer ID's automatisch hochgezählt."
+"Funktioniert nur mit numerischen Benutzer ID's"
 
 # Autoincrement user id prefix
-msgid "autoincrement_user_id_prefix"
+#. Default: Autoincrement user ID prefix
+#: src/cone/ugm/browser/forms/general_settings.yaml:47
+msgid "user_id_autoincrement_prefix"
 msgstr "Präfix für automatische Benutzer ID's"
 
 # Prefix for autogenerated user ID's
-msgid "autoincrement_user_id_prefix_help"
+#. Default: Prefix for autogenerated user ID's
+#: src/cone/ugm/browser/forms/general_settings.yaml:48
+msgid "user_id_autoincrement_prefix_help"
 msgstr "Wird als Präfix der neuen Benutzer ID vorangestellt"
 
-# Autoincrement initial user number
-msgid "autoincrement_initial_user_number"
-msgstr "Start ID Benutzer"
+# Autoincrement user id
+#. Default: Autoincrement initial user number
+#: src/cone/ugm/browser/forms/general_settings.yaml:53
+msgid "user_id_autoincrement_start"
+msgstr "Erste automatische Benutzer ID"
 
-# User number to start from
-msgid "autoincrement_initial_user_number_help"
-msgstr "Erste verwendete Nummer für neue Benutzer"
+# Flag whether to autoincrement user ids at user creation time.
+# This feature only works for systems using numeric user ID's
+#. Default: User number to start from
+#: src/cone/ugm/browser/forms/general_settings.yaml:54
+msgid "user_id_autoincrement_start_help"
+msgstr ""
+"Automatische Benutzer ID mit der gestartet wird wenn noch kein Benutzer "
+"angelegt wurde."
 
-# Portrait Support
-msgid "portrait_support"
+#. Default: Portrait Support
+#: src/cone/ugm/browser/forms/general_settings.yaml:60
+msgid "users_portrait"
 msgstr "Portrait Unterstützung"
 
-# Flag whether users can have a portrait
-msgid "portrait_support_help"
-msgstr "Benutzer können ein Portrait haben"
+# Attributes exposed in user form
+#. Default: Flag whether users can have a portrait
+#: src/cone/ugm/browser/forms/general_settings.yaml:61
+msgid "users_portrait_help"
+msgstr "Definiert, ob bei Benutzern das Portrait aktiviert ist"
 
-# Attribute containing portrait image
-msgid "attribute_containing_portrait_image"
-msgstr "Portrait Attribut"
+# User form attributes
+#. Default: Attribute containing portrait image
+#: src/cone/ugm/browser/forms/general_settings.yaml:66
+msgid "users_portrait_attr"
+msgstr "Attribut für Portrait"
 
-# LDAP attribute name containing portrait image
-msgid "attribute_containing_portrait_image_help"
-msgstr "Attribut Name in dem das Portrait gespeichert ist"
+# Width in pixel portrait gets scaled to
+#. Default: Attribute name containing portrait image
+#: src/cone/ugm/browser/forms/general_settings.yaml:67
+msgid "users_portrait_attr_help"
+msgstr "Attribut in dem das Portrait Bild verspeichert ist"
 
-# Portrait mimetype
-msgid "portrait_mimetype"
+# Portrait height
+#. Default: Portrait mimetype
+#: src/cone/ugm/browser/forms/general_settings.yaml:76
+msgid "users_portrait_accept"
 msgstr "Portrait Mimetype"
 
-# Accepted Image mimetype for portrait property
-msgid "portrait_mimetype_help"
-msgstr "Mimetype des Portrait Bildes"
+# Height in pixel portrait gets scaled to
+#. Default: Accepted Image mimetype for portrait property
+#: src/cone/ugm/browser/forms/general_settings.yaml:77
+msgid "users_portrait_accept_help"
+msgstr "Mimetype für Portrait Bild"
 
 # Portrait width
-msgid "portrait_width"
+#. Default: Portrait width
+#: src/cone/ugm/browser/forms/general_settings.yaml:86
+msgid "users_portrait_width"
 msgstr "Portrait Breite"
 
 # Width in pixel portrait gets scaled to
-msgid "portrait_width_help"
+#. Default: Width in pixel portrait gets scaled to
+#: src/cone/ugm/browser/forms/general_settings.yaml:87
+msgid "users_portrait_width_help"
 msgstr ""
 "Portrait Breite in Pixel. Bild wird auf diese Breite skaliert bzw "
 "zugeschnitten"
 
 # Portrait height
-msgid "portrait_height"
+#. Default: Portrait height
+#: src/cone/ugm/browser/forms/general_settings.yaml:98
+msgid "users_portrait_height"
 msgstr "Portrait Höhe"
 
 # Height in pixel portrait gets scaled to
-msgid "portrait_height_help"
+#. Default: Height in pixel portrait gets scaled to
+#: src/cone/ugm/browser/forms/general_settings.yaml:99
+msgid "users_portrait_height_help"
 msgstr ""
-"Portrait Höhe in Pixel. Bild wird auf diese Höhe skaliert bzw "
-"zugeschnitten"
+"Portrait Höhe in Pixel. Bild wird auf diese Höhe skaliert bzw zugeschnitten"
 
 # Local User Management
+#. Default: Local User Management
+#: src/cone/ugm/browser/forms/general_settings.yaml:110
 msgid "users_local_management_enabled"
 msgstr "Benutzeradmin"
 
 # Enable local User Management
+#. Default: Enable local User Management
+#: src/cone/ugm/browser/forms/general_settings.yaml:111
 msgid "users_local_management_enabled_help"
 msgstr "Lokale Benutzeradministration aktivieren"
 
-# Groups container DN
-msgid "groups_container_dn"
-msgstr "Gruppen DN"
+#. Default: Login name attribute
+#: src/cone/ugm/browser/forms/general_settings.yaml:116
+msgid "users_login_name_attr"
+msgstr "Attribut für Login name"
 
-# No Groups DN defined
-msgid "groups_container_dn_required"
-msgstr "Kein DN für Gruppen angegeben"
+# Attributes exposed in user form
+#. Default: Attribute used for optional login name
+#: src/cone/ugm/browser/forms/general_settings.yaml:117
+msgid "users_login_name_attr_help"
+msgstr "Attribute in dem der alternative Login Name gespeichert ist"
 
-# Groups search scope
-msgid "groups_search_scope"
-msgstr "Gruppen Suchbereich"
+# User attributes exposed to attribute map
+#. Default: Exposed user attributes
+#: src/cone/ugm/browser/forms/general_settings.yaml:122
+msgid "users_exposed_attributes_label"
+msgstr "Attribute für API"
 
-# Groups search query filter
-msgid "groups_search_query_filter"
-msgstr "Guppensuche Filter"
+# Click '+' to add attributes
+#. Default: Click '+' to add attributes
+#: src/cone/ugm/browser/forms/general_settings.yaml:123
+msgid "users_exposed_attributes_array"
+msgstr "+ klicken um Attribut hinzuzufügen"
 
-# Object classes for Group creation
-msgid "object_classes_for_group_creation"
-msgstr "LDAP Objektklassen für neue Gruppen"
+# Attributes which can be set via remote API
+#. Default: Attributes which can be set via remote API
+#: src/cone/ugm/browser/forms/general_settings.yaml:124
+msgid "users_exposed_attributes_help"
+msgstr "Benutzer Attribute die über die Remote API gesetzt werden können"
 
-# Group attribute aliases
-msgid "group_attribute_aliases"
-msgstr "Reservierte Attribute"
+# Attribute
+#. Default: Attribute
+#: src/cone/ugm/browser/forms/general_settings.yaml:130
+msgid "users_exposed_attributes_attribute"
+msgstr "Attribut"
 
-# Group attribute aliases values are mandatory
-msgid "group_attribute_aliases_required"
-msgstr "Attribute sind erforderlich"
-
-# Reserved key
-msgid "reserved_key"
-msgstr "Reserviertes Attribut"
-
-# LDAP attr name
-msgid "ldap_attr_name"
-msgstr "LDAP Attributname"
-
-# Group form attributes
-msgid "group_form_attributes"
-msgstr "Attribute Gruppenformular"
-
-# Form label
-msgid "form_label"
-msgstr "Beschriftung im Gruppenformular"
-
-# Column configuration for groups listings
-msgid "column_configuration_for_groups_listings"
-msgstr "Spalten für Gruppenliste"
-
-# Column configuration for group listings value is mandatory
-msgid "column_configuration_for_groups_listings_required"
-msgstr "Spalten für Gruppenliste sind erforderlich"
-
-# Attr name
-msgid "attr_name"
-msgstr "Attributname"
-
-# Display name
-msgid "display_name"
-msgstr "Anzeigename"
-
-# Groups listing default column
-msgid "groups_listing_default_column"
-msgstr "Gruppenliste Standard Spalte (Sortierung)"
-
-# Roles container DN
-msgid "roles_container_dn"
-msgstr "Rollen DN"
-
-# No Roles DN defined
-msgid "roles_container_dn_required"
-msgstr "Kein DN für Rollen angegeben"
-
-# Roles search scope
-msgid "roles_search_scope"
-msgstr "Rollen Suchbereich"
-
-# Roles search query filter
-msgid "roles_search_query_filter"
-msgstr "Rollensuche Filter"
-
-# Object classes for Role creation
-msgid "roles_object_classes"
-msgstr "LDAP Objektklassen für neue Rollen"
-
-# Role attribute aliases
-msgid "role_attribute_aliases"
-msgstr "Reservierte Attribute"
-
-# Role attribute aliases values are mandatory
-msgid "role_attribute_aliases_required"
-msgstr "Attribute sind erforderlich"
-
-# Role form attributes
-msgid "role_form_attributes"
-msgstr "Attribute Rollenformular"
-
-# LDAP URI
-msgid "ldap_uri"
-msgstr "LDAP URI"
-
-# No URI defined
-msgid "ldap_uri_required"
-msgstr "Keine URI angegeben"
-
-# LDAP Manager User
-msgid "ldap_manager_user"
-msgstr "LDAP Administrator Benutzer"
-
-# No user defined
-msgid "ldap_manager_user_required"
-msgstr "Kein Benutzer angegeben"
-
-# LDAP Manager Password
-msgid "ldap_manager_password"
-msgstr "LDAP Administrator Passwort"
-
-# No password defined
-msgid "ldap_manager_password_required"
-msgstr "Kein Passwort angegeben"
-
-# Use cache for LDAP queries?
-msgid "use_cache_for_ldap_queries"
-msgstr "Benutze Cache für LDAP Anfragen?"
-
-# Users container DN
-msgid "users_container_dn"
-msgstr "Benutzer DN"
-
-# LDAP DN of container with users
-msgid "users_container_dn_help"
-msgstr "LDAP DN für Benutzer"
-
-# No Users DN defined
-msgid "users_container_dn_required"
-msgstr "Kein DN für Benutzer angegeben"
-
-# Users search scope
-msgid "users_search_scope"
-msgstr "Benutzer Suchbereich"
-
-# LDAP Search scope for users
-msgid "users_search_scope_help"
-msgstr "Suchbereich für Benutzer im LDAP Verzeichnis"
-
-# Users search query filter
-msgid "users_search_query_filter"
-msgstr "Benutzersuche Filter"
-
-# Custom LDAP query for user objects
-msgid "users_search_query_filter_help"
-msgstr "LDAP Suchfilter für Benutzersuche"
-
-# Object classes for User creation
-msgid "user_object_classes"
-msgstr "LDAP Objektklassen für neue Benutzer"
-
-# LDAP object classes
-msgid "user_object_classes_help"
-msgstr ""
-"Diese Objektklassen werden auf neuen Benutzern gesetzt bzw beim "
-"aktualisieren von Benutzern aktualisiert."
-
-# User attribute aliases
-msgid "user_attribute_aliases"
-msgstr "Reservierte Attribute"
-
-# Aliases for reserved attribute keys
-msgid "user_attribute_aliases_help"
-msgstr "Zuweisung für reservierte Attribute"
-
-# User attribute aliases values are mandatory
-msgid "user_attribute_aliases_required"
-msgstr "Reservierte Attribute sind erforderlich"
+# No attribute given
+#. Default: No attribute given
+#: src/cone/ugm/browser/forms/general_settings.yaml:131
+msgid "users_exposed_attributes_attribute_required"
+msgstr "Kein Attribut angegeben"
 
 # User form attributes
-msgid "user_form_attributes"
+#. Default: User form attributes
+#: src/cone/ugm/browser/forms/general_settings.yaml:136
+msgid "users_form_attrmap"
 msgstr "Attribute Benutzerformular"
 
 # Attributes exposed in user form
-msgid "user_form_attributes_help"
+#. Default: Attributes exposed in user form
+#: src/cone/ugm/browser/forms/general_settings.yaml:137
+msgid "users_form_attrmap_help"
 msgstr "Attribute welche im Benutzerformular angezeigt werden"
 
-# Column configuration for user listings
-msgid "column_configuration_for_user_listings"
-msgstr "Spalten für Benutzerliste"
+#. Default: Attribute name
+#: src/cone/ugm/browser/forms/general_settings.yaml:138
+#: src/cone/ugm/browser/forms/general_settings.yaml:147
+#: src/cone/ugm/browser/forms/general_settings.yaml:168
+#: src/cone/ugm/browser/forms/general_settings.yaml:177
+msgid "principal_attr_name"
+msgstr "Attribut Name"
 
-# Attributes shown in user listing
-msgid "column_configuration_for_user_listings_help"
-msgstr "Attribute welche in der Benutzerliste als Spalten angezeigt werden"
-
-# Column configuration for user listings values are mandatory
-msgid "column_configuration_for_user_listings_required"
-msgstr "Spalten für Benutzerliste sind erforderlich"
+# Form label
+#. Default: Form label
+#: src/cone/ugm/browser/forms/general_settings.yaml:139
+#: src/cone/ugm/browser/forms/general_settings.yaml:169
+msgid "form_label"
+msgstr "Bezeichnung Formular"
 
 # Users listing default column
+#. Default: Column configuration for user listings
+#: src/cone/ugm/browser/forms/general_settings.yaml:144
+msgid "users_listing_columns"
+msgstr "Benutzerliste angezeigte Spalten"
+
+# Default sort column in user listing
+#. Default: Attributes shown in user listing
+#: src/cone/ugm/browser/forms/general_settings.yaml:145
+msgid "users_listing_columns_help"
+msgstr "Attribute die in den Spalten der Benutzerliste angezeigt werden"
+
+#. Default: User listing columns must not be empty
+#: src/cone/ugm/browser/forms/general_settings.yaml:146
+msgid "users_listing_columns_required"
+msgstr "Es müssen Spalten für die Benutzerliste angegeben werden"
+
+# Display name
+#. Default: Display name
+#: src/cone/ugm/browser/forms/general_settings.yaml:148
+#: src/cone/ugm/browser/forms/general_settings.yaml:178
+msgid "display_name"
+msgstr "Anzeigename"
+
+# Users listing default column
+#. Default: Users listing default column
+#: src/cone/ugm/browser/forms/general_settings.yaml:153
 msgid "users_listing_default_column"
 msgstr "Benutzerliste Standard Spalte (Sortierung)"
 
 # Default sort column in user listing
+#. Default: Default sort column in user listing
+#: src/cone/ugm/browser/forms/general_settings.yaml:154
 msgid "users_listing_default_column_help"
 msgstr "Standardsortierung Benutzerliste"
 
-# User attributes exposed to attribute map
-msgid "exposed_attributes_label"
-msgstr "Attribute für API"
+# Users listing default column
+#. Default: Default sort column in user listing is required
+#: src/cone/ugm/browser/forms/general_settings.yaml:156
+msgid "users_listing_default_column_required"
+msgstr "Standard Spalte für Benutzerliste ist erforderlich"
 
-# Click '+' to add attributes
-msgid "exposed_attributes_array"
-msgstr "+ klicken um Attribut hinzuzufügen"
+#. Default: Group Settings
+#: src/cone/ugm/browser/forms/general_settings.yaml:161
+msgid "groups_heading"
+msgstr "Gruppeneinstellungen"
 
-# Attributes which can be set via remote API
-msgid "exposed_attributes_help"
-msgstr "Attribute können über Remote API gesetzt werden"
+# Group form attributes
+#. Default: Group form attributes
+#: src/cone/ugm/browser/forms/general_settings.yaml:166
+msgid "groups_form_attrmap"
+msgstr "Attribute Gruppenformular"
 
-# Attribute
-msgid "exposed_attributes_attribute"
-msgstr "Attribut"
+# Group form attributes
+#. Default: Attributes exposed in group form
+#: src/cone/ugm/browser/forms/general_settings.yaml:167
+msgid "groups_form_attrmap_help"
+msgstr "Attribute Gruppenformular"
 
-# No attribute given
-msgid "exposed_attributes_attribute_required"
-msgstr "Kein Attribut angegeben"
+# Groups listing default column
+#. Default: Column configuration for groups listings
+#: src/cone/ugm/browser/forms/general_settings.yaml:174
+msgid "groups_listing_columns"
+msgstr "Gruppenliste angezeigte Spalten"
+
+# Groups listing default column
+#. Default: Attributes shown in group listing
+#: src/cone/ugm/browser/forms/general_settings.yaml:175
+msgid "groups_listing_columns_help"
+msgstr "Attribute die in den Spalten der Gruppenliste angezeigt werden"
+
+#. Default: Group listing columns must not be empty
+#: src/cone/ugm/browser/forms/general_settings.yaml:176
+msgid "groups_listing_columns_required"
+msgstr "Es müssen Spalten für die Gruppenliste angegeben werden"
+
+# Groups listing default column
+#. Default: Groups listing default column
+#: src/cone/ugm/browser/forms/general_settings.yaml:183
+msgid "groups_listing_default_column"
+msgstr "Gruppenliste Standard Spalte (Sortierung)"
+
+# Groups listing default column
+#. Default: Default sort column in group listing
+#: src/cone/ugm/browser/forms/general_settings.yaml:184
+msgid "groups_listing_default_column_help"
+msgstr "Gruppenliste Standard Spalte (Sortierung)"
+
+# Groups listing default column
+#. Default: Default sort column in groups listing is required
+#: src/cone/ugm/browser/forms/general_settings.yaml:186
+msgid "groups_listing_default_column_required"
+msgstr "Standard Spalte für Gruppenliste ist erforderlich"
+
+#. Default: Roles settings
+#: src/cone/ugm/browser/forms/general_settings.yaml:191
+msgid "roles_heading"
+msgstr "Rolleneinstellungen"
+
+#. Default: Principal roles
+#: src/cone/ugm/browser/forms/general_settings.yaml:196
+msgid "roles_principal_roles_enabled"
+msgstr "Rollen Unterstützung aktiviert"
+
+# Enable local User Management
+#. Default: Enable roles on principals
+#: src/cone/ugm/browser/forms/general_settings.yaml:197
+msgid "roles_principal_roles_enabled_help"
+msgstr "Rollen auf Benutzer und Gruppen aktivieren"
 
 # Rules
+#: src/cone/ugm/browser/forms/localmanager_settings.yaml:11
 msgid "localmanager_rules"
 msgstr "Zugriffsregeln"
 
 # Source GID
+#: src/cone/ugm/browser/forms/localmanager_settings.yaml:25
 msgid "localmanager_rule_source"
 msgstr "Administrations GID"
 
+# No source GID defined
+#: src/cone/ugm/browser/forms/localmanager_settings.yaml:26
+msgid "localmanager_source_empty"
+msgstr "Keine Administrations GID angegeben"
+
 # Target GID [default]
+#: src/cone/ugm/browser/forms/localmanager_settings.yaml:34
 msgid "localmanager_rule_target"
 msgstr "Ziel GID [Standard]"
 
 # No target GID's defined for source GID
+#: src/cone/ugm/browser/forms/localmanager_settings.yaml:35
 msgid "localmanager_no_targets_for_source"
 msgstr "Keine Ziel GID's für Administrations GID angegeben"
 
-# No source GID defined
-msgid "localmanager_source_empty"
-msgstr "Keine Administrations GID angegeben"
-
 # No target GID defined
+#: src/cone/ugm/browser/forms/localmanager_settings.yaml:47
 msgid "localmanager_target_empty"
 msgstr "Keine Ziel GID angegeben"
-
-#~ msgid "group_added_user"
-#~ msgstr "Benutzer zu Gruppe hinzugefügt"
-
-#~ msgid "group_removed_user"
-#~ msgstr "Benutzer aus Gruppe entfernt"
-

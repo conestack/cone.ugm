@@ -16,6 +16,13 @@ class TestBrowserRoot(TileTestCase):
         res = render_tile(root, request, 'content')
         self.assertTrue(res.find(expected) > -1)
 
+    @testing.principals(
+        users={
+            'editor': {},
+        },
+        roles={
+            'editor': ['editor'],
+        })
     def test_leftcolumn_tile(self):
         request = self.layer.new_request()
 
@@ -32,6 +39,13 @@ class TestBrowserRoot(TileTestCase):
         expected = '<div class="column left_column col-md-6">'
         self.assertTrue(res.find(expected) > -1)
 
+    @testing.principals(
+        users={
+            'editor': {},
+        },
+        roles={
+            'editor': ['editor'],
+        })
     def test_rightcolumn_tile(self):
         request = self.layer.new_request()
 
@@ -48,6 +62,13 @@ class TestBrowserRoot(TileTestCase):
         expected = '<div class="column right_column col-md-6">'
         self.assertTrue(res.find(expected) > -1)
 
+    @testing.principals(
+        users={
+            'editor': {},
+        },
+        roles={
+            'editor': ['editor'],
+        })
     def test_site_name_tile(self):
         request = self.layer.new_request()
 
