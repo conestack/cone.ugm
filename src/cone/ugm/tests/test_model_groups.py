@@ -6,13 +6,18 @@ from cone.ugm import ugm_default_acl
 from cone.ugm.layout import UGMLayout
 from cone.ugm.model.groups import Group
 from cone.ugm.model.groups import Groups
-from node.ext.ldap.ugm._api import Groups as LDAPGroups
+from node.ext.ugm.interfaces import IGroups
 from node.tests import NodeTestCase
 
 
 class TestModelGroups(NodeTestCase):
     layer = testing.ugm_layer
 
+    @testing.principals(
+        groups={
+            'group_1': {},
+            'group_2': {},
+        })
     def test_groups(self):
         # Groups container
         groups = root['groups']
@@ -33,18 +38,18 @@ class TestModelGroups(NodeTestCase):
         self.assertTrue(isinstance(layout, UGMLayout))
 
         # Iter groups
-        self.assertEqual(len([x for x in groups]), 12)
+        self.assertEqual(len([x for x in groups]), 2)
 
         # Inexistent child
         self.expect_error(KeyError, groups.__getitem__, 'inexistent')
 
         # Children are group application nodes
-        group = groups['group0']
+        group = groups['group_1']
         self.assertTrue(isinstance(group, Group))
 
-        # Check real UGM backend
+        # Check UGM backend
         backend = groups.backend
-        self.assertTrue(isinstance(backend, LDAPGroups))
+        self.assertTrue(IGroups.providedBy(backend))
 
         # Check invalidate
         self.assertTrue(backend is groups.backend)
