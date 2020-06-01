@@ -192,6 +192,7 @@ class TestBrowserGroup(TileTestCase):
         self.assertTrue(res.find(expected) > -1)
 
         request.params['groupform.id'] = ''
+        request.params['groupform.groupname'] = 'Group 1'
         request.params['groupform.principal_roles'] = []
         request.params['action.groupform.save'] = '1'
 
@@ -210,13 +211,16 @@ class TestBrowserGroup(TileTestCase):
 
         group = groups['group_1']
         self.assertTrue(isinstance(group, Group))
+        self.assertEqual(group.attrs['groupname'], 'Group 1')
 
     @testing.principals(
         users={
             'manager': {}
         },
         groups={
-            'group_1': {}
+            'group_1': {
+                'groupname': 'Group 1'
+            }
         },
         roles={
             'manager': ['manager']
@@ -225,9 +229,20 @@ class TestBrowserGroup(TileTestCase):
         root = get_root()
         groups = root['groups']
         group = groups['group_1']
+        self.assertEqual(group.attrs['groupname'], 'Group 1')
+
         request = self.layer.new_request()
 
         with self.layer.authenticated('manager'):
             res = render_tile(group, request, 'edit')
         expected = '<form action="http://example.com/groups/group_1/edit"'
         self.assertTrue(res.find(expected) > -1)
+
+        request.params['groupform.groupname'] = 'Groupname Changed'
+        request.params['groupform.principal_roles'] = []
+        request.params['action.groupform.save'] = '1'
+        with self.layer.authenticated('manager'):
+            res = render_tile(group, request, 'edit')
+        self.assertEqual(res, '')
+
+        self.assertEqual(group.attrs['groupname'], 'Groupname Changed')

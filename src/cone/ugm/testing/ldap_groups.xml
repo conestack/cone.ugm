@@ -14,6 +14,10 @@
       <key>id</key>
       <value>cn</value>
     </elem>
+    <elem>
+      <key>groupname</key>
+      <value>description</value>
+    </elem>
   </groups_aliases_attrmap>
   <groups_relation></groups_relation>
 </properties>

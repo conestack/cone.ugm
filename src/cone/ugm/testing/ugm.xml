@@ -34,11 +34,20 @@
     </elem>
   </users_listing_columns>
   <users_listing_default_column>id</users_listing_default_column>
-  <groups_form_attrmap></groups_form_attrmap>
+  <groups_form_attrmap>
+    <elem>
+      <key>groupname</key>
+      <value>Group Name</value>
+    </elem>
+  </groups_form_attrmap>
   <groups_listing_columns>
     <elem>
       <key>id</key>
       <value>Group ID</value>
+    </elem>
+    <elem>
+      <key>groupname</key>
+      <value>Group Name</value>
     </elem>
   </groups_listing_columns>
   <groups_listing_default_column>id</groups_listing_default_column>
