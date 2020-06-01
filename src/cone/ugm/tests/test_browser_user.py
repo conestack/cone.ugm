@@ -208,8 +208,7 @@ class TestBrowserUser(TileTestCase):
 
         user = users['user_1']
         self.assertTrue(isinstance(user, User))
-        self.assertEqual(user.attrs['login'], 'user_1')
-        self.assertTrue(user.attrs['password'].startswith('{SSHA}'))
+        self.assertTrue(bool(user.attrs['password']))
         self.assertEqual(user.attrs['fullname'], 'Max Mustermann')
         self.assertEqual(user.attrs['email'], 'max.mustermann@example.com')
 

@@ -2,9 +2,6 @@ from cone.app import get_root
 from cone.app.testing import Security
 from cone.app.ugm import ugm_backend
 from cone.ugm.settings import ugm_cfg
-from node.ext.ldap.testing import LDIF_base
-from node.ext.ldap.ugm.defaults import creation_defaults
-from plone.testing import Layer
 import os
 import shutil
 import tempfile
@@ -13,10 +10,6 @@ import tempfile
 base_path = os.path.split(__file__)[0]
 ugm_config = os.path.join(base_path, 'ugm.xml')
 localmanager_config = os.path.join(base_path, 'localmanager.xml')
-ldap_server_config = os.path.join(base_path, 'ldap_server.xml')
-ldap_users_config = os.path.join(base_path, 'ldap_users.xml')
-ldap_groups_config = os.path.join(base_path, 'ldap_groups.xml')
-ldap_roles_config = os.path.join(base_path, 'ldap_roles.xml')
 
 
 class principals(object):
@@ -33,56 +26,65 @@ class principals(object):
         root['users'].invalidate()
         root['groups'].invalidate()
 
+    def create_principals(self):
+        ugm = ugm_backend.ugm
+        ugm_users = ugm.users
+        ugm_groups = ugm.groups
+        for user_id, user_kw in self.users.items():
+            ugm_users.create(user_id, **user_kw)
+            ugm_users()
+            ugm_users.passwd(user_id, None, 'secret')
+        for group_id, group_kw in self.groups.items():
+            ugm_groups.create(group_id, **group_kw)
+        for group_id, user_ids in self.membership.items():
+            ugm_group = ugm_groups[group_id]
+            for user_id in user_ids:
+                ugm_group.add(user_id)
+        for principal_id, roles in self.roles.items():
+            if principal_id.startswith('group:'):
+                principal = ugm_groups[principal_id[5:]]
+            else:
+                principal = ugm_users[principal_id]
+            for role in roles:
+                principal.add_role(role)
+        self.apply()
+
+    def remove_principals(self):
+        ugm = ugm_backend.ugm
+        ugm_users = ugm.users
+        ugm_groups = ugm.groups
+        for user_id in ugm_users.keys():
+            try:
+                del ugm_users[user_id]
+                ugm_users()
+            except KeyError:
+                continue
+            except Exception as e:
+                print((
+                    'Error while removing user. Please '
+                    'check underlying UGM implementation: {}'
+                ).format(e))
+        for group_id in ugm_groups.keys():
+            try:
+                del ugm_groups[group_id]
+                ugm_groups()
+            except KeyError:
+                continue
+            except Exception as e:
+                print((
+                    'Error while removing group. Please '
+                    'check underlying UGM implementation: {}'
+                ).format(e))
+        self.apply()
+
     def __call__(self, fn):
         def wrapper(inst):
-            ugm = ugm_backend.ugm
-            ugm_users = ugm.users
-            ugm_groups = ugm.groups
-            for user_id, user_kw in self.users.items():
-                ugm_users.create(user_id, **user_kw)
-                ugm_users()
-                ugm_users.passwd(user_id, None, 'secret')
-            for group_id, group_kw in self.groups.items():
-                ugm_groups.create(group_id, **group_kw)
-            for group_id, user_ids in self.membership.items():
-                ugm_group = ugm_groups[group_id]
-                for user_id in user_ids:
-                    ugm_group.add(user_id)
-            for principal_id, roles in self.roles.items():
-                if principal_id.startswith('group:'):
-                    principal = ugm_groups[principal_id[5:]]
-                else:
-                    principal = ugm_users[principal_id]
-                for role in roles:
-                    principal.add_role(role)
-            self.apply()
+            self.create_principals()
             try:
                 fn(inst)
             finally:
                 try:
-                    for user_id in ugm_users.keys():
-                        try:
-                            del ugm_users[user_id]
-                            ugm_users()
-                        except KeyError:
-                            continue
-                        except Exception as e:
-                            print((
-                                'Error while removing user. Please '
-                                'check underlying UGM implementation: {}'
-                            ).format(e))
-                    for group_id in ugm_groups.keys():
-                        try:
-                            del ugm_groups[group_id]
-                            ugm_groups()
-                        except KeyError:
-                            continue
-                        except Exception as e:
-                            print((
-                                'Error while removing group. Please '
-                                'check underlying UGM implementation: {}'
-                            ).format(e))
-                    self.apply()
+                    self.remove_principals()
                 except Exception as e:
                     raise e
         return wrapper
@@ -132,48 +134,34 @@ def temp_directory(fn):
     return wrapper
 
 
-def rdn_value(node, uid):
-    return uid.split('=')[1]
-
-
-def create_mail(node, uid):
-    return '%s@example.com' % rdn_value(node, uid)
-
-
-creation_defaults['inetOrgPerson'] = dict()
-creation_defaults['inetOrgPerson']['sn'] = rdn_value
-creation_defaults['inetOrgPerson']['cn'] = rdn_value
-creation_defaults['inetOrgPerson']['mail'] = create_mail
-
-
-class UGMLayer(Security, Layer):
-    defaultBases = (LDIF_base,)
-
-    def __init__(self):
-        Layer.__init__(self)
-
-    def tearDown(self):
-        super(UGMLayer, self).tearDown()
+class UGMLayer(Security):
 
     def make_app(self):
+        ugm_users_file = os.path.join(self.ugm_dir, 'users')
+        ugm_groups_file = os.path.join(self.ugm_dir, 'groups')
+        ugm_roles_file = os.path.join(self.ugm_dir, 'roles')
+        ugm_datadir = os.path.join(self.ugm_dir, 'data')
         super(UGMLayer, self).make_app(**{
             'cone.plugins': '\n'.join([
-                'cone.ldap',
                 'cone.ugm'
             ]),
-            'ugm.backend': 'ldap',
+            'ugm.backend': 'file',
             'ugm.config': ugm_config,
             'ugm.localmanager_config': localmanager_config,
-            'ldap.server_config': ldap_server_config,
-            'ldap.users_config': ldap_users_config,
-            'ldap.groups_config': ldap_groups_config,
-            'ldap.roles_config': ldap_roles_config
+            'ugm.users_file': ugm_users_file,
+            'ugm.groups_file': ugm_groups_file,
+            'ugm.roles_file': ugm_roles_file,
+            'ugm.datadir': ugm_datadir
         })
-        settings = get_root()['settings']
-        settings['ldap_users'].create_container()
-        settings['ldap_groups'].create_container()
-        settings['ldap_roles'].create_container()
         ugm_backend.initialize()
+
+    def setUp(self, args=None):
+        self.ugm_dir = tempfile.mkdtemp()
+        super(UGMLayer, self).setUp(args=args)
+
+    def tearDown(self):
+        shutil.rmtree(self.ugm_dir)
+        super(UGMLayer, self).tearDown()
 
 
 ugm_layer = UGMLayer()
