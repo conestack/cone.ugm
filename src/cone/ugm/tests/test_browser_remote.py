@@ -1,54 +1,30 @@
-from cone.app import root
+from cone.app import get_root
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
-from node.ext.ldap import LDAPNode
-from node.ext.ldap import ONELEVEL
-from node.ext.ldap.ugm import RolesConfig
-from odict import odict
 from pyramid.httpexceptions import HTTPForbidden
 from pyramid.view import render_view_to_response
 import json
 
 
-class remote_user_test(testing.remove_principals):
-
-    def prepare_roles(self):
-        props = root['settings']['ldap_server'].ldap_props
-        node = LDAPNode('dc=my-domain,dc=com', props)
-        node['ou=roles'] = LDAPNode()
-        node['ou=roles'].attrs['objectClass'] = ['organizationalUnit']
-        node()
-
-        rcfg = RolesConfig(
-            baseDN='ou=roles,dc=my-domain,dc=com',
-            attrmap=odict([('id', 'cn'), ('rdn', 'cn')]),
-            scope=ONELEVEL,
-            queryFilter='(objectClass=groupOfNames)',
-            objectClasses=['groupOfNames'],
-            defaults={},
-        )
-        roles = root['settings']['ldap_roles']
-        roles._ldap_rcfg = rcfg
-
-    def cleanup_roles(self):
-        roles = root['settings']['ldap_roles']
-        roles._ldap_rcfg = None
-
-    def __call__(self, fn):
-        w = super(remote_user_test, self).__call__(fn)
-
-        def wrapper(inst):
-            self.prepare_roles()
-            w(inst)
-            self.cleanup_roles()
-        return wrapper
-
-
 class TestBrowserRemote(TileTestCase):
     layer = testing.ugm_layer
 
-    @remote_user_test(users=['uid99', 'uid100', 'uid101', 'uid102'])
+    @testing.principals(
+        users={
+            'viewer': {},
+            'manager': {},
+            'user_1': {}
+        },
+        groups={
+            'group_1': {},
+            'group_2': {},
+        },
+        roles={
+            'viewer': ['viewer'],
+            'manager': ['manager'],
+        })
     def test_add_user(self):
+        root = get_root()
         users = root['users']
         request = self.layer.new_request(type='json')
 
@@ -72,7 +48,7 @@ class TestBrowserRemote(TileTestCase):
         })
 
         # Existent id given
-        request.params['id'] = 'uid9'
+        request.params['id'] = 'user_1'
         with self.layer.authenticated('manager'):
             res = render_view_to_response(users, request, name='remote_add_user')
         self.assertEqual(json.loads(res.text), {
@@ -80,30 +56,23 @@ class TestBrowserRemote(TileTestCase):
             'success': False
         })
 
-        # Try to add user just by id. Fails since some attributes are mandatory
-        request.params['id'] = 'uid99'
-        with self.layer.authenticated('manager'):
-            res = render_view_to_response(users, request, name='remote_add_user')
-        res = json.loads(res.text)
-        self.assertFalse(res['success'])
-        self.assertTrue(
-            res['message'].find("object class 'inetOrgPerson' requires attribute 'sn'") > -1
-        )
-
         # Add minimal valid user
-        request.params['id'] = 'uid99'
-        request.params['attr.sn'] = 'User 99'
-        request.params['attr.cn'] = 'User 99'
+        request.params['id'] = 'user_2'
+        request.params['attr.fullname'] = 'Sepp Unterwurzacher'
+        request.params['attr.email'] = 'sepp.unterwurzacher@example.com'
         with self.layer.authenticated('manager'):
             res = render_view_to_response(users, request, name='remote_add_user')
         self.assertEqual(json.loads(res.text), {
-            'message': "Created user with ID 'uid99'.",
+            'message': "Created user with ID 'user_2'.",
             'success': True
         })
 
         # Check new user
-        user = users['uid99']
+        user = users['user_2']
         self.assertFalse(user.model.context.changed)
+
+        self.assertEqual(user.attrs['fullname'], 'Sepp Unterwurzacher')
+        self.assertEqual(user.attrs['email'], 'sepp.unterwurzacher@example.com')
 
         # This user has nor roles and is not member of a group
         self.assertEqual(user.model.roles, [])
@@ -117,60 +86,66 @@ class TestBrowserRemote(TileTestCase):
         self.assertTrue(user.model.authenticate('secret'))
 
         # Create another user with initial password
-        request.params['id'] = 'uid100'
+        request.params['id'] = 'user_3'
         request.params['password'] = 'secret'
-        request.params['attr.sn'] = 'User 100'
-        request.params['attr.cn'] = 'User 100'
         with self.layer.authenticated('manager'):
             res = render_view_to_response(users, request, name='remote_add_user')
         self.assertEqual(json.loads(res.text), {
-            'message': "Created user with ID 'uid100'.",
+            'message': "Created user with ID 'user_3'.",
             'success': True
         })
 
-        user = users['uid100']
+        user = users['user_3']
         self.assertTrue(user.model.authenticate('secret'))
 
         # Create user with initial roles. Message tells us if some of this
         # roles are not available
-        request.params['id'] = 'uid101'
+        request.params['id'] = 'user_4'
         request.params['password'] = 'secret'
         request.params['roles'] = 'editor,viewer,inexistent'
-        request.params['attr.sn'] = 'User 101'
-        request.params['attr.cn'] = 'User 101'
         with self.layer.authenticated('manager'):
             res = render_view_to_response(users, request, name='remote_add_user')
         self.assertEqual(json.loads(res.text), {
-            'message': "Role 'inexistent' given but inexistent. Created user with ID 'uid101'.",
+            'message': "Role 'inexistent' given but inexistent. Created user with ID 'user_4'.",
             'success': True
         })
 
         # Create user with intial group membership. Message tells us if some of
         # this groups are not available
-        request.params['id'] = 'uid102'
+        request.params['id'] = 'user_5'
         request.params['password'] = 'secret'
         request.params['roles'] = 'editor,viewer,inexistent'
-        request.params['groups'] = 'group0,group1,group99'
-        request.params['attr.sn'] = 'User 102'
-        request.params['attr.cn'] = 'User 102'
+        request.params['groups'] = 'group_1,group_2,group_inexistent'
         with self.layer.authenticated('manager'):
             res = render_view_to_response(users, request, name='remote_add_user')
         self.assertEqual(json.loads(res.text), {
             'message': (
-                "Role 'inexistent' given but inexistent. Group 'group99' "
-                "given but inexistent. Created user with ID 'uid102'."
+                "Role 'inexistent' given but inexistent. Group 'group_inexistent' "
+                "given but inexistent. Created user with ID 'user_5'."
             ),
             'success': True
         })
 
         # Check created user
-        user = users['uid102']
-        self.assertEqual(sorted(user.model.group_ids), ['group0', 'group1'])
+        user = users['user_5']
+        self.assertEqual(sorted(user.model.group_ids), ['group_1', 'group_2'])
         self.assertEqual(sorted(user.model.roles), ['editor', 'viewer'])
         self.assertTrue(user.model.authenticate('secret'))
 
-    @testing.temp_principals(users={'uid99': {'cn': 'Uid99', 'sn': 'Uid99'}})
-    def test_delete_user(self, users, groups):
+    @testing.principals(
+        users={
+            'viewer': {},
+            'manager': {},
+            'user_1': {}
+        },
+        roles={
+            'viewer': ['viewer'],
+            'manager': ['manager'],
+        })
+    def test_delete_user(self):
+        root = get_root()
+        users = root['users']
+
         request = self.layer.new_request(type='json')
 
         with self.layer.authenticated('viewer'):
@@ -192,7 +167,7 @@ class TestBrowserRemote(TileTestCase):
         })
 
         # Inexistent id given
-        request.params['id'] = 'uid456'
+        request.params['id'] = 'user_2'
         with self.layer.authenticated('manager'):
             res = render_view_to_response(users, request, name='remote_delete_user')
         self.assertEqual(json.loads(res.text), {
@@ -201,10 +176,10 @@ class TestBrowserRemote(TileTestCase):
         })
 
         # Valid deletions
-        request.params['id'] = 'uid99'
+        request.params['id'] = 'user_1'
         with self.layer.authenticated('manager'):
             res = render_view_to_response(users, request, name='remote_delete_user')
         self.assertEqual(json.loads(res.text), {
-            'message': "Deleted user with ID 'uid99\'.",
+            'message': "Deleted user with ID 'user_1\'.",
             'success': True
         })

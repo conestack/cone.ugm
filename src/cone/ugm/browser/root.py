@@ -5,13 +5,9 @@ from cone.ugm.browser.columns import Column
 
 @tile(name='site', interface=AppRoot, permission='view')
 class SiteName(Tile):
+
     def render(self):
-        # XXX: make site name configurable
-        # settings = ugm_settings(self.model)
-        # if 'oshanet' in settings.ldap_gcfg.baseDN:
-        #     return "OSHANET"
-        # else:
-        #     return "CORPORATE"
+        # XXX: remove
         return 'SITENAME'
 
 

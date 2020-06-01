@@ -1,5 +1,5 @@
 <properties>
-  <groups_dn>ou=groups,ou=groupOfNames_10_10,dc=my-domain,dc=com</groups_dn>
+  <groups_dn>ou=groups,dc=my-domain,dc=com</groups_dn>
   <groups_scope>1</groups_scope>
   <groups_query></groups_query>
   <groups_object_classes>
@@ -13,6 +13,10 @@
     <elem>
       <key>id</key>
       <value>cn</value>
+    </elem>
+    <elem>
+      <key>groupname</key>
+      <value>description</value>
     </elem>
   </groups_aliases_attrmap>
   <groups_relation></groups_relation>

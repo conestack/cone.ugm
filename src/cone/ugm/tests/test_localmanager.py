@@ -6,19 +6,15 @@ from cone.ugm.localmanager import LocalManagerConfigAttributes
 from node.tests import NodeTestCase
 from plumber import plumbing
 import os
-import shutil
-import tempfile
 
 
 class TestModelLocalmanager(NodeTestCase):
     layer = testing.ugm_layer
 
-    def test_LocalManagerConfigAttributes(self):
-        # Dummy environment
-        tempdir = tempfile.mkdtemp()
-        conf_path = os.path.join(tempdir, 'localmanager.xml')
-
+    @testing.temp_directory
+    def test_LocalManagerConfigAttributes(self, tempdir):
         # Local manager configuration attributes
+        conf_path = os.path.join(tempdir, 'localmanager.xml')
         config = LocalManagerConfigAttributes(conf_path)
 
         # Not exists yet
@@ -58,19 +54,38 @@ class TestModelLocalmanager(NodeTestCase):
             ('foo', {'default': ['bar'], 'target': ['bar', 'baz']})
         ])
 
-        # Cleanup dummy environment
-        shutil.rmtree(tempdir)
-
+    @testing.principals(
+        users={
+            'local_manager_1': {},
+            'local_manager_2': {},
+            'managed_user_1': {},
+            'managed_user_2': {}
+        },
+        groups={
+            'admin_group_1': {},
+            'admin_group_2': {},
+            'managed_group_0': {},
+            'managed_group_1': {},
+            'managed_group_2': {}
+        },
+        membership={
+            'admin_group_1': ['local_manager_1'],
+            'admin_group_2': ['local_manager_2'],
+            'managed_group_1': ['managed_user_1'],
+            'managed_group_2': ['managed_user_1', 'managed_user_2'],
+        })
     def test_LocalManager(self):
-        self.layer.new_request()
-
-        # Local Manager test config
         root = get_root()
-
         config = root['settings']['ugm_localmanager'].attrs
         self.assertEqual(sorted(config.items()), [
-            ('admin_group_1', {'default': ['group1'], 'target': ['group0', 'group1']}),
-            ('admin_group_2', {'default': ['group2'], 'target': ['group1', 'group2']})
+            ('admin_group_1', {
+                'default': ['managed_group_1'],
+                'target': ['managed_group_0', 'managed_group_1']
+            }),
+            ('admin_group_2', {
+                'default': ['managed_group_2'],
+                'target': ['managed_group_1', 'managed_group_2']
+            })
         ])
 
         # Local Manager plumbing behavior
@@ -86,23 +101,27 @@ class TestModelLocalmanager(NodeTestCase):
         # management is enabled.
 
         # Unauthenticated
+        self.layer.new_request()
         self.assertEqual(lm_node.local_manager_target_gids, [])
         self.assertEqual(lm_node.local_manager_target_uids, [])
 
         # Authenticated, no local manager
-        with self.layer.authenticated('uid0'):
+        with self.layer.authenticated('inexistent'):
             self.assertEqual(lm_node.local_manager_target_gids, [])
             self.assertEqual(lm_node.local_manager_target_uids, [])
 
         # Authenticated, invalid local management group member
         groups = root['groups'].backend
         group = groups['admin_group_2']
-        group.add('localmanager_1')
+        group.add('local_manager_1')
         group()
-        self.assertEqual(sorted(group.member_ids), ['localmanager_1', 'localmanager_2'])
+        self.assertEqual(sorted(group.member_ids), [
+            'local_manager_1',
+            'local_manager_2'
+        ])
 
-        with self.layer.authenticated('localmanager_1'):
-            err = self.expect_error(
+        with self.layer.authenticated('local_manager_1'):
+            err = self.expectError(
                 Exception,
                 lambda: lm_node.local_manager_target_gids
             )
@@ -114,50 +133,85 @@ class TestModelLocalmanager(NodeTestCase):
         )
         self.assertEqual(str(err), expected)
 
-        del group['localmanager_1']
+        del group['local_manager_1']
         group()
-        self.assertEqual(group.member_ids, [u'localmanager_2'])
+        self.assertEqual(group.member_ids, [u'local_manager_2'])
 
         # Authenticated, local manager
-        with self.layer.authenticated('localmanager_1'):
+        with self.layer.authenticated('local_manager_1'):
             self.assertEqual(
                 sorted(lm_node.local_manager_target_gids),
-                ['group0', 'group1']
+                ['managed_group_0', 'managed_group_1']
             )
-            self.assertEqual(lm_node.local_manager_target_uids, ['uid1'])
+            self.assertEqual(
+                lm_node.local_manager_target_uids,
+                ['managed_user_1']
+            )
 
-        with self.layer.authenticated('localmanager_2'):
+        with self.layer.authenticated('local_manager_2'):
             self.assertEqual(
                 sorted(lm_node.local_manager_target_gids),
-                ['group1', 'group2']
+                ['managed_group_1', 'managed_group_2']
             )
             self.assertEqual(
                 sorted(lm_node.local_manager_target_uids),
-                ['uid1', 'uid2']
+                ['managed_user_1', 'managed_user_2']
             )
 
-        # Check of group id is marked as default
-        self.assertFalse(lm_node.local_manager_is_default('admin_group_1', 'group0'))
+        # Check if group id is marked as default
+        self.assertFalse(lm_node.local_manager_is_default(
+            'admin_group_1',
+            'managed_group_0'
+        ))
         err = self.expect_error(
             Exception,
             lm_node.local_manager_is_default,
             'admin_group_2',
-            'group0'
+            'managed_group_0'
         )
-        expected = "group 'group0' not managed by 'admin_group_2'"
+        expected = "group 'managed_group_0' not managed by 'admin_group_2'"
         self.assertEqual(str(err), expected)
-        self.assertTrue(lm_node.local_manager_is_default('admin_group_1', 'group1'))
-        self.assertFalse(lm_node.local_manager_is_default('admin_group_2', 'group1'))
+        self.assertTrue(lm_node.local_manager_is_default(
+            'admin_group_1',
+            'managed_group_1'
+        ))
+        self.assertFalse(lm_node.local_manager_is_default(
+            'admin_group_2',
+            'managed_group_1'
+        ))
         err = self.expect_error(
             Exception,
             lm_node.local_manager_is_default,
             'admin_group_1',
-            'group2'
+            'managed_group_2'
         )
-        expected = "group 'group2' not managed by 'admin_group_1'"
+        expected = "group 'managed_group_2' not managed by 'admin_group_1'"
         self.assertEqual(str(err), expected)
-        self.assertTrue(lm_node.local_manager_is_default('admin_group_2', 'group2'))
+        self.assertTrue(lm_node.local_manager_is_default(
+            'admin_group_2',
+            'managed_group_2'
+        ))
 
+    @testing.principals(
+        users={
+            'local_manager_1': {},
+            'local_manager_2': {},
+            'managed_user_1': {},
+            'managed_user_2': {}
+        },
+        groups={
+            'admin_group_1': {},
+            'admin_group_2': {},
+            'managed_group_0': {},
+            'managed_group_1': {},
+            'managed_group_2': {}
+        },
+        membership={
+            'admin_group_1': ['local_manager_1'],
+            'admin_group_2': ['local_manager_2'],
+            'managed_group_1': ['managed_user_1'],
+            'managed_group_2': ['managed_user_1', 'managed_user_2'],
+        })
     def test_LocalManagerACL(self):
         root = get_root()
         self.layer.new_request()
@@ -166,12 +220,12 @@ class TestModelLocalmanager(NodeTestCase):
         users = root['users']
         self.assertEqual(users.local_manager_acl, [])
 
-        with self.layer.authenticated('uid1'):
+        with self.layer.authenticated('managed_user_1'):
             self.assertEqual(users.local_manager_acl, [])
 
-        with self.layer.authenticated('localmanager_1'):
+        with self.layer.authenticated('local_manager_1'):
             self.assertEqual(users.local_manager_acl, [
-                ('Allow', 'localmanager_1', [
+                ('Allow', 'local_manager_1', [
                     'view', 'add', 'add_user', 'edit', 'edit_user',
                     'manage_expiration', 'manage_membership'
                 ])
@@ -181,75 +235,75 @@ class TestModelLocalmanager(NodeTestCase):
         groups = root['groups']
         self.assertEqual(groups.local_manager_acl, [])
 
-        with self.layer.authenticated('uid1'):
+        with self.layer.authenticated('managed_user_1'):
             self.assertEqual(groups.local_manager_acl, [])
 
-        with self.layer.authenticated('localmanager_1'):
+        with self.layer.authenticated('local_manager_1'):
             self.assertEqual(groups.local_manager_acl, [
-                ('Allow', 'localmanager_1', ['view', 'manage_membership'])
+                ('Allow', 'local_manager_1', ['view', 'manage_membership'])
             ])
 
         # Local manager ACL for group node
-        group0 = groups['group0']
-        group1 = groups['group1']
-        group2 = groups['group2']
+        managed_group_0 = groups['managed_group_0']
+        managed_group_1 = groups['managed_group_1']
+        managed_group_2 = groups['managed_group_2']
 
-        self.assertEqual(group0.local_manager_acl, [])
-        self.assertEqual(group1.local_manager_acl, [])
-        self.assertEqual(group2.local_manager_acl, [])
+        self.assertEqual(managed_group_0.local_manager_acl, [])
+        self.assertEqual(managed_group_1.local_manager_acl, [])
+        self.assertEqual(managed_group_2.local_manager_acl, [])
 
-        with self.layer.authenticated('uid1'):
-            self.assertEqual(group0.local_manager_acl, [])
-            self.assertEqual(group1.local_manager_acl, [])
-            self.assertEqual(group2.local_manager_acl, [])
+        with self.layer.authenticated('managed_user_1'):
+            self.assertEqual(managed_group_0.local_manager_acl, [])
+            self.assertEqual(managed_group_1.local_manager_acl, [])
+            self.assertEqual(managed_group_2.local_manager_acl, [])
 
-        with self.layer.authenticated('localmanager_1'):
-            self.assertEqual(group0.local_manager_acl, [
-                ('Allow', 'localmanager_1', ['view', 'manage_membership'])
+        with self.layer.authenticated('local_manager_1'):
+            self.assertEqual(managed_group_0.local_manager_acl, [
+                ('Allow', 'local_manager_1', ['view', 'manage_membership'])
             ])
-            self.assertEqual(group1.local_manager_acl, [
-                ('Allow', 'localmanager_1', ['view', 'manage_membership'])
+            self.assertEqual(managed_group_1.local_manager_acl, [
+                ('Allow', 'local_manager_1', ['view', 'manage_membership'])
             ])
-            self.assertEqual(group2.local_manager_acl, [])
+            self.assertEqual(managed_group_2.local_manager_acl, [])
 
-        with self.layer.authenticated('localmanager_2'):
-            self.assertEqual(group0.local_manager_acl, [])
-            self.assertEqual(group1.local_manager_acl, [
-                ('Allow', 'localmanager_2', ['view', 'manage_membership'])
+        with self.layer.authenticated('local_manager_2'):
+            self.assertEqual(managed_group_0.local_manager_acl, [])
+            self.assertEqual(managed_group_1.local_manager_acl, [
+                ('Allow', 'local_manager_2', ['view', 'manage_membership'])
             ])
-            self.assertEqual(group2.local_manager_acl, [
-                ('Allow', 'localmanager_2', ['view', 'manage_membership'])
+            self.assertEqual(managed_group_2.local_manager_acl, [
+                ('Allow', 'local_manager_2', ['view', 'manage_membership'])
             ])
 
         # Local manager ACL for user node
-        user1 = users['uid1']
-        user2 = users['uid2']
+        managed_user_1 = users['managed_user_1']
+        managed_user_2 = users['managed_user_2']
 
-        self.assertEqual(user1.local_manager_acl, [])
-        self.assertEqual(user2.local_manager_acl, [])
+        self.assertEqual(managed_user_1.local_manager_acl, [])
+        self.assertEqual(managed_user_2.local_manager_acl, [])
 
-        with self.layer.authenticated('uid1'):
-            self.assertEqual(user1.local_manager_acl, [])
-            self.assertEqual(user2.local_manager_acl, [])
+        with self.layer.authenticated('managed_user_1'):
+            self.assertEqual(managed_user_1.local_manager_acl, [])
+            self.assertEqual(managed_user_2.local_manager_acl, [])
 
-        with self.layer.authenticated('localmanager_1'):
-            self.assertEqual(user1.local_manager_acl, [
-                ('Allow', 'localmanager_1', [
+        with self.layer.authenticated('local_manager_1'):
+            self.assertEqual(managed_user_1.local_manager_acl, [
+                ('Allow', 'local_manager_1', [
                     'view', 'add', 'add_user', 'edit', 'edit_user',
                     'manage_expiration', 'manage_membership'
                 ])
             ])
-            self.assertEqual(user2.local_manager_acl, [])
+            self.assertEqual(managed_user_2.local_manager_acl, [])
 
-        with self.layer.authenticated('localmanager_2'):
-            self.assertEqual(user1.local_manager_acl, [
-                ('Allow', 'localmanager_2', [
+        with self.layer.authenticated('local_manager_2'):
+            self.assertEqual(managed_user_1.local_manager_acl, [
+                ('Allow', 'local_manager_2', [
                     'view', 'add', 'add_user', 'edit', 'edit_user',
                     'manage_expiration', 'manage_membership'
                 ])
             ])
-            self.assertEqual(user2.local_manager_acl, [
-                ('Allow', 'localmanager_2', [
+            self.assertEqual(managed_user_2.local_manager_acl, [
+                ('Allow', 'local_manager_2', [
                     'view', 'add', 'add_user', 'edit', 'edit_user',
                     'manage_expiration', 'manage_membership'
                 ])

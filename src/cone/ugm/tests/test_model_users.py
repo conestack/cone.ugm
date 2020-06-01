@@ -6,13 +6,18 @@ from cone.ugm import ugm_default_acl
 from cone.ugm.layout import UGMLayout
 from cone.ugm.model.user import User
 from cone.ugm.model.users import Users
-from node.ext.ldap.ugm._api import Users as LDAPUsers
+from node.ext.ugm.interfaces import IUsers
 from node.tests import NodeTestCase
 
 
 class TestModelUsers(NodeTestCase):
     layer = testing.ugm_layer
 
+    @testing.principals(
+        users={
+            'user_1': {},
+            'user_2': {},
+        })
     def test_users(self):
         # Users container
         users = root['users']
@@ -33,18 +38,18 @@ class TestModelUsers(NodeTestCase):
         self.assertTrue(isinstance(layout, UGMLayout))
 
         # Iter users
-        self.assertEqual(len([x for x in users]), 18)
+        self.assertEqual(len([x for x in users]), 2)
 
         # Inexistent child
         self.expect_error(KeyError, users.__getitem__, 'inexistent')
 
         # Children are user application nodes
-        user = users['uid0']
+        user = users['user_1']
         self.assertTrue(isinstance(user, User))
 
-        # Check real UGM backend
+        # Check UGM backend
         backend = users.backend
-        self.assertTrue(isinstance(backend, LDAPUsers))
+        self.assertTrue(IUsers.providedBy(backend))
 
         # Check invalidate
         self.assertTrue(backend is users.backend)

@@ -5,19 +5,23 @@ from cone.ugm import testing
 from cone.ugm import ugm_default_acl
 from cone.ugm.layout import UGMLayout
 from cone.ugm.model.group import Group
-from node.ext.ldap.ugm._api import Group as LDAPGroup
+from node.ext.ugm.interfaces import IGroup
 import unittest
 
 
 class TestModelGroup(unittest.TestCase):
     layer = testing.ugm_layer
 
+    @testing.principals(
+        groups={
+            'group_1': {},
+        })
     def test_group(self):
         # Group node
         groups = root['groups']
-        group = groups['group0']
+        group = groups['group_1']
         self.assertTrue(isinstance(group, Group))
-        self.assertEqual(group.name, 'group0')
+        self.assertEqual(group.name, 'group_1')
 
         # Properties
         self.assertTrue(isinstance(group.properties, Properties))
@@ -32,14 +36,11 @@ class TestModelGroup(unittest.TestCase):
         layout = group.layout
         self.assertTrue(isinstance(layout, UGMLayout))
 
-        # Backend group node is available at ``model``
-        self.assertTrue(isinstance(group.model, LDAPGroup))
+        # UGM backend group node is available at ``model``
+        self.assertTrue(IGroup.providedBy(group.model))
 
         # Attributes of the group are wrapped
-        self.assertEqual(sorted(group.attrs.items()), [
-            ('member', [u'cn=nobody']),
-            ('rdn', u'group0')
-        ])
+        self.assertTrue(group.attrs is group.model.attrs)
 
         # ACL
         self.assertEqual(group.__acl__, ugm_default_acl)

@@ -13,37 +13,42 @@ def user_vessel(users):
     return vessel
 
 
-def user_request(layer, cn, sn, mail):
+def user_request(layer):
     request = layer.new_request()
     request.params['userform.id'] = ''
     request.params['userform.password'] = '123456'
-    request.params['userform.cn'] = cn
-    request.params['userform.sn'] = sn
-    request.params['userform.mail'] = mail
-    request.params['userform.principal_roles'] = ['viewer', 'editor']
+    request.params['userform.principal_roles'] = []
     request.params['action.userform.save'] = '1'
     return request
 
 
-class cleanup_autoincrement_test(testing.remove_principals):
+class autoincrement_principals(testing.principals):
 
     def __call__(self, fn):
-        w = super(cleanup_autoincrement_test, self).__call__(fn)
+        w = super(autoincrement_principals, self).__call__(fn)
 
         def wrapper(inst):
-            w(inst)
-
-            settings = general_settings(get_root())
-            settings.attrs.user_id_autoincrement = 'False'
-            settings.attrs.user_id_autoincrement_prefix = ''
-            settings()
+            try:
+                w(inst)
+            finally:
+                settings = general_settings(get_root())
+                settings.attrs.user_id_autoincrement = 'False'
+                settings.attrs.user_id_autoincrement_prefix = ''
+                settings()
         return wrapper
 
 
 class TestBrowserAutoincrement(TileTestCase):
     layer = testing.ugm_layer
 
-    @cleanup_autoincrement_test(users=['100', '101', 'uid100', 'uid101'])
+    @autoincrement_principals(
+        users={
+            'manager': {}
+        },
+        roles={
+            'manager': ['manager']
+        }
+    )
     def test_autoincrement(self):
         root = get_root()
         users = root['users']
@@ -73,65 +78,32 @@ class TestBrowserAutoincrement(TileTestCase):
         value="auto_incremented" />...
         """, res)
 
-        request = user_request(
-            self.layer,
-            'Sepp Unterwurzacher',
-            'Sepp',
-            'sepp@unterwurzacher.org'
-        )
+        request = user_request(self.layer)
         vessel = user_vessel(users)
         with self.layer.authenticated('manager'):
             res = render_tile(vessel, request, 'addform')
-        self.assertEqual(sorted(users.keys()), [
-            '100', 'admin', 'editor', 'localmanager_1', 'localmanager_2',
-            'manager', 'max', 'sepp', 'uid0', 'uid1', 'uid2', 'uid3',
-            'uid4', 'uid5', 'uid6', 'uid7', 'uid8', 'uid9', 'viewer'
-        ])
+        self.assertEqual(sorted(users.keys()), ['100', 'manager'])
 
-        request = user_request(
-            self.layer,
-            'Franz Hinterhuber',
-            'Franz',
-            'franz@hinterhuber.org'
-        )
+        request = user_request(self.layer)
         vessel = user_vessel(users)
         with self.layer.authenticated('manager'):
             res = render_tile(vessel, request, 'addform')
-        self.assertEqual(sorted(users.keys()), [
-            '100', '101', 'admin', 'editor', 'localmanager_1', 'localmanager_2',
-            'manager', 'max', 'sepp', 'uid0', 'uid1', 'uid2', 'uid3',
-            'uid4', 'uid5', 'uid6', 'uid7', 'uid8', 'uid9', 'viewer'
-        ])
+        self.assertEqual(sorted(users.keys()), ['100', '101', 'manager'])
 
         settings.attrs.user_id_autoincrement_prefix = 'uid'
         settings()
-        request = user_request(
-            self.layer,
-            'Ander Er',
-            'Ander',
-            'ander@er.org'
-        )
+        request = user_request(self.layer)
         vessel = user_vessel(users)
         with self.layer.authenticated('manager'):
             res = render_tile(vessel, request, 'addform')
         self.assertEqual(sorted(users.keys()), [
-            '100', '101', 'admin', 'editor', 'localmanager_1', 'localmanager_2',
-            'manager', 'max', 'sepp', 'uid0', 'uid1', 'uid100', 'uid2', 'uid3',
-            'uid4', 'uid5', 'uid6', 'uid7', 'uid8', 'uid9', 'viewer'
+            '100', '101', 'manager', 'uid100'
         ])
 
-        request = user_request(
-            self.layer,
-            'Hirs Schneider',
-            'Hirs',
-            'hirs@schneider.org'
-        )
+        request = user_request(self.layer)
         vessel = user_vessel(users)
         with self.layer.authenticated('manager'):
             res = render_tile(vessel, request, 'addform')
         self.assertEqual(sorted(users.keys()), [
-            '100', '101', 'admin', 'editor', 'localmanager_1', 'localmanager_2',
-            'manager', 'max', 'sepp', 'uid0', 'uid1', 'uid100', 'uid101',
-            'uid2', 'uid3', 'uid4', 'uid5', 'uid6', 'uid7', 'uid8', 'uid9',
-            'viewer'
+            '100', '101', 'manager', 'uid100', 'uid101'
         ])

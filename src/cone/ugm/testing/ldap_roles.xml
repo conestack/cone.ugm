@@ -1,5 +1,5 @@
 <properties>
-  <roles_dn>ou=roles,ou=groupOfNames_10_10,dc=my-domain,dc=com</roles_dn>
+  <roles_dn>ou=roles,dc=my-domain,dc=com</roles_dn>
   <roles_scope>1</roles_scope>
   <roles_query></roles_query>
   <roles_object_classes>
