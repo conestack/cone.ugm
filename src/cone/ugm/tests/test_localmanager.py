@@ -63,23 +63,36 @@ class TestModelLocalmanager(NodeTestCase):
 
     @testing.principals(
         users={
-            'localmanager_1': {},
-            'localmanager_2': {}
+            'local_manager_1': {},
+            'local_manager_2': {},
+            'managed_user_1': {},
+            'managed_user_2': {}
         },
         groups={
             'admin_group_1': {},
-            'admin_group_2': {}
+            'admin_group_2': {},
+            'managed_group_0': {},
+            'managed_group_1': {},
+            'managed_group_2': {}
         },
         membership={
-            'admin_group_1': ['localmanager_1'],
-            'admin_group_2': ['localmanager_2']
+            'admin_group_1': ['local_manager_1'],
+            'admin_group_2': ['local_manager_2'],
+            'managed_group_1': ['managed_user_1'],
+            'managed_group_2': ['managed_user_1', 'managed_user_2'],
         })
     def test_LocalManager(self):
         root = get_root()
         config = root['settings']['ugm_localmanager'].attrs
         self.assertEqual(sorted(config.items()), [
-            ('admin_group_1', {'default': ['group1'], 'target': ['group0', 'group1']}),
-            ('admin_group_2', {'default': ['group2'], 'target': ['group1', 'group2']})
+            ('admin_group_1', {
+                'default': ['managed_group_1'],
+                'target': ['managed_group_0', 'managed_group_1']
+            }),
+            ('admin_group_2', {
+                'default': ['managed_group_2'],
+                'target': ['managed_group_1', 'managed_group_2']
+            })
         ])
 
         # Local Manager plumbing behavior
@@ -107,11 +120,14 @@ class TestModelLocalmanager(NodeTestCase):
         # Authenticated, invalid local management group member
         groups = root['groups'].backend
         group = groups['admin_group_2']
-        group.add('localmanager_1')
+        group.add('local_manager_1')
         group()
-        self.assertEqual(sorted(group.member_ids), ['localmanager_1', 'localmanager_2'])
+        self.assertEqual(sorted(group.member_ids), [
+            'local_manager_1',
+            'local_manager_2'
+        ])
 
-        with self.layer.authenticated('localmanager_1'):
+        with self.layer.authenticated('local_manager_1'):
             err = self.expectError(
                 Exception,
                 lambda: lm_node.local_manager_target_gids
@@ -124,49 +140,64 @@ class TestModelLocalmanager(NodeTestCase):
         )
         self.assertEqual(str(err), expected)
 
-        del group['localmanager_1']
+        del group['local_manager_1']
         group()
-        self.assertEqual(group.member_ids, [u'localmanager_2'])
+        self.assertEqual(group.member_ids, [u'local_manager_2'])
 
         # Authenticated, local manager
-        with self.layer.authenticated('localmanager_1'):
+        with self.layer.authenticated('local_manager_1'):
             self.assertEqual(
                 sorted(lm_node.local_manager_target_gids),
-                ['group0', 'group1']
+                ['managed_group_0', 'managed_group_1']
             )
-            self.assertEqual(lm_node.local_manager_target_uids, ['uid1'])
+            self.assertEqual(
+                lm_node.local_manager_target_uids,
+                ['managed_user_1']
+            )
 
-        with self.layer.authenticated('localmanager_2'):
+        with self.layer.authenticated('local_manager_2'):
             self.assertEqual(
                 sorted(lm_node.local_manager_target_gids),
-                ['group1', 'group2']
+                ['managed_group_1', 'managed_group_2']
             )
             self.assertEqual(
                 sorted(lm_node.local_manager_target_uids),
-                ['uid1', 'uid2']
+                ['managed_user_1', 'managed_user_2']
             )
 
-        # Check of group id is marked as default
-        self.assertFalse(lm_node.local_manager_is_default('admin_group_1', 'group0'))
+        # Check if group id is marked as default
+        self.assertFalse(lm_node.local_manager_is_default(
+            'admin_group_1',
+            'managed_group_0'
+        ))
         err = self.expect_error(
             Exception,
             lm_node.local_manager_is_default,
             'admin_group_2',
-            'group0'
+            'managed_group_0'
         )
-        expected = "group 'group0' not managed by 'admin_group_2'"
+        expected = "group 'managed_group_0' not managed by 'admin_group_2'"
         self.assertEqual(str(err), expected)
-        self.assertTrue(lm_node.local_manager_is_default('admin_group_1', 'group1'))
-        self.assertFalse(lm_node.local_manager_is_default('admin_group_2', 'group1'))
+        self.assertTrue(lm_node.local_manager_is_default(
+            'admin_group_1',
+            'managed_group_1'
+        ))
+        self.assertFalse(lm_node.local_manager_is_default(
+            'admin_group_2',
+            'managed_group_1'
+        ))
         err = self.expect_error(
             Exception,
             lm_node.local_manager_is_default,
             'admin_group_1',
-            'group2'
+            'managed_group_2'
         )
-        expected = "group 'group2' not managed by 'admin_group_1'"
+        expected = "group 'managed_group_2' not managed by 'admin_group_1'"
         self.assertEqual(str(err), expected)
-        self.assertTrue(lm_node.local_manager_is_default('admin_group_2', 'group2'))
+        self.assertTrue(lm_node.local_manager_is_default(
+            'admin_group_2',
+            'managed_group_2'
+        ))
 
     # @testing.principals(
     #     users={

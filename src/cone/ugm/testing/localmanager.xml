@@ -1,20 +1,20 @@
 <localmanager>
   <admin_group_1>
     <target>
-      <item>group0</item>
-      <item>group1</item>
+      <item>managed_group_0</item>
+      <item>managed_group_1</item>
     </target>
     <default>
-      <item>group1</item>
+      <item>managed_group_1</item>
     </default>
   </admin_group_1>
   <admin_group_2>
     <target>
-      <item>group1</item>
-      <item>group2</item>
+      <item>managed_group_1</item>
+      <item>managed_group_2</item>
     </target>
     <default>
-      <item>group2</item>
+      <item>managed_group_2</item>
     </default>
   </admin_group_2>
 </localmanager>
