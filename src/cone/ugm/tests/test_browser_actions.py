@@ -10,11 +10,23 @@ import json
 class TestBrowserActions(TileTestCase):
     layer = testing.ugm_layer
 
-    @testing.principals(users={'uid99': {}}, groups={'group99': {}})
+    @testing.principals(
+        users={
+            'user_1': {},
+            'viewer': {},
+            'editor': {}
+        },
+        groups={
+            'group_1': {}
+        },
+        roles={
+            'viewer': ['viewer'],
+            'editor': ['editor']
+        })
     def test_group_add_user_action(self):
         root = get_root()
         groups = root['groups']
-        group = groups['group99']
+        group = groups['group_1']
 
         request = self.layer.new_request(type='json')
         with self.layer.authenticated('viewer'):
@@ -26,31 +38,44 @@ class TestBrowserActions(TileTestCase):
                 name='add_item'
             )
 
-        request.params['id'] = 'uid99'
+        request.params['id'] = 'user_1'
         with self.layer.authenticated('editor'):
             res = render_view_to_response(group, request, name='add_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "Added user 'uid99' to group 'group99'.",
+            'message': "Added user 'user_1' to group 'group_1'.",
             'success': True
         })
 
-        request.params['id'] = 'uid100'
+        request.params['id'] = 'user_2'
         with self.layer.authenticated('editor'):
             res = render_view_to_response(group, request, name='add_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "u'uid100'" if compat.IS_PY2 else "'uid100'",
+            'message': "u'user_2'" if compat.IS_PY2 else "'user_2'",
             'success': False
         })
 
-        self.assertEqual(group.model.member_ids, ['uid99'])
+        self.assertEqual(group.model.member_ids, ['user_1'])
 
-    @testing.principals(users={'uid99': {}}, groups={'group99': {}})
+    @testing.principals(
+        users={
+            'user_1': {},
+            'viewer': {},
+            'editor': {}
+        },
+        groups={
+            'group_1': {}
+        },
+        membership={
+            'group_1': ['user_1']
+        },
+        roles={
+            'viewer': ['viewer'],
+            'editor': ['editor']
+        })
     def test_group_remove_user_action(self):
         root = get_root()
         groups = root['groups']
-        group = groups['group99']
-        group.model.add('uid99')
-        group.model()
+        group = groups['group_1']
 
         request = self.layer.new_request(type='json')
         with self.layer.authenticated('viewer'):
@@ -62,29 +87,41 @@ class TestBrowserActions(TileTestCase):
                 name='remove_item'
             )
 
-        request.params['id'] = 'uid100'
+        request.params['id'] = 'user_2'
         with self.layer.authenticated('editor'):
             res = render_view_to_response(group, request, name='remove_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "u'uid100'" if compat.IS_PY2 else "'uid100'",
+            'message': "u'user_2'" if compat.IS_PY2 else "'user_2'",
             'success': False
         })
 
-        request.params['id'] = 'uid99'
+        request.params['id'] = 'user_1'
         with self.layer.authenticated('editor'):
             res = render_view_to_response(group, request, name='remove_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "Removed user 'uid99' from group 'group99'.",
+            'message': "Removed user 'user_1' from group 'group_1'.",
             'success': True
         })
 
         self.assertEqual(group.model.users, [])
 
-    @testing.principals(users={'uid99': {}}, groups={'group99': {}})
+    @testing.principals(
+        users={
+            'user_1': {},
+            'viewer': {},
+            'editor': {}
+        },
+        groups={
+            'group_1': {}
+        },
+        roles={
+            'viewer': ['viewer'],
+            'editor': ['editor']
+        })
     def test_user_add_to_group_action(self):
         root = get_root()
         users = root['users']
-        user = users['uid99']
+        user = users['user_1']
 
         request = self.layer.new_request(type='json')
         with self.layer.authenticated('viewer'):
@@ -96,35 +133,44 @@ class TestBrowserActions(TileTestCase):
                 name='add_item'
             )
 
-        request.params['id'] = 'group99'
+        request.params['id'] = 'group_1'
         with self.layer.authenticated('editor'):
             res = render_view_to_response(user, request, name='add_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "Added user 'uid99' to group 'group99'.",
+            'message': "Added user 'user_1' to group 'group_1'.",
             'success': True
         })
 
-        request.params['id'] = 'group100'
+        request.params['id'] = 'group_2'
         with self.layer.authenticated('editor'):
             res = render_view_to_response(user, request, name='add_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "u'group100'" if compat.IS_PY2 else "'group100'",
+            'message': "u'group_2'" if compat.IS_PY2 else "'group_2'",
             'success': False
         })
 
-        self.assertEqual(user.model.group_ids, ['group99'])
+        self.assertEqual(user.model.group_ids, ['group_1'])
 
-    @testing.principals(users={'uid99': {}}, groups={'group99': {}})
+    @testing.principals(
+        users={
+            'user_1': {},
+            'viewer': {},
+            'editor': {}
+        },
+        groups={
+            'group_1': {}
+        },
+        membership={
+            'group_1': ['user_1']
+        },
+        roles={
+            'viewer': ['viewer'],
+            'editor': ['editor']
+        })
     def test_user_remove_from_group_action(self):
         root = get_root()
-        groups = root['groups']
         users = root['users']
-
-        group = groups['group99']
-        group.model.add('uid99')
-        group.model()
-
-        user = users['uid99']
+        user = users['user_1']
 
         request = self.layer.new_request(type='json')
         with self.layer.authenticated('viewer'):
@@ -136,35 +182,47 @@ class TestBrowserActions(TileTestCase):
                 name='remove_item'
             )
 
-        request.params['id'] = 'group100'
+        request.params['id'] = 'group_2'
         with self.layer.authenticated('editor'):
             res = render_view_to_response(user, request, name='remove_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "u'group100'" if compat.IS_PY2 else "'group100'",
+            'message': "u'group_2'" if compat.IS_PY2 else "'group_2'",
             'success': False
         })
 
-        request.params['id'] = 'group99'
+        request.params['id'] = 'group_1'
         with self.layer.authenticated('editor'):
             res = render_view_to_response(user, request, name='remove_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "Removed user 'uid99' from group 'group99'.",
+            'message': "Removed user 'user_1' from group 'group_1'.",
             'success': True
         })
 
         self.assertEqual(user.model.groups, [])
 
-    @testing.principals(users={'uid99': {}}, groups={'group99': {}})
+    @testing.principals(
+        users={
+            'user_1': {},
+            'viewer': {},
+            'admin': {}
+        },
+        groups={
+            'group_1': {}
+        },
+        membership={
+            'group_1': ['user_1']
+        },
+        roles={
+            'viewer': ['viewer'],
+            'admin': ['admin']
+        })
     def test_delete_user_action(self):
         root = get_root()
         groups = root['groups']
         users = root['users']
 
-        group = groups['group99']
-        group.model.add('uid99')
-        group.model()
-
-        user = users['uid99']
+        group = groups['group_1']
+        user = users['user_1']
 
         request = self.layer.new_request(type='json')
         with self.layer.authenticated('viewer'):
@@ -179,24 +237,35 @@ class TestBrowserActions(TileTestCase):
         with self.layer.authenticated('admin'):
             res = render_view_to_response(user, request, name='delete_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "Deleted user 'uid99' from database.",
+            'message': "Deleted user 'user_1' from database.",
             'success': True
         })
 
         with self.layer.authenticated('admin'):
             res = render_view_to_response(user, request, name='delete_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "u'uid99'" if compat.IS_PY2 else "'uid99'",
+            'message': "u'user_1'" if compat.IS_PY2 else "'user_1'",
             'success': False
         })
 
         self.assertEqual(group.model.users, [])
 
-    @testing.principals(groups={'group99': {}})
+    @testing.principals(
+        users={
+            'viewer': {},
+            'admin': {}
+        },
+        groups={
+            'group_1': {}
+        },
+        roles={
+            'viewer': ['viewer'],
+            'admin': ['admin']
+        })
     def test_delete_group_action(self):
         root = get_root()
         groups = root['groups']
-        group = groups['group99']
+        group = groups['group_1']
 
         request = self.layer.new_request(type='json')
         with self.layer.authenticated('viewer'):
@@ -218,12 +287,8 @@ class TestBrowserActions(TileTestCase):
         with self.layer.authenticated('admin'):
             res = render_view_to_response(group, request, name='delete_item')
         self.assertEqual(json.loads(res.text), {
-            'message': "u'group99'" if compat.IS_PY2 else "'group99'",
+            'message': "u'group_1'" if compat.IS_PY2 else "'group_1'",
             'success': False
         })
 
-        self.assertEqual(groups.keys(), [
-            'group0', 'group1', 'group2', 'group3', 'group4', 'group5',
-            'group6', 'group7', 'group8', 'group9', 'admin_group_1',
-            'admin_group_2'
-        ])
+        self.assertEqual(groups.keys(), [])

@@ -48,7 +48,7 @@ class principals(object):
                 ugm_group = ugm_groups[group_id]
                 for user_id in user_ids:
                     ugm_group.add(user_id)
-            for principal_id, roles in self.roles:
+            for principal_id, roles in self.roles.items():
                 if principal_id.startswith('group:'):
                     principal = ugm_groups[principal_id[5:]]
                 else:
@@ -59,19 +59,32 @@ class principals(object):
             try:
                 fn(inst)
             finally:
-                for user_id in self.users:
-                    try:
-                        del ugm_users[user_id]
-                        ugm_users()
-                    except KeyError:
-                        continue
-                for group_id in self.groups:
-                    try:
-                        del ugm_groups[group_id]
-                        ugm_groups()
-                    except KeyError:
-                        continue
-                self.apply()
+                try:
+                    for user_id in self.users:
+                        try:
+                            del ugm_users[user_id]
+                            ugm_users()
+                        except KeyError:
+                            continue
+                        except Exception as e:
+                            print((
+                                'Error while removing user. Please '
+                                'check underlying UGM implementation: {}'
+                            ).format(e))
+                    for group_id in self.groups:
+                        try:
+                            del ugm_groups[group_id]
+                            ugm_groups()
+                        except KeyError:
+                            continue
+                        except Exception as e:
+                            print((
+                                'Error while removing group. Please '
+                                'check underlying UGM implementation: {}'
+                            ).format(e))
+                    self.apply()
+                except Exception as e:
+                    raise e
         return wrapper
 
 

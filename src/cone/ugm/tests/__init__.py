@@ -13,7 +13,7 @@ def test_suite():
     from cone.ugm.tests import test_model_user
     from cone.ugm.tests import test_model_users
 
-    # from cone.ugm.tests import test_browser_actions
+    from cone.ugm.tests import test_browser_actions
     # from cone.ugm.tests import test_browser_autoincrement
     # from cone.ugm.tests import test_browser_expires
     # from cone.ugm.tests import test_browser_group
@@ -40,7 +40,7 @@ def test_suite():
     suite.addTest(unittest.findTestCases(test_model_user))
     suite.addTest(unittest.findTestCases(test_model_users))
 
-    # suite.addTest(unittest.findTestCases(test_browser_actions))
+    suite.addTest(unittest.findTestCases(test_browser_actions))
     # suite.addTest(unittest.findTestCases(test_browser_autoincrement))
     # suite.addTest(unittest.findTestCases(test_browser_expires))
     # suite.addTest(unittest.findTestCases(test_browser_group))
