@@ -49,10 +49,9 @@ class TestBrowserActions(TileTestCase):
         request.params['id'] = 'user_2'
         with self.layer.authenticated('editor'):
             res = render_view_to_response(group, request, name='add_item')
-        self.assertEqual(json.loads(res.text), {
-            'message': "u'user_2'" if compat.IS_PY2 else "'user_2'",
-            'success': False
-        })
+        json_res = json.loads(res.text)
+        self.assertFalse(json_res['success'])
+        self.assertTrue(json_res['message'].find("'user_2'") > -1)
 
         self.assertEqual(group.model.member_ids, ['user_1'])
 
@@ -90,10 +89,9 @@ class TestBrowserActions(TileTestCase):
         request.params['id'] = 'user_2'
         with self.layer.authenticated('editor'):
             res = render_view_to_response(group, request, name='remove_item')
-        self.assertEqual(json.loads(res.text), {
-            'message': "u'user_2'" if compat.IS_PY2 else "'user_2'",
-            'success': False
-        })
+        json_res = json.loads(res.text)
+        self.assertFalse(json_res['success'])
+        self.assertTrue(json_res['message'].find("'user_2'") > -1)
 
         request.params['id'] = 'user_1'
         with self.layer.authenticated('editor'):
@@ -144,10 +142,9 @@ class TestBrowserActions(TileTestCase):
         request.params['id'] = 'group_2'
         with self.layer.authenticated('editor'):
             res = render_view_to_response(user, request, name='add_item')
-        self.assertEqual(json.loads(res.text), {
-            'message': "u'group_2'" if compat.IS_PY2 else "'group_2'",
-            'success': False
-        })
+        json_res = json.loads(res.text)
+        self.assertFalse(json_res['success'])
+        self.assertTrue(json_res['message'].find("'group_2'") > -1)
 
         self.assertEqual(user.model.group_ids, ['group_1'])
 
@@ -185,10 +182,9 @@ class TestBrowserActions(TileTestCase):
         request.params['id'] = 'group_2'
         with self.layer.authenticated('editor'):
             res = render_view_to_response(user, request, name='remove_item')
-        self.assertEqual(json.loads(res.text), {
-            'message': "u'group_2'" if compat.IS_PY2 else "'group_2'",
-            'success': False
-        })
+        json_res = json.loads(res.text)
+        self.assertFalse(json_res['success'])
+        self.assertTrue(json_res['message'].find("'group_2'") > -1)
 
         request.params['id'] = 'group_1'
         with self.layer.authenticated('editor'):
@@ -243,10 +239,9 @@ class TestBrowserActions(TileTestCase):
 
         with self.layer.authenticated('admin'):
             res = render_view_to_response(user, request, name='delete_item')
-        self.assertEqual(json.loads(res.text), {
-            'message': "u'user_1'" if compat.IS_PY2 else "'user_1'",
-            'success': False
-        })
+        json_res = json.loads(res.text)
+        self.assertFalse(json_res['success'])
+        self.assertTrue(json_res['message'].find("'user_1'") > -1)
 
         self.assertEqual(group.model.users, [])
 
@@ -286,9 +281,8 @@ class TestBrowserActions(TileTestCase):
 
         with self.layer.authenticated('admin'):
             res = render_view_to_response(group, request, name='delete_item')
-        self.assertEqual(json.loads(res.text), {
-            'message': "u'group_1'" if compat.IS_PY2 else "'group_1'",
-            'success': False
-        })
+        json_res = json.loads(res.text)
+        self.assertFalse(json_res['success'])
+        self.assertTrue(json_res['message'].find("'group_1'") > -1)
 
         self.assertEqual(groups.keys(), [])

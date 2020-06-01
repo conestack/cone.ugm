@@ -30,7 +30,12 @@ class AutoIncrementForm(Behavior):
         backend = self.model.parent.backend
         backend.invalidate()
         result = backend.search(attrlist=['id'], criteria={'id': search})
-        principlal_ids = [_[1]['id'][0] for _ in result]
+        if result and isinstance(result[0][1]['id'], list):
+            # XXX: is node.ext.ldap behavior attr list values are lists.
+            #      keep until node.ext.ldap supports single valued fields.
+            principlal_ids = [_[1]['id'][0] for _ in result]
+        else:
+            principlal_ids = [_[1]['id'] for _ in result]
         matching = list()
         for principal_id in principlal_ids:
             if prefix:

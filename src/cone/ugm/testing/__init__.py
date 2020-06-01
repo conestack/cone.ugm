@@ -2,7 +2,6 @@ from cone.app import get_root
 from cone.app.testing import Security
 from cone.app.ugm import ugm_backend
 from cone.ugm.settings import ugm_cfg
-from plone.testing import Layer
 import os
 import shutil
 import tempfile
@@ -27,56 +26,65 @@ class principals(object):
         root['users'].invalidate()
         root['groups'].invalidate()
 
+    def create_principals(self):
+        ugm = ugm_backend.ugm
+        ugm_users = ugm.users
+        ugm_groups = ugm.groups
+        for user_id, user_kw in self.users.items():
+            ugm_users.create(user_id, **user_kw)
+            ugm_users()
+            ugm_users.passwd(user_id, None, 'secret')
+        for group_id, group_kw in self.groups.items():
+            ugm_groups.create(group_id, **group_kw)
+        for group_id, user_ids in self.membership.items():
+            ugm_group = ugm_groups[group_id]
+            for user_id in user_ids:
+                ugm_group.add(user_id)
+        for principal_id, roles in self.roles.items():
+            if principal_id.startswith('group:'):
+                principal = ugm_groups[principal_id[5:]]
+            else:
+                principal = ugm_users[principal_id]
+            for role in roles:
+                principal.add_role(role)
+        self.apply()
+
+    def remove_principals(self):
+        ugm = ugm_backend.ugm
+        ugm_users = ugm.users
+        ugm_groups = ugm.groups
+        for user_id in ugm_users.keys():
+            try:
+                del ugm_users[user_id]
+                ugm_users()
+            except KeyError:
+                continue
+            except Exception as e:
+                print((
+                    'Error while removing user. Please '
+                    'check underlying UGM implementation: {}'
+                ).format(e))
+        for group_id in ugm_groups.keys():
+            try:
+                del ugm_groups[group_id]
+                ugm_groups()
+            except KeyError:
+                continue
+            except Exception as e:
+                print((
+                    'Error while removing group. Please '
+                    'check underlying UGM implementation: {}'
+                ).format(e))
+        self.apply()
+
     def __call__(self, fn):
         def wrapper(inst):
-            ugm = ugm_backend.ugm
-            ugm_users = ugm.users
-            ugm_groups = ugm.groups
-            for user_id, user_kw in self.users.items():
-                ugm_users.create(user_id, **user_kw)
-                ugm_users()
-                ugm_users.passwd(user_id, None, 'secret')
-            for group_id, group_kw in self.groups.items():
-                ugm_groups.create(group_id, **group_kw)
-            for group_id, user_ids in self.membership.items():
-                ugm_group = ugm_groups[group_id]
-                for user_id in user_ids:
-                    ugm_group.add(user_id)
-            for principal_id, roles in self.roles.items():
-                if principal_id.startswith('group:'):
-                    principal = ugm_groups[principal_id[5:]]
-                else:
-                    principal = ugm_users[principal_id]
-                for role in roles:
-                    principal.add_role(role)
-            self.apply()
+            self.create_principals()
             try:
                 fn(inst)
             finally:
                 try:
-                    for user_id in ugm_users.keys():
-                        try:
-                            del ugm_users[user_id]
-                            ugm_users()
-                        except KeyError:
-                            continue
-                        except Exception as e:
-                            print((
-                                'Error while removing user. Please '
-                                'check underlying UGM implementation: {}'
-                            ).format(e))
-                    for group_id in ugm_groups.keys():
-                        try:
-                            del ugm_groups[group_id]
-                            ugm_groups()
-                        except KeyError:
-                            continue
-                        except Exception as e:
-                            print((
-                                'Error while removing group. Please '
-                                'check underlying UGM implementation: {}'
-                            ).format(e))
-                    self.apply()
+                    self.remove_principals()
                 except Exception as e:
                     raise e
         return wrapper
@@ -126,10 +134,7 @@ def temp_directory(fn):
     return wrapper
 
 
-class UGMLayer(Security, Layer):
-
-    def __init__(self):
-        Layer.__init__(self)
+class UGMLayer(Security):
 
     def make_app(self):
         ugm_users_file = os.path.join(self.ugm_dir, 'users')

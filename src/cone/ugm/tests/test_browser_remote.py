@@ -69,7 +69,6 @@ class TestBrowserRemote(TileTestCase):
 
         # Check new user
         user = users['user_2']
-        self.assertFalse(user.model.context.changed)
 
         self.assertEqual(user.attrs['fullname'], 'Sepp Unterwurzacher')
         self.assertEqual(user.attrs['email'], 'sepp.unterwurzacher@example.com')
