@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-01 20:38+0200\n"
+"POT-Creation-Date: 2020-06-01 21:16+0200\n"
 "PO-Revision-Date: 2012-07-30 14:02+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en <LL@li.org>\n"
@@ -316,8 +316,8 @@ msgstr "Autoincrement user ID"
 #: src/cone/ugm/browser/forms/general_settings.yaml:42
 msgid "user_id_autoincrement_help"
 msgstr ""
-"Flag whether to autoincrement user IDs at user creation time. This"
-"feature only works for systems using numeric user IDs"
+"Flag whether to autoincrement user IDs at user creation time. Thisfeature "
+"only works for systems using numeric user IDs"
 
 # Autoincrement user id prefix
 #. Default: Autoincrement user ID prefix
@@ -496,7 +496,6 @@ msgstr "Column configuration for user listings"
 msgid "users_listing_columns_help"
 msgstr "Attributes shown in user listing"
 
-# No Users DN defined
 #. Default: User listing columns must not be empty
 #: src/cone/ugm/browser/forms/general_settings.yaml:146
 msgid "users_listing_columns_required"
@@ -556,7 +555,6 @@ msgstr "Column configuration for groups listings"
 msgid "groups_listing_columns_help"
 msgstr "Attributes shown in group listing"
 
-# No Groups DN defined
 #. Default: Group listing columns must not be empty
 #: src/cone/ugm/browser/forms/general_settings.yaml:176
 msgid "groups_listing_columns_required"
@@ -569,7 +567,7 @@ msgid "groups_listing_default_column"
 msgstr "Groups listing default column"
 
 # Groups listing default column
-#. Default: Default sort column in user listing
+#. Default: Default sort column in group listing
 #: src/cone/ugm/browser/forms/general_settings.yaml:184
 msgid "groups_listing_default_column_help"
 msgstr "Default sort column in user listing"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-01 20:38+0200\n"
+"POT-Creation-Date: 2020-06-01 21:16+0200\n"
 "PO-Revision-Date: 2012-07-30 14:02+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: de <LL@li.org>\n"
@@ -148,7 +148,8 @@ msgstr "Wert erforderlich wenn Ablaufdatum für Benutzerkonto aktiviert ist"
 #. Default: Value is required if portrit support is enabled
 #: src/cone/ugm/browser/settings.py:54
 msgid "required_if_users_portrait"
-msgstr "Wert erforderlich wenn Portrait Unterstützung für Benutzerkonto aktiviert ist"
+msgstr ""
+"Wert erforderlich wenn Portrait Unterstützung für Benutzerkonto aktiviert ist"
 
 #. Default: Duplicate access rule
 #: src/cone/ugm/browser/settings.py:152
@@ -315,8 +316,9 @@ msgstr "Automatische Benutzer ID's"
 #. feature only works for systems using numeric user IDs
 #: src/cone/ugm/browser/forms/general_settings.yaml:42
 msgid "user_id_autoincrement_help"
-msgstr "Mit dieser Option werden neue Benutzer ID's automatisch hochgezählt."
-msgstr "Funktioniert nur mit numerischen Benutzer ID's"
+msgstr ""
+"Mit dieser Option werden neue Benutzer ID's automatisch hochgezählt."
+"Funktioniert nur mit numerischen Benutzer ID's"
 
 # Autoincrement user id prefix
 #. Default: Autoincrement user ID prefix
@@ -341,8 +343,9 @@ msgstr "Erste automatische Benutzer ID"
 #. Default: User number to start from
 #: src/cone/ugm/browser/forms/general_settings.yaml:54
 msgid "user_id_autoincrement_start_help"
-msgstr "Automatische Benutzer ID mit der gestartet wird wenn noch kein Benutzer"
-msgstr " angelegt wurde."
+msgstr ""
+"Automatische Benutzer ID mit der gestartet wird wenn noch kein Benutzer "
+"angelegt wurde."
 
 #. Default: Portrait Support
 #: src/cone/ugm/browser/forms/general_settings.yaml:60
@@ -365,8 +368,7 @@ msgstr "Attribut für Portrait"
 #. Default: Attribute name containing portrait image
 #: src/cone/ugm/browser/forms/general_settings.yaml:67
 msgid "users_portrait_attr_help"
-msgstr ""
-"Attribut in dem das Portrait Bild verspeichert ist"
+msgstr "Attribut in dem das Portrait Bild verspeichert ist"
 
 # Portrait height
 #. Default: Portrait mimetype
@@ -378,8 +380,7 @@ msgstr "Portrait Mimetype"
 #. Default: Accepted Image mimetype for portrait property
 #: src/cone/ugm/browser/forms/general_settings.yaml:77
 msgid "users_portrait_accept_help"
-msgstr ""
-"Mimetype für Portrait Bild"
+msgstr "Mimetype für Portrait Bild"
 
 # Portrait width
 #. Default: Portrait width

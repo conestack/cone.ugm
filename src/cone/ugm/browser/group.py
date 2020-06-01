@@ -65,7 +65,7 @@ class UsersListing(ColumnListing):
         if related:
             users = group.users
         else:
-            # XXX: LDAP query here.
+            # XXX: speedup
             users = group.root.users.values()
         # reduce for local manager
         if self.model.local_manager_consider_for_user:
