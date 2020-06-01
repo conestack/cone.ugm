@@ -195,7 +195,7 @@ class TestBrowserUser(TileTestCase):
 
         with self.layer.authenticated('manager'):
             res = render_tile(users, request, 'add')
-        expected = '<div class="text-danger">No user_id defined</div>'
+        expected = '<div class="text-danger">No User ID defined</div>'
         self.assertTrue(res.find(expected) > -1)
 
         request.params['userform.id'] = 'user_1'

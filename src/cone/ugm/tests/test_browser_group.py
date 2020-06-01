@@ -198,7 +198,7 @@ class TestBrowserGroup(TileTestCase):
 
         with self.layer.authenticated('manager'):
             res = render_tile(groups, request, 'add')
-        expected = '<div class="text-danger">No group_id defined</div>'
+        expected = '<div class="text-danger">No Group ID defined</div>'
         self.assertTrue(res.find(expected) > -1)
 
         request.params['groupform.id'] = 'group_1'
