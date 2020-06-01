@@ -1,767 +1,555 @@
-# Translations template for cone.ugm.
-# Copyright (C) 2012 ORGANIZATION
-# This file is distributed under the same license as the cone.ugm project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
 #
+# SOME DESCRIPTIVE TITLE
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: cone.ugm 0.9.5dev\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-07-30 14:02+0200\n"
+"Project-Id-Version: PACKAGE 1.0\n"
+"POT-Creation-Date: 2020-06-01 20:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 0.9.4\n"
-
-#. Default: Deleted user '${uid}' from database.
-#: src/cone/ugm/browser/actions.py:75
-msgid "delete_user_from_database"
-msgstr ""
-
-#. Default: Added user '${uid}' to group '${gid}'.
-#: src/cone/ugm/browser/actions.py:105 src/cone/ugm/browser/actions.py:223
-msgid "added_user_to_group"
-msgstr ""
-
-#. Default: Failed adding user '${uid}' to group '${gid}'. Manage membership denied
-#. for target group.
-#: src/cone/ugm/browser/actions.py:116
-msgid "lm_add_target_gid_not_allowed"
-msgstr ""
-
-#. Default: Removed user '${uid}' from group '${gid}'.
-#: src/cone/ugm/browser/actions.py:148 src/cone/ugm/browser/actions.py:265
-msgid "removed_user_from_group"
-msgstr ""
-
-#. Default: Failed removing user '${uid}' from group '${gid}'. Manage membership
-#. denied for target group.
-#: src/cone/ugm/browser/actions.py:158
-msgid "lm_remove_target_gid_not_allowed"
-msgstr ""
-
-#. Default: Failed removing user '${uid}' from group '${gid}'. Target group is
-#. default group of user.
-#: src/cone/ugm/browser/actions.py:165 src/cone/ugm/browser/actions.py:282
-msgid "lm_remove_target_gid_is_default"
-msgstr ""
-
-#. Default: Deleted group from database
-#: src/cone/ugm/browser/actions.py:198
-msgid "deleted_group"
-msgstr ""
-
-#. Default: Failed adding user '${uid}' to group '${gid}'. Manage membership denied
-#. for user.
-#: src/cone/ugm/browser/actions.py:234
-msgid "lm_add_target_uid_not_allowed"
-msgstr ""
-
-#. Default: Failed removing user '${uid}' from group '${gid}'. Manage membership
-#. denied for user.
-#: src/cone/ugm/browser/actions.py:275
-msgid "lm_remove_target_uid_not_allowed"
-msgstr ""
-
-#. Default: auto incremented
-#: src/cone/ugm/browser/autoincrement.py:62
-msgid "auto_incremented"
-msgstr ""
-
-#. Default: Active
-#: src/cone/ugm/browser/expires.py:162
-msgid "active"
-msgstr ""
-
-#. Default: Add Group
-#: src/cone/ugm/browser/group.py:42 src/cone/ugm/browser/groups.py:23
-msgid "add_group"
-msgstr ""
-
-#. Default: Add user to selected group
-#: src/cone/ugm/browser/group.py:129 src/cone/ugm/browser/user.py:137
-msgid "add_user_to_selected_group"
-msgstr ""
-
-#. Default: Remove user from selected group
-#: src/cone/ugm/browser/group.py:137 src/cone/ugm/browser/user.py:145
-msgid "remove_user_from_selected_group"
-msgstr ""
-
-#. Default: Group ${gid} already exists.
-#: src/cone/ugm/browser/group.py:222
-msgid "group_already_exists"
-msgstr ""
-
-#. Default: Delete Group
-#: src/cone/ugm/browser/groups.py:54
-msgid "delete_group"
-msgstr ""
-
-#. Default: Delete Principal
-#: src/cone/ugm/browser/listing.py:194
-msgid "delete_principal"
-msgstr ""
-
-#. Default: Portrait
-#: src/cone/ugm/browser/portrait.py:80 src/cone/ugm/browser/portrait.py:82
-msgid "portrait"
-msgstr ""
-
-#. Default: No ${field} defined
-#: src/cone/ugm/browser/principal.py:55
-msgid "no_field_value_defined"
-msgstr ""
-
-#. Default: Save
-#: src/cone/ugm/browser/principal.py:98
-msgid "save"
-msgstr ""
-
-#. Default: Cancel
-#: src/cone/ugm/browser/principal.py:108
-msgid "cancel"
-msgstr ""
-
-#. Default: Roles
-#: src/cone/ugm/browser/roles.py:46
-msgid "roles"
-msgstr ""
-
-#. Default: Can't create container: ${error}
-#: src/cone/ugm/browser/settings.py:103
-msgid "cannot_create_container"
-msgstr ""
-
-#. Default: No container DN defined.
-#: src/cone/ugm/browser/settings.py:114
-msgid "no_container_dn_defined"
-msgstr ""
-
-#. Default: Expected 'ou' as RDN Attribute.
-#: src/cone/ugm/browser/settings.py:118
-msgid "expected_ou_as_rdn"
-msgstr ""
-
-#. Default: Invalid DN.
-#: src/cone/ugm/browser/settings.py:124
-msgid "invalid_dn"
-msgstr ""
-
-#. Default: Parent not found. Can't continue.
-#: src/cone/ugm/browser/settings.py:130
-msgid "parent_not_found"
-msgstr ""
-
-#. Default: Created ${rdn}
-#: src/cone/ugm/browser/settings.py:137
-msgid "created_principal_container"
-msgstr ""
-
-#. Default: Down
-#: src/cone/ugm/browser/settings.py:193
-msgid "server_down"
-msgstr ""
-
-#. Default: Inexistent
-#: src/cone/ugm/browser/settings.py:235 src/cone/ugm/browser/settings.py:300
-#: src/cone/ugm/browser/settings.py:363
-msgid "inexistent"
-msgstr ""
-
-#: src/cone/ugm/browser/settings.py:468
-msgid "localmanager_duplicate_rule_error"
-msgstr ""
-
-#: src/cone/ugm/browser/settings.py:477
-msgid "localmanager_target_is_source_error"
-msgstr ""
-
-#. Default: Add User
-#: src/cone/ugm/browser/user.py:48 src/cone/ugm/browser/users.py:23
-msgid "add_user"
-msgstr ""
-
-#. Default: User ${uid} already exists.
-#: src/cone/ugm/browser/user.py:242
-msgid "user_already_exists"
-msgstr ""
-
-#. Default: User login ${login} not unique.
-#: src/cone/ugm/browser/user.py:258
-msgid "user_login_not_unique"
-msgstr ""
-
-#. Default: Delete User
-#: src/cone/ugm/browser/users.py:54
-msgid "delete_user"
-msgstr ""
-
-#. Default: Sorting
-#: src/cone/ugm/browser/templates/column_listing.pt:16
-msgid "sort_by"
-msgstr ""
-
-#. Default: Groups Settings
-#: src/cone/ugm/browser/templates/groups_settings.pt:8
-msgid "group_settings"
-msgstr ""
-
-#. Default: Check Groups DN:
-#: src/cone/ugm/browser/templates/groups_settings.pt:11
-msgid "check_groups_dn"
-msgstr ""
-
-#. Default: Server not reachable
-#: src/cone/ugm/browser/templates/groups_settings.pt:17
-#: src/cone/ugm/browser/templates/roles_settings.pt:17
-#: src/cone/ugm/browser/templates/users_settings.pt:17
-msgid "server_not_reachable"
-msgstr ""
-
-#. Default: Create groups container?
-#: src/cone/ugm/browser/templates/groups_settings.pt:25
-msgid "create_groups_container"
-msgstr ""
-
-#. Default: The groups container DN does not exist. The Application can try to
-#. create it. This only works if the parent entry of defined DN exists. The groups
-#. container will be created with objectClass 'organizationalUnit'. Thus, the RDN
-#. name of DN must be 'ou'.
-#: src/cone/ugm/browser/templates/groups_settings.pt:28
-msgid "create_groups_container_description"
-msgstr ""
-
-#. Default: Create groups container now
-#: src/cone/ugm/browser/templates/groups_settings.pt:35
-msgid "create_groups_container_now"
-msgstr ""
-
-#. Default: Local User Management is not enabled.
-#: src/cone/ugm/browser/templates/localmanager_settings.pt:9
-msgid "localmanager_disabled_warning"
-msgstr ""
-
-#. Default: List all
-#: src/cone/ugm/browser/templates/right_column.pt:31
-msgid "list_all"
-msgstr ""
-
-#. Default: Roles Settings
-#: src/cone/ugm/browser/templates/roles_settings.pt:8
-msgid "roles_settings"
-msgstr ""
-
-#. Default: Check Roles DN:
-#: src/cone/ugm/browser/templates/roles_settings.pt:11
-msgid "check_roles_dn"
-msgstr ""
-
-#. Default: Create roles container?
-#: src/cone/ugm/browser/templates/roles_settings.pt:25
-msgid "create_roles_container"
-msgstr ""
-
-#. Default: The roles container DN does not exist. The Application can try to
-#. create it. This only works if the parent entry of defined DN exists. The roles
-#. container will be created with objectClass 'organizationalUnit'. Thus, the RDN
-#. name of DN must be 'ou'.
-#: src/cone/ugm/browser/templates/roles_settings.pt:28
-msgid "create_roles_container_description"
-msgstr ""
-
-#. Default: Create roles container now
-#: src/cone/ugm/browser/templates/roles_settings.pt:35
-msgid "create_roles_container_now"
-msgstr ""
-
-#. Default: LDAP Server Settings
-#: src/cone/ugm/browser/templates/server_settings.pt:7
-msgid "ldap_server_settings"
-msgstr ""
-
-#. Default: Server Connection:
-#: src/cone/ugm/browser/templates/server_settings.pt:10
-msgid "server_connection"
-msgstr ""
-
-#. Default: Users Settings
-#: src/cone/ugm/browser/templates/users_settings.pt:8
-msgid "users_settings"
-msgstr ""
-
-#. Default: Check Users DN:
-#: src/cone/ugm/browser/templates/users_settings.pt:11
-msgid "check_users_dn"
-msgstr ""
-
-#. Default: Create users container?
-#: src/cone/ugm/browser/templates/users_settings.pt:25
-msgid "create_users_container"
-msgstr ""
-
-#. Default: The users container DN does not exist. The Application can try to
-#. create it. This only works if the parent entry of defined DN exists. The users
-#. container will be created with objectClass 'organizationalUnit'. Thus, the RDN
-#. name of DN must be 'ou'.
-#: src/cone/ugm/browser/templates/users_settings.pt:28
-msgid "create_users_container_description"
-msgstr ""
-
-#. Default: Create users container now
-#: src/cone/ugm/browser/templates/users_settings.pt:35
-msgid "create_users_container_now"
-msgstr ""
-
-#. Default: Group
-#: src/cone/ugm/model/group.py:31 src/cone/ugm/model/group.py:41
-msgid "group_node"
-msgstr ""
-
-#. Default: Group
-#: src/cone/ugm/model/group.py:32 src/cone/ugm/model/group.py:42
-msgid "group_node_description"
-msgstr ""
-
-#. Default: Groups
-#: src/cone/ugm/model/groups.py:41 src/cone/ugm/model/groups.py:94
-msgid "groups_node"
-msgstr ""
-
-#. Default: Container for Groups
-#: src/cone/ugm/model/groups.py:42 src/cone/ugm/model/groups.py:95
-msgid "groups_node_description"
-msgstr ""
+"Generated-By: Lingua 4.14\n"
 
 #. Default: UGM Settings
-#: src/cone/ugm/model/settings.py:80
+#: ./src/cone/ugm/settings.py:53
 msgid "ugm_settings_node"
 msgstr ""
 
 #. Default: General user and group management settings
-#: src/cone/ugm/model/settings.py:81
+#: ./src/cone/ugm/settings.py:56
 msgid "ugm_settings_node_description"
 msgstr ""
 
-#. Default: LDAP Props
-#: src/cone/ugm/model/settings.py:91
-msgid "ldap_props_node"
-msgstr ""
-
-#. Default: LDAP properties
-#: src/cone/ugm/model/settings.py:92
-msgid "ldap_props_node_description"
-msgstr ""
-
-#. Default: Users Settings
-#: src/cone/ugm/model/settings.py:121
-msgid "user_settings_node"
-msgstr ""
-
-#. Default: LDAP users settings
-#: src/cone/ugm/model/settings.py:122
-msgid "user_settings_node_description"
-msgstr ""
-
-#. Default: Groups Settings
-#: src/cone/ugm/model/settings.py:179
-msgid "group_settings_node"
-msgstr ""
-
-#. Default: LDAP groups settings
-#: src/cone/ugm/model/settings.py:180
-msgid "group_settings_node_description"
-msgstr ""
-
-#. Default: Roles Settings
-#: src/cone/ugm/model/settings.py:222
-msgid "role_settings_node"
-msgstr ""
-
-#. Default: LDAP roles settings
-#: src/cone/ugm/model/settings.py:223
-msgid "role_settings_node_description"
-msgstr ""
-
 #. Default: Local Manager Settings
-#: src/cone/ugm/model/settings.py:268
+#: ./src/cone/ugm/settings.py:71
 msgid "localmanager_settings_node"
 msgstr ""
 
 #. Default: Local Manager Settings
-#: src/cone/ugm/model/settings.py:270
+#: ./src/cone/ugm/settings.py:75
 msgid "localmanager_settings_node_description"
 msgstr ""
 
-#. Default: User
-#: src/cone/ugm/model/user.py:31 src/cone/ugm/model/user.py:41
-msgid "user_node"
+#. Default: Group
+#: ./src/cone/ugm/model/group.py:18 ./src/cone/ugm/model/group.py:31
+msgid "group_node"
 msgstr ""
 
-#. Default: User
-#: src/cone/ugm/model/user.py:32 src/cone/ugm/model/user.py:42
-msgid "user_node_description"
+#. Default: Group
+#: ./src/cone/ugm/model/group.py:19 ./src/cone/ugm/model/group.py:32
+msgid "group_node_description"
+msgstr ""
+
+#. Default: Groups
+#: ./src/cone/ugm/model/groups.py:28 ./src/cone/ugm/model/groups.py:49
+msgid "groups_node"
+msgstr ""
+
+#. Default: Container for Groups
+#: ./src/cone/ugm/model/groups.py:29 ./src/cone/ugm/model/groups.py:50
+msgid "groups_node_description"
 msgstr ""
 
 #. Default: Users
-#: src/cone/ugm/model/users.py:41 src/cone/ugm/model/users.py:94
+#: ./src/cone/ugm/model/users.py:28 ./src/cone/ugm/model/users.py:49
 msgid "users_node"
 msgstr ""
 
 #. Default: Container for Users
-#: src/cone/ugm/model/users.py:42 src/cone/ugm/model/users.py:95
+#: ./src/cone/ugm/model/users.py:29 ./src/cone/ugm/model/users.py:50
 msgid "users_node_description"
 msgstr ""
 
+#. Default: User
+#: ./src/cone/ugm/model/user.py:18 ./src/cone/ugm/model/user.py:31
+msgid "user_node"
+msgstr ""
 
-##############################################################################
-# manually created message strings
-##############################################################################
+#. Default: User
+#: ./src/cone/ugm/model/user.py:19 ./src/cone/ugm/model/user.py:32
+msgid "user_node_description"
+msgstr ""
 
-# filter listing
+#. Default: auto incremented
+#: ./src/cone/ugm/browser/autoincrement.py:66
+msgid "auto_incremented"
+msgstr ""
+
+#. Default: Add user to selected group
+#: ./src/cone/ugm/browser/group.py:103 ./src/cone/ugm/browser/user.py:103
+msgid "add_user_to_selected_group"
+msgstr ""
+
+#. Default: Remove user from selected group
+#: ./src/cone/ugm/browser/group.py:116 ./src/cone/ugm/browser/user.py:116
+msgid "remove_user_from_selected_group"
+msgstr ""
+
+#. Default: Group ID
+#: ./src/cone/ugm/browser/group.py:182
+msgid "group_id"
+msgstr ""
+
+#. Default: Add Group
+#: ./src/cone/ugm/browser/groups.py:22
+msgid "add_group"
+msgstr ""
+
+#. Default: Delete Group
+#: ./src/cone/ugm/browser/groups.py:70
+msgid "delete_group"
+msgstr ""
+
+#. Default: Active
+#: ./src/cone/ugm/browser/expires.py:153
+msgid "active"
+msgstr ""
+
+#. Default: filter listing
+#: ./src/cone/ugm/browser/listing.py:107
 msgid "filter_listing"
 msgstr ""
 
-# User Accounts expires?
-msgid "user_accounts_expires"
+#. Default: Delete Principal
+#: ./src/cone/ugm/browser/listing.py:298
+msgid "delete_principal"
 msgstr ""
 
-# Flag whether to consider user expiration
-msgid "user_accounts_expires_help"
+#. Default: Add User
+#: ./src/cone/ugm/browser/users.py:22
+msgid "add_user"
 msgstr ""
 
-# Attribute containing expiration Time
-msgid "attribute_containing_expiration_time"
+#. Default: Delete User
+#: ./src/cone/ugm/browser/users.py:70
+msgid "delete_user"
 msgstr ""
 
-# LDAP attribute name containing expires information
-msgid "attribute_containing_expiration_time_help"
+#. Default: Roles
+#: ./src/cone/ugm/browser/roles.py:45
+msgid "roles"
 msgstr ""
 
-# Account expiration unit
-msgid "account_expiration_unit"
+#. Default: Value is required if account expiration is enabled
+#: ./src/cone/ugm/browser/settings.py:43
+msgid "required_if_users_account_expiration"
 msgstr ""
 
-# Unit of expiration value
-msgid "account_expiration_unit_help"
+#. Default: Value is required if portrit support is enabled
+#: ./src/cone/ugm/browser/settings.py:54
+msgid "required_if_users_portrait"
 msgstr ""
 
-# Autoincrement user id
-msgid "autoincrement_user_id"
+#. Default: Duplicate access rule
+#: ./src/cone/ugm/browser/settings.py:152
+msgid "localmanager_duplicate_rule_error"
 msgstr ""
 
-# Flag whether to autoincrement user ids at user creation time. 
-# This feature only works for systems using numeric user ID's
-msgid "autoincrement_user_id_help"
+#. Default: Target GID equates source GID
+#: ./src/cone/ugm/browser/settings.py:164
+msgid "localmanager_target_is_source_error"
 msgstr ""
 
-# Autoincrement user id prefix
-msgid "autoincrement_user_id_prefix"
+#. Default: User ID
+#: ./src/cone/ugm/browser/user.py:182
+msgid "user_id"
 msgstr ""
 
-# Prefix for autogenerated user ID's
-msgid "autoincrement_user_id_prefix_help"
+#. Default: Login name
+#: ./src/cone/ugm/browser/user.py:183
+msgid "login_name"
 msgstr ""
 
-# Autoincrement initial user number
-msgid "autoincrement_initial_user_number"
+#. Default: Password
+#: ./src/cone/ugm/browser/user.py:184
+msgid "password"
 msgstr ""
 
-# User number to start from
-msgid "autoincrement_initial_user_number_help"
+#. Default: No ${field} defined
+#: ./src/cone/ugm/browser/principal.py:23
+msgid "no_field_value_defined"
 msgstr ""
 
-# Portrait Support
-msgid "portrait_support"
+#. Default: User ${principal_id} already exists.
+#: ./src/cone/ugm/browser/principal.py:174
+msgid "user_already_exists"
 msgstr ""
 
-# Flag whether users can have a portrait
-msgid "portrait_support_help"
+#. Default: Group ${principal_id} already exists.
+#: ./src/cone/ugm/browser/principal.py:186
+msgid "group_already_exists"
 msgstr ""
 
-# Attribute containing portrait image
-msgid "attribute_containing_portrait_image"
+#. Default: User login ${login} not unique.
+#: ./src/cone/ugm/browser/principal.py:264
+msgid "user_login_not_unique"
 msgstr ""
 
-# LDAP attribute name containing portrait image
-msgid "attribute_containing_portrait_image_help"
+#. Default: Save
+#. 
+#: ./src/cone/ugm/browser/principal.py:373
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:205
+#: ./src/cone/ugm/browser/forms/localmanager_settings.yaml:65
+msgid "save"
 msgstr ""
 
-# Portrait mimetype
-msgid "portrait_mimetype"
+#. Default: Cancel
+#: ./src/cone/ugm/browser/principal.py:383
+msgid "cancel"
 msgstr ""
 
-# Accepted Image mimetype for portrait property
-msgid "portrait_mimetype_help"
+#. Default: Deleted user '${uid}' from database.
+#: ./src/cone/ugm/browser/actions.py:77
+msgid "delete_user_from_database"
 msgstr ""
 
-# Portrait width
-msgid "portrait_width"
+#. Default: Added user '${uid}' to group '${gid}'.
+#: ./src/cone/ugm/browser/actions.py:116 ./src/cone/ugm/browser/actions.py:284
+msgid "added_user_to_group"
 msgstr ""
 
-# Width in pixel portrait gets scaled to
-msgid "portrait_width_help"
+#: ./src/cone/ugm/browser/actions.py:132
+msgid "lm_add_target_gid_not_allowed"
 msgstr ""
 
-# Portrait height
-msgid "portrait_height"
+#. Default: Removed user '${uid}' from group '${gid}'.
+#: ./src/cone/ugm/browser/actions.py:177 ./src/cone/ugm/browser/actions.py:344
+msgid "removed_user_from_group"
 msgstr ""
 
-# Height in pixel portrait gets scaled to
-msgid "portrait_height_help"
+#: ./src/cone/ugm/browser/actions.py:192
+msgid "lm_remove_target_gid_not_allowed"
 msgstr ""
 
-# Local User Management
+#: ./src/cone/ugm/browser/actions.py:203 ./src/cone/ugm/browser/actions.py:371
+msgid "lm_remove_target_gid_is_default"
+msgstr ""
+
+#. Default: Deleted group from database
+#: ./src/cone/ugm/browser/actions.py:252
+msgid "deleted_group"
+msgstr ""
+
+#: ./src/cone/ugm/browser/actions.py:300
+msgid "lm_add_target_uid_not_allowed"
+msgstr ""
+
+#: ./src/cone/ugm/browser/actions.py:359
+msgid "lm_remove_target_uid_not_allowed"
+msgstr ""
+
+#. Default: Portrait
+#: ./src/cone/ugm/browser/portrait.py:80 ./src/cone/ugm/browser/portrait.py:82
+msgid "portrait"
+msgstr ""
+
+#. Default: User settings
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:11
+msgid "users_heading"
+msgstr ""
+
+#. Default: User Accounts expires?
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:16
+msgid "users_account_expiration"
+msgstr ""
+
+#. Default: Flag whether to consider user expiration
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:17
+msgid "users_account_expiration_help"
+msgstr ""
+
+#. Default: Attribute containing expiration Time
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:22
+msgid "users_expires_attr"
+msgstr ""
+
+#. Default: Attribute name containing expires information
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:23
+msgid "users_expires_attr_help"
+msgstr ""
+
+#. Default: Account expiration unit
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:32
+msgid "users_expires_unit"
+msgstr ""
+
+#. Default: Unit of expiration value
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:33
+msgid "users_expires_unit_help"
+msgstr ""
+
+#. Default: Autoincrement user ID
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:39
+msgid "user_id_autoincrement"
+msgstr ""
+
+#. Default: Flag whether to autoincrement user IDs at user creation time. This
+#. feature only works for systems using numeric user IDs
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:42
+msgid "user_id_autoincrement_help"
+msgstr ""
+
+#. Default: Autoincrement user ID prefix
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:47
+msgid "user_id_autoincrement_prefix"
+msgstr ""
+
+#. Default: Prefix for autogenerated user ID's
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:48
+msgid "user_id_autoincrement_prefix_help"
+msgstr ""
+
+#. Default: Autoincrement initial user number
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:53
+msgid "user_id_autoincrement_start"
+msgstr ""
+
+#. Default: User number to start from
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:54
+msgid "user_id_autoincrement_start_help"
+msgstr ""
+
+#. Default: Portrait Support
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:60
+msgid "users_portrait"
+msgstr ""
+
+#. Default: Flag whether users can have a portrait
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:61
+msgid "users_portrait_help"
+msgstr ""
+
+#. Default: Attribute containing portrait image
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:66
+msgid "users_portrait_attr"
+msgstr ""
+
+#. Default: Attribute name containing portrait image
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:67
+msgid "users_portrait_attr_help"
+msgstr ""
+
+#. Default: Portrait mimetype
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:76
+msgid "users_portrait_accept"
+msgstr ""
+
+#. Default: Accepted Image mimetype for portrait property
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:77
+msgid "users_portrait_accept_help"
+msgstr ""
+
+#. Default: Portrait width
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:86
+msgid "users_portrait_width"
+msgstr ""
+
+#. Default: Width in pixel portrait gets scaled to
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:87
+msgid "users_portrait_width_help"
+msgstr ""
+
+#. Default: Portrait height
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:98
+msgid "users_portrait_height"
+msgstr ""
+
+#. Default: Height in pixel portrait gets scaled to
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:99
+msgid "users_portrait_height_help"
+msgstr ""
+
+#. Default: Local User Management
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:110
 msgid "users_local_management_enabled"
 msgstr ""
 
-# Enable local User Management
+#. Default: Enable local User Management
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:111
 msgid "users_local_management_enabled_help"
 msgstr ""
 
-# Groups container DN
-msgid "groups_container_dn"
+#. Default: Login name attribute
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:116
+msgid "users_login_name_attr"
 msgstr ""
 
-# No Groups DN defined
-msgid "groups_container_dn_required"
+#. Default: Attribute used for optional login name
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:117
+msgid "users_login_name_attr_help"
 msgstr ""
 
-# Groups search scope
-msgid "groups_search_scope"
+#. Default: Exposed user attributes
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:122
+msgid "users_exposed_attributes_label"
 msgstr ""
 
-# Groups search query filter
-msgid "groups_search_query_filter"
+#. Default: Click '+' to add attributes
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:123
+msgid "users_exposed_attributes_array"
 msgstr ""
 
-# Object classes for Group creation
-msgid "object_classes_for_group_creation"
+#. Default: Attributes which can be set via remote API
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:124
+msgid "users_exposed_attributes_help"
 msgstr ""
 
-# Group attribute aliases
-msgid "group_attribute_aliases"
+#. Default: Attribute
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:130
+msgid "users_exposed_attributes_attribute"
 msgstr ""
 
-# Group attribute aliases values are mandatory
-msgid "group_attribute_aliases_required"
+#. Default: No attribute given
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:131
+msgid "users_exposed_attributes_attribute_required"
 msgstr ""
 
-# Reserved key
-msgid "reserved_key"
+#. Default: User form attributes
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:136
+msgid "users_form_attrmap"
 msgstr ""
 
-# LDAP attr name
-msgid "ldap_attr_name"
+#. Default: Attributes exposed in user form
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:137
+msgid "users_form_attrmap_help"
 msgstr ""
 
-# Group form attributes
-msgid "group_form_attributes"
+#. Default: Attribute name
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:138
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:147
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:168
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:177
+msgid "principal_attr_name"
 msgstr ""
 
-# Form label
+#. Default: Form label
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:139
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:169
 msgid "form_label"
 msgstr ""
 
-# Column configuration for groups listings
-msgid "column_configuration_for_groups_listings"
+#. Default: Column configuration for user listings
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:144
+msgid "users_listing_columns"
 msgstr ""
 
-# Column configuration for group listings value is mandatory
-msgid "column_configuration_for_groups_listings_required"
+#. Default: Attributes shown in user listing
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:145
+msgid "users_listing_columns_help"
 msgstr ""
 
-# Attr name
-msgid "attr_name"
+#. Default: User listing columns must not be empty
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:146
+msgid "users_listing_columns_required"
 msgstr ""
 
-# Display name
+#. Default: Display name
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:148
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:178
 msgid "display_name"
 msgstr ""
 
-# Groups listing default column
-msgid "groups_listing_default_column"
-msgstr ""
-
-# Roles container DN
-msgid "roles_container_dn"
-msgstr ""
-
-# No Roles DN defined
-msgid "roles_container_dn_required"
-msgstr ""
-
-# Roles search scope
-msgid "roles_search_scope"
-msgstr ""
-
-# Roles search query filter
-msgid "roles_search_query_filter"
-msgstr ""
-
-# Object classes for Role creation
-msgid "roles_object_classes"
-msgstr ""
-
-# Role attribute aliases
-msgid "role_attribute_aliases"
-msgstr ""
-
-# Role attribute aliases values are mandatory
-msgid "role_attribute_aliases_required"
-msgstr ""
-
-# Role form attributes
-msgid "role_form_attributes"
-msgstr ""
-
-# LDAP URI
-msgid "ldap_uri"
-msgstr ""
-
-# No URI defined
-msgid "ldap_uri_required"
-msgstr ""
-
-# LDAP Manager User
-msgid "ldap_manager_user"
-msgstr ""
-
-# No user defined
-msgid "ldap_manager_user_required"
-msgstr ""
-
-# LDAP Manager Password
-msgid "ldap_manager_password"
-msgstr ""
-
-# No password defined
-msgid "ldap_manager_password_required"
-msgstr ""
-
-# Use cache for LDAP queries?
-msgid "use_cache_for_ldap_queries"
-msgstr ""
-
-# Users container DN
-msgid "users_container_dn"
-msgstr ""
-
-# LDAP DN of container with users
-msgid "users_container_dn_help"
-msgstr ""
-
-# No Users DN defined
-msgid "users_container_dn_required"
-msgstr ""
-
-# Users search scope
-msgid "users_search_scope"
-msgstr ""
-
-# LDAP Search scope for users
-msgid "users_search_scope_help"
-msgstr ""
-
-# Users search query filter
-msgid "users_search_query_filter"
-msgstr ""
-
-# Custom LDAP query for user objects
-msgid "users_search_query_filter_help"
-msgstr ""
-
-# Object classes for User creation
-msgid "user_object_classes"
-msgstr ""
-
-# LDAP object classes
-msgid "user_object_classes_help"
-msgstr ""
-
-# User attribute aliases
-msgid "user_attribute_aliases"
-msgstr ""
-
-# Aliases for reserved attribute keys
-msgid "user_attribute_aliases_help"
-msgstr ""
-
-# User attribute aliases values are mandatory
-msgid "user_attribute_aliases_required"
-msgstr ""
-
-# User form attributes
-msgid "user_form_attributes"
-msgstr ""
-
-# Attributes exposed in user form
-msgid "user_form_attributes_help"
-msgstr ""
-
-# Column configuration for user listings
-msgid "column_configuration_for_user_listings"
-msgstr ""
-
-# Attributes shown in user listing
-msgid "column_configuration_for_user_listings_help"
-msgstr ""
-
-# Column configuration for user listings values are mandatory
-msgid "column_configuration_for_user_listings_required"
-msgstr ""
-
-# Users listing default column
+#. Default: Users listing default column
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:153
 msgid "users_listing_default_column"
 msgstr ""
 
-# Default sort column in user listing
+#. Default: Default sort column in user listing
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:154
 msgid "users_listing_default_column_help"
 msgstr ""
 
-# User attributes exposed to attribute map
-msgid "exposed_attributes_label"
+#. Default: Default sort column in user listing is required
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:156
+msgid "users_listing_default_column_required"
 msgstr ""
 
-# Click '+' to add attributes
-msgid "exposed_attributes_array"
+#. Default: Group Settings
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:161
+msgid "groups_heading"
 msgstr ""
 
-# Attributes which can be set via remote API
-msgid "exposed_attributes_help"
+#. Default: Group form attributes
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:166
+msgid "groups_form_attrmap"
 msgstr ""
 
-# Attribute
-msgid "exposed_attributes_attribute"
+#. Default: Attributes exposed in group form
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:167
+msgid "groups_form_attrmap_help"
 msgstr ""
 
-# No attribute given
-msgid "exposed_attributes_attribute_required"
+#. Default: Column configuration for groups listings
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:174
+msgid "groups_listing_columns"
 msgstr ""
 
-# Rules
+#. Default: Attributes shown in group listing
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:175
+msgid "groups_listing_columns_help"
+msgstr ""
+
+#. Default: Group listing columns must not be empty
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:176
+msgid "groups_listing_columns_required"
+msgstr ""
+
+#. Default: Groups listing default column
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:183
+msgid "groups_listing_default_column"
+msgstr ""
+
+#. Default: Default sort column in user listing
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:184
+msgid "groups_listing_default_column_help"
+msgstr ""
+
+#. Default: Default sort column in groups listing is required
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:186
+msgid "groups_listing_default_column_required"
+msgstr ""
+
+#. Default: Roles settings
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:191
+msgid "roles_heading"
+msgstr ""
+
+#. Default: Principal roles
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:196
+msgid "roles_principal_roles_enabled"
+msgstr ""
+
+#. Default: Enable roles on principals
+#: ./src/cone/ugm/browser/forms/general_settings.yaml:197
+msgid "roles_principal_roles_enabled_help"
+msgstr ""
+
+#: ./src/cone/ugm/browser/forms/localmanager_settings.yaml:11
 msgid "localmanager_rules"
 msgstr ""
 
-# Source GID
+#: ./src/cone/ugm/browser/forms/localmanager_settings.yaml:25
 msgid "localmanager_rule_source"
 msgstr ""
 
-# Target GID [default]
-msgid "localmanager_rule_target"
-msgstr ""
-
-# No target GID's defined for source GID
-msgid "localmanager_no_targets_for_source"
-msgstr ""
-
-# No source GID defined
+#: ./src/cone/ugm/browser/forms/localmanager_settings.yaml:26
 msgid "localmanager_source_empty"
 msgstr ""
 
-# No target GID defined
+#: ./src/cone/ugm/browser/forms/localmanager_settings.yaml:34
+msgid "localmanager_rule_target"
+msgstr ""
+
+#: ./src/cone/ugm/browser/forms/localmanager_settings.yaml:35
+msgid "localmanager_no_targets_for_source"
+msgstr ""
+
+#: ./src/cone/ugm/browser/forms/localmanager_settings.yaml:47
 msgid "localmanager_target_empty"
 msgstr ""

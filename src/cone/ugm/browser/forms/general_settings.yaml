@@ -181,7 +181,7 @@ widgets:
     value: expr:context.model.attrs.groups_listing_default_column
     props:
         label: i18n:groups_listing_default_column:Groups listing default column
-        help: i18n:groups_listing_default_column_help:Default sort column in user listing
+        help: i18n:groups_listing_default_column_help:Default sort column in group listing
         required: i18n:groups_listing_default_column_required:Default sort column in
             groups listing is required
 - roles_heading:
