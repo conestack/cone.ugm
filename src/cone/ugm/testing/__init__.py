@@ -2,8 +2,6 @@ from cone.app import get_root
 from cone.app.testing import Security
 from cone.app.ugm import ugm_backend
 from cone.ugm.settings import ugm_cfg
-from node.ext.ldap.testing import LDIF_base
-from node.ext.ldap.ugm.defaults import creation_defaults
 from plone.testing import Layer
 import os
 import shutil
@@ -13,10 +11,6 @@ import tempfile
 base_path = os.path.split(__file__)[0]
 ugm_config = os.path.join(base_path, 'ugm.xml')
 localmanager_config = os.path.join(base_path, 'localmanager.xml')
-ldap_server_config = os.path.join(base_path, 'ldap_server.xml')
-ldap_users_config = os.path.join(base_path, 'ldap_users.xml')
-ldap_groups_config = os.path.join(base_path, 'ldap_groups.xml')
-ldap_roles_config = os.path.join(base_path, 'ldap_roles.xml')
 
 
 class principals(object):
@@ -132,48 +126,37 @@ def temp_directory(fn):
     return wrapper
 
 
-def rdn_value(node, uid):
-    return uid.split('=')[1]
-
-
-def create_mail(node, uid):
-    return '%s@example.com' % rdn_value(node, uid)
-
-
-creation_defaults['inetOrgPerson'] = dict()
-creation_defaults['inetOrgPerson']['sn'] = rdn_value
-creation_defaults['inetOrgPerson']['cn'] = rdn_value
-creation_defaults['inetOrgPerson']['mail'] = create_mail
-
-
 class UGMLayer(Security, Layer):
-    defaultBases = (LDIF_base,)
 
     def __init__(self):
         Layer.__init__(self)
 
-    def tearDown(self):
-        super(UGMLayer, self).tearDown()
-
     def make_app(self):
+        ugm_users_file = os.path.join(self.ugm_dir, 'users')
+        ugm_groups_file = os.path.join(self.ugm_dir, 'groups')
+        ugm_roles_file = os.path.join(self.ugm_dir, 'roles')
+        ugm_datadir = os.path.join(self.ugm_dir, 'data')
         super(UGMLayer, self).make_app(**{
             'cone.plugins': '\n'.join([
-                'cone.ldap',
                 'cone.ugm'
             ]),
-            'ugm.backend': 'ldap',
+            'ugm.backend': 'file',
             'ugm.config': ugm_config,
             'ugm.localmanager_config': localmanager_config,
-            'ldap.server_config': ldap_server_config,
-            'ldap.users_config': ldap_users_config,
-            'ldap.groups_config': ldap_groups_config,
-            'ldap.roles_config': ldap_roles_config
+            'ugm.users_file': ugm_users_file,
+            'ugm.groups_file': ugm_groups_file,
+            'ugm.roles_file': ugm_roles_file,
+            'ugm.datadir': ugm_datadir
         })
-        settings = get_root()['settings']
-        settings['ldap_users'].create_container()
-        settings['ldap_groups'].create_container()
-        settings['ldap_roles'].create_container()
         ugm_backend.initialize()
+
+    def setUp(self, args=None):
+        self.ugm_dir = tempfile.mkdtemp()
+        super(UGMLayer, self).setUp(args=args)
+
+    def tearDown(self):
+        shutil.rmtree(self.ugm_dir)
+        super(UGMLayer, self).tearDown()
 
 
 ugm_layer = UGMLayer()
