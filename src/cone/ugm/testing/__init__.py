@@ -27,19 +27,6 @@ class principals(object):
         self.membership = membership
         self.roles = roles
 
-    def _del_principal(self, principals, name):
-        try:
-            del principals[name]
-        except KeyError:
-            # ignore principal. either not created or already removed
-            pass
-
-    def del_user(self, name):
-        self._del_principal(self.ugm['users'], name)
-
-    def del_group(self, name):
-        self._del_principal(self.ugm['groups'], name)
-
     def apply(self):
         ugm_backend.ugm()
         root = get_root()
@@ -75,11 +62,13 @@ class principals(object):
                 for user_id in self.users:
                     try:
                         del ugm_users[user_id]
+                        ugm_users()
                     except KeyError:
                         continue
                 for group_id in self.groups:
                     try:
                         del ugm_groups[group_id]
+                        ugm_groups()
                     except KeyError:
                         continue
                 self.apply()
