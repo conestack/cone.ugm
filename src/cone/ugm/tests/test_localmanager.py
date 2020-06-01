@@ -6,19 +6,15 @@ from cone.ugm.localmanager import LocalManagerConfigAttributes
 from node.tests import NodeTestCase
 from plumber import plumbing
 import os
-import shutil
-import tempfile
 
 
 class TestModelLocalmanager(NodeTestCase):
     layer = testing.ugm_layer
 
-    def test_LocalManagerConfigAttributes(self):
-        # Dummy environment
-        tempdir = tempfile.mkdtemp()
-        conf_path = os.path.join(tempdir, 'localmanager.xml')
-
+    @testing.temp_directory
+    def test_LocalManagerConfigAttributes(self, tempdir):
         # Local manager configuration attributes
+        conf_path = os.path.join(tempdir, 'localmanager.xml')
         config = LocalManagerConfigAttributes(conf_path)
 
         # Not exists yet
@@ -57,9 +53,6 @@ class TestModelLocalmanager(NodeTestCase):
             ('aaa', {'default': ['ccc'], 'target': ['bbb', 'ccc']}),
             ('foo', {'default': ['bar'], 'target': ['bar', 'baz']})
         ])
-
-        # Cleanup dummy environment
-        shutil.rmtree(tempdir)
 
     @testing.principals(
         users={
