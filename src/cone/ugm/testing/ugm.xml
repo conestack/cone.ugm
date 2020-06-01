@@ -7,7 +7,7 @@
   <user_id_autoincrement_prefix></user_id_autoincrement_prefix>
   <user_id_autoincrement_start>100</user_id_autoincrement_start>
   <users_portrait>True</users_portrait>
-  <users_portrait_attr>jpegPhoto</users_portrait_attr>
+  <users_portrait_attr>portrait</users_portrait_attr>
   <users_portrait_accept>image/jpeg</users_portrait_accept>
   <users_portrait_width>50</users_portrait_width>
   <users_portrait_height>50</users_portrait_height>

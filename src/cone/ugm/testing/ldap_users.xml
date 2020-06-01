@@ -21,5 +21,9 @@
       <key>password</key>
       <value>userPassword</value>
     </elem>
+    <elem>
+      <key>portrait</key>
+      <value>jpegPhoto</value>
+    </elem>
   </users_aliases_attrmap>
 </properties>
