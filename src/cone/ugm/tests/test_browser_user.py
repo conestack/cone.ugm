@@ -188,6 +188,8 @@ class TestBrowserUser(TileTestCase):
 
         request.params['userform.id'] = ''
         request.params['userform.password'] = 'secret_1'
+        request.params['userform.fullname'] = 'Max Mustermann'
+        request.params['userform.email'] = 'max.mustermann@example.com'
         request.params['userform.principal_roles'] = []
         request.params['action.userform.save'] = '1'
 
@@ -208,11 +210,16 @@ class TestBrowserUser(TileTestCase):
         self.assertTrue(isinstance(user, User))
         self.assertEqual(user.attrs['login'], 'user_1')
         self.assertTrue(user.attrs['password'].startswith('{SSHA}'))
+        self.assertEqual(user.attrs['fullname'], 'Max Mustermann')
+        self.assertEqual(user.attrs['email'], 'max.mustermann@example.com')
 
     @testing.principals(
         users={
             'manager': {},
-            'user_1': {}
+            'user_1': {
+                'fullname': 'Max Mustermann',
+                'email': 'max.mustermann@example.com'
+            }
         },
         roles={
             'manager': ['manager']
@@ -221,6 +228,9 @@ class TestBrowserUser(TileTestCase):
         root = get_root()
         users = root['users']
         user = users['user_1']
+        self.assertEqual(user.attrs['fullname'], 'Max Mustermann')
+        self.assertEqual(user.attrs['email'], 'max.mustermann@example.com')
+
         request = self.layer.new_request()
 
         with self.layer.authenticated('manager'):
@@ -229,9 +239,13 @@ class TestBrowserUser(TileTestCase):
         self.assertTrue(res.find(expected) > -1)
 
         request.params['userform.password'] = '_NOCHANGE_'
-        request.params['userform.principal_roles'] = ['viewer']
+        request.params['userform.fullname'] = 'Susi Musterfrau'
+        request.params['userform.email'] = 'susi.musterfrau@example.com'
+        request.params['userform.principal_roles'] = []
         request.params['action.userform.save'] = '1'
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'edit')
         self.assertEqual(res, '')
-        self.assertEqual(sorted(user.model.roles), ['viewer'])
+
+        self.assertEqual(user.attrs['fullname'], 'Susi Musterfrau')
+        self.assertEqual(user.attrs['email'], 'susi.musterfrau@example.com')

@@ -7,6 +7,8 @@
     <item>person</item>
     <item>organizationalPerson</item>
     <item>inetOrgPerson</item>
+    <item>posixAccount</item>
+    <item>shadowAccount</item>
   </users_object_classes>
   <users_aliases_attrmap>
     <elem>
@@ -20,6 +22,14 @@
     <elem>
       <key>password</key>
       <value>userPassword</value>
+    </elem>
+    <elem>
+      <key>fullname</key>
+      <value>displayName</value>
+    </elem>
+    <elem>
+      <key>email</key>
+      <value>mail</value>
     </elem>
     <elem>
       <key>portrait</key>

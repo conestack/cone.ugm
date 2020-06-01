@@ -13,11 +13,24 @@
   <users_portrait_height>50</users_portrait_height>
   <users_local_management_enabled>False</users_local_management_enabled>
   <users_login_name_attr></users_login_name_attr>
-  <users_form_attrmap></users_form_attrmap>
+  <users_form_attrmap>
+    <elem>
+      <key>fullname</key>
+      <value>Full Name</value>
+    </elem>
+    <elem>
+      <key>email</key>
+      <value>Email Address</value>
+    </elem>
+  </users_form_attrmap>
   <users_listing_columns>
     <elem>
       <key>id</key>
-      <value>Username</value>
+      <value>User ID</value>
+    </elem>
+    <elem>
+      <key>email</key>
+      <value>Email Address</value>
     </elem>
   </users_listing_columns>
   <users_listing_default_column>id</users_listing_default_column>
@@ -25,7 +38,7 @@
   <groups_listing_columns>
     <elem>
       <key>id</key>
-      <value>Groupname</value>
+      <value>Group ID</value>
     </elem>
   </groups_listing_columns>
   <groups_listing_default_column>id</groups_listing_default_column>
