@@ -143,7 +143,10 @@ class TestBrowserPrincipal(TileTestCase):
         self.assertFalse(data.has_errors)
         self.assertEqual(data.extracted, 'new_pid')
 
-    @testing.principals(users={'user_exists': {}})
+    @testing.principals(
+        users={
+            'user_exists': {}
+        })
     def test_UserExistsExtractor(self):
         root = get_root()
         users = root['users']
@@ -170,7 +173,10 @@ class TestBrowserPrincipal(TileTestCase):
         self.assertFalse(data.has_errors)
         self.assertEqual(data.extracted, 'new_user_id')
 
-    @testing.principals(groups={'group_exists': {}})
+    @testing.principals(
+        groups={
+            'group_exists': {}
+        })
     def test_GroupExistsExtractor(self):
         root = get_root()
         groups = root['groups']
