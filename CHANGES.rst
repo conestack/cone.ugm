@@ -5,6 +5,9 @@ Changes
 1.0a1 (unreleased)
 ------------------
 
+- Move LDAP related code to ``cone.ldap``.
+  [rnix]
+
 - Users autoincrement start setting value may be empty in config.
   [rnix]
 
