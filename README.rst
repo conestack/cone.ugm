@@ -4,8 +4,6 @@ cone.ugm
 Plugin for `cone.app <http://packages.python.org/cone.app>`_ providing a
 user and group management UI.
 
-.. image:: http://bluedynamics.com/ugm.png
-
 
 Features
 --------
@@ -17,13 +15,14 @@ Features
 - User and group form configuration
 
 
-Development Setup
-=================
+Setup
+=====
 
 Prerequirements
 ---------------
 
-``lxml`` gets compiled, the required dev headers must be installed on the system.
+While installation ``lxml`` gets compiled, the required dev headers must be
+installed on the system.
 
 On debian based systems install:
 
@@ -32,22 +31,22 @@ On debian based systems install:
     $ apt-get install -y libxml2-dev libxslt1-dev
 
 
-Installation
-------------
+Development and Testing
+-----------------------
 
-``cone.ugm`` contains a buildout configuration. Download or checkout package
-and run:
+For testing and development, ``cone.ugm`` contains a buildout configuration.
+Download or checkout package and run:
 
 .. code-block:: shell
 
     cone.ugm$ ./bootstrap.sh python3
 
 
-Example
--------
+Example Configuration
+---------------------
 
-For user testing and for demo purposes, an example UGM configuration is
-contained in the ``cfg`` folder of the source package.
+For testing and demo purposes, an example UGM configuration is contained in the
+``cfg`` folder of the source package.
 
 It contains the configuration file ``ugm.xml``, containing the general UGM
 configuration and ``localmanager.xml``, containing the configuration about
