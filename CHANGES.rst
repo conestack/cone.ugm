@@ -5,6 +5,9 @@ Changes
 1.0a1 (unreleased)
 ------------------
 
+- Users autoincrement start setting value may be empty in config.
+  [rnix]
+
 - Do not remember users and groups on volatile storage.
   [rnix]
 
