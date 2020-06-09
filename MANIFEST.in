@@ -1,10 +1,6 @@
 include *.rst
 include *.mo
 include *.po
-include buildout.cfg
-include ugm_groupOfNames_10_10.ini
-include ugm_posix.ini
-include bootstrap.py
 recursive-include etc *
 recursive-include cfgin *
 recursive-include src *
