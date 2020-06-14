@@ -5,6 +5,9 @@ Changes
 1.0a1 (unreleased)
 ------------------
 
+- Bind UGM columns content view to UGM models.
+  [rnix]
+
 - Move LDAP related code to ``cone.ldap``.
   [rnix]
 
