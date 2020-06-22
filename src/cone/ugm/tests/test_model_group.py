@@ -3,7 +3,6 @@ from cone.app.model import Metadata
 from cone.app.model import Properties
 from cone.ugm import testing
 from cone.ugm import ugm_default_acl
-from cone.ugm.layout import UGMLayout
 from cone.ugm.model.group import Group
 from node.ext.ugm.interfaces import IGroup
 import unittest
@@ -31,10 +30,6 @@ class TestModelGroup(unittest.TestCase):
         self.assertTrue(isinstance(md, Metadata))
         self.assertEqual(md.title, 'group_node')
         self.assertEqual(md.description, 'group_node_description')
-
-        # Layout
-        layout = group.layout
-        self.assertTrue(isinstance(layout, UGMLayout))
 
         # UGM backend group node is available at ``model``
         self.assertTrue(IGroup.providedBy(group.model))

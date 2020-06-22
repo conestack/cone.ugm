@@ -2,7 +2,6 @@ from cone.app.model import AdapterNode
 from cone.app.model import Metadata
 from cone.app.model import node_info
 from cone.app.model import Properties
-from cone.ugm.layout import UGMLayout
 from cone.ugm.localmanager import LocalManagerGroupACL
 from node.locking import locktree
 from node.utils import instance_property
@@ -31,10 +30,6 @@ class Group(AdapterNode):
         metadata.title = _('group_node', default='Group')
         metadata.description = _('group_node_description', default='Group')
         return metadata
-
-    @instance_property
-    def layout(self):
-        return UGMLayout(model=self)
 
     @locktree
     def __call__(self):

@@ -4,7 +4,6 @@ from cone.app.model import node_info
 from cone.app.model import Properties
 from cone.app.ugm import ugm_backend
 from cone.ugm.browser.utils import unquote_slash
-from cone.ugm.layout import UGMLayout
 from cone.ugm.localmanager import LocalManagerUsersACL
 from cone.ugm.model.user import User
 from node.behaviors import Nodify
@@ -17,10 +16,6 @@ import logging
 
 logger = logging.getLogger('cone.ugm')
 _ = TranslationStringFactory('cone.ugm')
-
-
-def users_factory():
-    return Users()
 
 
 @node_info(
@@ -52,10 +47,6 @@ class Users(object):
             default='Container for Users'
         )
         return metadata
-
-    @instance_property
-    def layout(self):
-        return UGMLayout(model=self)
 
     @property
     def backend(self):

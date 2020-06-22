@@ -3,7 +3,6 @@ from cone.app.model import Metadata
 from cone.app.model import Properties
 from cone.ugm import testing
 from cone.ugm import ugm_default_acl
-from cone.ugm.layout import UGMLayout
 from cone.ugm.model.user import User
 from cone.ugm.model.users import Users
 from node.ext.ugm.interfaces import IUsers
@@ -32,10 +31,6 @@ class TestModelUsers(NodeTestCase):
         self.assertTrue(isinstance(md, Metadata))
         self.assertEqual(md.title, 'users_node')
         self.assertEqual(md.description, 'users_node_description')
-
-        # Layout
-        layout = users.layout
-        self.assertTrue(isinstance(layout, UGMLayout))
 
         # Iter users
         self.assertEqual(len([x for x in users]), 2)

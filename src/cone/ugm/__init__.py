@@ -1,15 +1,15 @@
 from cone.app import cfg
+from cone.app import layout_config
 from cone.app import main_hook
 from cone.app import register_config
 from cone.app import register_entry
+from cone.app.model import LayoutConfig
 from cone.app.security import acl_registry
 from cone.ugm import browser
 from cone.ugm.model.group import Group
 from cone.ugm.model.groups import Groups
-from cone.ugm.model.groups import groups_factory
 from cone.ugm.model.user import User
 from cone.ugm.model.users import Users
-from cone.ugm.model.users import users_factory
 from cone.ugm.settings import GeneralSettings
 from cone.ugm.settings import LocalManagerSettings
 from cone.ugm.settings import ugm_cfg
@@ -49,6 +49,22 @@ ugm_user_acl = [
 ] + ugm_default_acl
 
 
+@layout_config(Group, Groups, User, Users)
+class UGMLayoutConfig(LayoutConfig):
+
+    def __init__(self, model=None, request=None):
+        super(UGMLayoutConfig, self).__init__(model=model, request=request)
+        self.mainmenu = True
+        self.mainmenu_fluid = False
+        self.livesearch = False
+        self.personaltools = True
+        self.columns_fluid = False
+        self.pathbar = False
+        self.sidebar_left = []
+        self.sidebar_left_grid_width = 0
+        self.content_grid_width = 12
+
+
 # application startup hooks
 @main_hook
 def initialize_ugm(config, global_config, settings):
@@ -69,10 +85,10 @@ def initialize_ugm(config, global_config, settings):
     register_config('ugm_localmanager', LocalManagerSettings)
 
     # Users container
-    register_entry('users', users_factory)
+    register_entry('users', Users)
 
     # Groups container
-    register_entry('groups', groups_factory)
+    register_entry('groups', Groups)
 
     # register default acl's
     # XXX: define permissions referring users, user, groups respective group only

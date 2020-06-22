@@ -3,7 +3,6 @@ from cone.app.model import Metadata
 from cone.app.model import Properties
 from cone.ugm import testing
 from cone.ugm import ugm_default_acl
-from cone.ugm.layout import UGMLayout
 from cone.ugm.model.groups import Group
 from cone.ugm.model.groups import Groups
 from node.ext.ugm.interfaces import IGroups
@@ -32,10 +31,6 @@ class TestModelGroups(NodeTestCase):
         self.assertTrue(isinstance(md, Metadata))
         self.assertEqual(md.title, 'groups_node')
         self.assertEqual(md.description, 'groups_node_description')
-
-        # Layout
-        layout = groups.layout
-        self.assertTrue(isinstance(layout, UGMLayout))
 
         # Iter groups
         self.assertEqual(len([x for x in groups]), 2)

@@ -3,7 +3,6 @@ from cone.app.model import Metadata
 from cone.app.model import Properties
 from cone.ugm import testing
 from cone.ugm import ugm_user_acl
-from cone.ugm.layout import UGMLayout
 from cone.ugm.model.user import User
 from node.ext.ugm.interfaces import IUser
 import unittest
@@ -31,10 +30,6 @@ class TestModelUser(unittest.TestCase):
         self.assertTrue(isinstance(md, Metadata))
         self.assertEqual(md.title, 'user_node')
         self.assertEqual(md.description, 'user_node_description')
-
-        # Layout
-        layout = user.layout
-        self.assertTrue(isinstance(layout, UGMLayout))
 
         # UGM backend user node is available at ``model``
         self.assertTrue(IUser.providedBy(user.model))

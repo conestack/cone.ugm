@@ -4,7 +4,6 @@ from cone.app.model import node_info
 from cone.app.model import Properties
 from cone.app.ugm import ugm_backend
 from cone.ugm.browser.utils import unquote_slash
-from cone.ugm.layout import UGMLayout
 from cone.ugm.localmanager import LocalManagerGroupsACL
 from cone.ugm.model.group import Group
 from node.behaviors import Nodify
@@ -17,10 +16,6 @@ import logging
 
 logger = logging.getLogger('cone.ugm')
 _ = TranslationStringFactory('cone.ugm')
-
-
-def groups_factory():
-    return Groups()
 
 
 @node_info(
@@ -52,10 +47,6 @@ class Groups(object):
             default='Container for Groups'
         )
         return metadata
-
-    @instance_property
-    def layout(self):
-        return UGMLayout(model=self)
 
     @property
     def backend(self):

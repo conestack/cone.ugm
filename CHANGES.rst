@@ -5,6 +5,14 @@ Changes
 1.0a1 (unreleased)
 ------------------
 
+- Use ``layout_config`` decorator introduced in ``cone.app 1.0rc1``.
+  [rnix]
+
+- Remove ``cone.ugm.model.users.users_factory`` and
+  ``cone.ugm.model.groups.groups_factory``. Register related node classes
+  directly as app entries.
+  [rnix]
+
 - Bind UGM columns content view to UGM models.
   [rnix]
 
