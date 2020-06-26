@@ -1,7 +1,7 @@
 from cone.app import compat
 from cone.app.browser.ajax import AjaxAction
-from cone.app.browser.authoring import AddBehavior
-from cone.app.browser.authoring import EditBehavior
+from cone.app.browser.authoring import ContentAddForm
+from cone.app.browser.authoring import ContentEditForm
 from cone.app.browser.form import Form
 from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
@@ -191,7 +191,7 @@ class UserForm(PrincipalForm):
 
 @tile(name='addform', interface=User, permission='add_user')
 @plumbing(
-    AddBehavior,
+    ContentAddForm,
     PrincipalRolesForm,
     PortraitForm,
     ExpirationForm,
@@ -245,7 +245,7 @@ class UserAddForm(UserForm, Form):
 
 @tile(name='editform', interface=User, permission='edit_user', strict=False)
 @plumbing(
-    EditBehavior,
+    ContentEditForm,
     PrincipalRolesForm,
     PortraitForm,
     ExpirationForm,

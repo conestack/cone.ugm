@@ -5,6 +5,10 @@ Changes
 1.0a1 (unreleased)
 ------------------
 
+- Use ``ContentAddForm`` and ``ContentEditForm`` behaviors instead of B/C
+  ``AddBehavior`` and ``EditBehavior`` for user and group form.
+  [rnix]
+
 - Use ``layout_config`` decorator introduced in ``cone.app 1.0rc1``.
   [rnix]
 

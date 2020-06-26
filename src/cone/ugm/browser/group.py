@@ -1,7 +1,7 @@
 from cone.app import compat
 from cone.app.browser.ajax import AjaxAction
-from cone.app.browser.authoring import AddBehavior
-from cone.app.browser.authoring import EditBehavior
+from cone.app.browser.authoring import ContentAddForm
+from cone.app.browser.authoring import ContentEditForm
 from cone.app.browser.form import Form
 from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
@@ -188,7 +188,7 @@ class GroupForm(PrincipalForm):
 
 
 @tile(name='addform', interface=Group, permission="add_group")
-@plumbing(AddBehavior, PrincipalRolesForm, AddFormFiddle)
+@plumbing(ContentAddForm, PrincipalRolesForm, AddFormFiddle)
 class GroupAddForm(GroupForm, Form):
     show_heading = False
     show_contextmenu = False
@@ -223,7 +223,7 @@ class GroupAddForm(GroupForm, Form):
 
 
 @tile(name='editform', interface=Group, permission="edit_group", strict=False)
-@plumbing(EditBehavior, PrincipalRolesForm, EditFormFiddle)
+@plumbing(ContentEditForm, PrincipalRolesForm, EditFormFiddle)
 class GroupEditForm(GroupForm, Form):
     show_heading = False
     show_contextmenu = False
