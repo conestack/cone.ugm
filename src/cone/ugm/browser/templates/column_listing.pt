@@ -33,15 +33,15 @@
              class="form-control ${'' if context.filter_term else 'empty_filter'}"
              ajax:target="${context.filter_target}"
              ajax:event="batchclicked:.${context.batchname}sensitiv"
-             tal:attributes="value context.filter_value">
+             tal:attributes="value context.filter_value" />
     </div>
 
     <div class="column_limit"
          tal:condition="context.display_limit">
       <label i18n:translate="list_all">List all</label>
-      <input id="list_all"
+      <input class="list_all"
              type="checkbox"
-             checked="${context.display_limit_checked and 'checked'|nothing}"
+             checked="${'checked' if context.display_limit_checked else None}"
              name="column_limit"
              ajax:target="${context.nodeurl}" />
     </div>

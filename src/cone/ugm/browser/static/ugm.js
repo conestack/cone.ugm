@@ -19,7 +19,6 @@
 
         // localmanager
         localmanager: {
-
             autocomplete_gid: function(request, callback) {
                 bdajax.request({
                     success: function(data) {
@@ -34,7 +33,7 @@
 
         // bind add principal button
         add_principal_button_binder: function(context) {
-            $('div.add_button button', context).bind('click', function() {
+            $('div.add_button button', context).on('click', function() {
                 $('.left_column ul.leftlisting li').removeClass('selected');
             });
         },
@@ -42,8 +41,8 @@
         // bind left listing trigger
         left_listing_nav_binder: function(context) {
             $('ul.leftlisting li', context)
-                .unbind()
-                .bind('click', ugm.left_listing_nav_cb);
+                .off()
+                .on('click', ugm.left_listing_nav_cb);
         },
 
         // left listing trigger callback
@@ -66,8 +65,8 @@
         // bind right listing trigger
         right_listing_nav_binder: function(context) {
             $('ul.rightlisting li', context)
-                .unbind()
-                .bind('click', ugm.right_listing_nav_cb);
+                .off()
+                .on('click', ugm.right_listing_nav_cb);
         },
 
         // right listing trigger callback
@@ -87,37 +86,37 @@
 
             // bind delete actions
             $('div.columnitems div.actions a.delete_item', context)
-                .unbind()
-                .bind('click', ugm.actions.delete_item);
+                .off()
+                .on('click', ugm.actions.delete_item);
 
             // bind disabled delete actions
             $('div.columnitems div.actions a.delete_item_disabled', context)
-                .unbind()
-                .bind('click', function(event) {
+                .off()
+                .on('click', function(event) {
                     event.preventDefault();
                 });
 
             // bind add actions
             $('div.columnitems div.actions a.add_item', context)
-                .unbind()
-                .bind('click', ugm.actions.listing_add_item);
+                .off()
+                .on('click', ugm.actions.listing_add_item);
 
             // bind disabled add actions
             $('div.columnitems div.actions a.add_item_disabled', context)
-                .unbind()
-                .bind('click', function(event) {
+                .off()
+                .on('click', function(event) {
                     event.preventDefault();
                 });
 
             // bind remove actions
             $('div.columnitems div.actions a.remove_item', context)
-                .unbind()
-                .bind('click', ugm.actions.listing_remove_item);
+                .off()
+                .on('click', ugm.actions.listing_remove_item);
 
             // bind disabled remove actions
             $('div.columnitems div.actions a.remove_item_disabled', context)
-                .unbind()
-                .bind('click', function(event) {
+                .off()
+                .on('click', function(event) {
                     event.preventDefault();
                 });
         },
@@ -183,17 +182,17 @@
                             bdajax.error(data.message);
                             return;
                         }
-                        elem.unbind()
+                        elem.off()
                             .removeClass('add_item')
                             .addClass('add_item_disabled')
-                            .bind('click', function(event) {
+                            .on('click', function(event) {
                                 event.preventDefault();
                             });
                         $('.remove_item_disabled', elem.parent())
-                            .unbind()
+                            .off()
                             .removeClass('remove_item_disabled')
                             .addClass('remove_item')
-                            .bind('click', ugm.actions.listing_remove_item);
+                            .on('click', ugm.actions.listing_remove_item);
                     }
                 });
                 ugm.actions.perform(options);
@@ -217,17 +216,17 @@
                             bdajax.error(data.message);
                             return;
                         }
-                        elem.unbind()
+                        elem.off()
                             .removeClass('remove_item')
                             .addClass('remove_item_disabled')
-                            .bind('click', function(event) {
+                            .on('click', function(event) {
                                 event.preventDefault();
                             });
                         $('.add_item_disabled', elem.parent())
-                            .unbind()
+                            .off()
                             .removeClass('add_item_disabled')
                             .addClass('add_item')
-                            .bind('click', ugm.actions.listing_add_item);
+                            .on('click', ugm.actions.listing_add_item);
                     }
                 });
                 ugm.actions.perform(options);
@@ -261,19 +260,19 @@
             li.addClass('selected');
         },
 
-        // bind related items filter - XXX: changed to list_all, wait
-        // for group in group to fix naming
+        // bind related items filter
+        // XXX: changed to list_all, wait for group in group to fix naming
         listing_related_binder: function(context) {
-            $('#list_all', context)
-                .unbind()
-                .bind('click', ugm.listing_related_cb);
+            $('div.column_limit input.list_all', context)
+                .off()
+                .on('click', ugm.listing_related_cb);
         },
 
         // callback when related filter gets toggled
         listing_related_cb: function(event) {
             var elem = $(this);
             var action;
-            if (elem.attr('checked')) {
+            if (elem.prop('checked')) {
                 action = 'allcolumnlisting';
             } else {
                 action = 'columnlisting';
