@@ -1,6 +1,3 @@
-cone.ugm
-========
-
 Plugin for `cone.app <http://packages.python.org/cone.app>`_ providing a
 user and group management UI.
 
