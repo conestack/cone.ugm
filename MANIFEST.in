@@ -2,6 +2,6 @@ include *.rst
 include *.mo
 include *.po
 recursive-include etc *
-recursive-include cfgin *
+recursive-include cfg *
 recursive-include src *
 recursive-exclude src *.pyc *.pyo
