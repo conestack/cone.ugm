@@ -59,11 +59,11 @@ setup(
     ],
     extras_require=dict(
         test=[
-            'cone.app[test]',
+            'zope.testrunner'
         ]
     ),
     tests_require=[
-        'cone.app[test]'
+        'zope.testrunner'
     ],
     cmdclass=dict(test=Test)
 )
