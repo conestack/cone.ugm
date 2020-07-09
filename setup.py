@@ -49,6 +49,7 @@ setup(
     install_requires=[
         'setuptools',
         'natsort',
+        'Pillow',
         'cone.app[lxml]',
         'yafowil.widget.array',
         'yafowil.widget.autocomplete',
