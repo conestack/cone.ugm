@@ -112,7 +112,7 @@ class LocalManager(Behavior):
                 u"each user. Please contact System Administrator in "
                 u"order to fix this problem."
             )
-            exc = msg % ', '.join(["'%s'" % gid for gid in adm_gids])
+            exc = msg % ', '.join(["'%s'" % gid for gid in sorted(adm_gids)])
             raise Exception(exc)
         return adm_gids[0]
 
