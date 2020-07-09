@@ -9,13 +9,12 @@ python:
   - "3.8"
 
 before_script:
-  - echo 'Europe/Vienna' | sudo tee /etc/timezone
-  - sudo dpkg-reconfigure --frontend noninteractive tzdata
+  - export TZ=Europe/Vienna
 
 install:
   - pip install coverage
   - pip install coveralls
-  - pip install pillow
+  - pip install Pillow
   - pip install pyramid==1.9.4
   - |
     if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then
