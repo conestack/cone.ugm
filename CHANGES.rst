@@ -1,7 +1,7 @@
 Changes
 =======
 
-1.0a1 (unreleased)
+1.0a1 (2020-07-09)
 ------------------
 
 - Use ``ContentAddForm`` and ``ContentEditForm`` behaviors instead of B/C
