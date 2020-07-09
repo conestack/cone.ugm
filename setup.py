@@ -62,5 +62,8 @@ setup(
             'cone.app[test]',
         ]
     ),
+    tests_require=[
+        'cone.app[test]'
+    ],
     cmdclass=dict(test=Test)
 )
