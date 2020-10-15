@@ -333,10 +333,6 @@ class PrincipalsListing(ColumnListing):
                 # reduce result by localmanager ids if not None
                 if localmanager_ids is not None and key not in localmanager_ids:
                     continue
-                query = make_query(
-                    pid=key,
-                    came_from=make_url(self.request, node=self.model)
-                )
                 actions = list()
                 if can_delete:
                     action_id = 'delete_item'
@@ -355,6 +351,10 @@ class PrincipalsListing(ColumnListing):
                     actions = [delete_action]
                 vals = [self.extract_raw(attrs, attr) for attr in attrlist]
                 sort = self.extract_raw(attrs, sort_attr)
+                query = make_query(
+                    pid=key,
+                    came_from=make_url(self.request, node=self.model)
+                )
                 target = make_url(self.request, node=self.model, query=query)
                 content = self.item_content(*vals)
                 current = self.current_id == key
