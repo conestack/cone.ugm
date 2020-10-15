@@ -337,20 +337,25 @@ class PrincipalsListing(ColumnListing):
                     pid=key,
                     came_from=make_url(self.request, node=self.model)
                 )
-                target = make_url(self.request, node=self.model, query=query)
                 actions = list()
                 if can_delete:
                     action_id = 'delete_item'
                     action_title = self.delete_label
+                    action_target = make_url(
+                        self.request,
+                        node=self.model,
+                        resource=key
+                    )
                     delete_action = self.create_action(
                         action_id,
                         True,
                         action_title,
-                        target
+                        action_target
                     )
                     actions = [delete_action]
                 vals = [self.extract_raw(attrs, attr) for attr in attrlist]
                 sort = self.extract_raw(attrs, sort_attr)
+                target = make_url(self.request, node=self.model, query=query)
                 content = self.item_content(*vals)
                 current = self.current_id == key
                 ret.append(self.create_item(

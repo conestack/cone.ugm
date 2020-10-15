@@ -4,7 +4,8 @@ Changes
 1.0a2 (unreleased)
 ------------------
 
-- No changes yet.
+- Fix delete principal.
+  [rnix]
 
 
 1.0a1 (2020-07-09)
