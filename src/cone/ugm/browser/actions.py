@@ -1,9 +1,10 @@
+import zope
 from cone.ugm.model.group import Group
 from cone.ugm.model.user import User
 from pyramid.i18n import get_localizer
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
-
+from cone.ugm.events import UserDeletedEvent
 
 _ = TranslationStringFactory('cone.ugm')
 
@@ -70,7 +71,9 @@ def delete_user_action(model, request):
     try:
         users = model.parent.backend
         uid = model.model.name
+        user = model.model
         del users[uid]
+        zope.event.notify(UserDeletedEvent(user=user))
         users()
         model.parent.invalidate()
         localizer = get_localizer(request)

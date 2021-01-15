@@ -27,24 +27,10 @@ from webob.exc import HTTPFound
 from yafowil.base import UNSET
 import fnmatch
 import itertools
+from cone.ugm import events
 
 
 _ = TranslationStringFactory('cone.ugm')
-
-class UserManagementEvent(object):
-
-    def __init__(self, user, password):
-        self.user = user
-        self.password = password
-
-
-class UserCreatedEvent(UserManagementEvent):
-    ...
-
-
-class UserModifiedEvent(UserManagementEvent):
-    ...
-
 
 
 @tile(
@@ -234,7 +220,7 @@ class UserAddForm(UserForm, Form):
             extracted[login_name] = extracted.pop('login')
         user = users.create(user_id, **extracted)
         users()
-        zope.event.notify(UserCreatedEvent(user=user, password=password))
+        zope.event.notify(events.UserCreatedEvent(user=user, password=password))
         if self.model.local_manager_consider_for_user:
             groups = ugm_backend.ugm.groups
             for gid in self.model.local_manager_default_gids:
@@ -283,7 +269,7 @@ class UserEditForm(UserForm, Form):
             user_id = self.model.name
             ugm_backend.ugm.users.passwd(user_id, None, password)
 
-        zope.event.notify(UserModifiedEvent(user=self.model, password=password))
+        zope.event.notify(events.UserModifiedEvent(user=self.model, password=password))
 
     def next(self, request):
         came_from = request.get('came_from')
