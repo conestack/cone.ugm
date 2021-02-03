@@ -2,12 +2,12 @@ from cone.app import get_root
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
+from cone.ugm.events import GroupCreatedEvent
+from cone.ugm.events import GroupModifiedEvent
 from cone.ugm.model.group import Group
 from pyramid.httpexceptions import HTTPForbidden
 from webob.exc import HTTPFound
 from zope.event import classhandler
-
-from cone.ugm.events import UserCreatedEvent, GroupModifiedEvent, GroupCreatedEvent
 
 
 class TestBrowserGroup(TileTestCase):
@@ -182,11 +182,10 @@ class TestBrowserGroup(TileTestCase):
 
         events_called = []
 
-        from cone.ugm.events import UserCreatedEvent
         @classhandler.handler(GroupCreatedEvent)
         def on_group_created(event):
-            events_called.append("group created")
-            
+            events_called.append('GroupCreatedEvent')
+
         with self.layer.authenticated('viewer'):
             self.expectError(
                 HTTPForbidden,
@@ -222,9 +221,8 @@ class TestBrowserGroup(TileTestCase):
         group = groups['group_1']
         self.assertTrue(isinstance(group, Group))
         self.assertEqual(group.attrs['groupname'], 'Group 1')
+        self.assertTrue('GroupCreatedEvent' in events_called)
 
-        self.assertTrue("group created" in events_called)
-        
     @testing.principals(
         users={
             'manager': {}
@@ -249,9 +247,8 @@ class TestBrowserGroup(TileTestCase):
 
         @classhandler.handler(GroupModifiedEvent)
         def on_user_created(event):
-            events_called.append("group modified")
-            
-            
+            events_called.append('GroupModifiedEvent')
+
         with self.layer.authenticated('manager'):
             res = render_tile(group, request, 'edit')
         expected = '<form action="http://example.com/groups/group_1/edit"'
@@ -265,5 +262,4 @@ class TestBrowserGroup(TileTestCase):
         self.assertEqual(res, '')
 
         self.assertEqual(group.attrs['groupname'], 'Groupname Changed')
-
-        self.assertTrue("group modified" in events_called)
+        self.assertTrue('GroupModifiedEvent' in events_called)
