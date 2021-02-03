@@ -220,7 +220,7 @@ class UserAddForm(UserForm, Form):
             extracted[login_name] = extracted.pop('login')
         user = users.create(user_id, **extracted)
         users()
-        zope.event.notify(events.UserCreatedEvent(user=user, password=password))
+        zope.event.notify(events.UserCreatedEvent(principal=user, uid=user_id, password=password))
         if self.model.local_manager_consider_for_user:
             groups = ugm_backend.ugm.groups
             for gid in self.model.local_manager_default_gids:
@@ -268,8 +268,7 @@ class UserEditForm(UserForm, Form):
         if password is not UNSET:
             user_id = self.model.name
             ugm_backend.ugm.users.passwd(user_id, None, password)
-
-        zope.event.notify(events.UserModifiedEvent(user=self.model, password=password))
+        zope.event.notify(events.UserModifiedEvent(principal=self.model, uid=self.model.name, password=password))
 
     def next(self, request):
         came_from = request.get('came_from')

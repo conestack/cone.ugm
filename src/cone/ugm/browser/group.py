@@ -1,3 +1,4 @@
+import zope
 from cone.app import compat
 from cone.app.browser.ajax import AjaxAction
 from cone.app.browser.authoring import ContentAddForm
@@ -23,6 +24,7 @@ from webob.exc import HTTPFound
 import fnmatch
 import itertools
 
+from cone.ugm import events
 
 _ = TranslationStringFactory('cone.ugm')
 
@@ -204,6 +206,8 @@ class GroupAddForm(GroupForm, Form):
         group_id = extracted.pop('id')
         groups.create(group_id, **extracted)
         groups()
+        zope.event.notify(events.GroupCreatedEvent(uid=group_id))
+
         self.request.environ['next_resource'] = group_id
         self.model.parent.invalidate()
 
@@ -235,6 +239,8 @@ class GroupEditForm(GroupForm, Form):
                 continue
             attrs[attr_name] = data[attr_name].extracted
         self.model()
+        zope.event.notify(events.GroupModifiedEvent(principal=self.model, uid=self.model.name))
+
 
     def next(self, request):
         came_from = request.get('came_from')

@@ -6,6 +6,10 @@ from pyramid.exceptions import HTTPForbidden
 from pyramid.view import render_view_to_response
 import json
 
+from zope.event import classhandler
+
+from cone.ugm.events import UserCreatedEvent, GroupCreatedEvent, UserDeletedEvent, GroupDeletedEvent
+
 
 class TestBrowserActions(TileTestCase):
     layer = testing.ugm_layer
@@ -220,6 +224,12 @@ class TestBrowserActions(TileTestCase):
         group = groups['group_1']
         user = users['user_1']
 
+        events_called = []
+
+        @classhandler.handler(UserDeletedEvent)
+        def on_user_deleted(event):
+            events_called.append("user deleted")
+
         request = self.layer.new_request(type='json')
         with self.layer.authenticated('viewer'):
             self.expectError(
@@ -232,6 +242,7 @@ class TestBrowserActions(TileTestCase):
 
         with self.layer.authenticated('admin'):
             res = render_view_to_response(user, request, name='delete_item')
+
         self.assertEqual(json.loads(res.text), {
             'message': "Deleted user 'user_1' from database.",
             'success': True
@@ -244,6 +255,8 @@ class TestBrowserActions(TileTestCase):
         self.assertTrue(json_res['message'].find("'user_1'") > -1)
 
         self.assertEqual(group.model.users, [])
+
+        self.assertTrue("user deleted" in events_called)
 
     @testing.principals(
         users={
@@ -263,6 +276,13 @@ class TestBrowserActions(TileTestCase):
         group = groups['group_1']
 
         request = self.layer.new_request(type='json')
+
+        events_called = []
+
+        @classhandler.handler(GroupDeletedEvent)
+        def on_group_deleted(event):
+            events_called.append("group deleted")
+
         with self.layer.authenticated('viewer'):
             self.expectError(
                 HTTPForbidden,
@@ -286,3 +306,5 @@ class TestBrowserActions(TileTestCase):
         self.assertTrue(json_res['message'].find("'group_1'") > -1)
 
         self.assertEqual(groups.keys(), [])
+        
+        # self.assertTrue("group deleted" in events_called)
