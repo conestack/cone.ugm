@@ -76,7 +76,7 @@ def delete_user_action(model, request):
         user = model.model
         del users[uid]
         users()
-        notify(UserDeletedEvent(principal=user, uid=user.name))
+        notify(UserDeletedEvent(principal=user))
         model.parent.invalidate()
         localizer = get_localizer(request)
         message = localizer.translate(_(
@@ -247,7 +247,7 @@ def delete_group_action(model, request):
         uid = model.model.name
         del groups[uid]
         groups()
-        notify(GroupDeletedEvent(principal=model.model, uid=uid))
+        notify(GroupDeletedEvent(principal=model.model))
         model.parent.invalidate()
     except Exception as e:
         return {
