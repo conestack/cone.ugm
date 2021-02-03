@@ -5,6 +5,9 @@ from cone.ugm import testing
 from cone.ugm.model.user import User
 from pyramid.httpexceptions import HTTPForbidden
 from webob.exc import HTTPFound
+from zope.event import classhandler
+
+from cone.ugm.events import UserCreatedEvent, UserModifiedEvent
 
 
 class TestBrowserUser(TileTestCase):
@@ -172,6 +175,12 @@ class TestBrowserUser(TileTestCase):
         request = self.layer.new_request()
         request.params['factory'] = 'user'
 
+        events_called = []
+
+        @classhandler.handler(UserCreatedEvent)
+        def on_user_created(event):
+            events_called.append("user created")
+
         with self.layer.authenticated('viewer'):
             self.expectError(
                 HTTPForbidden,
@@ -212,6 +221,8 @@ class TestBrowserUser(TileTestCase):
         self.assertEqual(user.attrs['fullname'], 'Max Mustermann')
         self.assertEqual(user.attrs['email'], 'max.mustermann@example.com')
 
+        self.assertTrue("user created" in events_called)
+
     @testing.principals(
         users={
             'manager': {},
@@ -232,6 +243,12 @@ class TestBrowserUser(TileTestCase):
 
         request = self.layer.new_request()
 
+        events_called = []
+
+        @classhandler.handler(UserModifiedEvent)
+        def on_user_modified(event):
+            events_called.append("user modified")
+            
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'edit')
         expected = '<form action="http://example.com/users/user_1/edit"'
@@ -248,3 +265,5 @@ class TestBrowserUser(TileTestCase):
 
         self.assertEqual(user.attrs['fullname'], 'Susi Musterfrau')
         self.assertEqual(user.attrs['email'], 'susi.musterfrau@example.com')
+        
+        self.assertTrue("user modified" in events_called)

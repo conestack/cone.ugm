@@ -5,6 +5,9 @@ from cone.ugm import testing
 from cone.ugm.model.group import Group
 from pyramid.httpexceptions import HTTPForbidden
 from webob.exc import HTTPFound
+from zope.event import classhandler
+
+from cone.ugm.events import UserCreatedEvent, GroupModifiedEvent, GroupCreatedEvent
 
 
 class TestBrowserGroup(TileTestCase):
@@ -177,6 +180,13 @@ class TestBrowserGroup(TileTestCase):
         request = self.layer.new_request()
         request.params['factory'] = 'group'
 
+        events_called = []
+
+        from cone.ugm.events import UserCreatedEvent
+        @classhandler.handler(GroupCreatedEvent)
+        def on_group_created(event):
+            events_called.append("group created")
+            
         with self.layer.authenticated('viewer'):
             self.expectError(
                 HTTPForbidden,
@@ -213,6 +223,8 @@ class TestBrowserGroup(TileTestCase):
         self.assertTrue(isinstance(group, Group))
         self.assertEqual(group.attrs['groupname'], 'Group 1')
 
+        self.assertTrue("group created" in events_called)
+        
     @testing.principals(
         users={
             'manager': {}
@@ -233,6 +245,13 @@ class TestBrowserGroup(TileTestCase):
 
         request = self.layer.new_request()
 
+        events_called = []
+
+        @classhandler.handler(GroupModifiedEvent)
+        def on_user_created(event):
+            events_called.append("group modified")
+            
+            
         with self.layer.authenticated('manager'):
             res = render_tile(group, request, 'edit')
         expected = '<form action="http://example.com/groups/group_1/edit"'
@@ -246,3 +265,5 @@ class TestBrowserGroup(TileTestCase):
         self.assertEqual(res, '')
 
         self.assertEqual(group.attrs['groupname'], 'Groupname Changed')
+
+        self.assertTrue("group modified" in events_called)

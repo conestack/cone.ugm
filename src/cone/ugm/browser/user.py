@@ -1,3 +1,4 @@
+import zope
 from cone.app import compat
 from cone.app.browser.ajax import AjaxAction
 from cone.app.browser.authoring import ContentAddForm
@@ -26,6 +27,7 @@ from webob.exc import HTTPFound
 from yafowil.base import UNSET
 import fnmatch
 import itertools
+from cone.ugm import events
 
 
 _ = TranslationStringFactory('cone.ugm')
@@ -216,8 +218,9 @@ class UserAddForm(UserForm, Form):
         login_name = general_settings(self.model).attrs.users_login_name_attr
         if login_name:
             extracted[login_name] = extracted.pop('login')
-        users.create(user_id, **extracted)
+        user = users.create(user_id, **extracted)
         users()
+        zope.event.notify(events.UserCreatedEvent(principal=user, uid=user_id, password=password))
         if self.model.local_manager_consider_for_user:
             groups = ugm_backend.ugm.groups
             for gid in self.model.local_manager_default_gids:
@@ -265,6 +268,7 @@ class UserEditForm(UserForm, Form):
         if password is not UNSET:
             user_id = self.model.name
             ugm_backend.ugm.users.passwd(user_id, None, password)
+        zope.event.notify(events.UserModifiedEvent(principal=self.model, uid=self.model.name, password=password))
 
     def next(self, request):
         came_from = request.get('came_from')
