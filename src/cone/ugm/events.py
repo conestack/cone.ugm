@@ -8,6 +8,7 @@ class PrincipalmanagementEvent(object):
 class UserCreatedEvent(PrincipalmanagementEvent):
     "called after a user has been created"
     def __init__(self, principal=None, uid=None, password=None):
+        self.principal = principal
         self.uid = uid
         self.password = password
 
