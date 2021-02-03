@@ -1,14 +1,12 @@
-from cone.app import compat
 from cone.app import get_root
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
+from cone.ugm.events import UserDeletedEvent
+from cone.ugm.events import GroupDeletedEvent
 from pyramid.exceptions import HTTPForbidden
 from pyramid.view import render_view_to_response
-import json
-
 from zope.event import classhandler
-
-from cone.ugm.events import UserCreatedEvent, GroupCreatedEvent, UserDeletedEvent, GroupDeletedEvent
+import json
 
 
 class TestBrowserActions(TileTestCase):
@@ -228,7 +226,7 @@ class TestBrowserActions(TileTestCase):
 
         @classhandler.handler(UserDeletedEvent)
         def on_user_deleted(event):
-            events_called.append("user deleted")
+            events_called.append('UserDeletedEvent')
 
         request = self.layer.new_request(type='json')
         with self.layer.authenticated('viewer'):
@@ -255,8 +253,7 @@ class TestBrowserActions(TileTestCase):
         self.assertTrue(json_res['message'].find("'user_1'") > -1)
 
         self.assertEqual(group.model.users, [])
-
-        self.assertTrue("user deleted" in events_called)
+        self.assertTrue('UserDeletedEvent' in events_called)
 
     @testing.principals(
         users={
@@ -281,7 +278,7 @@ class TestBrowserActions(TileTestCase):
 
         @classhandler.handler(GroupDeletedEvent)
         def on_group_deleted(event):
-            events_called.append("group deleted")
+            events_called.append('GroupDeletedEvent')
 
         with self.layer.authenticated('viewer'):
             self.expectError(
@@ -306,5 +303,4 @@ class TestBrowserActions(TileTestCase):
         self.assertTrue(json_res['message'].find("'group_1'") > -1)
 
         self.assertEqual(groups.keys(), [])
-        
-        # self.assertTrue("group deleted" in events_called)
+        self.assertTrue('GroupDeletedEvent' in events_called)
