@@ -1,10 +1,12 @@
-import zope
+from cone.ugm.events import GroupDeletedEvent
+from cone.ugm.events import UserDeletedEvent
 from cone.ugm.model.group import Group
 from cone.ugm.model.user import User
 from pyramid.i18n import get_localizer
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
-from cone.ugm.events import UserDeletedEvent, GroupDeletedEvent
+from zope.event import notify
+
 
 _ = TranslationStringFactory('cone.ugm')
 
@@ -74,7 +76,7 @@ def delete_user_action(model, request):
         user = model.model
         del users[uid]
         users()
-        zope.event.notify(UserDeletedEvent(principal=user, uid=user.name))
+        notify(UserDeletedEvent(principal=user, uid=user.name))
         model.parent.invalidate()
         localizer = get_localizer(request)
         message = localizer.translate(_(
@@ -245,8 +247,7 @@ def delete_group_action(model, request):
         uid = model.model.name
         del groups[uid]
         groups()
-        zope.event.notify(GroupDeletedEvent(principal=model.model, uid=uid))
-
+        notify(GroupDeletedEvent(principal=model.model, uid=uid))
         model.parent.invalidate()
     except Exception as e:
         return {
