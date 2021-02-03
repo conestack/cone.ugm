@@ -1,4 +1,3 @@
-import zope
 from cone.app import compat
 from cone.app.browser.ajax import AjaxAction
 from cone.app.browser.authoring import ContentAddForm
@@ -9,6 +8,7 @@ from cone.app.browser.utils import make_url
 from cone.app.ugm import ugm_backend
 from cone.tile import Tile
 from cone.tile import tile
+from cone.ugm import events
 from cone.ugm.browser.authoring import AddFormFiddle
 from cone.ugm.browser.authoring import EditFormFiddle
 from cone.ugm.browser.autoincrement import AutoIncrementForm
@@ -25,9 +25,9 @@ from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 from webob.exc import HTTPFound
 from yafowil.base import UNSET
+from zope.event import notify
 import fnmatch
 import itertools
-from cone.ugm import events
 
 
 _ = TranslationStringFactory('cone.ugm')
@@ -220,7 +220,6 @@ class UserAddForm(UserForm, Form):
             extracted[login_name] = extracted.pop('login')
         user = users.create(user_id, **extracted)
         users()
-        zope.event.notify(events.UserCreatedEvent(principal=user, uid=user_id, password=password))
         if self.model.local_manager_consider_for_user:
             groups = ugm_backend.ugm.groups
             for gid in self.model.local_manager_default_gids:
@@ -229,6 +228,11 @@ class UserAddForm(UserForm, Form):
         self.request.environ['next_resource'] = user_id
         if password is not UNSET:
             users.passwd(user_id, None, password)
+        notify(events.UserCreatedEvent(
+            principal=user,
+            uid=user_id,
+            password=password
+        ))
         self.model.parent.invalidate()
 
     def next(self, request):
@@ -268,7 +272,11 @@ class UserEditForm(UserForm, Form):
         if password is not UNSET:
             user_id = self.model.name
             ugm_backend.ugm.users.passwd(user_id, None, password)
-        zope.event.notify(events.UserModifiedEvent(principal=self.model, uid=self.model.name, password=password))
+        notify(events.UserModifiedEvent(
+            principal=self.model,
+            uid=self.model.name,
+            password=password
+        ))
 
     def next(self, request):
         came_from = request.get('came_from')

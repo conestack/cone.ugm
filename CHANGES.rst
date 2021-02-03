@@ -4,7 +4,8 @@ Changes
 1.0a3 (unreleased)
 ------------------
 
-- No changes yet.
+- Add support for objects events on user and group add/modify/delete.
+  [zworkb]
 
 
 1.0a2 (2020-11-12)

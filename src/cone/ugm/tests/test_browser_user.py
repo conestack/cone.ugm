@@ -2,12 +2,12 @@ from cone.app import get_root
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
+from cone.ugm.events import UserCreatedEvent
+from cone.ugm.events import UserModifiedEvent
 from cone.ugm.model.user import User
 from pyramid.httpexceptions import HTTPForbidden
 from webob.exc import HTTPFound
 from zope.event import classhandler
-
-from cone.ugm.events import UserCreatedEvent, UserModifiedEvent
 
 
 class TestBrowserUser(TileTestCase):
@@ -179,7 +179,7 @@ class TestBrowserUser(TileTestCase):
 
         @classhandler.handler(UserCreatedEvent)
         def on_user_created(event):
-            events_called.append("user created")
+            events_called.append('UserCreatedEvent')
 
         with self.layer.authenticated('viewer'):
             self.expectError(
@@ -220,8 +220,7 @@ class TestBrowserUser(TileTestCase):
         self.assertTrue(bool(user.attrs['password']))
         self.assertEqual(user.attrs['fullname'], 'Max Mustermann')
         self.assertEqual(user.attrs['email'], 'max.mustermann@example.com')
-
-        self.assertTrue("user created" in events_called)
+        self.assertTrue('UserCreatedEvent' in events_called)
 
     @testing.principals(
         users={
@@ -247,8 +246,8 @@ class TestBrowserUser(TileTestCase):
 
         @classhandler.handler(UserModifiedEvent)
         def on_user_modified(event):
-            events_called.append("user modified")
-            
+            events_called.append('UserModifiedEvent')
+
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'edit')
         expected = '<form action="http://example.com/users/user_1/edit"'
@@ -265,5 +264,4 @@ class TestBrowserUser(TileTestCase):
 
         self.assertEqual(user.attrs['fullname'], 'Susi Musterfrau')
         self.assertEqual(user.attrs['email'], 'susi.musterfrau@example.com')
-        
-        self.assertTrue("user modified" in events_called)
+        self.assertTrue('UserModifiedEvent' in events_called)

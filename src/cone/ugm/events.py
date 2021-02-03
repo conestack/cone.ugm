@@ -1,37 +1,47 @@
+class PrincipalManagementEvent(object):
+    """Principal management related base event.
+    """
 
-class PrincipalmanagementEvent(object):
     def __init__(self, principal=None, uid=None):
         self.principal = principal
         self.uid = uid
 
 
-class UserCreatedEvent(PrincipalmanagementEvent):
-    "called after a user has been created"
+class UserCreatedEvent(PrincipalManagementEvent):
+    """Called after a user has been created.
+    """
+
     def __init__(self, principal=None, uid=None, password=None):
         self.principal = principal
         self.uid = uid
         self.password = password
 
 
-class UserModifiedEvent(PrincipalmanagementEvent):
-    "called after a user has been deleted"
+class UserModifiedEvent(PrincipalManagementEvent):
+    """Called after a user has been modified.
+    """
+
     def __init__(self, principal=None, uid=None, password=None):
         self.principal = principal
         self.uid = uid
         self.password = password
 
 
-class UserDeletedEvent(PrincipalmanagementEvent):
-    """called on user deletion"""
+class UserDeletedEvent(PrincipalManagementEvent):
+    """Called after a user has been deleted.
+    """
 
 
-class GroupCreatedEvent(PrincipalmanagementEvent):
-    """called on group creation"""
+class GroupCreatedEvent(PrincipalManagementEvent):
+    """Called after a group has been created.
+    """
 
 
-class GroupModifiedEvent(PrincipalmanagementEvent):
-    """called on group modification"""
+class GroupModifiedEvent(PrincipalManagementEvent):
+    """Called after a group has been modified.
+    """
 
 
-class GroupDeletedEvent(PrincipalmanagementEvent):
-    """called on group deletiion"""
+class GroupDeletedEvent(PrincipalManagementEvent):
+    """Called after a group has been deleted.
+    """
