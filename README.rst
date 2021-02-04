@@ -160,15 +160,15 @@ for users:
 
     @classhandler.handler(events.UserCreatedEvent)
     def on_user_created(event):
-        print(f"user {event.principal} with id {event.uid} created")
+        print(f"user {event.principal} with id {event.principal.name} created")
 
     @classhandler.handler(events.UserModifiedEvent)
     def on_user_modified(event):
-        print(f"user {event.principal} with id {event.uid} modified")
+        print(f"user {event.principal} with id {event.principal.name} modified")
 
     @classhandler.handler(events.UserDeletedEvent)
     def on_user_deleted(event):
-        print(f"user {event.principal} with id {event.uid} deleted")
+        print(f"user {event.principal} with id {event.principal.name} deleted")
 
 and for groups:
 
@@ -176,15 +176,15 @@ and for groups:
 
     @classhandler.handler(events.GroupCreatedEvent)
     def on_group_created(event):
-        print(f"group {event.principal} with id {event.uid} created")
+        print(f"group {event.principal} with id {event.principal.name} created")
 
     @classhandler.handler(events.GroupModifiedEvent)
     def on_group_modified(event):
-        print(f"group {event.principal} with id {event.uid} modified")
+        print(f"group {event.principal} with id {event.principal.name} modified")
 
     @classhandler.handler(events.GroupDeletedEvent)
     def on_group_deleted(event):
-        print(f"group {event.principal} with id {event.uid} deleted")
+        print(f"group {event.principal} with id {event.principal.name} deleted")
 
 
 Contributors
