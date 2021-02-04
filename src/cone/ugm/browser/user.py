@@ -230,7 +230,6 @@ class UserAddForm(UserForm, Form):
             users.passwd(user_id, None, password)
         notify(events.UserCreatedEvent(
             principal=user,
-            uid=user_id,
             password=password
         ))
         self.model.parent.invalidate()
@@ -274,7 +273,6 @@ class UserEditForm(UserForm, Form):
             ugm_backend.ugm.users.passwd(user_id, None, password)
         notify(events.UserModifiedEvent(
             principal=self.model,
-            uid=self.model.name,
             password=password
         ))
 

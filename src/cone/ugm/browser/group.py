@@ -206,7 +206,7 @@ class GroupAddForm(GroupForm, Form):
         group_id = extracted.pop('id')
         groups.create(group_id, **extracted)
         groups()
-        notify(events.GroupCreatedEvent(uid=group_id))
+        notify(events.GroupCreatedEvent(principal=groups[group_id]))
         self.request.environ['next_resource'] = group_id
         self.model.parent.invalidate()
 
@@ -238,10 +238,7 @@ class GroupEditForm(GroupForm, Form):
                 continue
             attrs[attr_name] = data[attr_name].extracted
         self.model()
-        notify(events.GroupModifiedEvent(
-            principal=self.model,
-            uid=self.model.name
-        ))
+        notify(events.GroupModifiedEvent(principal=self.model))
 
     def next(self, request):
         came_from = request.get('came_from')

@@ -2,17 +2,16 @@ class PrincipalManagementEvent(object):
     """Principal management related base event.
     """
 
-    def __init__(self, principal=None, uid=None):
+    def __init__(self, principal):
         self.principal = principal
-        self.uid = uid
 
 
 class UserCreatedEvent(PrincipalManagementEvent):
     """Called after a user has been created.
     """
 
-    def __init__(self, principal=None, uid=None, password=None):
-        self.uid = uid
+    def __init__(self, principal, password=None):
+        self.principal = principal
         self.password = password
 
 
@@ -20,9 +19,8 @@ class UserModifiedEvent(PrincipalManagementEvent):
     """Called after a user has been modified.
     """
 
-    def __init__(self, principal=None, uid=None, password=None):
+    def __init__(self, principal, password=None):
         self.principal = principal
-        self.uid = uid
         self.password = password
 
 
