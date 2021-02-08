@@ -131,6 +131,71 @@ to this three:
 Principal Forms
 ---------------
 
+The basic principal form customization happens in the ugm XML configuration
+file. Each field to render must have an entry in ``users_form_attrmap``
+respective ``groups_form_attrmap``:
+
+.. code-block:: xml
+
+  <users_form_attrmap>
+    <elem>
+      <key>my_field</key>
+      <value>My Field</value>
+    </elem>
+  </users_form_attrmap>
+
+By default, a non required text field gets rendered for each custom entry in
+the XML configuration.
+
+To make a custom field required, the easiest way is to use
+``default_form_field_factory`` and register it with ``user_field``
+respective ``group_field``:
+
+.. code-block:: python
+
+    from cone.ugm.browser.principal import default_form_field_factory
+    from cone.ugm.browser.principal import user_field
+    from functools import partial
+
+    my_field_factory = user_field('my_field')(
+        partial(default_form_field_factory, required=True)
+    )
+
+It's possible to register custom principal field factories for dedicated
+UGM backends. This example is taken from ``cone.ldap`` and registers a
+user field factory for ``cn`` attribute in ``ldap`` backend:
+
+.. code-block:: python
+
+    ldap_cn_field_factory = user_field('cn', backend='ldap')(
+        partial(default_form_field_factory, required=True)
+    )
+
+The most flexible way for principal form field customization is to provide
+a callback function and call the yafowil factory directly:
+
+.. code-block:: python
+
+    from yafowil.base import factory
+
+    @user_field('age')
+    def age_field_factory(form, label, value):
+        return factory(
+            'field:label:error:number',
+            value=value,
+            props={
+                'label': label,
+                'datatype': int
+            })
+
+Note. The value of the custom field gets written to principal attributes as
+extracted from the widget. Make sure to define the expected datatype in the
+widget properties or define a suitable custom extractor.
+
+
+Principal Listings
+------------------
+
 XXX
 
 
