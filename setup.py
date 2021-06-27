@@ -37,9 +37,9 @@ setup(
         'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)'
     ],
     keywords='',
-    author='BlueDynamics Alliance',
-    author_email='dev@bluedynamics.com',
-    url=u'http://github.com/bluedynamics/cone.ugm',
+    author='Cone Contributors',
+    author_email='dev@conestack.org',
+    url='http://github.com/conestack/cone.ugm',
     license='LGPLv3',
     packages=find_packages('src'),
     package_dir={'': 'src'},
