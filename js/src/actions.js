@@ -1,63 +1,71 @@
 import $ from 'jquery';
 import ts from 'treibstoff';
 
-class PrincipalActions {
+export class PrincipalActions {
 
-    // delete item from database
+    constructor() {
+        this.delete_item = this.delete_item.bind(this);
+        this.add_item = this.add_item.bind(this);
+        this.remove_item = this.remove_item.bind(this);
+    }
+
     delete_item(evt) {
         evt.preventDefault();
         evt.stopPropagation();
-        var elem = $(evt.currentTarget);
-        var col = $('.cols .sort_col_1', elem.parent().parent());
-        var id = col.text();
+        let elem = $(evt.currentTarget),
+            col = $('.cols .sort_col_1', elem.parent().parent()),
+            id = col.text();
         id = id.replace('<', '&lt;');
         id = id.replace('>', '&gt;');
-        var msg = 'Do you really want to delete this item?\n\n\n"' + id + '"';
-        var options = {
-            message: msg,
+        let options = {
             action_id: 'delete_item'
         };
-        var target = elem.attr('ajax:target');
-        $.extend(options, bdajax.parsetarget(target));
+        let target = elem.attr('ajax:target');
+        $.extend(options, ts.parse_target(target));
         $.extend(options, {
             success: function(data) {
                 if (!data) {
-                    bdajax.error('Empty response');
+                    ts.show_error('Empty response');
                     return;
                 }
                 if (!data.success) {
-                    bdajax.error(data.message);
+                    ts.show_error(data.message);
                     return;
                 }
-                var li = elem.parent().parent();
+                let li = elem.parent().parent();
                 if (li.hasClass('selected')) {
-                    var col = $('div.right_column');
+                    let col = $('div.right_column');
                     col.empty();
                 }
                 li.remove();
             }
         });
-        bdajax.dialog(options, function(options) {
-            ugm.actions.perform(options);
+        let msg = `Do you really want to delete this item?\n\n\n"${id}"`;
+        ts.show_dialog({
+            title: 'Delete Principal',
+            message: msg,
+            on_confirm: function(inst) {
+                this.perform(options);
+            }.bind(this)
         });
     }
 
-    // add item as member in listing
-    listing_add_item(evt) {
+    add_item(evt) {
         evt.preventDefault();
         evt.stopPropagation();
-        var elem = $(evt.currentTarget);
-        var target = elem.attr('ajax:target');
-        var options = bdajax.parsetarget(target);
+        let elem = $(evt.currentTarget),
+            target = elem.attr('ajax:target'),
+            options = ts.parse_target(target),
+            that = this;
         $.extend(options, {
             action_id: 'add_item',
             success: function(data) {
                 if (!data) {
-                    bdajax.error('Empty response');
+                    ts.show_error('Empty response');
                     return;
                 }
                 if (!data.success) {
-                    bdajax.error(data.message);
+                    ts.show_error(data.message);
                     return;
                 }
                 elem.off()
@@ -70,28 +78,28 @@ class PrincipalActions {
                     .off()
                     .removeClass('remove_item_disabled')
                     .addClass('remove_item')
-                    .on('click', ugm.actions.listing_remove_item);
+                    .on('click', that.remove_item_handle);
             }
         });
-        ugm.actions.perform(options);
+        this.perform(options);
     }
 
-    // remove item from member in listing
-    listing_remove_item(evt) {
+    remove_item(evt) {
         evt.preventDefault();
         evt.stopPropagation();
-        var elem = $(evt.currentTarget);
-        var target = elem.attr('ajax:target');
-        var options = bdajax.parsetarget(target);
+        let elem = $(evt.currentTarget),
+            target = elem.attr('ajax:target'),
+            options = ts.parse_target(target),
+            that = this;
         $.extend(options, {
             action_id: 'remove_item',
             success: function(data) {
                 if (!data) {
-                    bdajax.error('Empty response');
+                    ts.show_error('Empty response');
                     return;
                 }
                 if (!data.success) {
-                    bdajax.error(data.message);
+                    ts.show_error(data.message);
                     return;
                 }
                 elem.off()
@@ -104,19 +112,18 @@ class PrincipalActions {
                     .off()
                     .removeClass('add_item_disabled')
                     .addClass('add_item')
-                    .on('click', ugm.actions.listing_add_item);
+                    .on('click', that.add_item_handle);
             }
         });
-        ugm.actions.perform(options);
+        this.perform(options);
     }
 
-    // perform listing item action
-    perform(config) {
-        bdajax.request({
-            url: bdajax.parseurl(config.url) + '/' + config.action_id,
+    perform(opts) {
+        ts.ajax.request({
+            url: `${ts.parse_url(opts.url)}/${opts.action_id}`,
             type: 'json',
-            params: config.params,
-            success: config.success
+            params: opts.params,
+            success: opts.success
         });
     }
 }
