@@ -42,17 +42,6 @@ On debian based systems install:
     $ apt-get install -y libxml2-dev libxslt1-dev
 
 
-Development and Testing
------------------------
-
-For testing and development, ``cone.ugm`` contains a buildout configuration.
-Download or checkout package and run:
-
-.. code-block:: shell
-
-    cone.ugm$ ./bootstrap.sh python3
-
-
 Example Configuration
 ---------------------
 
@@ -250,6 +239,64 @@ and for groups:
     @classhandler.handler(events.GroupDeletedEvent)
     def on_group_deleted(event):
         print(f"group {event.principal} with id {event.principal.name} deleted")
+
+
+Development and Testing
+-----------------------
+
+Python
+~~~~~~
+
+For testing and development, ``cone.ugm`` contains a buildout configuration.
+Download or checkout package and run:
+
+.. code-block:: shell
+
+    cone.ugm$ ./bootstrap.sh python3
+
+
+Javascript
+~~~~~~~~~~
+
+Install test requirements::
+
+    npm --save-dev install \
+        qunit \
+        karma \
+        karma-qunit \
+        karma-coverage \
+        karma-chrome-launcher \
+        karma-viewport \
+        karma-module-resolver-preprocessor
+
+Install jquery from git as jquery 4 is not released yet but required to run
+tests as modules and import from jquery sources works::
+
+    npm --save-dev install https://github.com/jquery/jquery#main
+
+Install deployment requirements::
+
+    npm --save-dev install \
+        rollup \
+        rollup-plugin-cleanup \
+        rollup-plugin-terser
+
+Install treibstoff and cone.app from local folder or from git repo.::
+
+    npm install https://github.com/conestack/treibstoff#master
+    npm install https://github.com/conestack/cone.app#master
+
+Start karma server (immediately run tests)::
+
+    ./karma.sh
+
+To view coverage report, open::
+
+    karma/coverage/[browser name]/index.html
+
+Create JS bundle with rollup::
+
+    ./rollup.sh
 
 
 Contributors
