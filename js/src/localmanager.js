@@ -1,6 +1,6 @@
 import ts from 'treibstoff';
 
-export function autocomplete_gid(request, callback) {
+export function lm_autocomplete_gid(request, callback) {
     ts.ajax.request({
         success: function(data) {
             callback(data);

@@ -74,7 +74,7 @@ def initialize_ugm(config, global_config, settings):
     cfg.merged.css.protected.append((browser.static_resources, 'styles.css'))
 
     # custom UGM javascript
-    cfg.merged.js.protected.append((browser.static_resources, 'ugm.js'))
+    cfg.js.protected.append('cone.ugm.static/cone.ugm.js')
 
     # config file locations
     ugm_cfg.ugm_settings = settings.get('ugm.config', '')

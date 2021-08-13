@@ -21,7 +21,7 @@ export class PrincipalActions {
             action_id: 'delete_item'
         };
         let target = elem.attr('ajax:target');
-        $.extend(options, ts.parse_target(target));
+        $.extend(options, ts.ajax.parse_target(target));
         $.extend(options, {
             success: function(data) {
                 if (!data) {
@@ -55,7 +55,7 @@ export class PrincipalActions {
         evt.stopPropagation();
         let elem = $(evt.currentTarget),
             target = elem.attr('ajax:target'),
-            options = ts.parse_target(target),
+            options = ts.ajax.parse_target(target),
             that = this;
         $.extend(options, {
             action_id: 'add_item',
@@ -89,7 +89,7 @@ export class PrincipalActions {
         evt.stopPropagation();
         let elem = $(evt.currentTarget),
             target = elem.attr('ajax:target'),
-            options = ts.parse_target(target),
+            options = ts.ajax.parse_target(target),
             that = this;
         $.extend(options, {
             action_id: 'remove_item',

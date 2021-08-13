@@ -43,7 +43,7 @@ export class LeftPrincipalListing extends PrincipalListing {
 
         // bind add principal button
         let add_btn = $('div.add_button button', context);
-        add_btn.off('click').on('click', this.unselect_listing.bind(this));
+        add_btn.off('click').on('click', this.add_principal.bind(this));
 
         // bind listing item actions
         let actions = $('div.columnitems div.actions', context);
@@ -59,16 +59,29 @@ export class LeftPrincipalListing extends PrincipalListing {
         listing_items.off().on('click', this.show_item.bind(this));
     }
 
-    unselect_listing(evt) {
+    add_principal(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+
         let listing = $('.left_column ul.leftlisting');
         this.reset_selected(listing);
+
+        let elem = $(evt.currentTarget),
+            target = ts.ajax.parse_target(elem.attr('ajax:target'));
+        ts.ajax.action({
+            name: 'add',
+            selector: '.right_column',
+            mode: 'inner',
+            url: target.url,
+            params: target.params
+        })
     }
 
     show_item(evt) {
         let li = $(evt.currentTarget);
         this.set_selected(li);
 
-        let target = ts.parse_target(li.attr('ajax:target'));
+        let target = ts.ajax.parse_target(li.attr('ajax:target'));
         ts.ajax.action({
             name: 'rightcolumn',
             selector: '.right_column',
@@ -129,7 +142,7 @@ export class RightPrincipalListing extends PrincipalListing {
         } else {
             action = 'columnlisting';
         }
-        let target = ts.parse_target(elem.attr('ajax:target'));
+        let target = ts.ajax.parse_target(elem.attr('ajax:target'));
         ts.ajax.action({
             name: action,
             selector: 'div.right_column .columnlisting',

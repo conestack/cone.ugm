@@ -10,9 +10,7 @@
          tal:condition="context.can_add">
       <button class="btn btn-default"
               type="submit"
-              ajax:bind="click"
-              ajax:target="${context.add_target}"
-              ajax:action="add:.right_column:inner">
+              ajax:target="${context.add_target}">
          <span class="ion-plus"></span>
          <span tal:content="context.add_label">
            Add principal
