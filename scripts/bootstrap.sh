@@ -1,9 +1,6 @@
 #!/bin/bash
-for dir in lib include local bin share parts; do
-    if [ -d "$dir" ]; then
-        rm -rf "$dir"
-    fi
-done
+
+set -e
 
 PY=$1
 if [ "$PY" == "" ]; then
