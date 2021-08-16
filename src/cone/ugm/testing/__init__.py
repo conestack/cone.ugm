@@ -2,6 +2,8 @@ from cone.app import get_root
 from cone.app.testing import Security
 from cone.app.ugm import ugm_backend
 from cone.ugm.settings import ugm_cfg
+from yafowil.base import factory
+from yafowil.bootstrap import configure_factory
 import os
 import shutil
 import tempfile
@@ -156,10 +158,13 @@ class UGMLayer(Security):
         ugm_backend.initialize()
 
     def setUp(self, args=None):
+        factory.push_state()
+        configure_factory('bootstrap3')
         self.ugm_dir = tempfile.mkdtemp()
         super(UGMLayer, self).setUp(args=args)
 
     def tearDown(self):
+        factory.pop_state()
         shutil.rmtree(self.ugm_dir)
         super(UGMLayer, self).tearDown()
 
