@@ -125,7 +125,7 @@
 
     class PrincipalListing {
         static initialize(context) {
-            cone.BatchedItems.bind_search(
+            cone.BatchedItemsSearch.initialize(
                 context,
                 'div.column_filter input',
                 'filter'
@@ -264,5 +264,5 @@
 
     return exports;
 
-}({}, jQuery, treibstoff, cone));
+})({}, jQuery, treibstoff, cone);
 //# sourceMappingURL=cone.ugm.js.map
