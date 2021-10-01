@@ -7,7 +7,7 @@ export class PrincipalListing {
 
     static initialize(context) {
         // bind listing filter
-        cone.BatchedItems.bind_search(
+        cone.BatchedItemsSearch.initialize(
             context,
             'div.column_filter input',
             'filter'
