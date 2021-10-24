@@ -290,17 +290,30 @@ def login_name_field_factory(form, label, value):
 # Password form field factory
 ###############################################################################
 
+def password_settings():
+    """Returns general password related settings. Used by
+    ``password_field_factory`` and ``ChangePasswordForm`` to ensure password
+    consistency.
+
+    XXX: Make this settings configurable.
+    """
+    return {
+        'minlength': 6,
+        'ascii': True
+    }
+
+
 @user_field('password')
 def password_field_factory(form, label, value):
+    props = {
+        'label': label,
+        'required': default_required_message(form.request, label),
+    }
+    props.update(password_settings())
     return factory(
         'field:label:error:password',
         value=value,
-        props={
-            'label': label,
-            'required': default_required_message(form.request, label),
-            'minlength': 6,
-            'ascii': True
-        })
+        props=props)
 
 
 ###############################################################################

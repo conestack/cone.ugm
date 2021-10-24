@@ -7,6 +7,8 @@ from node.locking import locktree
 from node.utils import instance_property
 from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
+from pyramid.security import Allow
+from pyramid.threadlocal import get_current_request
 
 
 _ = TranslationStringFactory('cone.ugm')
@@ -18,6 +20,14 @@ _ = TranslationStringFactory('cone.ugm')
     description=_('user_node_description', default='User'))
 @plumbing(LocalManagerUserACL)
 class User(AdapterNode):
+
+    @property
+    def __acl__(self):
+        acl = super(User).__acl__(self)
+        request = get_current_request()
+        if request.authenticated_userid == self.name:
+            acl = [(Allow, self.name, ['change_own_password'])] + acl
+        return acl
 
     @instance_property
     def properties(self):
