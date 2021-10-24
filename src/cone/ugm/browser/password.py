@@ -46,7 +46,7 @@ class ChangePasswordFormAction(LinkAction):
     def href(self):
         return make_url(
             self.request,
-            node=self.model.root,
+            node=self.model.root['users'][self.request.authenticated_userid],
             resource='change_password'
         )
 
@@ -54,7 +54,7 @@ class ChangePasswordFormAction(LinkAction):
     def target(self):
         return make_url(
             self.request,
-            node=self.model.root,
+            node=self.model.root['users'][self.request.authenticated_userid],
             query=make_query(contenttile='change_password')
         )
 
@@ -67,14 +67,17 @@ def change_password(model, request):
     return render_form(model, request, 'change_password')
 
 
-@tile(name='change_password', permission='change_own_password')
+@tile(
+    name='change_password',
+    interface=User,
+    permission='change_own_password')
 class ChangePasswordTile(_FormRenderingTile):
     form_tile_name = 'change_password_form'
 
 
 @tile(
     name='change_password_form',
-    interfaces=User,
+    interface=User,
     permission='change_own_password')
 @plumbing(ContentForm)
 class ChangePasswordForm(Form):
@@ -107,11 +110,13 @@ class ChangePasswordForm(Form):
             })
         current_password_props = {
             'required': _('no_password_given', default='No password given'),
-            'label': _('current_password', default='Current Password')
+            'label': _('current_password', default='Current Password'),
+            'label.class_add': 'col-sm-2',
+            'div.class_add': 'col-sm-10',
         }
         current_password_props.update(password_settings())
         form['current_password'] = factory(
-            'field:label:*current_password_matches:error:password',
+            'field:label:div:*current_password_matches:error:password',
             props=current_password_props,
             custom={
                 'current_password_matches': {
@@ -120,19 +125,23 @@ class ChangePasswordForm(Form):
             })
         new_password_props = {
             'required': _('no_password_given', default='No password given'),
-            'label': _('new_password', default='New Password')
+            'label': _('new_password', default='New Password'),
+            'label.class_add': 'col-sm-2',
+            'div.class_add': 'col-sm-10',
         }
         new_password_props.update(password_settings())
         form['new_password'] = factory(
-            'field:label:error:password',
+            'field:label:div:error:password',
             props=new_password_props)
         confirm_password_props = {
             'required': _('no_password_given', default='No password given'),
-            'label': _('confirm_password', default='Confirm Password')
+            'label': _('confirm_password', default='Confirm Password'),
+            'label.class_add': 'col-sm-2',
+            'div.class_add': 'col-sm-10',
         }
         confirm_password_props.update(password_settings())
         form['confirm_password'] = factory(
-            'field:label:*confirm_password_matches:error:password',
+            'field:label:div:*confirm_password_matches:error:password',
             props=confirm_password_props,
             custom={
                 'confirm_password_matches': {

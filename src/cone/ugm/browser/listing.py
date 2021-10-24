@@ -60,7 +60,7 @@ class ColumnListing(Tile):
     slot = None
     list_columns = []
     css = ''
-    slicesize = 8
+    slicesize = 15
     batchname = ''
     default_order = 'asc'
     display_filter = True
