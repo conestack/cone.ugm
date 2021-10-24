@@ -5,6 +5,7 @@ from cone.ugm import testing
 from cone.ugm import ugm_user_acl
 from cone.ugm.model.user import User
 from node.ext.ugm.interfaces import IUser
+from pyramid.security import Allow
 import unittest
 
 
@@ -39,3 +40,9 @@ class TestModelUser(unittest.TestCase):
 
         # ACL
         self.assertEqual(user.__acl__, ugm_user_acl)
+
+        with self.layer.authenticated('user_1'):
+            self.assertEqual(
+                user.__acl__,
+                [(Allow, 'user_1', ['change_own_password'])] + ugm_user_acl
+            )

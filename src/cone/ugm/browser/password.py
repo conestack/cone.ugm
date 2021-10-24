@@ -29,7 +29,7 @@ _ = TranslationStringFactory('cone.ugm')
 
 
 @personal_tools_action(name='change_password')
-class ChangePasswordFormAction(LinkAction):
+class ChangePasswordAction(LinkAction):
     text = _('change_password', default='Change Password')
     icon = 'glyphicons glyphicons-keys'
     event = 'contextchanged:#layout'
@@ -37,10 +37,8 @@ class ChangePasswordFormAction(LinkAction):
 
     @property
     def display(self):
-        if self.request.authenticated_userid in [security.ADMIN_USER, None] \
-                or ugm_backend.ugm is None:
-            return False
-        return True
+        return ugm_backend.ugm is not None and \
+            self.request.authenticated_userid not in [security.ADMIN_USER, None]
 
     @property
     def href(self):
