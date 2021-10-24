@@ -85,7 +85,10 @@ class GroupsListing(ColumnListing):
             attrs = group.attrs
             # reduce by search term
             if filter_term:
-                s_attrs = [attrs[attr] for attr in attrlist]
+                s_attrs = [
+                    attrs[attr] for attr in attrlist
+                    if attrs[attr] is not None
+                ]
                 if not fnmatch.filter(s_attrs, filter_term):
                     continue
             gid = group.name

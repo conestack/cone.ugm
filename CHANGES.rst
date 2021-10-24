@@ -4,6 +4,15 @@ Changes
 1.0a3 (unreleased)
 ------------------
 
+- Fix ``UsersListing`` and ``GroupsListing`` search filter to ignore
+  ``None`` values.
+
+- Increase listing slice size to 15.
+  [rnix]
+
+- Add ``change_password`` form.
+  [rnix]
+
 - Add support for objects events on user and group add/modify/delete.
   [zworkb]
 
