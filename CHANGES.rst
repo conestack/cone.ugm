@@ -1,7 +1,13 @@
 Changes
 =======
 
-1.0a3 (unreleased)
+1.0a4 (unreleased)
+------------------
+
+- No changes yet.
+
+
+1.0a3 (2021-10-25)
 ------------------
 
 - Fix ``UsersListing`` and ``GroupsListing`` search filter to ignore
