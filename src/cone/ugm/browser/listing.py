@@ -4,9 +4,9 @@ from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
 from cone.app.browser.utils import nodepath
 from cone.app.browser.utils import request_property
-from cone.app.browser.utils import safe_decode
 from cone.tile import Tile
 from cone.ugm.utils import general_settings
+from node.utils import safe_decode
 from pyramid.i18n import TranslationStringFactory
 from yafowil.utils import Tag
 import logging
