@@ -10,9 +10,9 @@ from cone.app.browser.form import Form
 from cone.app.browser.layout import personal_tools_action
 from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
-from cone.app.browser.utils import node_path
 from cone.app.ugm import principal_data
 from cone.app.ugm import ugm_backend
+from cone.app.utils import node_path
 from cone.tile import tile
 from cone.ugm.browser.principal import password_settings
 from cone.ugm.model.user import User

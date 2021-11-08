@@ -1,10 +1,17 @@
 Changes
 =======
 
-1.0a4 (unreleased)
+1.0a5 (unreleased)
 ------------------
 
 - No changes yet.
+
+
+1.0a4 (2021-11-08)
+------------------
+
+- Adopt import path of ``safe_decode`` and ``node_path``.
+  [rnix]
 
 
 1.0a3 (2021-10-25)
