@@ -62,8 +62,8 @@ class TestBrowserAutoincrement(TileTestCase):
         with self.layer.authenticated('manager'):
             res = render_tile(vessel, request, 'addform')
         self.checkOutput("""
-        ...<input class="form-control required text" id="input-userform-id"
-        name="userform.id" required="required" type="text" value="" />...
+        ...id="input-userform-id" name="userform.id" required="required"
+        type="text" value="" />...
         """, res)
 
         settings.attrs.user_id_autoincrement = 'True'
@@ -73,9 +73,8 @@ class TestBrowserAutoincrement(TileTestCase):
         with self.layer.authenticated('manager'):
             res = render_tile(vessel, request, 'addform')
         self.checkOutput("""
-        ...<input class="form-control text" disabled="disabled"
-        id="input-userform-id" name="userform.id" type="text"
-        value="auto_incremented" />...
+        ...disabled="disabled" id="input-userform-id" name="userform.id"
+        type="text" value="auto_incremented" />...
         """, res)
 
         request = user_request(self.layer)

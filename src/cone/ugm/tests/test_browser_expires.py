@@ -20,8 +20,8 @@ class TestBrowserExpires(TileTestCase):
         <div class="expiration-widget"><input checked="checked"
         id="checkbox-active" name="active.active" type="checkbox"
         value="1" /><label>until</label><input class="datepicker expiration
-        form-control" id="input-active" name="active" size="10" type="text"
-        value="" /></div>
+        form-control" data-date-locale='de' id="input-active" name="active"
+        size="10" type="text" value="" /></div>
         """, widget())
 
         # Active with no expiration date
@@ -35,8 +35,8 @@ class TestBrowserExpires(TileTestCase):
         <div class="expiration-widget"><input checked="checked"
         id="checkbox-active" name="active.active" type="checkbox"
         value="1" /><label>until</label><input class="datepicker expiration
-        form-control" id="input-active" name="active" size="10" type="text"
-        value="" /></div>
+        form-control" data-date-locale='de' id="input-active" name="active"
+        size="10" type="text" value="" /></div>
         """, widget(request=request))
 
         # Inactive
@@ -65,8 +65,8 @@ class TestBrowserExpires(TileTestCase):
         self.checkOutput("""
         <div class="expiration-widget"><input id="checkbox-active"
         name="active.active" type="checkbox" value="1" /><label>until</label><input
-        class="datepicker expiration form-control" id="input-active" name="active"
-        size="10" type="text" value="" /></div>
+        class="datepicker expiration form-control" data-date-locale='de'
+        id="input-active" name="active" size="10" type="text" value="" /></div>
         """, widget())
 
         widget = factory(
@@ -81,8 +81,8 @@ class TestBrowserExpires(TileTestCase):
         <div class="expiration-widget"><input checked="checked"
         id="checkbox-active" name="active.active" type="checkbox"
         value="1" /><label>until</label><input class="datepicker expiration
-        form-control" id="input-active" name="active" size="10" type="text"
-        value="23.12.2012" /></div>
+        form-control" data-date-locale='de' id="input-active" name="active"
+        size="10" type="text" value="23.12.2012" /></div>
         """, widget())
 
         # Display renderer
