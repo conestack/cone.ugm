@@ -1,4 +1,4 @@
-from cone.app import root
+from cone.app import get_root
 from cone.app.ugm import ugm_backend
 from cone.ugm import testing
 from cone.ugm.settings import GeneralSettings
@@ -11,6 +11,7 @@ class TestModelUtils(unittest.TestCase):
     layer = testing.ugm_layer
 
     def test_general_settings(self):
+        root = get_root()
         settings = general_settings(root)
         self.assertTrue(isinstance(settings, GeneralSettings))
         self.assertEqual(settings.name, 'ugm_general')

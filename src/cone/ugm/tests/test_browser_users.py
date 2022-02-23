@@ -1,4 +1,4 @@
-from cone.app import root
+from cone.app import get_root
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
@@ -9,6 +9,7 @@ class TestBrowserUsers(TileTestCase):
     layer = testing.ugm_layer
 
     def test_content_tile(self):
+        root = get_root()
         users = root['users']
         request = self.layer.new_request()
 
@@ -25,6 +26,7 @@ class TestBrowserUsers(TileTestCase):
             'manager': ['manager']
         })
     def test_leftcolumn_tile(self):
+        root = get_root()
         users = root['users']
         request = self.layer.new_request()
 
@@ -49,6 +51,7 @@ class TestBrowserUsers(TileTestCase):
             'manager': ['manager']
         })
     def test_rightcolumn_tile(self):
+        root = get_root()
         users = root['users']
         request = self.layer.new_request()
 
@@ -73,6 +76,7 @@ class TestBrowserUsers(TileTestCase):
             'manager': ['manager']
         })
     def test_columnlisting_tile(self):
+        root = get_root()
         users = root['users']
         request = self.layer.new_request()
 

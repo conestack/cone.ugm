@@ -1,4 +1,4 @@
-from cone.app import root
+from cone.app import get_root
 from cone.app.model import Metadata
 from cone.app.model import Properties
 from cone.ugm import testing
@@ -19,6 +19,7 @@ class TestModelUsers(NodeTestCase):
         })
     def test_users(self):
         # Users container
+        root = get_root()
         users = root['users']
         self.assertTrue(isinstance(users, Users))
         self.assertEqual(users.name, 'users')

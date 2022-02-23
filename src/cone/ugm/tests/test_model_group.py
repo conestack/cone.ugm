@@ -1,4 +1,4 @@
-from cone.app import root
+from cone.app import get_root
 from cone.app.model import Metadata
 from cone.app.model import Properties
 from cone.ugm import testing
@@ -17,6 +17,7 @@ class TestModelGroup(unittest.TestCase):
         })
     def test_group(self):
         # Group node
+        root = get_root()
         groups = root['groups']
         group = groups['group_1']
         self.assertTrue(isinstance(group, Group))

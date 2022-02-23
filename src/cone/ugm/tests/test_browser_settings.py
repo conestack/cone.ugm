@@ -1,5 +1,4 @@
 from cone.app import get_root
-from cone.app import root
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
@@ -67,6 +66,7 @@ class TestBrowserSettings(TileTestCase):
             'manager': ['manager']
         })
     def test_general_settings_tiles(self):
+        root = get_root()
         general_settings = root['settings']['ugm_general']
         request = self.layer.new_request()
 
@@ -105,6 +105,7 @@ class TestBrowserSettings(TileTestCase):
             'manager': ['manager']
         })
     def test_localmanager_settings_tiles(self):
+        root = get_root()
         lm_settings = root['settings']['ugm_localmanager']
         request = self.layer.new_request()
 
