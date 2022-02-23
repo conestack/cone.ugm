@@ -1,8 +1,9 @@
 from cone.app import cfg
+from cone.app import get_root
 from cone.app import layout_config
 from cone.app import main_hook
-from cone.app import register_config
-from cone.app import register_entry
+from cone.app import register_config as _register_config
+from cone.app import register_entry as _register_entry
 from cone.app.model import LayoutConfig
 from cone.app.security import acl_registry
 from cone.ugm import browser
@@ -18,6 +19,7 @@ from pyramid.security import Allow
 from pyramid.security import Deny
 from pyramid.security import Everyone
 import logging
+import os
 
 
 logger = logging.getLogger('cone.ugm')
@@ -63,6 +65,22 @@ class UGMLayoutConfig(LayoutConfig):
         self.sidebar_left = []
         self.sidebar_left_grid_width = 0
         self.content_grid_width = 12
+
+
+def register_config(key, factory):
+    # Avoid registration conflict if testrun inside conestack dev env.
+    if os.environ.get('TESTRUN_MARKER'):
+        if key in get_root()['settings'].factories:
+            return
+    _register_config(key, factory)
+
+
+def register_entry(key, factory):
+    # Avoid registration conflict if testrun inside conestack dev env.
+    if os.environ.get('TESTRUN_MARKER'):
+        if key in get_root().factories:
+            return
+    _register_entry(key, factory)
 
 
 # application startup hooks
