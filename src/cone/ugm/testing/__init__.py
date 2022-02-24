@@ -159,9 +159,10 @@ class UGMLayer(Security):
 
     def setUp(self, args=None):
         factory.push_state()
-        configure_factory('bootstrap3')
         self.ugm_dir = tempfile.mkdtemp()
         super(UGMLayer, self).setUp(args=args)
+        factory.push_state()
+        configure_factory('bootstrap3')
 
     def tearDown(self):
         factory.pop_state()

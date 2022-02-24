@@ -1,11 +1,11 @@
 from cone.ugm.utils import general_settings
 from datetime import datetime
+from node.utils import UNSET
 from plumber import Behavior
 from plumber import plumb
 from pyramid.i18n import TranslationStringFactory
 from yafowil.base import factory
 from yafowil.base import fetch_value
-from yafowil.base import UNSET
 from yafowil.common import generic_extractor
 from yafowil.common import generic_required_extractor
 from yafowil.utils import cssid
@@ -89,14 +89,18 @@ def expiration_display_renderer(widget, data):
 
 factory.register(
     'expiration',
-    extractors=[generic_extractor, generic_required_extractor,
-                datetime_extractor, expiration_extractor],
+    extractors=[
+        generic_extractor,
+        generic_required_extractor,
+        datetime_extractor,
+        expiration_extractor
+    ],
     edit_renderers=[expiration_edit_renderer],
-    display_renderers=[expiration_display_renderer])
+    display_renderers=[expiration_display_renderer]
+)
 
-
-factory.doc['blueprint']['expiration'] = \
-"""Add-on blueprint UGM expiration widget. Utilizes yafowil.widget.datetime.
+factory.doc['blueprint']['expiration'] = """\
+Add-on blueprint UGM expiration widget. Utilizes yafowil.widget.datetime.
 """
 
 factory.defaults['expiration.class'] = 'expiration form-control'
@@ -114,8 +118,8 @@ factory.defaults['expiration.delimiter'] = '.'
 factory.defaults['expiration.locale'] = 'de'
 
 factory.defaults['expiration.format'] = '%Y.%m.%d'
-factory.doc['props']['expiration.format'] = \
-"""Pattern accepted by ``datetime.strftime``.
+factory.doc['props']['expiration.format'] = """\
+Pattern accepted by ``datetime.strftime``.
 """
 
 
