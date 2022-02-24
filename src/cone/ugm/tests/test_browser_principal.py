@@ -32,8 +32,6 @@ class TestBrowserPrincipalBase(object):
 
     def test_default_required_message(self):
         request = self.layer.new_request()
-        # use inexistent locale to ensure message catalog bypass
-        request._LOCALE_ = 'foo'
         message = default_required_message(request, 'Name')
         localizer = get_localizer(request)
         self.assertEqual(localizer.translate(message), 'No Name defined')
