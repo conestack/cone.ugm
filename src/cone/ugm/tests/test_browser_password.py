@@ -7,8 +7,7 @@ from cone.ugm.browser.password import ChangePasswordAction
 from cone.ugm.browser.password import ChangePasswordForm
 
 
-class TestBrowserPassword(TileTestCase):
-    layer = testing.ugm_layer
+class TestBrowserPasswordBase(object):
 
     @testing.principals(
         users={
@@ -114,3 +113,7 @@ class TestBrowserPassword(TileTestCase):
             form(model, request)
             user = security.authenticated_user(request)
             self.assertTrue(user.authenticate('123456'))
+
+
+class TestBrowserPassword(TileTestCase, TestBrowserPasswordBase):
+    layer = testing.ugm_layer

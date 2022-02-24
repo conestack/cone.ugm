@@ -9,8 +9,7 @@ from pyramid.security import Allow
 import unittest
 
 
-class TestModelUser(unittest.TestCase):
-    layer = testing.ugm_layer
+class TestModelUserBase(object):
 
     @testing.principals(
         users={
@@ -47,3 +46,7 @@ class TestModelUser(unittest.TestCase):
                 user.__acl__,
                 [(Allow, 'user_1', ['change_own_password'])] + ugm_user_acl
             )
+
+
+class TestModelUser(unittest.TestCase, TestModelUserBase):
+    layer = testing.ugm_layer

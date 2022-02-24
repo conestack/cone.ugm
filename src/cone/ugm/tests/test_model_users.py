@@ -9,8 +9,7 @@ from node.ext.ugm.interfaces import IUsers
 from node.tests import NodeTestCase
 
 
-class TestModelUsers(NodeTestCase):
-    layer = testing.ugm_layer
+class TestModelUsersBase(object):
 
     @testing.principals(
         users={
@@ -54,3 +53,7 @@ class TestModelUsers(NodeTestCase):
 
         # ACL
         self.assertEqual(users.__acl__, ugm_default_acl)
+
+
+class TestModelUsers(NodeTestCase, TestModelUsersBase):
+    layer = testing.ugm_layer

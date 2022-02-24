@@ -28,8 +28,7 @@ from yafowil.base import factory
 from yafowil.common import ascii_extractor
 
 
-class TestBrowserPrincipal(TileTestCase):
-    layer = testing.ugm_layer
+class TestBrowserPrincipalBase(object):
 
     def test_default_required_message(self):
         request = self.layer.new_request()
@@ -481,3 +480,7 @@ class TestBrowserPrincipal(TileTestCase):
         self.assertEqual(form.form['form_field'].getter, 'Field Value')
 
         del _form_field.registry[SCOPE]
+
+
+class TestBrowserPrincipal(TileTestCase, TestBrowserPrincipalBase):
+    layer = testing.ugm_layer

@@ -38,8 +38,7 @@ class autoincrement_principals(testing.principals):
         return wrapper
 
 
-class TestBrowserAutoincrement(TileTestCase):
-    layer = testing.ugm_layer
+class TestBrowserAutoincrementBase(object):
 
     @autoincrement_principals(
         users={
@@ -106,3 +105,7 @@ class TestBrowserAutoincrement(TileTestCase):
         self.assertEqual(sorted(users.keys()), [
             '100', '101', 'manager', 'uid100', 'uid101'
         ])
+
+
+class TestBrowserAutoincrement(TileTestCase, TestBrowserAutoincrementBase):
+    layer = testing.ugm_layer

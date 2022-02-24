@@ -8,8 +8,7 @@ from pyramid.httpexceptions import HTTPForbidden
 import os
 
 
-class TestBrowserSettings(TileTestCase):
-    layer = testing.ugm_layer
+class TestBrowserSettingsBase(object):
 
     @testing.custom_config_path
     @testing.temp_directory
@@ -133,3 +132,7 @@ class TestBrowserSettings(TileTestCase):
             res = render_tile(lm_settings, request, 'editform')
         expected = 'form action="http://example.com/settings/ugm_localmanager/edit"'
         self.assertTrue(res.find(expected) > -1)
+
+
+class TestBrowserSettings(TileTestCase, TestBrowserSettingsBase):
+    layer = testing.ugm_layer

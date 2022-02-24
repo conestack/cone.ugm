@@ -4,8 +4,7 @@ from node.utils import UNSET
 from yafowil.base import factory
 
 
-class TestBrowserExpires(TileTestCase):
-    layer = testing.ugm_layer
+class TestBrowserExpiresBase(object):
 
     def test_expiration_widget(self):
         # Edit renderer. Active with no expiration date by default
@@ -130,3 +129,7 @@ class TestBrowserExpires(TileTestCase):
         type="checkbox" /><label>until</label><div class="display-expiration
         form-control" id="display-active">2012.12.23</div></div>
         """, widget())
+
+
+class TestBrowserExpires(TileTestCase, TestBrowserExpiresBase):
+    layer = testing.ugm_layer

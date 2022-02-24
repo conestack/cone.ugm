@@ -5,8 +5,7 @@ from cone.ugm import testing
 from pyramid.httpexceptions import HTTPForbidden
 
 
-class TestBrowserUsers(TileTestCase):
-    layer = testing.ugm_layer
+class TestBrowserUsersBase(object):
 
     def test_content_tile(self):
         root = get_root()
@@ -92,3 +91,7 @@ class TestBrowserUsers(TileTestCase):
             res = render_tile(users, request, 'columnlisting')
         expected = '<div class="columnlisting leftbatchsensitiv"'
         self.assertTrue(res.find(expected) > -1)
+
+
+class TestBrowserUsers(TileTestCase, TestBrowserUsersBase):
+    layer = testing.ugm_layer

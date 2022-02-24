@@ -7,8 +7,7 @@ from node.tests import NodeTestCase
 import os
 
 
-class TestModelSettings(NodeTestCase):
-    layer = testing.ugm_layer
+class TestSettingsBase(object):
 
     @testing.temp_directory
     def test_UGMSettings(self, tempdir):
@@ -79,3 +78,7 @@ class TestModelSettings(NodeTestCase):
         self.assertTrue(attrs is settings.attrs)
         settings.invalidate()
         self.assertFalse(attrs is settings.attrs)
+
+
+class TestSettings(NodeTestCase, TestSettingsBase):
+    layer = testing.ugm_layer

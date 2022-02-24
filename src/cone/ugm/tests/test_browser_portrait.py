@@ -42,8 +42,7 @@ class portrait_principals(testing.principals):
         return wrapper
 
 
-class TestBrowserPortrait(TileTestCase):
-    layer = testing.ugm_layer
+class TestBrowserPortraitBase(object):
 
     @portrait_principals(
         users={
@@ -109,3 +108,7 @@ class TestBrowserPortrait(TileTestCase):
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'editform')
         self.assertFalse(res.find('id="input-userform-portrait"') > -1)
+
+
+class TestBrowserPortrait(TileTestCase, TestBrowserPortraitBase):
+    layer = testing.ugm_layer

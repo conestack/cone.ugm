@@ -9,8 +9,7 @@ from node.ext.ugm.interfaces import IGroups
 from node.tests import NodeTestCase
 
 
-class TestModelGroups(NodeTestCase):
-    layer = testing.ugm_layer
+class TestModelGroupsBase(object):
 
     @testing.principals(
         groups={
@@ -54,3 +53,7 @@ class TestModelGroups(NodeTestCase):
 
         # ACL
         self.assertEqual(groups.__acl__, ugm_default_acl)
+
+
+class TestModelGroups(NodeTestCase, TestModelGroupsBase):
+    layer = testing.ugm_layer

@@ -8,8 +8,7 @@ from plumber import plumbing
 import os
 
 
-class TestModelLocalmanager(NodeTestCase):
-    layer = testing.ugm_layer
+class TestModelLocalmanagerBase(object):
 
     @testing.temp_directory
     def test_LocalManagerConfigAttributes(self, tempdir):
@@ -308,3 +307,7 @@ class TestModelLocalmanager(NodeTestCase):
                     'manage_expiration', 'manage_membership'
                 ])
             ])
+
+
+class TestModelLocalmanager(NodeTestCase, TestModelLocalmanagerBase):
+    layer = testing.ugm_layer
