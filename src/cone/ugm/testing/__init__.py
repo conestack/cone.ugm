@@ -158,7 +158,6 @@ class UGMLayer(Security):
         ugm_backend.initialize()
 
     def setUp(self, args=None):
-        factory.push_state()
         self.ugm_dir = tempfile.mkdtemp()
         super(UGMLayer, self).setUp(args=args)
         factory.push_state()
