@@ -203,7 +203,7 @@ class TestBrowserUserBase(object):
 
         with self.layer.authenticated('manager'):
             res = render_tile(users, request, 'add')
-        expected = 'No User ID defined'
+        expected = 'has-error'
         self.assertTrue(res.find(expected) > -1)
 
         request.params['userform.id'] = 'user_1'

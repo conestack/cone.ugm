@@ -206,7 +206,7 @@ class TestBrowserGroupBase(object):
 
         with self.layer.authenticated('manager'):
             res = render_tile(groups, request, 'add')
-        expected = 'No Group ID defined'
+        expected = 'has-error'
         self.assertTrue(res.find(expected) > -1)
 
         request.params['groupform.id'] = 'group_1'
