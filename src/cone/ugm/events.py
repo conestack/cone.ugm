@@ -1,14 +1,12 @@
 class PrincipalManagementEvent(object):
-    """Principal management related base event.
-    """
+    """Principal management related base event."""
 
     def __init__(self, principal):
         self.principal = principal
 
 
 class UserCreatedEvent(PrincipalManagementEvent):
-    """Called after a user has been created.
-    """
+    """Called after a user has been created."""
 
     def __init__(self, principal, password=None):
         self.principal = principal
@@ -16,8 +14,7 @@ class UserCreatedEvent(PrincipalManagementEvent):
 
 
 class UserModifiedEvent(PrincipalManagementEvent):
-    """Called after a user has been modified.
-    """
+    """Called after a user has been modified."""
 
     def __init__(self, principal, password=None):
         self.principal = principal
@@ -25,20 +22,16 @@ class UserModifiedEvent(PrincipalManagementEvent):
 
 
 class UserDeletedEvent(PrincipalManagementEvent):
-    """Called after a user has been deleted.
-    """
+    """Called after a user has been deleted."""
 
 
 class GroupCreatedEvent(PrincipalManagementEvent):
-    """Called after a group has been created.
-    """
+    """Called after a group has been created."""
 
 
 class GroupModifiedEvent(PrincipalManagementEvent):
-    """Called after a group has been modified.
-    """
+    """Called after a group has been modified."""
 
 
 class GroupDeletedEvent(PrincipalManagementEvent):
-    """Called after a group has been deleted.
-    """
+    """Called after a group has been deleted."""

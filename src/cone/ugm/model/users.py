@@ -6,7 +6,7 @@ from cone.app.ugm import ugm_backend
 from cone.ugm.browser.utils import unquote_slash
 from cone.ugm.localmanager import LocalManagerUsersACL
 from cone.ugm.model.user import User
-from node.behaviors import Nodify
+from node.behaviors import MappingNode
 from node.locking import locktree
 from node.utils import instance_property
 from plumber import plumbing
@@ -23,13 +23,14 @@ _ = TranslationStringFactory('cone.ugm')
     title=_('users_node', default='Users'),
     description=_(
         'users_node_description',
-        default='Container for Users'),
+        default='Container for Users'
+    ),
     icon='ion-person',
     addables=['user'])
 @plumbing(
     LocalManagerUsersACL,
     AppNode,
-    Nodify)
+    MappingNode)
 class Users(object):
 
     @instance_property

@@ -4,7 +4,8 @@ Changes
 1.0a5 (unreleased)
 ------------------
 
-- No changes yet.
+- Replace deprecated use of ``Nodify`` by ``MappingNode``.
+  [rnix]
 
 
 1.0a4 (2021-11-08)
