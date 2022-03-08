@@ -3,7 +3,7 @@ from cone.ugm.utils import general_settings
 from cone.ugm.utils import localmanager_settings
 from lxml import etree
 from node.behaviors import DictStorage
-from node.behaviors import Nodify
+from node.behaviors import MappingNode
 from plumber import Behavior
 from plumber import default
 from plumber import finalize
@@ -15,8 +15,7 @@ import os
 
 
 class LocalManagerConfig(DictStorage):
-    """Local Management configuration storage.
-    """
+    """Local Management configuration storage."""
 
     @finalize
     def load(self):
@@ -49,7 +48,7 @@ class LocalManagerConfig(DictStorage):
             handle.write(etree.tostring(root, pretty_print=True))
 
 
-@plumbing(Nodify, LocalManagerConfig)
+@plumbing(MappingNode, LocalManagerConfig)
 class LocalManagerConfigAttributes(object):
 
     def __init__(self, path):
@@ -178,8 +177,10 @@ class LocalManagerACL(LocalManager):
     @default
     @property
     def local_manager_acl(self):
-        raise NotImplementedError(u"Abstract ``LocalManagerACL`` does not "
-                                  u"implement ``local_manager_acl``")
+        raise NotImplementedError(
+            u'Abstract ``LocalManagerACL`` does not '
+            u'implement ``local_manager_acl``'
+        )
 
     @plumb
     @property

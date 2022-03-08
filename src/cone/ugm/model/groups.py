@@ -6,7 +6,7 @@ from cone.app.ugm import ugm_backend
 from cone.ugm.browser.utils import unquote_slash
 from cone.ugm.localmanager import LocalManagerGroupsACL
 from cone.ugm.model.group import Group
-from node.behaviors import Nodify
+from node.behaviors import MappingNode
 from node.locking import locktree
 from node.utils import instance_property
 from plumber import plumbing
@@ -23,13 +23,14 @@ _ = TranslationStringFactory('cone.ugm')
     title=_('groups_node', default='Groups'),
     description=_(
         'groups_node_description',
-        default='Container for Groups'),
+        default='Container for Groups'
+    ),
     icon='ion-person-stalker',
     addables=['group'])
 @plumbing(
     LocalManagerGroupsACL,
     AppNode,
-    Nodify)
+    MappingNode)
 class Groups(object):
 
     @instance_property
