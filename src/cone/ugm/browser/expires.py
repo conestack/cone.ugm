@@ -1,5 +1,6 @@
 from cone.ugm.utils import general_settings
 from datetime import datetime
+from datetime import timezone
 from node.utils import UNSET
 from plumber import Behavior
 from plumber import plumb
@@ -34,7 +35,7 @@ def expiration_extractor(widget, data):
         return 0
     expires = data.extracted
     if expires:
-        return time.mktime(expires.utctimetuple())
+        return time.mktime(expires.replace(tzinfo=timezone.utc).utctimetuple())
     return UNSET
 
 
