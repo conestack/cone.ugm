@@ -4,9 +4,6 @@ Changes
 1.0a5 (unreleased)
 ------------------
 
-- Ensure utc timezone on extracted expired datetime object.
-  [rnix]
-
 - Replace deprecated use of ``Nodify`` by ``MappingNode``.
   [rnix]
 

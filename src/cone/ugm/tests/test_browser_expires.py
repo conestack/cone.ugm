@@ -1,7 +1,9 @@
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
+from datetime import datetime
 from node.utils import UNSET
 from yafowil.base import factory
+import time
 
 
 class TestBrowserExpiresBase(object):
@@ -50,7 +52,10 @@ class TestBrowserExpiresBase(object):
         request['active.active'] = '1'
         request['active'] = '23.12.2012'
         data = widget.extract(request)
-        self.assertEqual(data.extracted, 1356217200.0)
+        self.assertEqual(
+            data.extracted,
+            time.mktime(datetime(2012, 12, 23).utctimetuple())
+        )
 
         # Edit renderer with preset value
         widget = factory(
