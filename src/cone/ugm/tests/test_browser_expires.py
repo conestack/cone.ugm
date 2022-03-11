@@ -76,7 +76,7 @@ class TestBrowserExpiresBase(object):
         widget = factory(
             'expiration',
             name='active',
-            value=1356217200.0,
+            value=time.mktime(datetime(2012, 12, 23).utctimetuple()),
             props={
                 'datepicker': True,
                 'locale': 'de',
@@ -121,7 +121,7 @@ class TestBrowserExpiresBase(object):
         widget = factory(
             'expiration',
             name='active',
-            value=1356217200.0,
+            value=time.mktime(datetime(2012, 12, 23).utctimetuple()),
             props={
                 'datepicker': True,
                 'locale': 'de',
