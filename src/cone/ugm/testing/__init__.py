@@ -138,12 +138,12 @@ def temp_directory(fn):
 
 class UGMLayer(Security):
 
-    def make_app(self):
+    def make_app(self, **kw):
         ugm_users_file = os.path.join(self.ugm_dir, 'users')
         ugm_groups_file = os.path.join(self.ugm_dir, 'groups')
         ugm_roles_file = os.path.join(self.ugm_dir, 'roles')
         ugm_datadir = os.path.join(self.ugm_dir, 'data')
-        super(UGMLayer, self).make_app(**{
+        settings = {
             'cone.plugins': '\n'.join([
                 'cone.ugm'
             ]),
@@ -154,8 +154,9 @@ class UGMLayer(Security):
             'ugm.groups_file': ugm_groups_file,
             'ugm.roles_file': ugm_roles_file,
             'ugm.datadir': ugm_datadir
-        })
-        ugm_backend.initialize()
+        }
+        settings.update(**kw)
+        super(UGMLayer, self).make_app(**settings)
 
     def setUp(self, args=None):
         self.ugm_dir = tempfile.mkdtemp()
