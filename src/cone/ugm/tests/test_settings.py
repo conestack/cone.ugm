@@ -19,7 +19,7 @@ class TestSettingsBase(object):
 
         settings = MyUGMSettings()
         expected = 'Configuration file {} not exists.'.format(path)
-        err = self.expect_error(ValueError, lambda: settings.attrs)
+        err = self.expectError(ValueError, lambda: settings.attrs)
         self.assertEqual(str(err), expected)
 
         with open(path, 'w') as f:

@@ -36,7 +36,7 @@ class TestModelUsersBase(object):
         self.assertEqual(len([x for x in users]), 2)
 
         # Inexistent child
-        self.expect_error(KeyError, users.__getitem__, 'inexistent')
+        self.expectError(KeyError, users.__getitem__, 'inexistent')
 
         # Children are user application nodes
         user = users['user_1']

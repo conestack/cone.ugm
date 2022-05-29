@@ -36,7 +36,7 @@ class TestModelGroupsBase(object):
         self.assertEqual(len([x for x in groups]), 2)
 
         # Inexistent child
-        self.expect_error(KeyError, groups.__getitem__, 'inexistent')
+        self.expectError(KeyError, groups.__getitem__, 'inexistent')
 
         # Children are group application nodes
         group = groups['group_1']

@@ -162,7 +162,7 @@ class TestModelLocalmanagerBase(object):
             'admin_group_1',
             'managed_group_0'
         ))
-        err = self.expect_error(
+        err = self.expectError(
             Exception,
             lm_node.local_manager_is_default,
             'admin_group_2',
@@ -178,7 +178,7 @@ class TestModelLocalmanagerBase(object):
             'admin_group_2',
             'managed_group_1'
         ))
-        err = self.expect_error(
+        err = self.expectError(
             Exception,
             lm_node.local_manager_is_default,
             'admin_group_1',
