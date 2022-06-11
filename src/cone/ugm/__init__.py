@@ -1,4 +1,3 @@
-from cone.app import cfg
 from cone.app import get_root
 from cone.app import layout_config
 from cone.app import main_hook
@@ -6,7 +5,7 @@ from cone.app import register_config as _register_config
 from cone.app import register_entry as _register_entry
 from cone.app.model import LayoutConfig
 from cone.app.security import acl_registry
-from cone.ugm import browser
+from cone.ugm.browser import configure_resources
 from cone.ugm.model.group import Group
 from cone.ugm.model.groups import Groups
 from cone.ugm.model.user import User
@@ -86,13 +85,7 @@ def register_entry(key, factory):
 # application startup hooks
 @main_hook
 def initialize_ugm(config, global_config, settings):
-    """Initialize UGM.
-    """
-    # custom UGM styles
-    cfg.merged.css.protected.append((browser.static_resources, 'styles.css'))
-
-    # custom UGM javascript
-    cfg.js.protected.append('cone.ugm.static/cone.ugm.js')
+    """Initialize UGM."""
 
     # config file locations
     ugm_cfg.ugm_settings = settings.get('ugm.config', '')
@@ -115,11 +108,11 @@ def initialize_ugm(config, global_config, settings):
     acl_registry.register(ugm_default_acl, Group, 'group')
     acl_registry.register(ugm_default_acl, Groups, 'groups')
 
+    # static resources
+    configure_resources(settings)
+
     # add translation
     config.add_translation_dirs('cone.ugm:locale/')
-
-    # static resources
-    config.add_view(browser.static_resources, name='cone.ugm.static')
 
     # scan browser package
     config.scan(browser)
