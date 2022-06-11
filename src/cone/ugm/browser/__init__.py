@@ -13,13 +13,12 @@ cone_ugm_resources = wr.ResourceGroup(
 )
 cone_ugm_resources.add(wr.ScriptResource(
     name='cone-ugm-js',
-    depends='jquery-ugm-ui-js',
+#    depends='cone-app-protected-js',
     resource='cone.ugm.js',
     compressed='cone.ugm.min.js'
 ))
 cone_ugm_resources.add(wr.StyleResource(
     name='cone-ugm-css',
-    depends='jquery-ugm-css',
     resource='cone.ugm.css'
 ))
 
