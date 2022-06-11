@@ -115,4 +115,4 @@ def initialize_ugm(config, global_config, settings):
     config.add_translation_dirs('cone.ugm:locale/')
 
     # scan browser package
-    config.scan(browser)
+    config.scan('cone.ugm.browser')
