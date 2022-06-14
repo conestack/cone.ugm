@@ -1,4 +1,4 @@
-(function (exports, $, ts, cone) {
+var cone_ugm = (function (exports, $, ts, cone) {
     'use strict';
 
     class PrincipalActions {
