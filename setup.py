@@ -9,7 +9,7 @@ def read_file(name):
         return f.read()
 
 
-version = '1.0a5'
+version = '1.0a6.dev0'
 shortdesc = 'User and group management'
 longdesc = '\n\n'.join([read_file(name) for name in [
     'README.rst',
