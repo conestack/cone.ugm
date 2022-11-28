@@ -24,7 +24,7 @@ widgets:
             props:
                 label: i18n:localmanager_rule_source
                 required: i18n:localmanager_source_empty
-                source: javascript:ugm.localmanager.autocomplete_gid
+                source: javascript:ugm.lm_autocomplete_gid
                 minLength: 1
                 delay: 300
                 field.class: source_field
@@ -45,7 +45,7 @@ widgets:
                     factory: error:*notsource:autocomplete
                     props:
                         required: i18n:localmanager_target_empty
-                        source: javascript:ugm.localmanager.autocomplete_gid
+                        source: javascript:ugm.lm_autocomplete_gid
                         minLength: 1
                         delay: 300
                     custom:

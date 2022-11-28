@@ -1,4 +1,4 @@
-from cone.app import root
+from cone.app import get_root
 from cone.app.model import Metadata
 from cone.app.model import Properties
 from cone.ugm import testing
@@ -8,8 +8,7 @@ from node.ext.ugm.interfaces import IGroup
 import unittest
 
 
-class TestModelGroup(unittest.TestCase):
-    layer = testing.ugm_layer
+class TestModelGroupBase(object):
 
     @testing.principals(
         groups={
@@ -17,6 +16,7 @@ class TestModelGroup(unittest.TestCase):
         })
     def test_group(self):
         # Group node
+        root = get_root()
         groups = root['groups']
         group = groups['group_1']
         self.assertTrue(isinstance(group, Group))
@@ -39,3 +39,7 @@ class TestModelGroup(unittest.TestCase):
 
         # ACL
         self.assertEqual(group.__acl__, ugm_default_acl)
+
+
+class TestModelGroup(unittest.TestCase, TestModelGroupBase):
+    layer = testing.ugm_layer

@@ -1,4 +1,4 @@
-from cone.app import root
+from cone.app import get_root
 from cone.app.model import Metadata
 from cone.app.model import Properties
 from cone.ugm import testing
@@ -9,8 +9,7 @@ from node.ext.ugm.interfaces import IGroups
 from node.tests import NodeTestCase
 
 
-class TestModelGroups(NodeTestCase):
-    layer = testing.ugm_layer
+class TestModelGroupsBase(object):
 
     @testing.principals(
         groups={
@@ -19,6 +18,7 @@ class TestModelGroups(NodeTestCase):
         })
     def test_groups(self):
         # Groups container
+        root = get_root()
         groups = root['groups']
         self.assertTrue(isinstance(groups, Groups))
         self.assertEqual(groups.name, 'groups')
@@ -36,7 +36,7 @@ class TestModelGroups(NodeTestCase):
         self.assertEqual(len([x for x in groups]), 2)
 
         # Inexistent child
-        self.expect_error(KeyError, groups.__getitem__, 'inexistent')
+        self.expectError(KeyError, groups.__getitem__, 'inexistent')
 
         # Children are group application nodes
         group = groups['group_1']
@@ -53,3 +53,7 @@ class TestModelGroups(NodeTestCase):
 
         # ACL
         self.assertEqual(groups.__acl__, ugm_default_acl)
+
+
+class TestModelGroups(NodeTestCase, TestModelGroupsBase):
+    layer = testing.ugm_layer

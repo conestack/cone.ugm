@@ -8,8 +8,7 @@ from plumber import plumbing
 import os
 
 
-class TestModelLocalmanager(NodeTestCase):
-    layer = testing.ugm_layer
+class TestModelLocalmanagerBase(object):
 
     @testing.temp_directory
     def test_LocalManagerConfigAttributes(self, tempdir):
@@ -163,7 +162,7 @@ class TestModelLocalmanager(NodeTestCase):
             'admin_group_1',
             'managed_group_0'
         ))
-        err = self.expect_error(
+        err = self.expectError(
             Exception,
             lm_node.local_manager_is_default,
             'admin_group_2',
@@ -179,7 +178,7 @@ class TestModelLocalmanager(NodeTestCase):
             'admin_group_2',
             'managed_group_1'
         ))
-        err = self.expect_error(
+        err = self.expectError(
             Exception,
             lm_node.local_manager_is_default,
             'admin_group_1',
@@ -308,3 +307,7 @@ class TestModelLocalmanager(NodeTestCase):
                     'manage_expiration', 'manage_membership'
                 ])
             ])
+
+
+class TestModelLocalmanager(NodeTestCase, TestModelLocalmanagerBase):
+    layer = testing.ugm_layer

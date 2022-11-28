@@ -10,8 +10,7 @@ from webob.exc import HTTPFound
 from zope.event import classhandler
 
 
-class TestBrowserGroup(TileTestCase):
-    layer = testing.ugm_layer
+class TestBrowserGroupBase(object):
 
     @testing.principals(
         groups={
@@ -207,7 +206,7 @@ class TestBrowserGroup(TileTestCase):
 
         with self.layer.authenticated('manager'):
             res = render_tile(groups, request, 'add')
-        expected = '<div class="text-danger">No Group ID defined</div>'
+        expected = 'has-error'
         self.assertTrue(res.find(expected) > -1)
 
         request.params['groupform.id'] = 'group_1'
@@ -263,3 +262,7 @@ class TestBrowserGroup(TileTestCase):
 
         self.assertEqual(group.attrs['groupname'], 'Groupname Changed')
         self.assertTrue('GroupModifiedEvent' in events_called)
+
+
+class TestBrowserGroup(TileTestCase, TestBrowserGroupBase):
+    layer = testing.ugm_layer

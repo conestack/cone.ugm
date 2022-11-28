@@ -9,8 +9,7 @@ from zope.event import classhandler
 import json
 
 
-class TestBrowserActions(TileTestCase):
-    layer = testing.ugm_layer
+class TestBrowserActionsBase(object):
 
     @testing.principals(
         users={
@@ -304,3 +303,7 @@ class TestBrowserActions(TileTestCase):
 
         self.assertEqual(groups.keys(), [])
         self.assertTrue('GroupDeletedEvent' in events_called)
+
+
+class TestBrowserActions(TileTestCase, TestBrowserActionsBase):
+    layer = testing.ugm_layer

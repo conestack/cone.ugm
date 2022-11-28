@@ -1,4 +1,4 @@
-from cone.app import root
+from cone.app import get_root
 from cone.app.model import Metadata
 from cone.app.model import Properties
 from cone.ugm import testing
@@ -9,8 +9,7 @@ from node.ext.ugm.interfaces import IUsers
 from node.tests import NodeTestCase
 
 
-class TestModelUsers(NodeTestCase):
-    layer = testing.ugm_layer
+class TestModelUsersBase(object):
 
     @testing.principals(
         users={
@@ -19,6 +18,7 @@ class TestModelUsers(NodeTestCase):
         })
     def test_users(self):
         # Users container
+        root = get_root()
         users = root['users']
         self.assertTrue(isinstance(users, Users))
         self.assertEqual(users.name, 'users')
@@ -36,7 +36,7 @@ class TestModelUsers(NodeTestCase):
         self.assertEqual(len([x for x in users]), 2)
 
         # Inexistent child
-        self.expect_error(KeyError, users.__getitem__, 'inexistent')
+        self.expectError(KeyError, users.__getitem__, 'inexistent')
 
         # Children are user application nodes
         user = users['user_1']
@@ -53,3 +53,7 @@ class TestModelUsers(NodeTestCase):
 
         # ACL
         self.assertEqual(users.__acl__, ugm_default_acl)
+
+
+class TestModelUsers(NodeTestCase, TestModelUsersBase):
+    layer = testing.ugm_layer

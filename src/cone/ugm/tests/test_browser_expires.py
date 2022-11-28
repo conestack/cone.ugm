@@ -1,11 +1,12 @@
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
+from datetime import datetime
 from node.utils import UNSET
 from yafowil.base import factory
+import time
 
 
-class TestBrowserExpires(TileTestCase):
-    layer = testing.ugm_layer
+class TestBrowserExpiresBase(object):
 
     def test_expiration_widget(self):
         # Edit renderer. Active with no expiration date by default
@@ -51,7 +52,10 @@ class TestBrowserExpires(TileTestCase):
         request['active.active'] = '1'
         request['active'] = '23.12.2012'
         data = widget.extract(request)
-        self.assertEqual(data.extracted, 1356217200.0)
+        self.assertEqual(
+            data.extracted,
+            time.mktime(datetime(2012, 12, 23).utctimetuple())
+        )
 
         # Edit renderer with preset value
         widget = factory(
@@ -72,7 +76,7 @@ class TestBrowserExpires(TileTestCase):
         widget = factory(
             'expiration',
             name='active',
-            value=1356217200.0,
+            value=time.mktime(datetime(2012, 12, 23).utctimetuple()),
             props={
                 'datepicker': True,
                 'locale': 'de',
@@ -117,7 +121,7 @@ class TestBrowserExpires(TileTestCase):
         widget = factory(
             'expiration',
             name='active',
-            value=1356217200.0,
+            value=time.mktime(datetime(2012, 12, 23).utctimetuple()),
             props={
                 'datepicker': True,
                 'locale': 'de',
@@ -130,3 +134,7 @@ class TestBrowserExpires(TileTestCase):
         type="checkbox" /><label>until</label><div class="display-expiration
         form-control" id="display-active">2012.12.23</div></div>
         """, widget())
+
+
+class TestBrowserExpires(TileTestCase, TestBrowserExpiresBase):
+    layer = testing.ugm_layer

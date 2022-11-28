@@ -7,8 +7,7 @@ from node.tests import NodeTestCase
 import os
 
 
-class TestModelSettings(NodeTestCase):
-    layer = testing.ugm_layer
+class TestSettingsBase(object):
 
     @testing.temp_directory
     def test_UGMSettings(self, tempdir):
@@ -20,7 +19,7 @@ class TestModelSettings(NodeTestCase):
 
         settings = MyUGMSettings()
         expected = 'Configuration file {} not exists.'.format(path)
-        err = self.expect_error(ValueError, lambda: settings.attrs)
+        err = self.expectError(ValueError, lambda: settings.attrs)
         self.assertEqual(str(err), expected)
 
         with open(path, 'w') as f:
@@ -79,3 +78,7 @@ class TestModelSettings(NodeTestCase):
         self.assertTrue(attrs is settings.attrs)
         settings.invalidate()
         self.assertFalse(attrs is settings.attrs)
+
+
+class TestSettings(NodeTestCase, TestSettingsBase):
+    layer = testing.ugm_layer

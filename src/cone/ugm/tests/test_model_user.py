@@ -1,4 +1,4 @@
-from cone.app import root
+from cone.app import get_root
 from cone.app.model import Metadata
 from cone.app.model import Properties
 from cone.ugm import testing
@@ -9,8 +9,7 @@ from pyramid.security import Allow
 import unittest
 
 
-class TestModelUser(unittest.TestCase):
-    layer = testing.ugm_layer
+class TestModelUserBase(object):
 
     @testing.principals(
         users={
@@ -18,6 +17,7 @@ class TestModelUser(unittest.TestCase):
         })
     def test_user(self):
         # User node
+        root = get_root()
         users = root['users']
         user = users['user_1']
         self.assertTrue(isinstance(user, User))
@@ -46,3 +46,7 @@ class TestModelUser(unittest.TestCase):
                 user.__acl__,
                 [(Allow, 'user_1', ['change_own_password'])] + ugm_user_acl
             )
+
+
+class TestModelUser(unittest.TestCase, TestModelUserBase):
+    layer = testing.ugm_layer

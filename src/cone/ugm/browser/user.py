@@ -20,11 +20,11 @@ from cone.ugm.browser.principal import user_field
 from cone.ugm.browser.roles import PrincipalRolesForm
 from cone.ugm.model.user import User
 from cone.ugm.utils import general_settings
+from node.utils import UNSET
 from odict import odict
 from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 from webob.exc import HTTPFound
-from yafowil.base import UNSET
 from zope.event import notify
 import fnmatch
 import itertools

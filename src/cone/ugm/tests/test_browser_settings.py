@@ -1,5 +1,4 @@
 from cone.app import get_root
-from cone.app import root
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
@@ -9,8 +8,7 @@ from pyramid.httpexceptions import HTTPForbidden
 import os
 
 
-class TestBrowserSettings(TileTestCase):
-    layer = testing.ugm_layer
+class TestBrowserSettingsBase(object):
 
     @testing.custom_config_path
     @testing.temp_directory
@@ -67,6 +65,7 @@ class TestBrowserSettings(TileTestCase):
             'manager': ['manager']
         })
     def test_general_settings_tiles(self):
+        root = get_root()
         general_settings = root['settings']['ugm_general']
         request = self.layer.new_request()
 
@@ -105,6 +104,7 @@ class TestBrowserSettings(TileTestCase):
             'manager': ['manager']
         })
     def test_localmanager_settings_tiles(self):
+        root = get_root()
         lm_settings = root['settings']['ugm_localmanager']
         request = self.layer.new_request()
 
@@ -132,3 +132,7 @@ class TestBrowserSettings(TileTestCase):
             res = render_tile(lm_settings, request, 'editform')
         expected = 'form action="http://example.com/settings/ugm_localmanager/edit"'
         self.assertTrue(res.find(expected) > -1)
+
+
+class TestBrowserSettings(TileTestCase, TestBrowserSettingsBase):
+    layer = testing.ugm_layer

@@ -2,6 +2,7 @@ from cone.app.browser.utils import make_url
 from cone.ugm.model.user import User
 from cone.ugm.utils import general_settings
 from io import BytesIO
+from node.utils import UNSET
 from plumber import Behavior
 from plumber import default
 from plumber import plumb
@@ -9,7 +10,6 @@ from pyramid.i18n import TranslationStringFactory
 from pyramid.response import Response
 from pyramid.view import view_config
 from yafowil.base import factory
-from yafowil.base import UNSET
 
 
 _ = TranslationStringFactory('cone.ugm')

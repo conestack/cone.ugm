@@ -6,8 +6,7 @@ from pyramid.view import render_view_to_response
 import json
 
 
-class TestBrowserRemote(TileTestCase):
-    layer = testing.ugm_layer
+class TestBrowserRemoteBase(object):
 
     @testing.principals(
         users={
@@ -182,3 +181,7 @@ class TestBrowserRemote(TileTestCase):
             'message': "Deleted user with ID 'user_1\'.",
             'success': True
         })
+
+
+class TestBrowserRemote(TileTestCase, TestBrowserRemoteBase):
+    layer = testing.ugm_layer
