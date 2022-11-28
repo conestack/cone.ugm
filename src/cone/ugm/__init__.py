@@ -50,6 +50,22 @@ ugm_user_acl = [
 ] + ugm_default_acl
 
 
+def register_config(key, factory):
+    # Avoid registration conflict if testrun inside conestack dev env.
+    if os.environ.get('TESTRUN_MARKER'):
+        if key in get_root()['settings'].factories:
+            return
+    _register_config(key, factory)
+
+
+def register_entry(key, factory):
+    # Avoid registration conflict if testrun inside conestack dev env.
+    if os.environ.get('TESTRUN_MARKER'):
+        if key in get_root().factories:
+            return
+    _register_entry(key, factory)
+
+
 @layout_config(Group, Groups, User, Users)
 class UGMLayoutConfig(LayoutConfig):
 
