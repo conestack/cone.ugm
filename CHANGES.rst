@@ -4,7 +4,8 @@ Changes
 1.0a6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix general settings form according to changes in ``yafowil`` 3.0.
+  [rnix]
 
 
 1.0a5 (2022-10-06)

@@ -55,7 +55,7 @@ widgets:
     props:
         label: i18n:user_id_autoincrement_start:Autoincrement initial user number
         help: i18n:user_id_autoincrement_start_help:User number to start from
-        datatype: expr:int
+        datatype: python:int
 - users_portrait:
     factory: field:label:help:checkbox
     value: expr:context.model.attrs.users_portrait == 'True'
@@ -88,7 +88,7 @@ widgets:
     props:
         label: i18n:users_portrait_width:Portrait width
         help: i18n:users_portrait_width_help:Width in pixel portrait gets scaled to
-        datatype: expr:int
+        datatype: python:int
     custom:
         portrait:
             extractors:
@@ -100,7 +100,7 @@ widgets:
     props:
         label: i18n:users_portrait_height:Portrait height
         help: i18n:users_portrait_height_help:Height in pixel portrait gets scaled to
-        datatype: expr:int
+        datatype: python:int
     custom:
         portrait:
             extractors:
