@@ -167,6 +167,10 @@ span.go_to_principals {
     box-shadow:none;
     padding-left:0;
 }
+#field-userform-active label {
+    display: block;
+    clear: both;
+}
 #image-preview-userform-portrait {
     border-radius:3px 3px 3px 3px;
     box-shadow:0px 0px 4px #666666;
