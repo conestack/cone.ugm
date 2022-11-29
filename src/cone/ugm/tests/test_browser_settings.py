@@ -30,8 +30,6 @@ class TestBrowserSettingsBase(object):
         self.assertEqual(form.keys(), [
             'users_heading',
             'users_account_expiration',
-            'users_expires_attr',
-            'users_expires_unit',
             'user_id_autoincrement',
             'user_id_autoincrement_prefix',
             'user_id_autoincrement_start',

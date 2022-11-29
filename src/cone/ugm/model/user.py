@@ -51,6 +51,14 @@ class User(AdapterNode):
         metadata.description = _('user_node_description', default='User')
         return metadata
 
+    @property
+    def expires(self):
+        return self.model.expires
+
+    @expires.setter
+    def expires(self, value):
+        self.model.expires = value
+
     @locktree
     def __call__(self):
         self.model()
