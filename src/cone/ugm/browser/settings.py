@@ -35,17 +35,6 @@ class GeneralSettingsForm(Form):
     def message_factory(self):
         return _
 
-    def required_if_users_account_expiration(self, widget, data):
-        extracted = data.extracted
-        if extracted is UNSET:
-            return extracted
-        if data.root['users_account_expiration'].extracted and not extracted:
-            raise ExtractionError(_(
-                'required_if_users_account_expiration',
-                default='Value is required if account expiration is enabled'
-            ))
-        return extracted
-
     def required_if_users_portrait(self, widget, data):
         extracted = data.extracted
         if extracted is UNSET:
@@ -62,8 +51,6 @@ class GeneralSettingsForm(Form):
         model = self.model
         for attr_name in [
             'users_account_expiration',
-            'users_expires_attr',
-            'users_expires_unit',
             'user_id_autoincrement',
             'user_id_autoincrement_prefix',
             'user_id_autoincrement_start',

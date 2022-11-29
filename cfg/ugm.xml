@@ -1,8 +1,6 @@
 <properties>
   <users_exposed_attributes></users_exposed_attributes>
   <users_account_expiration>False</users_account_expiration>
-  <users_expires_attr>expires</users_expires_attr>
-  <users_expires_unit>0</users_expires_unit>
   <user_id_autoincrement>False</user_id_autoincrement>
   <user_id_autoincrement_prefix></user_id_autoincrement_prefix>
   <user_id_autoincrement_start></user_id_autoincrement_start>

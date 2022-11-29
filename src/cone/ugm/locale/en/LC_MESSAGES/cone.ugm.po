@@ -200,12 +200,6 @@ msgstr "Delete Group"
 msgid "group_id"
 msgstr "Group ID"
 
-# User Accounts expires?
-#. Default: Value is required if account expiration is enabled
-#: src/cone/ugm/browser/settings.py:43
-msgid "required_if_users_account_expiration"
-msgstr "Value is required if account expiration is enabled"
-
 #. Default: Value is required if portrit support is enabled
 #: src/cone/ugm/browser/settings.py:54
 msgid "required_if_users_portrait"
@@ -295,30 +289,6 @@ msgstr "User Accounts expires?"
 #: src/cone/ugm/browser/forms/general_settings.yaml:17
 msgid "users_account_expiration_help"
 msgstr "Flag whether to consider user expiration"
-
-# User Accounts expires?
-#. Default: Attribute containing expiration Time
-#: src/cone/ugm/browser/forms/general_settings.yaml:22
-msgid "users_expires_attr"
-msgstr "Attribute containing expiration Time"
-
-# Flag whether to consider user expiration
-#. Default: Attribute name containing expires information
-#: src/cone/ugm/browser/forms/general_settings.yaml:23
-msgid "users_expires_attr_help"
-msgstr "Attribute name containing expires information"
-
-# User Accounts expires?
-#. Default: Account expiration unit
-#: src/cone/ugm/browser/forms/general_settings.yaml:32
-msgid "users_expires_unit"
-msgstr "Account expiration unit"
-
-# Flag whether to consider user expiration
-#. Default: Unit of expiration value
-#: src/cone/ugm/browser/forms/general_settings.yaml:33
-msgid "users_expires_unit_help"
-msgstr "Unit of expiration value"
 
 #. Default: Autoincrement user ID
 #: src/cone/ugm/browser/forms/general_settings.yaml:39
