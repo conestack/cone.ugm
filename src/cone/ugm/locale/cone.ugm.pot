@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2022-11-29 16:06+0100\n"
+"POT-Creation-Date: 2022-11-29 17:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -224,7 +224,7 @@ msgid "user_login_not_unique"
 msgstr ""
 
 #. Default: Save
-#.
+#. 
 #: ./src/cone/ugm/browser/principal.py:389
 #: ./src/cone/ugm/browser/forms/localmanager_settings.yaml:65
 #: ./src/cone/ugm/browser/forms/general_settings.yaml:191
