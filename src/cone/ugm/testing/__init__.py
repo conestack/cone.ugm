@@ -4,6 +4,7 @@ from cone.app.ugm import ugm_backend
 from cone.ugm.settings import ugm_cfg
 from yafowil.base import factory
 from yafowil.bootstrap import configure_factory
+from yafowil.bootstrap import register_macros
 import os
 import shutil
 import tempfile
@@ -162,6 +163,8 @@ class UGMLayer(Security):
         self.ugm_dir = tempfile.mkdtemp()
         super(UGMLayer, self).setUp(args=args)
         factory.push_state()
+        configure_factory()
+        register_macros()
 
     def tearDown(self):
         factory.pop_state()
