@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-25 07:16+0200\n"
+"POT-Creation-Date: 2022-11-29 16:06+0100\n"
 "PO-Revision-Date: 2012-07-30 14:02+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en <LL@li.org>\n"
@@ -37,6 +37,97 @@ msgstr "Local Manager Settings"
 #: src/cone/ugm/settings.py:75
 msgid "localmanager_settings_node_description"
 msgstr "Local Manager Settings"
+
+#. Default: Group
+#: src/cone/ugm/model/group.py:17 src/cone/ugm/model/group.py:30
+msgid "group_node"
+msgstr "Group"
+
+#. Default: Group
+#: src/cone/ugm/model/group.py:18 src/cone/ugm/model/group.py:31
+msgid "group_node_description"
+msgstr "Group"
+
+#. Default: User
+#: src/cone/ugm/model/user.py:35 src/cone/ugm/model/user.py:50
+msgid "user_node"
+msgstr "User"
+
+#. Default: User
+#: src/cone/ugm/model/user.py:36 src/cone/ugm/model/user.py:51
+msgid "user_node_description"
+msgstr "User"
+
+#. Default: Groups
+#: src/cone/ugm/model/groups.py:24 src/cone/ugm/model/groups.py:47
+msgid "groups_node"
+msgstr "Groups"
+
+#. Default: Container for Groups
+#: src/cone/ugm/model/groups.py:25 src/cone/ugm/model/groups.py:48
+msgid "groups_node_description"
+msgstr "Container for Groups"
+
+#. Default: Users
+#: src/cone/ugm/model/users.py:24 src/cone/ugm/model/users.py:47
+msgid "users_node"
+msgstr "Users"
+
+#. Default: Container for Users
+#: src/cone/ugm/model/users.py:25 src/cone/ugm/model/users.py:48
+msgid "users_node_description"
+msgstr "Container for Users"
+
+#. Default: Add user to selected group
+#: src/cone/ugm/browser/group.py:108 src/cone/ugm/browser/user.py:108
+msgid "add_user_to_selected_group"
+msgstr "Add user to selected group"
+
+#. Default: Remove user from selected group
+#: src/cone/ugm/browser/group.py:121 src/cone/ugm/browser/user.py:121
+msgid "remove_user_from_selected_group"
+msgstr "Remove user from selected group"
+
+#. Default: Group ID
+#: src/cone/ugm/browser/group.py:187
+msgid "group_id"
+msgstr "Group ID"
+
+# filter listing
+#. Default: filter listing
+#: src/cone/ugm/browser/listing.py:107
+msgid "filter_listing"
+msgstr "filter listing"
+
+#. Default: Delete Principal
+#: src/cone/ugm/browser/listing.py:298
+msgid "delete_principal"
+msgstr "Delete Principal"
+
+#. Default: auto incremented
+#: src/cone/ugm/browser/autoincrement.py:66
+msgid "auto_incremented"
+msgstr "auto incremented"
+
+#. Default: User ID
+#: src/cone/ugm/browser/user.py:187
+msgid "user_id"
+msgstr "User ID"
+
+#. Default: Login name
+#: src/cone/ugm/browser/user.py:188
+msgid "login_name"
+msgstr "Login name"
+
+#. Default: Password
+#: src/cone/ugm/browser/user.py:189
+msgid "password"
+msgstr "Password"
+
+#. Default: Active
+#: src/cone/ugm/browser/expires.py:35
+msgid "active"
+msgstr "Active"
 
 #. Default: Change Password
 #: src/cone/ugm/browser/password.py:33 src/cone/ugm/browser/password.py:154
@@ -83,6 +174,84 @@ msgstr "Password Mismatch"
 #: src/cone/ugm/browser/password.py:196
 msgid "password_changed"
 msgstr "Password change successful"
+
+#. Default: Add Group
+#: src/cone/ugm/browser/groups.py:22
+msgid "add_group"
+msgstr "Add Group"
+
+#. Default: Delete Group
+#: src/cone/ugm/browser/groups.py:70
+msgid "delete_group"
+msgstr "Delete Group"
+
+#. Default: Add User
+#: src/cone/ugm/browser/users.py:22
+msgid "add_user"
+msgstr "Add User"
+
+#. Default: Delete User
+#: src/cone/ugm/browser/users.py:70
+msgid "delete_user"
+msgstr "Delete User"
+
+#. Default: Portrait
+#: src/cone/ugm/browser/portrait.py:80 src/cone/ugm/browser/portrait.py:82
+msgid "portrait"
+msgstr "Portrait"
+
+#. Default: Roles
+#: src/cone/ugm/browser/roles.py:45
+msgid "roles"
+msgstr "Roles"
+
+#. Default: No ${field} defined
+#: src/cone/ugm/browser/principal.py:25
+msgid "no_field_value_defined"
+msgstr "No ${field} defined"
+
+#. Default: User ${principal_id} already exists.
+#: src/cone/ugm/browser/principal.py:176
+msgid "user_already_exists"
+msgstr "User ${uid} already exists."
+
+#. Default: Group ${principal_id} already exists.
+#: src/cone/ugm/browser/principal.py:188
+msgid "group_already_exists"
+msgstr "Group ${gid} already exists."
+
+#. Default: User login ${login} not unique.
+#: src/cone/ugm/browser/principal.py:266
+msgid "user_login_not_unique"
+msgstr "User login ${login} not unique."
+
+#. Default: Save
+#.
+#: src/cone/ugm/browser/principal.py:389
+#: src/cone/ugm/browser/forms/localmanager_settings.yaml:65
+#: src/cone/ugm/browser/forms/general_settings.yaml:191
+msgid "save"
+msgstr "Save"
+
+#. Default: Cancel
+#: src/cone/ugm/browser/principal.py:399
+msgid "cancel"
+msgstr "Cancel"
+
+#. Default: Value is required if portrit support is enabled
+#: src/cone/ugm/browser/settings.py:43
+msgid "required_if_users_portrait"
+msgstr "Value is required if portrit support is enabled"
+
+#. Default: Duplicate access rule
+#: src/cone/ugm/browser/settings.py:139
+msgid "localmanager_duplicate_rule_error"
+msgstr "Duplicate access rule"
+
+#. Default: Target GID equates source GID
+#: src/cone/ugm/browser/settings.py:151
+msgid "localmanager_target_is_source_error"
+msgstr "Target GID equates source GID"
 
 #. Default: Deleted user '${uid}' from database.
 #: src/cone/ugm/browser/actions.py:82
@@ -134,452 +303,6 @@ msgstr ""
 "Failed removing user '${uid}' from group '${gid}'. Manage membership denied "
 "for user."
 
-#. Default: Portrait
-#: src/cone/ugm/browser/portrait.py:80 src/cone/ugm/browser/portrait.py:82
-msgid "portrait"
-msgstr "Portrait"
-
-#. Default: auto incremented
-#: src/cone/ugm/browser/autoincrement.py:66
-msgid "auto_incremented"
-msgstr "auto incremented"
-
-# filter listing
-#. Default: filter listing
-#: src/cone/ugm/browser/listing.py:107
-msgid "filter_listing"
-msgstr "filter listing"
-
-#. Default: Delete Principal
-#: src/cone/ugm/browser/listing.py:298
-msgid "delete_principal"
-msgstr "Delete Principal"
-
-#. Default: Active
-#: src/cone/ugm/browser/expires.py:153
-msgid "active"
-msgstr "Active"
-
-#. Default: Add user to selected group
-#: src/cone/ugm/browser/user.py:108 src/cone/ugm/browser/group.py:108
-msgid "add_user_to_selected_group"
-msgstr "Add user to selected group"
-
-#. Default: Remove user from selected group
-#: src/cone/ugm/browser/user.py:121 src/cone/ugm/browser/group.py:121
-msgid "remove_user_from_selected_group"
-msgstr "Remove user from selected group"
-
-#. Default: User ID
-#: src/cone/ugm/browser/user.py:187
-msgid "user_id"
-msgstr "User ID"
-
-#. Default: Login name
-#: src/cone/ugm/browser/user.py:188
-msgid "login_name"
-msgstr "Login name"
-
-#. Default: Password
-#: src/cone/ugm/browser/user.py:189
-msgid "password"
-msgstr "Password"
-
-#. Default: Add Group
-#: src/cone/ugm/browser/groups.py:22
-msgid "add_group"
-msgstr "Add Group"
-
-#. Default: Delete Group
-#: src/cone/ugm/browser/groups.py:70
-msgid "delete_group"
-msgstr "Delete Group"
-
-#. Default: Group ID
-#: src/cone/ugm/browser/group.py:187
-msgid "group_id"
-msgstr "Group ID"
-
-#. Default: Value is required if portrit support is enabled
-#: src/cone/ugm/browser/settings.py:54
-msgid "required_if_users_portrait"
-msgstr "Value is required if portrit support is enabled"
-
-#. Default: Duplicate access rule
-#: src/cone/ugm/browser/settings.py:152
-msgid "localmanager_duplicate_rule_error"
-msgstr "Duplicate access rule"
-
-#. Default: Target GID equates source GID
-#: src/cone/ugm/browser/settings.py:164
-msgid "localmanager_target_is_source_error"
-msgstr "Target GID equates source GID"
-
-#. Default: Add User
-#: src/cone/ugm/browser/users.py:22
-msgid "add_user"
-msgstr "Add User"
-
-#. Default: Delete User
-#: src/cone/ugm/browser/users.py:70
-msgid "delete_user"
-msgstr "Delete User"
-
-#. Default: No ${field} defined
-#: src/cone/ugm/browser/principal.py:23
-msgid "no_field_value_defined"
-msgstr "No ${field} defined"
-
-#. Default: User ${principal_id} already exists.
-#: src/cone/ugm/browser/principal.py:174
-msgid "user_already_exists"
-msgstr "User ${uid} already exists."
-
-#. Default: Group ${principal_id} already exists.
-#: src/cone/ugm/browser/principal.py:186
-msgid "group_already_exists"
-msgstr "Group ${gid} already exists."
-
-#. Default: User login ${login} not unique.
-#: src/cone/ugm/browser/principal.py:264
-msgid "user_login_not_unique"
-msgstr "User login ${login} not unique."
-
-#. Default: Save
-#.
-#: src/cone/ugm/browser/principal.py:387
-#: src/cone/ugm/browser/forms/general_settings.yaml:208
-#: src/cone/ugm/browser/forms/localmanager_settings.yaml:65
-msgid "save"
-msgstr "Save"
-
-#. Default: Cancel
-#: src/cone/ugm/browser/principal.py:397
-msgid "cancel"
-msgstr "Cancel"
-
-#. Default: Roles
-#: src/cone/ugm/browser/roles.py:45
-msgid "roles"
-msgstr "Roles"
-
-#. Default: Sorting
-#: src/cone/ugm/browser/templates/column_listing.pt:15
-msgid "sort_by"
-msgstr "Sorting"
-
-#. Default: List all
-#: src/cone/ugm/browser/templates/column_listing.pt:41
-msgid "list_all"
-msgstr "List all"
-
-#. Default: User settings
-#: src/cone/ugm/browser/forms/general_settings.yaml:11
-msgid "users_heading"
-msgstr "Users settings"
-
-# User Accounts expires?
-#. Default: User Accounts expires?
-#: src/cone/ugm/browser/forms/general_settings.yaml:16
-msgid "users_account_expiration"
-msgstr "User Accounts expires?"
-
-# Flag whether to consider user expiration
-#. Default: Flag whether to consider user expiration
-#: src/cone/ugm/browser/forms/general_settings.yaml:17
-msgid "users_account_expiration_help"
-msgstr "Flag whether to consider user expiration"
-
-#. Default: Autoincrement user ID
-#: src/cone/ugm/browser/forms/general_settings.yaml:39
-msgid "user_id_autoincrement"
-msgstr "Autoincrement user ID"
-
-# Flag whether to autoincrement user ids at user creation time.
-# This feature only works for systems using numeric user ID's
-#. Default: Flag whether to autoincrement user IDs at user creation time. This
-#. feature only works for systems using numeric user IDs
-#: src/cone/ugm/browser/forms/general_settings.yaml:42
-msgid "user_id_autoincrement_help"
-msgstr ""
-"Flag whether to autoincrement user IDs at user creation time. Thisfeature "
-"only works for systems using numeric user IDs"
-
-# Autoincrement user id prefix
-#. Default: Autoincrement user ID prefix
-#: src/cone/ugm/browser/forms/general_settings.yaml:47
-msgid "user_id_autoincrement_prefix"
-msgstr "Autoincrement user ID prefix"
-
-# Prefix for autogenerated user ID's
-#. Default: Prefix for autogenerated user ID's
-#: src/cone/ugm/browser/forms/general_settings.yaml:48
-msgid "user_id_autoincrement_prefix_help"
-msgstr "Prefix for autogenerated user ID's"
-
-# Autoincrement user id
-#. Default: Autoincrement initial user number
-#: src/cone/ugm/browser/forms/general_settings.yaml:56
-msgid "user_id_autoincrement_start"
-msgstr "Autoincrement initial user number"
-
-# Flag whether to autoincrement user ids at user creation time.
-# This feature only works for systems using numeric user ID's
-#. Default: User number to start from
-#: src/cone/ugm/browser/forms/general_settings.yaml:57
-msgid "user_id_autoincrement_start_help"
-msgstr "User number to start from"
-
-#. Default: Portrait Support
-#: src/cone/ugm/browser/forms/general_settings.yaml:63
-msgid "users_portrait"
-msgstr "Portrait Support"
-
-# Attributes exposed in user form
-#. Default: Flag whether users can have a portrait
-#: src/cone/ugm/browser/forms/general_settings.yaml:64
-msgid "users_portrait_help"
-msgstr "Flag whether users can have a portrait"
-
-# User form attributes
-#. Default: Attribute containing portrait image
-#: src/cone/ugm/browser/forms/general_settings.yaml:69
-msgid "users_portrait_attr"
-msgstr "Attribute containing portrait image"
-
-# Width in pixel portrait gets scaled to
-#. Default: Attribute name containing portrait image
-#: src/cone/ugm/browser/forms/general_settings.yaml:70
-msgid "users_portrait_attr_help"
-msgstr "Attribute name containing portrait image"
-
-# Portrait height
-#. Default: Portrait mimetype
-#: src/cone/ugm/browser/forms/general_settings.yaml:79
-msgid "users_portrait_accept"
-msgstr "Portrait mimetype"
-
-# Height in pixel portrait gets scaled to
-#. Default: Accepted Image mimetype for portrait property
-#: src/cone/ugm/browser/forms/general_settings.yaml:80
-msgid "users_portrait_accept_help"
-msgstr "Accepted Image mimetype for portrait property"
-
-# Portrait width
-#. Default: Portrait width
-#: src/cone/ugm/browser/forms/general_settings.yaml:89
-msgid "users_portrait_width"
-msgstr "Portrait width"
-
-# Width in pixel portrait gets scaled to
-#. Default: Width in pixel portrait gets scaled to
-#: src/cone/ugm/browser/forms/general_settings.yaml:90
-msgid "users_portrait_width_help"
-msgstr "Width in pixel portrait gets scaled to"
-
-# Portrait height
-#. Default: Portrait height
-#: src/cone/ugm/browser/forms/general_settings.yaml:101
-msgid "users_portrait_height"
-msgstr "Portrait height"
-
-# Height in pixel portrait gets scaled to
-#. Default: Height in pixel portrait gets scaled to
-#: src/cone/ugm/browser/forms/general_settings.yaml:102
-msgid "users_portrait_height_help"
-msgstr "Height in pixel portrait gets scaled to"
-
-# Local User Management
-#. Default: Local User Management
-#: src/cone/ugm/browser/forms/general_settings.yaml:113
-msgid "users_local_management_enabled"
-msgstr "Local User Management"
-
-# Enable local User Management
-#. Default: Enable local User Management
-#: src/cone/ugm/browser/forms/general_settings.yaml:114
-msgid "users_local_management_enabled_help"
-msgstr "Enable local User Management"
-
-#. Default: Login name attribute
-#: src/cone/ugm/browser/forms/general_settings.yaml:119
-msgid "users_login_name_attr"
-msgstr "Login name attribute"
-
-# Attributes exposed in user form
-#. Default: Attribute used for optional login name
-#: src/cone/ugm/browser/forms/general_settings.yaml:120
-msgid "users_login_name_attr_help"
-msgstr "Attribute used for optional login name"
-
-# User attributes exposed to attribute map
-#. Default: Exposed user attributes
-#: src/cone/ugm/browser/forms/general_settings.yaml:125
-msgid "users_exposed_attributes_label"
-msgstr "Exposed user attributes"
-
-# Click '+' to add attributes
-#. Default: Click '+' to add attributes
-#: src/cone/ugm/browser/forms/general_settings.yaml:126
-msgid "users_exposed_attributes_array"
-msgstr "Click '+' to add attributes"
-
-# Attributes which can be set via remote API
-#. Default: Attributes which can be set via remote API
-#: src/cone/ugm/browser/forms/general_settings.yaml:127
-msgid "users_exposed_attributes_help"
-msgstr "Attributes which can be set via remote API"
-
-# Attribute
-#. Default: Attribute
-#: src/cone/ugm/browser/forms/general_settings.yaml:133
-msgid "users_exposed_attributes_attribute"
-msgstr "Attribute"
-
-# No attribute given
-#. Default: No attribute given
-#: src/cone/ugm/browser/forms/general_settings.yaml:134
-msgid "users_exposed_attributes_attribute_required"
-msgstr "No attribute given"
-
-# User form attributes
-#. Default: User form attributes
-#: src/cone/ugm/browser/forms/general_settings.yaml:139
-msgid "users_form_attrmap"
-msgstr "User form attributes"
-
-# Attributes exposed in user form
-#. Default: Attributes exposed in user form
-#: src/cone/ugm/browser/forms/general_settings.yaml:140
-msgid "users_form_attrmap_help"
-msgstr "Attributes exposed in user form"
-
-# Attribute name
-#. Default: Attribute name
-#: src/cone/ugm/browser/forms/general_settings.yaml:141
-#: src/cone/ugm/browser/forms/general_settings.yaml:150
-#: src/cone/ugm/browser/forms/general_settings.yaml:171
-#: src/cone/ugm/browser/forms/general_settings.yaml:180
-msgid "principal_attr_name"
-msgstr "Attribute name"
-
-# Form label
-#. Default: Form label
-#: src/cone/ugm/browser/forms/general_settings.yaml:142
-#: src/cone/ugm/browser/forms/general_settings.yaml:172
-msgid "form_label"
-msgstr "Form label"
-
-# Users listing default column
-#. Default: Column configuration for user listings
-#: src/cone/ugm/browser/forms/general_settings.yaml:147
-msgid "users_listing_columns"
-msgstr "Column configuration for user listings"
-
-# Default sort column in user listing
-#. Default: Attributes shown in user listing
-#: src/cone/ugm/browser/forms/general_settings.yaml:148
-msgid "users_listing_columns_help"
-msgstr "Attributes shown in user listing"
-
-#. Default: User listing columns must not be empty
-#: src/cone/ugm/browser/forms/general_settings.yaml:149
-msgid "users_listing_columns_required"
-msgstr "User listing columns must not be empty"
-
-# Display name
-#. Default: Display name
-#: src/cone/ugm/browser/forms/general_settings.yaml:151
-#: src/cone/ugm/browser/forms/general_settings.yaml:181
-msgid "display_name"
-msgstr "Display name"
-
-# Users listing default column
-#. Default: Users listing default column
-#: src/cone/ugm/browser/forms/general_settings.yaml:156
-msgid "users_listing_default_column"
-msgstr "Users listing default column"
-
-# Default sort column in user listing
-#. Default: Default sort column in user listing
-#: src/cone/ugm/browser/forms/general_settings.yaml:157
-msgid "users_listing_default_column_help"
-msgstr "Default sort column in user listing"
-
-# Users listing default column
-#. Default: Default sort column in user listing is required
-#: src/cone/ugm/browser/forms/general_settings.yaml:159
-msgid "users_listing_default_column_required"
-msgstr "Default sort column in user listing is required"
-
-#. Default: Group Settings
-#: src/cone/ugm/browser/forms/general_settings.yaml:164
-msgid "groups_heading"
-msgstr "Groups Settings"
-
-# Group form attributes
-#. Default: Group form attributes
-#: src/cone/ugm/browser/forms/general_settings.yaml:169
-msgid "groups_form_attrmap"
-msgstr "Group form attributes"
-
-# Group form attributes
-#. Default: Attributes exposed in group form
-#: src/cone/ugm/browser/forms/general_settings.yaml:170
-msgid "groups_form_attrmap_help"
-msgstr "Attributes exposed in group form"
-
-# Groups listing default column
-#. Default: Column configuration for groups listings
-#: src/cone/ugm/browser/forms/general_settings.yaml:177
-msgid "groups_listing_columns"
-msgstr "Column configuration for groups listings"
-
-# Groups listing default column
-#. Default: Attributes shown in group listing
-#: src/cone/ugm/browser/forms/general_settings.yaml:178
-msgid "groups_listing_columns_help"
-msgstr "Attributes shown in group listing"
-
-#. Default: Group listing columns must not be empty
-#: src/cone/ugm/browser/forms/general_settings.yaml:179
-msgid "groups_listing_columns_required"
-msgstr "Group listing columns must not be empty"
-
-# Groups listing default column
-#. Default: Groups listing default column
-#: src/cone/ugm/browser/forms/general_settings.yaml:186
-msgid "groups_listing_default_column"
-msgstr "Groups listing default column"
-
-# Groups listing default column
-#. Default: Default sort column in group listing
-#: src/cone/ugm/browser/forms/general_settings.yaml:187
-msgid "groups_listing_default_column_help"
-msgstr "Default sort column in user listing"
-
-# Groups listing default column
-#. Default: Default sort column in groups listing is required
-#: src/cone/ugm/browser/forms/general_settings.yaml:189
-msgid "groups_listing_default_column_required"
-msgstr "Default sort column in groups listing is required"
-
-#. Default: Roles settings
-#: src/cone/ugm/browser/forms/general_settings.yaml:194
-msgid "roles_heading"
-msgstr "Roles Settings"
-
-#. Default: Principal roles
-#: src/cone/ugm/browser/forms/general_settings.yaml:199
-msgid "roles_principal_roles_enabled"
-msgstr "Principal roles"
-
-# Enable local User Management
-#. Default: Enable roles on principals
-#: src/cone/ugm/browser/forms/general_settings.yaml:200
-msgid "roles_principal_roles_enabled_help"
-msgstr "Enable roles on principals"
-
 # Rules
 #: src/cone/ugm/browser/forms/localmanager_settings.yaml:11
 msgid "localmanager_rules"
@@ -610,42 +333,319 @@ msgstr "No target GID's defined for source GID"
 msgid "localmanager_target_empty"
 msgstr "No target GID defined"
 
-#. Default: User
-#: src/cone/ugm/model/user.py:35 src/cone/ugm/model/user.py:50
-msgid "user_node"
-msgstr "User"
+#. Default: User settings
+#: src/cone/ugm/browser/forms/general_settings.yaml:11
+msgid "users_heading"
+msgstr "Users settings"
 
-#. Default: User
-#: src/cone/ugm/model/user.py:36 src/cone/ugm/model/user.py:51
-msgid "user_node_description"
-msgstr "User"
+# User Accounts expires?
+#. Default: User Accounts expires?
+#: src/cone/ugm/browser/forms/general_settings.yaml:16
+msgid "users_account_expiration"
+msgstr "User Accounts expires?"
 
-#. Default: Groups
-#: src/cone/ugm/model/groups.py:23 src/cone/ugm/model/groups.py:44
-msgid "groups_node"
-msgstr "Groups"
+# Flag whether to consider user expiration
+#. Default: Flag whether to consider user expiration
+#: src/cone/ugm/browser/forms/general_settings.yaml:17
+msgid "users_account_expiration_help"
+msgstr "Flag whether to consider user expiration"
 
-#. Default: Container for Groups
-#: src/cone/ugm/model/groups.py:24 src/cone/ugm/model/groups.py:45
-msgid "groups_node_description"
-msgstr "Container for Groups"
+#. Default: Autoincrement user ID
+#: src/cone/ugm/browser/forms/general_settings.yaml:22
+msgid "user_id_autoincrement"
+msgstr "Autoincrement user ID"
 
-#. Default: Group
-#: src/cone/ugm/model/group.py:17 src/cone/ugm/model/group.py:30
-msgid "group_node"
-msgstr "Group"
+# Flag whether to autoincrement user ids at user creation time.
+# This feature only works for systems using numeric user ID's
+#. Default: Flag whether to autoincrement user IDs at user creation time. This
+#. feature only works for systems using numeric user IDs
+#: src/cone/ugm/browser/forms/general_settings.yaml:25
+msgid "user_id_autoincrement_help"
+msgstr ""
+"Flag whether to autoincrement user IDs at user creation time. Thisfeature "
+"only works for systems using numeric user IDs"
 
-#. Default: Group
-#: src/cone/ugm/model/group.py:18 src/cone/ugm/model/group.py:31
-msgid "group_node_description"
-msgstr "Group"
+# Autoincrement user id prefix
+#. Default: Autoincrement user ID prefix
+#: src/cone/ugm/browser/forms/general_settings.yaml:30
+msgid "user_id_autoincrement_prefix"
+msgstr "Autoincrement user ID prefix"
 
-#. Default: Users
-#: src/cone/ugm/model/users.py:23 src/cone/ugm/model/users.py:44
-msgid "users_node"
-msgstr "Users"
+# Prefix for autogenerated user ID's
+#. Default: Prefix for autogenerated user ID's
+#: src/cone/ugm/browser/forms/general_settings.yaml:31
+msgid "user_id_autoincrement_prefix_help"
+msgstr "Prefix for autogenerated user ID's"
 
-#. Default: Container for Users
-#: src/cone/ugm/model/users.py:24 src/cone/ugm/model/users.py:45
-msgid "users_node_description"
-msgstr "Container for Users"
+# Autoincrement user id
+#. Default: Autoincrement initial user number
+#: src/cone/ugm/browser/forms/general_settings.yaml:39
+msgid "user_id_autoincrement_start"
+msgstr "Autoincrement initial user number"
+
+# Flag whether to autoincrement user ids at user creation time.
+# This feature only works for systems using numeric user ID's
+#. Default: User number to start from
+#: src/cone/ugm/browser/forms/general_settings.yaml:40
+msgid "user_id_autoincrement_start_help"
+msgstr "User number to start from"
+
+#. Default: Portrait Support
+#: src/cone/ugm/browser/forms/general_settings.yaml:46
+msgid "users_portrait"
+msgstr "Portrait Support"
+
+# Attributes exposed in user form
+#. Default: Flag whether users can have a portrait
+#: src/cone/ugm/browser/forms/general_settings.yaml:47
+msgid "users_portrait_help"
+msgstr "Flag whether users can have a portrait"
+
+# User form attributes
+#. Default: Attribute containing portrait image
+#: src/cone/ugm/browser/forms/general_settings.yaml:52
+msgid "users_portrait_attr"
+msgstr "Attribute containing portrait image"
+
+# Width in pixel portrait gets scaled to
+#. Default: Attribute name containing portrait image
+#: src/cone/ugm/browser/forms/general_settings.yaml:53
+msgid "users_portrait_attr_help"
+msgstr "Attribute name containing portrait image"
+
+# Portrait height
+#. Default: Portrait mimetype
+#: src/cone/ugm/browser/forms/general_settings.yaml:62
+msgid "users_portrait_accept"
+msgstr "Portrait mimetype"
+
+# Height in pixel portrait gets scaled to
+#. Default: Accepted Image mimetype for portrait property
+#: src/cone/ugm/browser/forms/general_settings.yaml:63
+msgid "users_portrait_accept_help"
+msgstr "Accepted Image mimetype for portrait property"
+
+# Portrait width
+#. Default: Portrait width
+#: src/cone/ugm/browser/forms/general_settings.yaml:72
+msgid "users_portrait_width"
+msgstr "Portrait width"
+
+# Width in pixel portrait gets scaled to
+#. Default: Width in pixel portrait gets scaled to
+#: src/cone/ugm/browser/forms/general_settings.yaml:73
+msgid "users_portrait_width_help"
+msgstr "Width in pixel portrait gets scaled to"
+
+# Portrait height
+#. Default: Portrait height
+#: src/cone/ugm/browser/forms/general_settings.yaml:84
+msgid "users_portrait_height"
+msgstr "Portrait height"
+
+# Height in pixel portrait gets scaled to
+#. Default: Height in pixel portrait gets scaled to
+#: src/cone/ugm/browser/forms/general_settings.yaml:85
+msgid "users_portrait_height_help"
+msgstr "Height in pixel portrait gets scaled to"
+
+# Local User Management
+#. Default: Local User Management
+#: src/cone/ugm/browser/forms/general_settings.yaml:96
+msgid "users_local_management_enabled"
+msgstr "Local User Management"
+
+# Enable local User Management
+#. Default: Enable local User Management
+#: src/cone/ugm/browser/forms/general_settings.yaml:97
+msgid "users_local_management_enabled_help"
+msgstr "Enable local User Management"
+
+#. Default: Login name attribute
+#: src/cone/ugm/browser/forms/general_settings.yaml:102
+msgid "users_login_name_attr"
+msgstr "Login name attribute"
+
+# Attributes exposed in user form
+#. Default: Attribute used for optional login name
+#: src/cone/ugm/browser/forms/general_settings.yaml:103
+msgid "users_login_name_attr_help"
+msgstr "Attribute used for optional login name"
+
+# User attributes exposed to attribute map
+#. Default: Exposed user attributes
+#: src/cone/ugm/browser/forms/general_settings.yaml:108
+msgid "users_exposed_attributes_label"
+msgstr "Exposed user attributes"
+
+# Click '+' to add attributes
+#. Default: Click '+' to add attributes
+#: src/cone/ugm/browser/forms/general_settings.yaml:109
+msgid "users_exposed_attributes_array"
+msgstr "Click '+' to add attributes"
+
+# Attributes which can be set via remote API
+#. Default: Attributes which can be set via remote API
+#: src/cone/ugm/browser/forms/general_settings.yaml:110
+msgid "users_exposed_attributes_help"
+msgstr "Attributes which can be set via remote API"
+
+# Attribute
+#. Default: Attribute
+#: src/cone/ugm/browser/forms/general_settings.yaml:116
+msgid "users_exposed_attributes_attribute"
+msgstr "Attribute"
+
+# No attribute given
+#. Default: No attribute given
+#: src/cone/ugm/browser/forms/general_settings.yaml:117
+msgid "users_exposed_attributes_attribute_required"
+msgstr "No attribute given"
+
+# User form attributes
+#. Default: User form attributes
+#: src/cone/ugm/browser/forms/general_settings.yaml:122
+msgid "users_form_attrmap"
+msgstr "User form attributes"
+
+# Attributes exposed in user form
+#. Default: Attributes exposed in user form
+#: src/cone/ugm/browser/forms/general_settings.yaml:123
+msgid "users_form_attrmap_help"
+msgstr "Attributes exposed in user form"
+
+# Attribute name
+#. Default: Attribute name
+#: src/cone/ugm/browser/forms/general_settings.yaml:124
+#: src/cone/ugm/browser/forms/general_settings.yaml:133
+#: src/cone/ugm/browser/forms/general_settings.yaml:154
+#: src/cone/ugm/browser/forms/general_settings.yaml:163
+msgid "principal_attr_name"
+msgstr "Attribute name"
+
+# Form label
+#. Default: Form label
+#: src/cone/ugm/browser/forms/general_settings.yaml:125
+#: src/cone/ugm/browser/forms/general_settings.yaml:155
+msgid "form_label"
+msgstr "Form label"
+
+# Users listing default column
+#. Default: Column configuration for user listings
+#: src/cone/ugm/browser/forms/general_settings.yaml:130
+msgid "users_listing_columns"
+msgstr "Column configuration for user listings"
+
+# Default sort column in user listing
+#. Default: Attributes shown in user listing
+#: src/cone/ugm/browser/forms/general_settings.yaml:131
+msgid "users_listing_columns_help"
+msgstr "Attributes shown in user listing"
+
+#. Default: User listing columns must not be empty
+#: src/cone/ugm/browser/forms/general_settings.yaml:132
+msgid "users_listing_columns_required"
+msgstr "User listing columns must not be empty"
+
+# Display name
+#. Default: Display name
+#: src/cone/ugm/browser/forms/general_settings.yaml:134
+#: src/cone/ugm/browser/forms/general_settings.yaml:164
+msgid "display_name"
+msgstr "Display name"
+
+# Users listing default column
+#. Default: Users listing default column
+#: src/cone/ugm/browser/forms/general_settings.yaml:139
+msgid "users_listing_default_column"
+msgstr "Users listing default column"
+
+# Default sort column in user listing
+#. Default: Default sort column in user listing
+#: src/cone/ugm/browser/forms/general_settings.yaml:140
+msgid "users_listing_default_column_help"
+msgstr "Default sort column in user listing"
+
+# Users listing default column
+#. Default: Default sort column in user listing is required
+#: src/cone/ugm/browser/forms/general_settings.yaml:142
+msgid "users_listing_default_column_required"
+msgstr "Default sort column in user listing is required"
+
+#. Default: Group Settings
+#: src/cone/ugm/browser/forms/general_settings.yaml:147
+msgid "groups_heading"
+msgstr "Groups Settings"
+
+# Group form attributes
+#. Default: Group form attributes
+#: src/cone/ugm/browser/forms/general_settings.yaml:152
+msgid "groups_form_attrmap"
+msgstr "Group form attributes"
+
+# Group form attributes
+#. Default: Attributes exposed in group form
+#: src/cone/ugm/browser/forms/general_settings.yaml:153
+msgid "groups_form_attrmap_help"
+msgstr "Attributes exposed in group form"
+
+# Groups listing default column
+#. Default: Column configuration for groups listings
+#: src/cone/ugm/browser/forms/general_settings.yaml:160
+msgid "groups_listing_columns"
+msgstr "Column configuration for groups listings"
+
+# Groups listing default column
+#. Default: Attributes shown in group listing
+#: src/cone/ugm/browser/forms/general_settings.yaml:161
+msgid "groups_listing_columns_help"
+msgstr "Attributes shown in group listing"
+
+#. Default: Group listing columns must not be empty
+#: src/cone/ugm/browser/forms/general_settings.yaml:162
+msgid "groups_listing_columns_required"
+msgstr "Group listing columns must not be empty"
+
+# Groups listing default column
+#. Default: Groups listing default column
+#: src/cone/ugm/browser/forms/general_settings.yaml:169
+msgid "groups_listing_default_column"
+msgstr "Groups listing default column"
+
+# Groups listing default column
+#. Default: Default sort column in group listing
+#: src/cone/ugm/browser/forms/general_settings.yaml:170
+msgid "groups_listing_default_column_help"
+msgstr "Default sort column in user listing"
+
+# Groups listing default column
+#. Default: Default sort column in groups listing is required
+#: src/cone/ugm/browser/forms/general_settings.yaml:172
+msgid "groups_listing_default_column_required"
+msgstr "Default sort column in groups listing is required"
+
+#. Default: Roles settings
+#: src/cone/ugm/browser/forms/general_settings.yaml:177
+msgid "roles_heading"
+msgstr "Roles Settings"
+
+#. Default: Principal roles
+#: src/cone/ugm/browser/forms/general_settings.yaml:182
+msgid "roles_principal_roles_enabled"
+msgstr "Principal roles"
+
+# Enable local User Management
+#. Default: Enable roles on principals
+#: src/cone/ugm/browser/forms/general_settings.yaml:183
+msgid "roles_principal_roles_enabled_help"
+msgstr "Enable roles on principals"
+
+#. Default: Sorting
+#: src/cone/ugm/browser/templates/column_listing.pt:15
+msgid "sort_by"
+msgstr "Sorting"
+
+#. Default: List all
+#: src/cone/ugm/browser/templates/column_listing.pt:41
+msgid "list_all"
+msgstr "List all"
