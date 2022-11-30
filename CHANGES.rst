@@ -4,7 +4,20 @@ Changes
 1.0a6 (unreleased)
 ------------------
 
-- Fix general settings form according to changes in ``yafowil`` 3.0.
+- Remove ``expiration`` yafowil blueprint from ``cone.ugm.browser.expires``.
+  Account expiration is now done with a regular date field since UGM backends
+  allow setting ``expires`` attributes as datetime objects as of node.ext.ugm
+  1.1.
+  [rnix]
+
+- Move ``users_expires_attr`` and ``users_expires_unit`` settings to cone.ldap,
+  since they always have been used only for LDAP UGM backend.
+  [rnix]
+
+- Expose ``expires`` attribute of backend user in ``cone.ugm.model.User``.
+  [rnix]
+
+- Fix general settings form according to changes in yafowil 3.0.
   [rnix]
 
 

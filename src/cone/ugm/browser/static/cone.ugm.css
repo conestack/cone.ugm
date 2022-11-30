@@ -167,6 +167,10 @@ span.go_to_principals {
     box-shadow:none;
     padding-left:0;
 }
+#field-userform-active label {
+    display: block;
+    clear: both;
+}
 #image-preview-userform-portrait {
     border-radius:3px 3px 3px 3px;
     box-shadow:0px 0px 4px #666666;
@@ -188,23 +192,6 @@ span.go_to_principals {
 #checkbox-groupform-principal_roles-wrapper input[type="checkbox"],
 #checkbox-userform-principal_roles-wrapper input[type="checkbox"] {
     margin-left:0;
-}
-div.expiration-widget #input-userform-active {
-    width:35%;
-}
-div.expiration-widget #checkbox-userform-active {
-    display:inline-block;
-    position:relative;
-    top:2px;
-}
-div.expiration-widget label {
-    display:inline-block;
-    margin-left:12px;
-    margin-right:12px;
-}
-div.expiration-widget #checkbox-userform-active,
-div.expiration-widget #input-userform-active {
-    display:inline-block;
 }
 
 /* general settings */
