@@ -15,6 +15,7 @@ export default args => {
         ],
         output: [{
             file: `${out_dir}/cone.ugm.js`,
+            name: 'cone_ugm',
             format: 'iife',
             outro: outro,
             globals: {
@@ -34,8 +35,8 @@ export default args => {
     };
     if (args.configDebug !== true) {
         conf.output.push({
-            file: 'treibstoff/bundle/treibstoff.bundle.min.js',
             file: `${out_dir}/cone.ugm.min.js`,
+            name: 'cone_ugm',
             format: 'iife',
             plugins: [
                 terser()

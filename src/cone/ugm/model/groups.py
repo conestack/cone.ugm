@@ -7,6 +7,7 @@ from cone.ugm.browser.utils import unquote_slash
 from cone.ugm.localmanager import LocalManagerGroupsACL
 from cone.ugm.model.group import Group
 from node.behaviors import MappingNode
+from node.behaviors import NodeInit
 from node.locking import locktree
 from node.utils import instance_property
 from plumber import plumbing
@@ -28,6 +29,7 @@ _ = TranslationStringFactory('cone.ugm')
     icon='ion-person-stalker',
     addables=['group'])
 @plumbing(
+    NodeInit,
     LocalManagerGroupsACL,
     AppNode,
     MappingNode)

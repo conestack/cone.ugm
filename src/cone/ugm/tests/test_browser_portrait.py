@@ -73,7 +73,7 @@ class TestBrowserPortraitBase(object):
 
         # No portrait, default portrait is shown
         expected = (
-            'src="http://example.com/cone.ugm.static/images/'
+            'src="http://example.com/resources/ugm/images/'
             'default_portrait.jpg?nocache='
         )
         self.assertTrue(res.find(expected) > -1)

@@ -15,23 +15,6 @@ widgets:
     props:
         label: i18n:users_account_expiration:User Accounts expires?
         help: i18n:users_account_expiration_help:Flag whether to consider user expiration
-- users_expires_attr:
-    factory: field:label:help:error:*expiration:text
-    value: expr:context.model.attrs.users_expires_attr
-    props:
-        label: i18n:users_expires_attr:Attribute containing expiration Time
-        help: i18n:users_expires_attr_help:Attribute name containing expires information
-    custom:
-        expiration:
-            extractors:
-                - context.required_if_users_account_expiration
-- users_expires_unit:
-    factory: field:label:help:select
-    value: expr:int(context.model.attrs.users_expires_unit)
-    props:
-        label: i18n:users_expires_unit:Account expiration unit
-        help: i18n:users_expires_unit_help:Unit of expiration value
-        vocabulary: expr:((0, 'Days since Epoch'), (1, 'Seconds since epoch'))
 - user_id_autoincrement:
     factory: field:label:help:checkbox
     value: expr:context.model.attrs.user_id_autoincrement == 'True'
@@ -55,7 +38,7 @@ widgets:
     props:
         label: i18n:user_id_autoincrement_start:Autoincrement initial user number
         help: i18n:user_id_autoincrement_start_help:User number to start from
-        datatype: expr:int
+        datatype: python:int
 - users_portrait:
     factory: field:label:help:checkbox
     value: expr:context.model.attrs.users_portrait == 'True'
@@ -88,7 +71,7 @@ widgets:
     props:
         label: i18n:users_portrait_width:Portrait width
         help: i18n:users_portrait_width_help:Width in pixel portrait gets scaled to
-        datatype: expr:int
+        datatype: python:int
     custom:
         portrait:
             extractors:
@@ -100,7 +83,7 @@ widgets:
     props:
         label: i18n:users_portrait_height:Portrait height
         help: i18n:users_portrait_height_help:Height in pixel portrait gets scaled to
-        datatype: expr:int
+        datatype: python:int
     custom:
         portrait:
             extractors:

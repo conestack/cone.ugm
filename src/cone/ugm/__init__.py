@@ -1,4 +1,3 @@
-from cone.app import cfg
 from cone.app import get_root
 from cone.app import layout_config
 from cone.app import main_hook
@@ -6,7 +5,7 @@ from cone.app import register_config as _register_config
 from cone.app import register_entry as _register_entry
 from cone.app.model import LayoutConfig
 from cone.app.security import acl_registry
-from cone.ugm import browser
+from cone.ugm.browser import configure_resources
 from cone.ugm.model.group import Group
 from cone.ugm.model.groups import Groups
 from cone.ugm.model.user import User
@@ -51,16 +50,32 @@ ugm_user_acl = [
 ] + ugm_default_acl
 
 
+def register_config(key, factory):
+    # Avoid registration conflict if testrun inside conestack dev env.
+    if os.environ.get('TESTRUN_MARKER'):
+        if key in get_root()['settings'].factories:
+            return
+    _register_config(key, factory)
+
+
+def register_entry(key, factory):
+    # Avoid registration conflict if testrun inside conestack dev env.
+    if os.environ.get('TESTRUN_MARKER'):
+        if key in get_root().factories:
+            return
+    _register_entry(key, factory)
+
+
 @layout_config(Group, Groups, User, Users)
 class UGMLayoutConfig(LayoutConfig):
 
     def __init__(self, model=None, request=None):
         super(UGMLayoutConfig, self).__init__(model=model, request=request)
         self.mainmenu = True
-        self.mainmenu_fluid = False
+        self.mainmenu_fluid = True
         self.livesearch = False
         self.personaltools = True
-        self.columns_fluid = False
+        self.columns_fluid = True
         self.pathbar = False
         self.sidebar_left = []
         self.sidebar_left_grid_width = 0
@@ -86,13 +101,7 @@ def register_entry(key, factory):
 # application startup hooks
 @main_hook
 def initialize_ugm(config, global_config, settings):
-    """Initialize UGM.
-    """
-    # custom UGM styles
-    cfg.merged.css.protected.append((browser.static_resources, 'styles.css'))
-
-    # custom UGM javascript
-    cfg.js.protected.append('cone.ugm.static/cone.ugm.js')
+    """Initialize UGM."""
 
     # config file locations
     ugm_cfg.ugm_settings = settings.get('ugm.config', '')
@@ -115,11 +124,11 @@ def initialize_ugm(config, global_config, settings):
     acl_registry.register(ugm_default_acl, Group, 'group')
     acl_registry.register(ugm_default_acl, Groups, 'groups')
 
+    # static resources
+    configure_resources(settings)
+
     # add translation
     config.add_translation_dirs('cone.ugm:locale/')
 
-    # static resources
-    config.add_view(browser.static_resources, name='cone.ugm.static')
-
     # scan browser package
-    config.scan(browser)
+    config.scan('cone.ugm.browser')

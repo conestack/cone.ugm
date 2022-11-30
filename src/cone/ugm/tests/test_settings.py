@@ -60,8 +60,6 @@ class TestSettingsBase(object):
             'user_id_autoincrement_prefix',
             'user_id_autoincrement_start',
             'users_account_expiration',
-            'users_expires_attr',
-            'users_expires_unit',
             'users_exposed_attributes',
             'users_form_attrmap',
             'users_listing_columns',

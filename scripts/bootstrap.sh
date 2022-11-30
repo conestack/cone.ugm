@@ -7,6 +7,6 @@ if [ "$PY" == "" ]; then
     PY=python2
 fi
 
-virtualenv --clear --no-site-packages -p $PY .
-./bin/pip install --upgrade pip setuptools zc.buildout
-./bin/buildout -N
+virtualenv --clear -p $PY venv
+./venv/bin/pip install -U pip setuptools wheel zc.buildout
+./venv/bin/buildout -N

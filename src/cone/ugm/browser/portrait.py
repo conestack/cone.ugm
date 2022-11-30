@@ -70,7 +70,7 @@ class PortraitForm(Behavior):
                                  resource='portrait_image')
         else:
             image_value = UNSET
-            resource = 'cone.ugm.static/images/default_portrait.jpg'
+            resource = 'resources/ugm/images/default_portrait.jpg'
             image_url = make_url(request, node=model.root, resource=resource)
         portrait_widget = factory(
             'field:label:error:image',

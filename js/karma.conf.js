@@ -1,7 +1,7 @@
 process.env.CHROME_BIN = '/usr/bin/chromium';
 
-const node_modules = '../node_modules';
-const cone_static = '../src/cone/ugm/browser/static';
+const node_modules = '../../node_modules';
+const cone_static = '../../src/cone/ugm/browser/static';
 
 const jquery_files = [{
     pattern: `${node_modules}/jquery/src/**/*.js`,
@@ -22,11 +22,11 @@ const cone_files = [{
 }];
 
 const test_files = [{
-    pattern: '../js/src/*.js',
+    pattern: '../src/*.js',
     type: 'module',
     included: false
 }, {
-    pattern: '../js/tests/test_*.js',
+    pattern: '../tests/test_*.js',
     type: 'module'
 }];
 
@@ -46,6 +46,7 @@ preprocessors['../js/tests/*.js'] = ['coverage', 'module-resolver'];
 module.exports = function(config) {
     config.set({
         basePath: 'karma',
+        singleRun: true,
         frameworks: [
             'qunit'
         ],
