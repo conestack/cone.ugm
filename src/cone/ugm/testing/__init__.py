@@ -4,7 +4,6 @@ from cone.app.ugm import ugm_backend
 from cone.ugm.settings import ugm_cfg
 from yafowil.base import factory
 from yafowil.bootstrap import configure_factory
-from yafowil.bootstrap import register_macros
 import os
 import shutil
 import tempfile
