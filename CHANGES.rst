@@ -1,7 +1,7 @@
 Changes
 =======
 
-1.0a6 (unreleased)
+1.0a6 (2022-12-05)
 ------------------
 
 - Remove ``expiration`` yafowil blueprint from ``cone.ugm.browser.expires``.
