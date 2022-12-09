@@ -53,7 +53,10 @@ class User(AdapterNode):
 
     @property
     def expires(self):
-        return self.model.expires
+        try:
+            return self.model.expires
+        except AttributeError:
+            return None
 
     @expires.setter
     def expires(self, value):
