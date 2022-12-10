@@ -125,7 +125,7 @@ def initialize_ugm(config, global_config, settings):
     acl_registry.register(ugm_default_acl, Groups, 'groups')
 
     # static resources
-    configure_resources(settings)
+    configure_resources(config, settings)
 
     # add translation
     config.add_translation_dirs('cone.ugm:locale/')

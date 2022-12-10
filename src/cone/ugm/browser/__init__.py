@@ -1,5 +1,3 @@
-from cone.app.browser.resources import resources
-from cone.app.browser.resources import set_resource_include
 import webresource as wr
 import os
 
@@ -8,8 +6,7 @@ resources_dir = os.path.join(os.path.dirname(__file__), 'static')
 cone_ugm_resources = wr.ResourceGroup(
     name='cone.ugm-ugm',
     directory=resources_dir,
-    path='ugm',
-    group=resources
+    path='ugm'
 )
 cone_ugm_resources.add(wr.ScriptResource(
     name='cone-ugm-js',
@@ -23,6 +20,7 @@ cone_ugm_resources.add(wr.StyleResource(
 ))
 
 
-def configure_resources(settings):
-    set_resource_include(settings, 'cone-ugm-js', 'authenticated')
-    set_resource_include(settings, 'cone-ugm-css', 'authenticated')
+def configure_resources(config, settings):
+    config.register_resource(cone_ugm_resources)
+    config.set_resource_include('cone-ugm-js', 'authenticated')
+    config.set_resource_include('cone-ugm-css', 'authenticated')
