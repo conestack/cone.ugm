@@ -30,10 +30,10 @@ class TestLayoutBase(object):
         self.assertIsInstance(config, UGMLayoutConfig)
 
         self.assertTrue(config.mainmenu)
-        self.assertFalse(config.mainmenu_fluid)
+        self.assertTrue(config.mainmenu_fluid)
         self.assertFalse(config.livesearch)
         self.assertTrue(config.personaltools)
-        self.assertFalse(config.columns_fluid)
+        self.assertTrue(config.columns_fluid)
         self.assertFalse(config.pathbar)
         self.assertEqual(config.sidebar_left, [])
         self.assertEqual(config.sidebar_left_grid_width, 0)
