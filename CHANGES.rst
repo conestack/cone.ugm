@@ -4,7 +4,9 @@ Changes
 1.0a7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Catch ``AttributeError`` in ``model.user.User.expires``. Happens in user add
+  form where user not exists yet.
+  [rnix]
 
 
 1.0a6 (2022-12-05)
