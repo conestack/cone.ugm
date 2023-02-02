@@ -1,7 +1,7 @@
 Changes
 =======
 
-1.0a7 (unreleased)
+1.0a7 (2023-02-02)
 ------------------
 
 - Catch ``AttributeError`` in ``model.user.User.expires``. Happens in user add
