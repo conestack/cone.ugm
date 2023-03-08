@@ -9,7 +9,7 @@ from pyramid.security import Allow
 import unittest
 
 
-class TestModelUserBase(object):
+class ModelUserTests(object):
 
     @testing.principals(
         users={
@@ -48,5 +48,5 @@ class TestModelUserBase(object):
             )
 
 
-class TestModelUser(unittest.TestCase, TestModelUserBase):
+class TestModelUser(unittest.TestCase, ModelUserTests):
     layer = testing.ugm_layer

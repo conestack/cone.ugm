@@ -6,7 +6,7 @@ from pyramid.view import render_view_to_response
 import json
 
 
-class TestBrowserRemoteBase(object):
+class BrowserRemoteTests(object):
 
     @testing.principals(
         users={
@@ -183,5 +183,5 @@ class TestBrowserRemoteBase(object):
         })
 
 
-class TestBrowserRemote(TileTestCase, TestBrowserRemoteBase):
+class TestBrowserRemote(TileTestCase, BrowserRemoteTests):
     layer = testing.ugm_layer

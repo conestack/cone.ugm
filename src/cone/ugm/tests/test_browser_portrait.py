@@ -42,7 +42,7 @@ class portrait_principals(testing.principals):
         return wrapper
 
 
-class TestBrowserPortraitBase(object):
+class BrowserPortraitTests(object):
 
     @portrait_principals(
         users={
@@ -110,5 +110,5 @@ class TestBrowserPortraitBase(object):
         self.assertFalse(res.find('id="input-userform-portrait"') > -1)
 
 
-class TestBrowserPortrait(TileTestCase, TestBrowserPortraitBase):
+class TestBrowserPortrait(TileTestCase, BrowserPortraitTests):
     layer = testing.ugm_layer

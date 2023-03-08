@@ -10,7 +10,7 @@ from webob.exc import HTTPFound
 from zope.event import classhandler
 
 
-class TestBrowserUserBase(object):
+class BrowserUserTests(object):
 
     @testing.principals(
         users={
@@ -266,5 +266,5 @@ class TestBrowserUserBase(object):
         self.assertTrue('UserModifiedEvent' in events_called)
 
 
-class TestBrowserUser(TileTestCase, TestBrowserUserBase):
+class TestBrowserUser(TileTestCase, BrowserUserTests):
     layer = testing.ugm_layer

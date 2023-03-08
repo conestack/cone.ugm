@@ -8,7 +8,7 @@ from plumber import plumbing
 import os
 
 
-class TestModelLocalmanagerBase(object):
+class ModelLocalmanagerTests(object):
 
     @testing.temp_directory
     def test_LocalManagerConfigAttributes(self, tempdir):
@@ -309,5 +309,5 @@ class TestModelLocalmanagerBase(object):
             ])
 
 
-class TestModelLocalmanager(NodeTestCase, TestModelLocalmanagerBase):
+class TestModelLocalmanager(NodeTestCase, ModelLocalmanagerTests):
     layer = testing.ugm_layer

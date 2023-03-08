@@ -8,7 +8,7 @@ from pyramid.testing import DummyRequest
 import unittest
 
 
-class TestLayoutBase(object):
+class LayoutTests(object):
 
     def test_layout(self):
         config = layout_config.lookup(
@@ -40,5 +40,5 @@ class TestLayoutBase(object):
         self.assertEqual(config.content_grid_width, 12)
 
 
-class TestLayout(unittest.TestCase, TestLayoutBase):
+class TestLayout(unittest.TestCase, LayoutTests):
     pass

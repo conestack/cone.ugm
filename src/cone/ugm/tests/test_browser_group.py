@@ -10,7 +10,7 @@ from webob.exc import HTTPFound
 from zope.event import classhandler
 
 
-class TestBrowserGroupBase(object):
+class BrowserGroupTests(object):
 
     @testing.principals(
         groups={
@@ -264,5 +264,5 @@ class TestBrowserGroupBase(object):
         self.assertTrue('GroupModifiedEvent' in events_called)
 
 
-class TestBrowserGroup(TileTestCase, TestBrowserGroupBase):
+class TestBrowserGroup(TileTestCase, BrowserGroupTests):
     layer = testing.ugm_layer

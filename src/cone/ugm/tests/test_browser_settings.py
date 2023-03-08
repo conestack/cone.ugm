@@ -8,7 +8,7 @@ from pyramid.httpexceptions import HTTPForbidden
 import os
 
 
-class TestBrowserSettingsBase(object):
+class BrowserSettingsTests(object):
 
     @testing.custom_config_path
     @testing.temp_directory
@@ -132,5 +132,5 @@ class TestBrowserSettingsBase(object):
         self.assertTrue(res.find(expected) > -1)
 
 
-class TestBrowserSettings(TileTestCase, TestBrowserSettingsBase):
+class TestBrowserSettings(TileTestCase, BrowserSettingsTests):
     layer = testing.ugm_layer

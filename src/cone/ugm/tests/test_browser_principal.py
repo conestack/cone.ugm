@@ -28,7 +28,7 @@ from yafowil.base import factory
 from yafowil.common import ascii_extractor
 
 
-class TestBrowserPrincipalBase(object):
+class BrowserPrincipalTests(object):
 
     def test_default_required_message(self):
         request = self.layer.new_request()
@@ -480,5 +480,5 @@ class TestBrowserPrincipalBase(object):
         del _form_field.registry[SCOPE]
 
 
-class TestBrowserPrincipal(TileTestCase, TestBrowserPrincipalBase):
+class TestBrowserPrincipal(TileTestCase, BrowserPrincipalTests):
     layer = testing.ugm_layer

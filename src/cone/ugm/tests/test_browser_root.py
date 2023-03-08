@@ -5,7 +5,7 @@ from cone.ugm import testing
 from pyramid.httpexceptions import HTTPForbidden
 
 
-class TestBrowserRootBase(object):
+class BrowserRootTests(object):
 
     def test_content_tile(self):
         root = get_root()
@@ -79,5 +79,5 @@ class TestBrowserRootBase(object):
             self.assertEqual(render_tile(root, request, 'site'), 'SITENAME')
 
 
-class TestBrowserRoot(TileTestCase, TestBrowserRootBase):
+class TestBrowserRoot(TileTestCase, BrowserRootTests):
     layer = testing.ugm_layer

@@ -7,7 +7,7 @@ from node.ext.ugm.interfaces import IUgm
 import unittest
 
 
-class TestUtilsBase(object):
+class UtilsTests(object):
 
     def test_general_settings(self):
         root = get_root()
@@ -24,5 +24,5 @@ class TestUtilsBase(object):
         self.assertFalse(backend is ugm_backend.ugm)
 
 
-class TestUtils(unittest.TestCase, TestUtilsBase):
+class TestUtils(unittest.TestCase, UtilsTests):
     layer = testing.ugm_layer

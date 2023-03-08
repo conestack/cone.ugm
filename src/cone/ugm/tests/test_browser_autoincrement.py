@@ -38,7 +38,7 @@ class autoincrement_principals(testing.principals):
         return wrapper
 
 
-class TestBrowserAutoincrementBase(object):
+class BrowserAutoincrementTests(object):
 
     @autoincrement_principals(
         users={
@@ -107,5 +107,5 @@ class TestBrowserAutoincrementBase(object):
         ])
 
 
-class TestBrowserAutoincrement(TileTestCase, TestBrowserAutoincrementBase):
+class TestBrowserAutoincrement(TileTestCase, BrowserAutoincrementTests):
     layer = testing.ugm_layer

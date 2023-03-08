@@ -8,7 +8,7 @@ from node.ext.ugm.interfaces import IGroup
 import unittest
 
 
-class TestModelGroupBase(object):
+class ModelGroupTests(object):
 
     @testing.principals(
         groups={
@@ -41,5 +41,5 @@ class TestModelGroupBase(object):
         self.assertEqual(group.__acl__, ugm_default_acl)
 
 
-class TestModelGroup(unittest.TestCase, TestModelGroupBase):
+class TestModelGroup(unittest.TestCase, ModelGroupTests):
     layer = testing.ugm_layer
