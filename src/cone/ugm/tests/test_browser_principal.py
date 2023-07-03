@@ -25,7 +25,7 @@ from odict import odict
 from pyramid.i18n import get_localizer
 from yafowil.base import ExtractionError
 from yafowil.base import factory
-from yafowil.common import ascii_extractor
+from yafowil.password import ascii_extractor
 
 
 class BrowserPrincipalTests(object):

@@ -6,7 +6,7 @@ from pyramid.i18n import get_localizer
 from pyramid.i18n import TranslationStringFactory
 from yafowil.base import ExtractionError
 from yafowil.base import factory
-from yafowil.common import ascii_extractor
+from yafowil.password import ascii_extractor
 from yafowil.common import generic_extractor
 import itertools
 
