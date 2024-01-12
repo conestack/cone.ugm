@@ -67,7 +67,9 @@ class GeneralSettingsForm(Form):
         ugm_backend.initialize()
 
 
-@settings_form(interface=LocalManagerSettings)
+@settings_form(
+    interface=LocalManagerSettings,
+    path='cone.ugm.browser:templates/localmanager_settings.pt')
 @plumbing(SettingsForm, YAMLForm)
 class LocalManagerSettingsForm(Form):
     action_resource = u'edit'

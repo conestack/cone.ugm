@@ -1,8 +1,10 @@
 <tal:block xmlns:tal="http://xml.zope.org/namespaces/tal"
+           xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+           i18n:domain="cone.ugm"
            omit-tag="True">
   <div>
 
-    <h1>Localmanager Settings</h1>
+    <h1 tal:content="context.form_heading">Title</h1>
 
     <tal:disabled condition="not model.enabled">
       <div class="warning">
@@ -13,7 +15,7 @@
     </tal:disabled>
 
     <tal:enabled condition="model.enabled">
-      <tal:settings replace="structure tile('editform')" />
+      <tal:form replace="structure context.rendered_form" />
     </tal:enabled>
 
   </div>
