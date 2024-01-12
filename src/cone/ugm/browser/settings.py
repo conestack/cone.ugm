@@ -1,9 +1,8 @@
 from cone.app.browser.form import Form
 from cone.app.browser.form import YAMLForm
-from cone.app.browser.layout import ProtectedContentTile
-from cone.app.browser.settings import SettingsBehavior
+from cone.app.browser.settings import settings_form
+from cone.app.browser.settings import SettingsForm
 from cone.app.ugm import ugm_backend
-from cone.tile import tile
 from cone.ugm.settings import GeneralSettings
 from cone.ugm.settings import LocalManagerSettings
 from node.utils import UNSET
@@ -16,17 +15,8 @@ from yafowil.base import ExtractionError
 _ = TranslationStringFactory('cone.ugm')
 
 
-@tile(
-    name='content',
-    path='templates/general_settings.pt',
-    interface=GeneralSettings,
-    permission='manage')
-class GeneralSettingsContent(ProtectedContentTile):
-    pass
-
-
-@tile(name='editform', interface=GeneralSettings, permission='manage')
-@plumbing(SettingsBehavior, YAMLForm)
+@settings_form(interface=GeneralSettings)
+@plumbing(SettingsForm, YAMLForm)
 class GeneralSettingsForm(Form):
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/general_settings.yaml'
@@ -77,17 +67,8 @@ class GeneralSettingsForm(Form):
         ugm_backend.initialize()
 
 
-@tile(
-    name='content',
-    path='templates/localmanager_settings.pt',
-    interface=LocalManagerSettings,
-    permission='manage')
-class LocalManagerSettingsTile(ProtectedContentTile):
-    pass
-
-
-@tile(name='editform', interface=LocalManagerSettings, permission='manage')
-@plumbing(SettingsBehavior, YAMLForm)
+@settings_form(interface=LocalManagerSettings)
+@plumbing(SettingsForm, YAMLForm)
 class LocalManagerSettingsForm(Form):
     action_resource = u'edit'
     form_template = 'cone.ugm.browser:forms/localmanager_settings.yaml'

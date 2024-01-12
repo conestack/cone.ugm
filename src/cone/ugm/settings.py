@@ -1,10 +1,12 @@
-from cone.app.model import BaseNode
-from cone.app.model import Metadata
 from cone.app.model import Properties
+from cone.app.model import SettingsNode
 from cone.app.model import XMLProperties
+from cone.app.model import node_info
 from cone.ugm.localmanager import LocalManagerConfigAttributes
 from cone.ugm.utils import general_settings
+from node.behaviors import Attributes
 from node.utils import instance_property
+from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 import os
 
@@ -19,7 +21,7 @@ ugm_cfg.lm_settings = ''
 # XXX: move cone.ugm.model.factory_defaults here
 
 
-class UGMSettings(BaseNode):
+class UGMSettings(SettingsNode):
     config_file = None
 
     def __call__(self):
@@ -41,42 +43,36 @@ class UGMSettings(BaseNode):
                 delattr(self, _attr)
 
 
+@node_info(
+    name='ugm_general_settings',
+    title=_('ugm_settings_node', default='UGM Settings'),
+    description = _(
+        'ugm_settings_node_description',
+        default='General user and group management settings'
+    ),
+    icon='ion-person-stalker')
 class GeneralSettings(UGMSettings):
+    category = _('category_ugm', 'User and Group Management')
 
     @property
     def config_file(self):
         return ugm_cfg.ugm_settings
 
-    @instance_property
-    def metadata(self):
-        metadata = Metadata()
-        metadata.title = _(
-            'ugm_settings_node',
-            default='UGM Settings')
-        metadata.description = _(
-            'ugm_settings_node_description',
-            default='General user and group management settings'
-        )
-        return metadata
 
-
-class LocalManagerSettings(BaseNode):
+@node_info(
+    name='ugm_localmanager_settings',
+    title=_('localmanager_settings_node', default='Local Manager Settings'),
+    description=_(
+        'localmanager_settings_node_description',
+        default='Local Manager Settings'
+    ),
+    icon='ion-person')
+@plumbing(Attributes)
+class LocalManagerSettings(SettingsNode):
+    category = _('category_ugm', 'User and Group Management')
 
     def attributes_factory(self, name=None, parent=None):
         return LocalManagerConfigAttributes(ugm_cfg.lm_settings)
-
-    @instance_property
-    def metadata(self):
-        metadata = Metadata()
-        metadata.title = _(
-            'localmanager_settings_node',
-            default='Local Manager Settings'
-        )
-        metadata.description = _(
-            'localmanager_settings_node_description',
-            default='Local Manager Settings'
-        )
-        return metadata
 
     @property
     def enabled(self):

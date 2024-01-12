@@ -50,7 +50,8 @@ class BrowserSettingsTests(object):
             'groups_listing_default_column',
             'roles_heading',
             'roles_principal_roles_enabled',
-            'save'
+            'save',
+            'came_from'
         ])
 
     @testing.principals(
