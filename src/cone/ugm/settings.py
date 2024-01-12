@@ -52,7 +52,7 @@ class UGMSettings(SettingsNode):
     ),
     icon='ion-person-stalker')
 class GeneralSettings(UGMSettings):
-    category = _('category_ugm', 'User and Group Management')
+    category = _('category_ugm', default='User and Group Management')
 
     @property
     def config_file(self):
@@ -69,7 +69,7 @@ class GeneralSettings(UGMSettings):
     icon='ion-person')
 @plumbing(Attributes)
 class LocalManagerSettings(SettingsNode):
-    category = _('category_ugm', 'User and Group Management')
+    category = _('category_ugm', default='User and Group Management')
 
     def attributes_factory(self, name=None, parent=None):
         return LocalManagerConfigAttributes(ugm_cfg.lm_settings)
