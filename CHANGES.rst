@@ -4,7 +4,8 @@ Changes
 1.0a8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Adopt Settings UI changes from ``cone.app``.
+  [rnix]
 
 
 1.0a7 (2023-02-02)
@@ -39,6 +40,9 @@ Changes
 ------------------
 
 - Replace deprecated use of ``Nodify`` by ``MappingNode``.
+  [rnix]
+
+- Use ``webresource`` for resource registration.
   [rnix]
 
 

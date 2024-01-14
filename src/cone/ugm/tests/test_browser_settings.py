@@ -50,7 +50,8 @@ class BrowserSettingsTests(object):
             'groups_listing_default_column',
             'roles_heading',
             'roles_principal_roles_enabled',
-            'save'
+            'save',
+            'came_from'
         ])
 
     @testing.principals(
@@ -126,10 +127,13 @@ class BrowserSettingsTests(object):
             )
 
         # Authenticate and render tile
+        general_settings = root['settings']['ugm_general']
+        general_settings.attrs.users_local_management_enabled = 'True'
         with self.layer.authenticated('manager'):
             res = render_tile(lm_settings, request, 'editform')
         expected = 'form action="http://example.com/settings/ugm_localmanager/edit"'
         self.assertTrue(res.find(expected) > -1)
+        general_settings.invalidate()
 
 
 class TestBrowserSettings(TileTestCase, BrowserSettingsTests):
