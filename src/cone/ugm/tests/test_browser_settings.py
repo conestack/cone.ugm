@@ -10,6 +10,9 @@ import os
 
 class BrowserSettingsTests(object):
 
+    @testing.principals(
+        users={'manager': {}},
+        roles={'manager': ['manager']})
     @testing.custom_config_path
     @testing.temp_directory
     def test_GeneralSettingsForm(self, tempdir):
@@ -24,7 +27,8 @@ class BrowserSettingsTests(object):
         tile = GeneralSettingsForm()
         tile.model = model
         tile.request = request
-        tile.prepare()
+        with self.layer.authenticated('manager'):
+            tile.prepare()
 
         form = tile.form
         self.assertEqual(form.keys(), [
