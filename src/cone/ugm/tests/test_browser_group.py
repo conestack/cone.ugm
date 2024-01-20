@@ -249,7 +249,7 @@ class BrowserGroupTests(object):
             events_called.append('GroupModifiedEvent')
 
         with self.layer.authenticated('manager'):
-            res = render_tile(group, request, 'edit')
+            res = render_tile(group, request, 'editform')
         expected = '<form action="http://example.com/groups/group_1/edit"'
         self.assertTrue(res.find(expected) > -1)
 
@@ -257,7 +257,7 @@ class BrowserGroupTests(object):
         request.params['groupform.principal_roles'] = []
         request.params['action.groupform.save'] = '1'
         with self.layer.authenticated('manager'):
-            res = render_tile(group, request, 'edit')
+            res = render_tile(group, request, 'editform')
         self.assertEqual(res, '')
 
         self.assertEqual(group.attrs['groupname'], 'Groupname Changed')

@@ -248,7 +248,7 @@ class BrowserUserTests(object):
             events_called.append('UserModifiedEvent')
 
         with self.layer.authenticated('manager'):
-            res = render_tile(user, request, 'edit')
+            res = render_tile(user, request, 'editform')
         expected = '<form action="http://example.com/users/user_1/edit"'
         self.assertTrue(res.find(expected) > -1)
 
@@ -258,7 +258,7 @@ class BrowserUserTests(object):
         request.params['userform.principal_roles'] = []
         request.params['action.userform.save'] = '1'
         with self.layer.authenticated('manager'):
-            res = render_tile(user, request, 'edit')
+            res = render_tile(user, request, 'editform')
         self.assertEqual(res, '')
 
         self.assertEqual(user.attrs['fullname'], 'Susi Musterfrau')

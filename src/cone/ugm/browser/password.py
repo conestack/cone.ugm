@@ -3,7 +3,6 @@ from cone.app.browser.actions import LinkAction
 from cone.app.browser.ajax import AjaxEvent
 from cone.app.browser.ajax import AjaxMessage
 from cone.app.browser.ajax import AjaxPath
-from cone.app.browser.authoring import _FormRenderingTile
 from cone.app.browser.authoring import ContentForm
 from cone.app.browser.authoring import render_form
 from cone.app.browser.form import Form
@@ -62,15 +61,7 @@ class ChangePasswordAction(LinkAction):
     context=User,
     permission='change_own_password')
 def change_password(model, request):
-    return render_form(model, request, 'change_password')
-
-
-@tile(
-    name='change_password',
-    interface=User,
-    permission='change_own_password')
-class ChangePasswordTile(_FormRenderingTile):
-    form_tile_name = 'change_password_form'
+    return render_form(model, request, 'change_password_form')
 
 
 @tile(
