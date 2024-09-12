@@ -8,7 +8,7 @@
 
     <div class="add_button"
          tal:condition="context.can_add">
-      <button class="btn btn-default"
+      <button class="btn btn-primary"
               type="submit"
               ajax:target="${context.add_target}">
          <span class="ion-plus"></span>
