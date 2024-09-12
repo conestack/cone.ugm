@@ -10,7 +10,8 @@ cone_ugm_resources = wr.ResourceGroup(
 )
 cone_ugm_resources.add(wr.ScriptResource(
     name='cone-ugm-js',
-    depends='cone-app-protected-js',
+    depends='cone-app-js',
+    # depends='cone-app-protected-js',
     resource='cone.ugm.js',
     compressed='cone.ugm.min.js'
 ))
