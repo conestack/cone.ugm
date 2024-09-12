@@ -1,7 +1,7 @@
 <tal:block xmlns:tal="http://xml.zope.org/namespaces/tal"
            omit-tag="True">
 
-  <div class="columns">
+  <div class="columns d-flex">
 
     <tal:leftcol replace="structure tile('leftcolumn')" />
 

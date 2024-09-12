@@ -3,23 +3,11 @@
 }
 
 /* columns */
-div.left_column {
-    padding-left:0px;
-    padding-right:0px;
+div.columns {
+    gap: 20px;
 }
-div.right_column {
-    padding-left:0px;
-    padding-right:0px;
-}
-@media (min-width: 992px) {
-    div.left_column {
-        padding-left:0px;
-        padding-right:6px;
-    }
-    div.right_column {
-        padding-left:6px;
-        padding-right:0px;
-    }
+div.left_column, div.right_column {
+    flex: 1;
 }
 
 /* add button */
@@ -41,7 +29,7 @@ a.action:hover {
 }
 a.add_item::before,
 a.add_item_disabled::before {
-    font-family:"Ionicons";
+    font-family:"bootstrap-icons";
     content: "\f218";
 }
 a.add_item,
@@ -55,7 +43,7 @@ a.add_item_disable:hover {
 }
 a.remove_item::before,
 a.remove_item_disabled::before {
-    font-family:"Ionicons";
+    font-family:"bootstrap-icons";
     content: "\f209";
 }
 a.remove_item,
@@ -69,8 +57,8 @@ a.remove_item_disable:hover {
 }
 a.delete_item::before,
 a.delete_item_disabled::before {
-    font-family:"Ionicons";
-    content: "\f12a";
+    font-family:"bootstrap-icons";
+    content: "\F623";
 }
 a.delete_item,
 a.delete_item:hover {
@@ -113,16 +101,16 @@ div.columnsorting div {
     color:#000;
 }
 div.columnsorting .columnsorticon::before {
-    font-family:"Ionicons";
-    content:"\f20b";
+    font-family:"bootstrap-icons";
+    content:"\F5D4";
 }
 div.columnsorting .btn.asc .columnsorticon::before {
-    font-family:"Ionicons";
-    content:"\f10d";
+    font-family:"bootstrap-icons";
+    content:"\F229";
 }
 div.columnsorting .btn.desc .columnsorticon::before {
-    font-family:"Ionicons";
-    content:"\f104";
+    font-family:"bootstrap-icons";
+    content:"\F235";
 }
 div.columnitems li {
     cursor:pointer;
@@ -153,13 +141,16 @@ div.columnitems div.actions {
 }
 
 /* principal forms */
+div.principal_form {
+    position: relative;
+}
 span.go_to_principal,
 span.go_to_principals {
-    float:right;
-    font-size:220%;
-    margin-right:12px;
-    margin-top:2px;
-    cursor:pointer;
+    font-size: 220%;
+    position: absolute;
+    right: 0;
+    z-index: 2000;
+    cursor: pointer;
 }
 #form-groupform .display-text.form-control,
 #form-userform .display-text.form-control {
@@ -182,16 +173,6 @@ span.go_to_principals {
 #checkbox-groupform-principal_roles-wrapper,
 #checkbox-userform-principal_roles-wrapper {
     padding-left:0;
-}
-#checkbox-groupform-principal_roles-wrapper li,
-#checkbox-userform-principal_roles-wrapper li {
-    margin-top:0;
-    margin-bottom:0;
-    padding-bottom:4px;
-}
-#checkbox-groupform-principal_roles-wrapper input[type="checkbox"],
-#checkbox-userform-principal_roles-wrapper input[type="checkbox"] {
-    margin-left:0;
 }
 
 /* general settings */

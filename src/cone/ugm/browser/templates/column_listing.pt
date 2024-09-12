@@ -11,12 +11,12 @@
 
     <div class="columnsorting btn-group">
 
-      <div class="btn btn-default" disabled="disabled">
+      <div class="btn btn-primary text-light" disabled="disabled">
         <span i18n:translate="sort_by">Sorting</span>:
       </div>
 
       <tal:sortheader repeat="header context.sortheader">
-        <button class="btn btn-default ${header['order']}"
+        <button class="btn btn-primary text-light ${header['order']}"
                 ajax:bind="click"
                 ajax:event="${context.ajax_event}"
                 ajax:target="${header['target']}">

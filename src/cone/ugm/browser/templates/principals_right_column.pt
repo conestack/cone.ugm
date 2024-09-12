@@ -4,11 +4,11 @@
            i18n:domain="cone.ugm"
            omit-tag="True">
 
-  <div class="column right_column col-md-6">
+  <div class="column right_column">
 
     <div class="principal_form" tal:condition="context.principal_id">
 
-      <span class="go_to_principal ion-arrow-right-b"
+      <span class="go_to_principal bi-caret-right"
             ajax:bind="click"
             ajax:target="${context.principal_target}"
             ajax:action="content:.columns:replace"></span>
