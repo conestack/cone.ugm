@@ -35,6 +35,8 @@ _ = TranslationStringFactory('cone.ugm')
     interface=Group,
     permission='view')
 class GroupLeftColumn(Tile):
+    title = _('group_data', default='Group Data')
+    to_principal = _('groups', default='Groups')
 
     @property
     def principals_target(self):
@@ -48,7 +50,7 @@ class GroupLeftColumn(Tile):
     interface=Group,
     permission='view')
 class GroupRightColumn(Tile):
-    pass
+    title = _('group_users', default='Group Users')
 
 
 class UsersListing(ColumnListing):

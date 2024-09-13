@@ -4,17 +4,22 @@
            i18n:domain="cone.ugm"
            omit-tag="True">
 
-  <div class="column left_column col-md-6">
+  <div class="card column left_column bg-primary-100">
+    <h5 class="card-header" tal:content="context.title"></h5>
+    <div class="card-body">
+      <div class="principal_form">
 
-    <div class="principal_form">
+        <div class="go_to_principal btn btn-primary text-light mb-3"
+             ajax:bind="click"
+             ajax:target="${context.principals_target}"
+             ajax:action="content:.columns:replace">
+          <span tal:content="context.to_principal"></span>
+          <span class="bi-caret-left"></span>
+        </div>
 
-      <span class="go_to_principals ion-arrow-left-b"
-            ajax:bind="click"
-            ajax:target="${context.principals_target}"
-            ajax:action="content:.columns:replace"></span>
+        <tal:form replace="structure tile('editform')" />
 
-      <tal:form replace="structure tile('editform')" />
-
+      </div>
     </div>
 
   </div>

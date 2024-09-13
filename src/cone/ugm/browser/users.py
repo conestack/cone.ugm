@@ -7,6 +7,7 @@ from cone.ugm.browser.listing import PrincipalsListing
 from cone.ugm.model.users import Users
 from pyramid.i18n import TranslationStringFactory
 import logging
+from pyramid.i18n import get_localizer
 
 
 logger = logging.getLogger('cone.ugm')
@@ -20,6 +21,7 @@ _ = TranslationStringFactory('cone.ugm')
     permission='view')
 class UsersLeftColumn(Tile):
     add_label = _('add_user', default='Add User')
+    title = _('users', default='Users')
 
     @property
     def add_target(self):
@@ -40,6 +42,9 @@ class UsersLeftColumn(Tile):
     interface=Users,
     permission='view')
 class UsersRightColumn(Column):
+    title = _('user_data', default='User Data')
+    to_principal = _('user_groups', default='User Groups')
+    no_principal = _('no_user_selected', default='No User selected.')
 
     @property
     def principal_id(self):

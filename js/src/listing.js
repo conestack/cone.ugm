@@ -70,7 +70,7 @@ export class LeftPrincipalListing extends PrincipalListing {
             target = ts.ajax.parse_target(elem.attr('ajax:target'));
         ts.ajax.action({
             name: 'add',
-            selector: '.right_column',
+            selector: '.right_column .card-body',
             mode: 'inner',
             url: target.url,
             params: target.params

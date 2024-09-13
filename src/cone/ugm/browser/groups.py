@@ -20,6 +20,7 @@ _ = TranslationStringFactory('cone.ugm')
     permission='view')
 class GroupsLeftColumn(Tile):
     add_label = _('add_group', default='Add Group')
+    title = _('groups', default='Groups')
 
     @property
     def add_target(self):
@@ -40,6 +41,9 @@ class GroupsLeftColumn(Tile):
     interface=Groups,
     permission='view')
 class GroupsRightColumn(Column):
+    title = _('group_data', default='Group Data')
+    to_principal = _('group_users', default='Group Users')
+    no_principal = _('no_group_selected', default='No Group selected.')
 
     @property
     def principal_id(self):
