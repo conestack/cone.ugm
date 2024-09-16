@@ -5,9 +5,9 @@
            omit-tag="True">
 
   <div class="card column left_column">
-    <h5 class="card-header" tal:content="context.title"></h5>
-    <div class="card-body">
-      <div class="add_button mb-3"
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="m-0" tal:content="context.title"></h5>
+      <div class="add_button"
            tal:condition="context.can_add">
         <button class="btn btn-primary text-light"
                 type="submit"
@@ -18,7 +18,9 @@
            </span>
         </button>
       </div>
+    </div>
 
+    <div class="card-body">
       <tal:listing replace="structure tile('columnlisting')" />
     </div>
 

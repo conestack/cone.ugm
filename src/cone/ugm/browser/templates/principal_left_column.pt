@@ -5,20 +5,20 @@
            omit-tag="True">
 
   <div class="card column left_column bg-primary-100">
-    <h5 class="card-header" tal:content="context.title"></h5>
-    <div class="card-body">
-      <div class="principal_form">
-
-        <div class="go_to_principal btn btn-primary text-light mb-3"
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="m-0" tal:content="context.title"></h5>
+        <div class="go_to_principal btn btn-primary text-light"
              ajax:bind="click"
              ajax:target="${context.principals_target}"
              ajax:action="content:.columns:replace">
           <span tal:content="context.to_principal"></span>
           <span class="bi-caret-left"></span>
         </div>
+    </div>
 
+    <div class="card-body">
+      <div class="principal_form">
         <tal:form replace="structure tile('editform')" />
-
       </div>
     </div>
 

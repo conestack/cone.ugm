@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-11-29 17:31+0100\n"
+"POT-Creation-Date: 2024-09-16 08:48+0200\n"
 "PO-Revision-Date: 2012-07-30 14:02+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en <LL@li.org>\n"
@@ -19,24 +19,39 @@ msgstr ""
 "Generated-By: Babel 0.9.4\n"
 
 #. Default: UGM Settings
-#: src/cone/ugm/settings.py:53
+#: src/cone/ugm/settings.py:48
 msgid "ugm_settings_node"
 msgstr "UGM Settings"
 
 #. Default: General user and group management settings
-#: src/cone/ugm/settings.py:56
+#: src/cone/ugm/settings.py:49
 msgid "ugm_settings_node_description"
 msgstr "General user and group management settings"
 
+#. Default: User and Group Management
+#: src/cone/ugm/settings.py:55 src/cone/ugm/settings.py:72
+msgid "category_ugm"
+msgstr ""
+
 #. Default: Local Manager Settings
-#: src/cone/ugm/settings.py:71
+#: src/cone/ugm/settings.py:64
 msgid "localmanager_settings_node"
 msgstr "Local Manager Settings"
 
 #. Default: Local Manager Settings
-#: src/cone/ugm/settings.py:75
+#: src/cone/ugm/settings.py:65
 msgid "localmanager_settings_node_description"
 msgstr "Local Manager Settings"
+
+#. Default: Groups
+#: src/cone/ugm/model/groups.py:24 src/cone/ugm/model/groups.py:47
+msgid "groups_node"
+msgstr "Groups"
+
+#. Default: Container for Groups
+#: src/cone/ugm/model/groups.py:25 src/cone/ugm/model/groups.py:48
+msgid "groups_node_description"
+msgstr "Container for Groups"
 
 #. Default: Group
 #: src/cone/ugm/model/group.py:17 src/cone/ugm/model/group.py:30
@@ -58,16 +73,6 @@ msgstr "User"
 msgid "user_node_description"
 msgstr "User"
 
-#. Default: Groups
-#: src/cone/ugm/model/groups.py:24 src/cone/ugm/model/groups.py:47
-msgid "groups_node"
-msgstr "Groups"
-
-#. Default: Container for Groups
-#: src/cone/ugm/model/groups.py:25 src/cone/ugm/model/groups.py:48
-msgid "groups_node_description"
-msgstr "Container for Groups"
-
 #. Default: Users
 #: src/cone/ugm/model/users.py:24 src/cone/ugm/model/users.py:47
 msgid "users_node"
@@ -78,122 +83,6 @@ msgstr "Users"
 msgid "users_node_description"
 msgstr "Container for Users"
 
-#. Default: Add user to selected group
-#: src/cone/ugm/browser/group.py:108 src/cone/ugm/browser/user.py:108
-msgid "add_user_to_selected_group"
-msgstr "Add user to selected group"
-
-#. Default: Remove user from selected group
-#: src/cone/ugm/browser/group.py:121 src/cone/ugm/browser/user.py:121
-msgid "remove_user_from_selected_group"
-msgstr "Remove user from selected group"
-
-#. Default: Group ID
-#: src/cone/ugm/browser/group.py:187
-msgid "group_id"
-msgstr "Group ID"
-
-#. Default: filter listing
-#: src/cone/ugm/browser/listing.py:107
-msgid "filter_listing"
-msgstr "filter listing"
-
-#. Default: Delete Principal
-#: src/cone/ugm/browser/listing.py:298
-msgid "delete_principal"
-msgstr "Delete Principal"
-
-#. Default: auto incremented
-#: src/cone/ugm/browser/autoincrement.py:66
-msgid "auto_incremented"
-msgstr "auto incremented"
-
-#. Default: User ID
-#: src/cone/ugm/browser/user.py:187
-msgid "user_id"
-msgstr "User ID"
-
-#. Default: Login name
-#: src/cone/ugm/browser/user.py:188
-msgid "login_name"
-msgstr "Login name"
-
-#. Default: Password
-#: src/cone/ugm/browser/user.py:189
-msgid "password"
-msgstr "Password"
-
-#. Default: Active
-#: src/cone/ugm/browser/expires.py:35
-msgid "active"
-msgstr "Active"
-
-#. Default: Change Password
-#: src/cone/ugm/browser/password.py:33 src/cone/ugm/browser/password.py:154
-msgid "change_password"
-msgstr "Change Password"
-
-#. Default: Change Password: ${user}
-#: src/cone/ugm/browser/password.py:90
-msgid "change_user_password"
-msgstr "Change Password: ${user}"
-
-#. Default: No password given
-#: src/cone/ugm/browser/password.py:110 src/cone/ugm/browser/password.py:125
-#: src/cone/ugm/browser/password.py:135
-msgid "no_password_given"
-msgstr "No password given"
-
-#. Default: Current Password
-#: src/cone/ugm/browser/password.py:111
-msgid "current_password"
-msgstr "Current Password"
-
-#. Default: New Password
-#: src/cone/ugm/browser/password.py:126
-msgid "new_password"
-msgstr "New Password"
-
-#. Default: Confirm Password
-#: src/cone/ugm/browser/password.py:136
-msgid "confirm_password"
-msgstr "Confirm Password"
-
-#. Default: Wrong Password
-#: src/cone/ugm/browser/password.py:165
-msgid "wrong_password"
-msgstr "Wrong Password"
-
-#. Default: Password Mismatch
-#: src/cone/ugm/browser/password.py:176
-msgid "password_missmatch"
-msgstr "Password Mismatch"
-
-#. Default: Password change successful
-#: src/cone/ugm/browser/password.py:196
-msgid "password_changed"
-msgstr "Password change successful"
-
-#. Default: Add Group
-#: src/cone/ugm/browser/groups.py:22
-msgid "add_group"
-msgstr "Add Group"
-
-#. Default: Delete Group
-#: src/cone/ugm/browser/groups.py:70
-msgid "delete_group"
-msgstr "Delete Group"
-
-#. Default: Add User
-#: src/cone/ugm/browser/users.py:22
-msgid "add_user"
-msgstr "Add User"
-
-#. Default: Delete User
-#: src/cone/ugm/browser/users.py:70
-msgid "delete_user"
-msgstr "Delete User"
-
 #. Default: Portrait
 #: src/cone/ugm/browser/portrait.py:80 src/cone/ugm/browser/portrait.py:82
 msgid "portrait"
@@ -203,54 +92,6 @@ msgstr "Portrait"
 #: src/cone/ugm/browser/roles.py:45
 msgid "roles"
 msgstr "Roles"
-
-#. Default: No ${field} defined
-#: src/cone/ugm/browser/principal.py:25
-msgid "no_field_value_defined"
-msgstr "No ${field} defined"
-
-#. Default: User ${principal_id} already exists.
-#: src/cone/ugm/browser/principal.py:176
-msgid "user_already_exists"
-msgstr "User ${principal_id} already exists."
-
-#. Default: Group ${principal_id} already exists.
-#: src/cone/ugm/browser/principal.py:188
-msgid "group_already_exists"
-msgstr "Group ${principal_id} already exists."
-
-#. Default: User login ${login} not unique.
-#: src/cone/ugm/browser/principal.py:266
-msgid "user_login_not_unique"
-msgstr "User login ${login} not unique."
-
-#. Default: Save
-#.
-#: src/cone/ugm/browser/principal.py:389
-#: src/cone/ugm/browser/forms/localmanager_settings.yaml:65
-#: src/cone/ugm/browser/forms/general_settings.yaml:191
-msgid "save"
-msgstr "Save"
-
-#. Default: Cancel
-#: src/cone/ugm/browser/principal.py:399
-msgid "cancel"
-msgstr "Cancel"
-
-#. Default: Value is required if portrit support is enabled
-#: src/cone/ugm/browser/settings.py:43
-msgid "required_if_users_portrait"
-msgstr "Value is required if portrit support is enabled"
-
-#. Default: Duplicate access rule
-#: src/cone/ugm/browser/settings.py:139
-msgid "localmanager_duplicate_rule_error"
-msgstr "Duplicate access rule"
-
-#. Default: Target GID equates source GID
-#: src/cone/ugm/browser/settings.py:151
-msgid "localmanager_target_is_source_error"
-msgstr "Target GID equates source GID"
 
 #. Default: Deleted user '${uid}' from database.
 #: src/cone/ugm/browser/actions.py:82
@@ -301,6 +142,217 @@ msgid "lm_remove_target_uid_not_allowed"
 msgstr ""
 "Failed removing user '${uid}' from group '${gid}'. Manage membership denied "
 "for user."
+
+#. Default: Add Group
+#: src/cone/ugm/browser/groups.py:22
+msgid "add_group"
+msgstr "Add Group"
+
+#. Default: Groups
+#: src/cone/ugm/browser/groups.py:23 src/cone/ugm/browser/group.py:39
+#, fuzzy
+msgid "groups"
+msgstr "Group ID"
+
+#. Default: Group Data
+#: src/cone/ugm/browser/groups.py:44 src/cone/ugm/browser/group.py:38
+#, fuzzy
+msgid "group_data"
+msgstr "Group ID"
+
+#. Default: Group Users
+#: src/cone/ugm/browser/groups.py:45 src/cone/ugm/browser/group.py:53
+#, fuzzy
+msgid "group_users"
+msgstr "Group"
+
+#. Default: No Group selected.
+#: src/cone/ugm/browser/groups.py:46
+msgid "no_group_selected"
+msgstr ""
+
+#. Default: Delete Group
+#: src/cone/ugm/browser/groups.py:74
+msgid "delete_group"
+msgstr "Delete Group"
+
+#. Default: Active
+#: src/cone/ugm/browser/expires.py:35
+msgid "active"
+msgstr "Active"
+
+#. Default: Add user to selected group
+#: src/cone/ugm/browser/group.py:110 src/cone/ugm/browser/user.py:110
+msgid "add_user_to_selected_group"
+msgstr "Add user to selected group"
+
+#. Default: Remove user from selected group
+#: src/cone/ugm/browser/group.py:123 src/cone/ugm/browser/user.py:123
+msgid "remove_user_from_selected_group"
+msgstr "Remove user from selected group"
+
+#. Default: Group ID
+#: src/cone/ugm/browser/group.py:189
+msgid "group_id"
+msgstr "Group ID"
+
+#. Default: Value is required if portrit support is enabled
+#: src/cone/ugm/browser/settings.py:33
+msgid "required_if_users_portrait"
+msgstr "Value is required if portrit support is enabled"
+
+#. Default: Duplicate access rule
+#: src/cone/ugm/browser/settings.py:122
+msgid "localmanager_duplicate_rule_error"
+msgstr "Duplicate access rule"
+
+#. Default: Target GID equates source GID
+#: src/cone/ugm/browser/settings.py:134
+msgid "localmanager_target_is_source_error"
+msgstr "Target GID equates source GID"
+
+#. Default: User Data
+#: src/cone/ugm/browser/user.py:42 src/cone/ugm/browser/users.py:45
+#, fuzzy
+msgid "user_data"
+msgstr "User ID"
+
+#. Default: Users
+#: src/cone/ugm/browser/user.py:43 src/cone/ugm/browser/users.py:24
+#, fuzzy
+msgid "users"
+msgstr "Users"
+
+#. Default: User Groups
+#: src/cone/ugm/browser/user.py:57 src/cone/ugm/browser/users.py:46
+#, fuzzy
+msgid "user_groups"
+msgstr "Added user '${uid}' to group '${gid}'."
+
+#. Default: User ID
+#: src/cone/ugm/browser/user.py:189
+msgid "user_id"
+msgstr "User ID"
+
+#. Default: Login name
+#: src/cone/ugm/browser/user.py:190
+msgid "login_name"
+msgstr "Login name"
+
+#. Default: Password
+#: src/cone/ugm/browser/user.py:191
+msgid "password"
+msgstr "Password"
+
+#. Default: Change Password
+#: src/cone/ugm/browser/password.py:32 src/cone/ugm/browser/password.py:145
+msgid "change_password"
+msgstr "Change Password"
+
+#. Default: Change Password: ${user}
+#: src/cone/ugm/browser/password.py:81
+msgid "change_user_password"
+msgstr "Change Password: ${user}"
+
+#. Default: No password given
+#: src/cone/ugm/browser/password.py:101 src/cone/ugm/browser/password.py:116
+#: src/cone/ugm/browser/password.py:126
+msgid "no_password_given"
+msgstr "No password given"
+
+#. Default: Current Password
+#: src/cone/ugm/browser/password.py:102
+msgid "current_password"
+msgstr "Current Password"
+
+#. Default: New Password
+#: src/cone/ugm/browser/password.py:117
+msgid "new_password"
+msgstr "New Password"
+
+#. Default: Confirm Password
+#: src/cone/ugm/browser/password.py:127
+msgid "confirm_password"
+msgstr "Confirm Password"
+
+#. Default: Wrong Password
+#: src/cone/ugm/browser/password.py:156
+msgid "wrong_password"
+msgstr "Wrong Password"
+
+#. Default: Password Mismatch
+#: src/cone/ugm/browser/password.py:167
+msgid "password_missmatch"
+msgstr "Password Mismatch"
+
+#. Default: Password change successful
+#: src/cone/ugm/browser/password.py:187
+msgid "password_changed"
+msgstr "Password change successful"
+
+#. Default: Add User
+#: src/cone/ugm/browser/users.py:23
+msgid "add_user"
+msgstr "Add User"
+
+#. Default: No User selected.
+#: src/cone/ugm/browser/users.py:47
+#, fuzzy
+msgid "no_user_selected"
+msgstr "Add user to selected group"
+
+#. Default: Delete User
+#: src/cone/ugm/browser/users.py:75
+msgid "delete_user"
+msgstr "Delete User"
+
+#. Default: filter listing
+#: src/cone/ugm/browser/listing.py:107
+msgid "filter_listing"
+msgstr "filter listing"
+
+#. Default: Delete Principal
+#: src/cone/ugm/browser/listing.py:298
+msgid "delete_principal"
+msgstr "Delete Principal"
+
+#. Default: No ${field} defined
+#: src/cone/ugm/browser/principal.py:23
+msgid "no_field_value_defined"
+msgstr "No ${field} defined"
+
+#. Default: User ${principal_id} already exists.
+#: src/cone/ugm/browser/principal.py:174
+msgid "user_already_exists"
+msgstr "User ${principal_id} already exists."
+
+#. Default: Group ${principal_id} already exists.
+#: src/cone/ugm/browser/principal.py:186
+msgid "group_already_exists"
+msgstr "Group ${principal_id} already exists."
+
+#. Default: User login ${login} not unique.
+#: src/cone/ugm/browser/principal.py:264
+msgid "user_login_not_unique"
+msgstr "User login ${login} not unique."
+
+#. Default: Save
+#.
+#: src/cone/ugm/browser/principal.py:387
+#: src/cone/ugm/browser/forms/localmanager_settings.yaml:65
+#: src/cone/ugm/browser/forms/general_settings.yaml:191
+msgid "save"
+msgstr "Save"
+
+#. Default: Cancel
+#: src/cone/ugm/browser/principal.py:397
+msgid "cancel"
+msgstr "Cancel"
+
+#. Default: auto incremented
+#: src/cone/ugm/browser/autoincrement.py:66
+msgid "auto_incremented"
+msgstr "auto incremented"
 
 #: src/cone/ugm/browser/forms/localmanager_settings.yaml:11
 msgid "localmanager_rules"
@@ -589,12 +641,18 @@ msgstr "Principal roles"
 msgid "roles_principal_roles_enabled_help"
 msgstr "Enable roles on principals"
 
+#. Default: Local User Management is not enabled.
+#: src/cone/ugm/browser/templates/localmanager_settings.pt:11
+#, fuzzy
+msgid "localmanager_disabled_warning"
+msgstr "Target GID [default]"
+
 #. Default: Sorting
-#: src/cone/ugm/browser/templates/column_listing.pt:15
+#: src/cone/ugm/browser/templates/column_listing.pt:16
 msgid "sort_by"
 msgstr "Sorting"
 
 #. Default: List all
-#: src/cone/ugm/browser/templates/column_listing.pt:41
+#: src/cone/ugm/browser/templates/column_listing.pt:42
 msgid "list_all"
 msgstr "List all"
