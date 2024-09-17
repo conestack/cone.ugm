@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2024-09-17 11:09+0200\n"
+"POT-Creation-Date: 2024-09-17 13:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Lingua 4.15.0\n"
 
-#. Default: UGM Settings
+#. Default: UGM
 #: ./src/cone/ugm/settings.py:48
 msgid "ugm_settings_node"
 msgstr ""
@@ -31,12 +31,12 @@ msgstr ""
 msgid "category_ugm"
 msgstr ""
 
-#. Default: Local Manager Settings
+#. Default: Local Manager
 #: ./src/cone/ugm/settings.py:64
 msgid "localmanager_settings_node"
 msgstr ""
 
-#. Default: Local Manager Settings
+#. Default: Manage Local Manager access rules
 #: ./src/cone/ugm/settings.py:65
 msgid "localmanager_settings_node_description"
 msgstr ""

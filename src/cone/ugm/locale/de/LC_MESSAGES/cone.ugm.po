@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-17 11:09+0200\n"
+"POT-Creation-Date: 2024-09-17 13:26+0200\n"
 "PO-Revision-Date: 2012-07-30 14:02+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: de <LL@li.org>\n"
@@ -18,10 +18,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "Generated-By: Babel 0.9.4\n"
 
-#. Default: UGM Settings
+#. Default: UGM
 #: src/cone/ugm/settings.py:48
 msgid "ugm_settings_node"
-msgstr "UGM Einstellungen"
+msgstr "UGM"
 
 #. Default: General user and group management settings
 #: src/cone/ugm/settings.py:49
@@ -33,15 +33,15 @@ msgstr "Allgemeine Benutzer- und Gruppeneinstellungen"
 msgid "category_ugm"
 msgstr "Benutzer- und Gruppenmanagement"
 
-#. Default: Local Manager Settings
+#. Default: Local Manager
 #: src/cone/ugm/settings.py:64
 msgid "localmanager_settings_node"
 msgstr "Benutzeradmin"
 
-#. Default: Local Manager Settings
+#. Default: Manage Local Manager access rules
 #: src/cone/ugm/settings.py:65
 msgid "localmanager_settings_node_description"
-msgstr "Benutzeradmin"
+msgstr "Benutzeradmin Zugriffsrechte verwalten"
 
 #. Default: Groups
 #: src/cone/ugm/model/groups.py:24 src/cone/ugm/model/groups.py:47
