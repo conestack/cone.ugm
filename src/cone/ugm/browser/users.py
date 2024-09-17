@@ -42,9 +42,8 @@ class UsersLeftColumn(Tile):
     interface=Users,
     permission='view')
 class UsersRightColumn(Column):
-    title = _('user_data', default='User Data')
-    to_principal = _('user_groups', default='User Groups')
     no_principal = _('no_user_selected', default='No User selected.')
+    header_title = _('user_data', default='User Data')
 
     @property
     def principal_id(self):
@@ -53,11 +52,6 @@ class UsersRightColumn(Column):
     @property
     def principal_form(self):
         return self._render(self.model[self.principal_id], 'editform')
-
-    @property
-    def principal_target(self):
-        return make_url(self.request, node=self.model[self.principal_id])
-
 
 @tile(
     name='columnlisting',

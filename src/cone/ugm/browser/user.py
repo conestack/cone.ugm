@@ -39,13 +39,7 @@ _ = TranslationStringFactory('cone.ugm')
     interface=User,
     permission='view')
 class UserLeftColumn(Tile):
-    title = _('user_data', default='User Data')
-    to_principal = _('users', default='Users')
-
-    @property
-    def principals_target(self):
-        query = make_query(pid=self.model.name)
-        return make_url(self.request, node=self.model.parent, query=query)
+    pass
 
 
 @tile(
@@ -182,6 +176,8 @@ class AllGroupsColumnListing(GroupsListing):
 class UserForm(PrincipalForm):
     form_name = 'userform'
     field_factory_registry = user_field
+    to_principal = _('user_groups', default='User Groups')
+    to_principals = _('users', default='Users')
 
     @property
     def reserved_attrs(self):
@@ -196,7 +192,7 @@ class UserForm(PrincipalForm):
         return general_settings(self.model).attrs.users_form_attrmap
 
 
-@tile(name='addform', interface=User, permission='add_user')
+@tile(name='addform', interface=User, permission='add_user', path='templates/principal_form.pt')
 @plumbing(
     ContentAddForm,
     PrincipalRolesForm,
@@ -207,6 +203,8 @@ class UserForm(PrincipalForm):
 class UserAddForm(UserForm, Form):
     show_heading = False
     show_contextmenu = False
+    header_title = _('new_user', default='New User')
+    principal_id = None
 
     def save(self, widget, data):
         extracted = dict()
@@ -254,7 +252,7 @@ class UserAddForm(UserForm, Form):
         return HTTPFound(location=url)
 
 
-@tile(name='editform', interface=User, permission='edit_user', strict=False)
+@tile(name='editform', interface=User, permission='edit_user', strict=False, path='templates/principal_form.pt')
 @plumbing(
     ContentEditForm,
     PrincipalRolesForm,
@@ -264,6 +262,11 @@ class UserAddForm(UserForm, Form):
 class UserEditForm(UserForm, Form):
     show_heading = False
     show_contextmenu = False
+    header_title = _('user_data', default='User Data')
+
+    @property
+    def principal_id(self):
+        return self.model.name
 
     def save(self, widget, data):
         attrs = self.model.attrs

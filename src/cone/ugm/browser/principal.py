@@ -1,3 +1,4 @@
+from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
 from cone.app.ugm import ugm_backend
 from cone.ugm.utils import general_settings
@@ -6,8 +7,8 @@ from pyramid.i18n import get_localizer
 from pyramid.i18n import TranslationStringFactory
 from yafowil.base import ExtractionError
 from yafowil.base import factory
-from yafowil.password import ascii_extractor
 from yafowil.common import generic_extractor
+from yafowil.password import ascii_extractor
 import itertools
 
 
@@ -335,8 +336,17 @@ def email_field_factory(form, label, value):
 # Principal form
 ###############################################################################
 
-class PrincipalForm(object):
+class PrincipalForm:
     form_name = None
+
+    @property
+    def principal_target(self):
+        return make_url(self.request, node=self.model)
+
+    @property
+    def principals_target(self):
+        query = make_query(pid=self.model.name)
+        return make_url(self.request, node=self.model.parent, query=query)
 
     @property
     def reserved_attrs(self):

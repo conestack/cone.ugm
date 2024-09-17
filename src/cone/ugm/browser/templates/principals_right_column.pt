@@ -5,26 +5,16 @@
            omit-tag="True">
 
   <div class="card column right_column bg-primary-100">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <h5 class="m-0" tal:content="context.title"></h5>
-      <div class="go_to_principal btn btn-primary text-light"
-           tal:condition="context.principal_id"
-           ajax:bind="click"
-           ajax:target="${context.principal_target}"
-           ajax:action="content:.columns:replace">
-        <span tal:content="context.to_principal"></span>
-        <span class="bi-caret-right"></span>
-      </div>
-    </div>
+    <div class="principal_form">
+      <tal:form condition="context.principal_id" replace="structure context.principal_form" />
 
-    <div class="card-body">
-      <span
-        tal:condition="not context.principal_id"
-        tal:content="context.no_principal"
-      >
-      </span>
-      <div class="principal_form" tal:condition="context.principal_id">
-        <tal:form replace="structure context.principal_form" />
+      <div tal:condition="not context.principal_id">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="m-0" tal:content="context.header_title"></h5>
+        </div>
+        <div class="card-body">
+          <span tal:content="context.no_principal"/>
+        </div>
       </div>
     </div>
   </div>
