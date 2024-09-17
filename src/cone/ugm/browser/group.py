@@ -182,6 +182,8 @@ class AllUsersColumnListing(UsersListing):
 class GroupForm(PrincipalForm):
     form_name = 'groupform'
     field_factory_registry = group_field
+    to_principal = _('group_members', default='Group Members')
+    to_principals = _('groups', default='Groups')
 
     @property
     def reserved_attrs(self):
@@ -194,11 +196,13 @@ class GroupForm(PrincipalForm):
         return general_settings(self.model).attrs.groups_form_attrmap
 
 
-@tile(name='addform', interface=Group, permission="add_group")
+@tile(name='addform', interface=Group, permission="add_group", path='templates/principal_form.pt')
 @plumbing(ContentAddForm, PrincipalRolesForm, AddFormFiddle)
 class GroupAddForm(GroupForm, Form):
     show_heading = False
     show_contextmenu = False
+    header_title = _('new_group', default='New Group')
+    principal_id = None
 
     def save(self, widget, data):
         extracted = dict()
@@ -230,11 +234,16 @@ class GroupAddForm(GroupForm, Form):
         return HTTPFound(location=url)
 
 
-@tile(name='editform', interface=Group, permission="edit_group", strict=False)
+@tile(name='editform', interface=Group, permission="edit_group", strict=False, path='templates/principal_form.pt')
 @plumbing(ContentEditForm, PrincipalRolesForm, EditFormFiddle)
 class GroupEditForm(GroupForm, Form):
     show_heading = False
     show_contextmenu = False
+    header_title = _('gorup_data', default='Group Data')
+
+    @property
+    def principal_id(self):
+        return self.model.name
 
     def save(self, widget, data):
         attrs = self.model.attrs

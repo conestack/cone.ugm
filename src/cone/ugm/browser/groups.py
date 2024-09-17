@@ -41,9 +41,8 @@ class GroupsLeftColumn(Tile):
     interface=Groups,
     permission='view')
 class GroupsRightColumn(Column):
-    title = _('group_data', default='Group Data')
-    to_principal = _('group_users', default='Group Users')
     no_principal = _('no_group_selected', default='No Group selected.')
+    header_title = _('group_data', default='Group Data')
 
     @property
     def principal_id(self):
@@ -52,11 +51,6 @@ class GroupsRightColumn(Column):
     @property
     def principal_form(self):
         return self._render(self.model[self.principal_id], 'editform')
-
-    @property
-    def principal_target(self):
-        return make_url(self.request, node=self.model[self.principal_id])
-
 
 @tile(
     name='columnlisting',
