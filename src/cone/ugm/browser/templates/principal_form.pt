@@ -8,22 +8,14 @@
 
     <div class="card-header d-flex justify-content-between align-items-center">
       <h5 class="m-0" tal:content="context.header_title"></h5>
-      <div class="go_to_principal btn btn-primary text-light"
-           tal:condition="context.principal_id"
-           ajax:bind="click"
-           ajax:target="${context.principal_target}"
-           ajax:action="content:.columns:replace">
-        <span tal:content="context.to_principal"></span>
-        <span class="bi-caret-right"></span>
-      </div>
-      <div class="go_to_principal btn btn-primary text-light"
-           tal:condition="not context.principal_id and context.name == 'editform'"
-           ajax:bind="click"
-           ajax:target="${context.principals_target}"
-           ajax:action="content:.columns:replace">
-        <span tal:content="context.to_principals"></span>
-        <span class="bi-caret-left"></span>
-      </div>
+        <div class="go_to_principal btn btn-primary text-light"
+             tal:condition="context.principal_id"
+             ajax:bind="click"
+             ajax:target="${context.link_target.target}"
+             ajax:action="content:.columns:replace">
+          <span tal:content="context.link_target.title"></span>
+          <span class="${context.link_target.icon}"></span>
+        </div>
     </div>
 
     <div class="card-body">

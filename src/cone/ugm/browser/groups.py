@@ -50,6 +50,7 @@ class GroupsRightColumn(Column):
 
     @property
     def principal_form(self):
+        self.request.environ['cone.ugm.column'] = 'right'
         return self._render(self.model[self.principal_id], 'editform')
 
 @tile(

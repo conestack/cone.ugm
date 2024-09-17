@@ -239,7 +239,7 @@ class GroupAddForm(GroupForm, Form):
 class GroupEditForm(GroupForm, Form):
     show_heading = False
     show_contextmenu = False
-    header_title = _('gorup_data', default='Group Data')
+    header_title = _('group_data', default='Group Data')
 
     @property
     def principal_id(self):

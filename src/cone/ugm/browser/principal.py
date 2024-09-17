@@ -340,13 +340,18 @@ class PrincipalForm:
     form_name = None
 
     @property
-    def principal_target(self):
-        return make_url(self.request, node=self.model)
-
-    @property
-    def principals_target(self):
-        query = make_query(pid=self.model.name)
-        return make_url(self.request, node=self.model.parent, query=query)
+    def link_target(self):
+        env = self.request.environ
+        if 'cone.ugm.column' in env and env['cone.ugm.column'] == 'right':
+            title = self.to_principal
+            icon = 'bi-caret-right'
+            target = make_url(self.request, node=self.model)
+        else:
+            title = self.to_principals
+            icon = 'bi-caret-left'
+            query = make_query(pid=self.model.name)
+            target = make_url(self.request, node=self.model.parent, query=query)
+        return dict(title=title, icon=icon, target=target)
 
     @property
     def reserved_attrs(self):
