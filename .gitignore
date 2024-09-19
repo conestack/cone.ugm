@@ -1,3 +1,4 @@
+.python-version
 *.pyc
 *.pyo
 /.installed.cfg
@@ -27,3 +28,4 @@
 /share/
 /src/cone.ugm.egg-info/
 /var/
+/venv/
