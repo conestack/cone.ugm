@@ -2,7 +2,7 @@ factory: form
 name: localmanager_settings
 props:
     action: context.form_action
-    class: ajax
+    class: ajax mt-4
 widgets:
 - rules:
     factory: field:array

@@ -163,3 +163,17 @@ div.principal_form > .btn > * {
 #checkbox-userform-principal_roles-wrapper {
   padding-left: 0;
 }
+
+/* settings form */
+#form-ugm_settings .field {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+#form-ugm_settings .field:not(:last-child) {
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+}
+#form-ugm_settings label.form-label {
+  font-size: 18px;
+}
