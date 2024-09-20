@@ -1,5 +1,5 @@
 .hidden {
-    display:none;
+    display: none;
 }
 
 /* columns */
@@ -161,94 +161,4 @@ div.principal_form {
 #checkbox-groupform-principal_roles-wrapper,
 #checkbox-userform-principal_roles-wrapper {
     padding-left:0;
-}
-
-/* general settings */
-#form-ugm_settings {
-    .dictwidget th.actions,
-    .dictwidget td.actions {
-        width:7em;
-        padding:5px 0 0 0;
-    }
-    .dict_actions {
-        margin-top:8px;
-        padding-right:0;
-        width:7em;
-    }
-    tr th:first-child,
-    tr td:first-child {
-        padding-left:0;
-    }
-}
-#array-ugm_settings-users_exposed_attributes td.widget {
-    padding-bottom:4px;
-
-    input {
-        margin-top:4px;
-    }
-}
-#field-ugm_settings-users_form_attrmap label,
-#field-ugm_settings-users_listing_columns label,
-#field-ugm_settings-users_exposed_attributes label,
-#field-ugm_settings-groups_form_attrmap label,
-#field-ugm_settings-groups_listing_columns label {
-    font-size:130%;
-    text-decoration:underline;
-    margin-top:12px;
-}
-
-/* localmanager settings */
-#array-localmanager_settings-rules {
-    table td.actions {
-        vertical-align:top;
-    }
-    th.head_actions,
-    td.actions,
-    div.array_actions {
-        width:4em;
-    }
-    div.array_actions {
-        margin-top:8px;
-    }
-    table.rules_array {
-        width:100%;
-
-        > thead th:first-child {
-            font-size:130%;
-            text-decoration:underline;
-        }
-        > tbody > tr {
-            border-top:#ccc 1px solid;
-        }
-    }
-    table.targets_array {
-        margin-top:0;
-        width:100%;
-    }
-    div.source_field {
-        float:left;
-        width:45%;
-        padding-right:6px;
-        padding-top:6px;
-
-        label {
-            margin-bottom:7px;
-        }
-    }
-    div.targets_field {
-        float:right;
-        width:55%;
-        padding-left:6px;
-
-        input[type="text"] {
-            float:left;
-            width:90%;
-        }
-        input[type="checkbox"] {
-            float:left;
-            position:relative;
-            top:5px;
-            margin-left:6px;
-        }
-    }
 }

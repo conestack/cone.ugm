@@ -10,7 +10,7 @@ widgets:
     props:
         label: i18n:localmanager_rules
         sort: False
-        table_class: rules_array
+        class_add: mb-3
     widgets:
     - rule:
         factory: error:*duplicate_rule:compound
@@ -27,7 +27,6 @@ widgets:
                 source: javascript:ugm.lm_autocomplete_gid
                 minLength: 1
                 delay: 300
-                field.class: source_field
         - targets:
             factory: error:array
             props:
@@ -35,8 +34,6 @@ widgets:
                 required: i18n:localmanager_no_targets_for_source
                 error.position: after
                 sort: False
-                array.class: targets_field
-                table_class: targets_array
             widgets:
             - target:
                 factory: compound
