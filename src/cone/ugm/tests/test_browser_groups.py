@@ -39,7 +39,7 @@ class BrowserGroupsTests(object):
 
         with self.layer.authenticated('manager'):
             res = render_tile(groups, request, 'leftcolumn')
-        expected = '<div class="column left_column col-md-6">'
+        expected = '<div class="card column left_column">'
         self.assertTrue(res.find(expected) > -1)
 
     @testing.principals(
@@ -64,7 +64,7 @@ class BrowserGroupsTests(object):
 
         with self.layer.authenticated('manager'):
             res = render_tile(groups, request, 'rightcolumn')
-        expected = '<div class="column right_column col-md-6">'
+        expected = '<div class="card column right_column bg-primary-100">'
         self.assertTrue(res.find(expected) > -1)
 
     @testing.principals(
