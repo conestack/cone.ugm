@@ -19,8 +19,5 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install Project
-      run: make install
-
     - name: Run Tests
       run: make test
