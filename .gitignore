@@ -5,6 +5,7 @@
 /.project
 /.vscode/
 /constraints-mxdev.txt
+/coverage/
 /dist/
 /node_modules/
 /package-lock.json
