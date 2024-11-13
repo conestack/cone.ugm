@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-11-29 17:31+0100\n"
+"POT-Creation-Date: 2024-11-13 08:58+0100\n"
 "PO-Revision-Date: 2012-07-30 14:02+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: en <LL@li.org>\n"
@@ -19,22 +19,27 @@ msgstr ""
 "Generated-By: Babel 0.9.4\n"
 
 #. Default: UGM Settings
-#: src/cone/ugm/settings.py:53
+#: src/cone/ugm/settings.py:48
 msgid "ugm_settings_node"
 msgstr "UGM Settings"
 
 #. Default: General user and group management settings
-#: src/cone/ugm/settings.py:56
+#: src/cone/ugm/settings.py:49
 msgid "ugm_settings_node_description"
 msgstr "General user and group management settings"
 
+#. Default: User and Group Management
+#: src/cone/ugm/settings.py:55 src/cone/ugm/settings.py:72
+msgid "category_ugm"
+msgstr "User and Group Management"
+
 #. Default: Local Manager Settings
-#: src/cone/ugm/settings.py:71
+#: src/cone/ugm/settings.py:64
 msgid "localmanager_settings_node"
 msgstr "Local Manager Settings"
 
 #. Default: Local Manager Settings
-#: src/cone/ugm/settings.py:75
+#: src/cone/ugm/settings.py:65
 msgid "localmanager_settings_node_description"
 msgstr "Local Manager Settings"
 
@@ -129,48 +134,48 @@ msgid "active"
 msgstr "Active"
 
 #. Default: Change Password
-#: src/cone/ugm/browser/password.py:33 src/cone/ugm/browser/password.py:154
+#: src/cone/ugm/browser/password.py:32 src/cone/ugm/browser/password.py:145
 msgid "change_password"
 msgstr "Change Password"
 
 #. Default: Change Password: ${user}
-#: src/cone/ugm/browser/password.py:90
+#: src/cone/ugm/browser/password.py:81
 msgid "change_user_password"
 msgstr "Change Password: ${user}"
 
 #. Default: No password given
-#: src/cone/ugm/browser/password.py:110 src/cone/ugm/browser/password.py:125
-#: src/cone/ugm/browser/password.py:135
+#: src/cone/ugm/browser/password.py:101 src/cone/ugm/browser/password.py:116
+#: src/cone/ugm/browser/password.py:126
 msgid "no_password_given"
 msgstr "No password given"
 
 #. Default: Current Password
-#: src/cone/ugm/browser/password.py:111
+#: src/cone/ugm/browser/password.py:102
 msgid "current_password"
 msgstr "Current Password"
 
 #. Default: New Password
-#: src/cone/ugm/browser/password.py:126
+#: src/cone/ugm/browser/password.py:117
 msgid "new_password"
 msgstr "New Password"
 
 #. Default: Confirm Password
-#: src/cone/ugm/browser/password.py:136
+#: src/cone/ugm/browser/password.py:127
 msgid "confirm_password"
 msgstr "Confirm Password"
 
 #. Default: Wrong Password
-#: src/cone/ugm/browser/password.py:165
+#: src/cone/ugm/browser/password.py:156
 msgid "wrong_password"
 msgstr "Wrong Password"
 
 #. Default: Password Mismatch
-#: src/cone/ugm/browser/password.py:176
+#: src/cone/ugm/browser/password.py:167
 msgid "password_missmatch"
 msgstr "Password Mismatch"
 
 #. Default: Password change successful
-#: src/cone/ugm/browser/password.py:196
+#: src/cone/ugm/browser/password.py:187
 msgid "password_changed"
 msgstr "Password change successful"
 
@@ -205,50 +210,50 @@ msgid "roles"
 msgstr "Roles"
 
 #. Default: No ${field} defined
-#: src/cone/ugm/browser/principal.py:25
+#: src/cone/ugm/browser/principal.py:23
 msgid "no_field_value_defined"
 msgstr "No ${field} defined"
 
 #. Default: User ${principal_id} already exists.
-#: src/cone/ugm/browser/principal.py:176
+#: src/cone/ugm/browser/principal.py:174
 msgid "user_already_exists"
 msgstr "User ${principal_id} already exists."
 
 #. Default: Group ${principal_id} already exists.
-#: src/cone/ugm/browser/principal.py:188
+#: src/cone/ugm/browser/principal.py:186
 msgid "group_already_exists"
 msgstr "Group ${principal_id} already exists."
 
 #. Default: User login ${login} not unique.
-#: src/cone/ugm/browser/principal.py:266
+#: src/cone/ugm/browser/principal.py:264
 msgid "user_login_not_unique"
 msgstr "User login ${login} not unique."
 
 #. Default: Save
 #.
-#: src/cone/ugm/browser/principal.py:389
+#: src/cone/ugm/browser/principal.py:387
 #: src/cone/ugm/browser/forms/localmanager_settings.yaml:65
 #: src/cone/ugm/browser/forms/general_settings.yaml:191
 msgid "save"
 msgstr "Save"
 
 #. Default: Cancel
-#: src/cone/ugm/browser/principal.py:399
+#: src/cone/ugm/browser/principal.py:397
 msgid "cancel"
 msgstr "Cancel"
 
 #. Default: Value is required if portrit support is enabled
-#: src/cone/ugm/browser/settings.py:43
+#: src/cone/ugm/browser/settings.py:33
 msgid "required_if_users_portrait"
 msgstr "Value is required if portrit support is enabled"
 
 #. Default: Duplicate access rule
-#: src/cone/ugm/browser/settings.py:139
+#: src/cone/ugm/browser/settings.py:122
 msgid "localmanager_duplicate_rule_error"
 msgstr "Duplicate access rule"
 
 #. Default: Target GID equates source GID
-#: src/cone/ugm/browser/settings.py:151
+#: src/cone/ugm/browser/settings.py:134
 msgid "localmanager_target_is_source_error"
 msgstr "Target GID equates source GID"
 
@@ -598,3 +603,8 @@ msgstr "Sorting"
 #: src/cone/ugm/browser/templates/column_listing.pt:41
 msgid "list_all"
 msgstr "List all"
+
+#. Default: Local User Management is not enabled.
+#: src/cone/ugm/browser/templates/localmanager_settings.pt:11
+msgid "localmanager_disabled_warning"
+msgstr "Local User Management is not enabled."

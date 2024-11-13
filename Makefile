@@ -220,7 +220,7 @@ LINGUA_SEARCH_PATH?=src/cone/ugm
 
 # Python packages containing lingua extensions.
 # No default value.
-LINGUA_PLUGINS?=
+LINGUA_PLUGINS?=yafowil.lingua
 
 # Command line options passed to `pot-create`
 # No default value.
