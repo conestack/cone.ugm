@@ -1,6 +1,5 @@
 from setuptools import find_packages
 from setuptools import setup
-from setuptools.command.test import test
 import os
 
 
@@ -16,13 +15,6 @@ longdesc = '\n\n'.join([read_file(name) for name in [
     'CHANGES.rst',
     'LICENSE.rst'
 ]])
-
-
-class Test(test):
-
-    def run_tests(self):
-        from cone.ugm import tests
-        tests.run_tests()
 
 
 setup(
@@ -60,11 +52,8 @@ setup(
     ],
     extras_require=dict(
         test=[
-            'zope.testrunner'
+            'pytest',
+            'zope.pytestlayer'
         ]
-    ),
-    tests_require=[
-        'zope.testrunner'
-    ],
-    cmdclass=dict(test=Test)
+    )
 )
