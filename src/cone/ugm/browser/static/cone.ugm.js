@@ -265,4 +265,3 @@ var cone_ugm = (function (exports, $, ts, cone) {
     return exports;
 
 })({}, jQuery, treibstoff, cone);
-//# sourceMappingURL=cone.ugm.js.map
