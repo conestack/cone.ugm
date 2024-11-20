@@ -16,7 +16,8 @@ cone_ugm_resources.add(wr.ScriptResource(
 ))
 cone_ugm_resources.add(wr.StyleResource(
     name='cone-ugm-css',
-    resource='cone.ugm.css'
+    resource='cone.ugm.css',
+    compressed='cone.ugm.min.css'
 ))
 
 
