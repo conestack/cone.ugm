@@ -35,9 +35,7 @@ class LayoutTests(object):
         self.assertTrue(config.personaltools)
         self.assertTrue(config.columns_fluid)
         self.assertFalse(config.pathbar)
-        self.assertEqual(config.sidebar_left, [])
-        self.assertEqual(config.sidebar_left_grid_width, 0)
-        self.assertEqual(config.content_grid_width, 12)
+        self.assertEqual(config.sidebar_left, ['navtree'])
 
 
 class TestLayout(unittest.TestCase, LayoutTests):

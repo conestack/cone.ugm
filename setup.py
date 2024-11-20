@@ -51,6 +51,9 @@ setup(
         'yafowil.yaml'
     ],
     extras_require=dict(
+        dev=[
+            'waitress'
+        ],
         test=[
             'pytest',
             'zope.pytestlayer'

@@ -27,7 +27,7 @@ DEPLOY_TARGETS?=
 
 # target to be executed when calling `make run`
 # No default value.
-RUN_TARGET?=
+RUN_TARGET?=run-ugm
 
 # Additional files and folders to remove when running clean target
 # No default value.

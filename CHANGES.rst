@@ -1,8 +1,19 @@
 Changes
 =======
 
-1.0a8 (unreleased)
+2.0a1 (unreleased)
 ------------------
+
+- Users and Groups entry nodes are no longer displayed in main menu.
+  [rnix]
+
+- Remove no longer used ``content_grid_width`` and ``sidebar_left_grid_width``
+  properties from ``UGMLayoutConfig``.
+  [rnix]
+
+
+1.0 (unreleased)
+----------------
 
 - Adopt Settings UI changes from ``cone.app``.
   [rnix]

@@ -77,9 +77,7 @@ class UGMLayoutConfig(LayoutConfig):
         self.personaltools = True
         self.columns_fluid = True
         self.pathbar = False
-        self.sidebar_left = []
-        self.sidebar_left_grid_width = 0
-        self.content_grid_width = 12
+        self.sidebar_left = ['navtree']
 
 
 def register_config(key, factory):
