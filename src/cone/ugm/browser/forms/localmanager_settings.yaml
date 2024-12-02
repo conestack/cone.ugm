@@ -27,13 +27,16 @@ widgets:
                 source: javascript:ugm.lm_autocomplete_gid
                 minLength: 1
                 delay: 300
+                field.class_add: col-12 col-md-6 p-0
         - targets:
-            factory: error:array
+            factory: field:error:array
             props:
                 label: i18n:localmanager_rule_target
                 required: i18n:localmanager_no_targets_for_source
                 error.position: after
                 sort: False
+                field.class_add: col-12 col-md-6 mt-md-4 p-0
+                array.class_add: mt-md-2 ms-md-3
             widgets:
             - target:
                 factory: compound
@@ -52,7 +55,7 @@ widgets:
                 - default:
                     factory: checkbox
                     props:
-                        class: target_default
+                        class: form-check target_default
 - save:
     factory: submit
     props:

@@ -194,3 +194,12 @@ div.principal_form {
         min-width: 400px;
     }
 }
+
+#form-localmanager_settings {
+    #array-localmanager_settings-rules {
+        table td.widget {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+}
