@@ -12,16 +12,16 @@
     <div class="columnlisting-header d-flex flex-wrap gap-2 mb-3">
       <div class="columnsorting btn-group">
 
-        <button class="btn border" disabled="disabled">
+        <button class="btn border d-none d-sm-block" disabled="disabled">
           <span i18n:translate="sort_by">Sorting</span>:
         </button>
 
         <tal:sortheader repeat="header context.sortheader">
-          <button class="btn border ${header['order']}"
+          <button class="btn border ${header['order']} text-start"
                   ajax:bind="click"
                   ajax:event="${context.ajax_event}"
                   ajax:target="${header['target']}">
-            <span class="columnsorticon ${header['order']}"></span>
+            <span class="me-3 me-sm-0 columnsorticon ${header['order']}"></span>
             <span tal:content="header['title']">name</span>
           </button>
         </tal:sortheader>

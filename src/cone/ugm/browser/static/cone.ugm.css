@@ -11,7 +11,7 @@ div.columns div.left_column, div.columns div.right_column {
   flex-basis: 500px;
 }
 div.columns .card .card-header {
-  height: 55px; /* to provide static height without button */
+  min-height: 55px; /* to provide static height without button */
 }
 div.columns .card .card {
   border: none;
@@ -85,6 +85,12 @@ div.columnlisting div.column_filter {
 div.columnsorting {
   flex-shrink: 0;
 }
+@media (max-width: 400px) {
+  div.columnsorting {
+    flex-direction: column;
+    width: 100%;
+  }
+}
 div.columnsorting .columnsorticon::before {
   font-family: "bootstrap-icons";
   content: "\f5d4";
@@ -98,6 +104,13 @@ div.columnsorting .btn.desc .columnsorticon::before {
   content: "\f235";
 }
 
+div.columnitems.users .sort_col_1 {
+  width: 100% !important;
+}
+div.columnitems.users .sort_col_2 {
+  display: none !important;
+  width: 0 !important;
+}
 div.columnitems li {
   cursor: pointer;
 }

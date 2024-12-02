@@ -13,7 +13,7 @@
                 type="submit"
                 ajax:target="${context.add_target}">
            <span class="bi-plus"></span>
-           <span tal:content="context.add_label">
+           <span class="d-none d-sm-inline" tal:content="context.add_label">
              Add principal
            </span>
         </button>

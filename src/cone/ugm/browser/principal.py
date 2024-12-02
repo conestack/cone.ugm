@@ -397,6 +397,7 @@ class PrincipalForm:
             props={
                 'action': 'save',
                 'expression': True,
+                'class_add': 'me-2',
                 'handler': self.save,
                 'next': self.next,
                 'label': _('save', default='Save')
