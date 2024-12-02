@@ -22,6 +22,8 @@ widgets:
         props:
             label: i18n:users_account_expiration:User Accounts expires?
             help: i18n:users_account_expiration_help:Flag whether to consider user expiration
+            field.class_add: form-check ms-4
+            label.class: form-check-label
     - user_id_autoincrement:
         factory: field:label:help:checkbox
         value: expr:context.model.attrs.user_id_autoincrement == 'True'
@@ -30,6 +32,8 @@ widgets:
             help: i18n:user_id_autoincrement_help:Flag whether to autoincrement user
                 IDs at user creation time. This feature only works for systems using
                 numeric user IDs
+            field.class_add: form-check ms-4
+            label.class: form-check-label
     - user_id_autoincrement_prefix:
         factory: field:label:help:text
         value: expr:context.model.attrs.user_id_autoincrement_prefix
@@ -52,6 +56,8 @@ widgets:
         props:
             label: i18n:users_portrait:Portrait Support
             help: i18n:users_portrait_help:Flag whether users can have a portrait
+            field.class_add: form-check ms-4
+            label.class: form-check-label
     - users_portrait_attr:
         factory: field:label:help:error:*portrait:text
         value: expr:context.model.attrs.users_portrait_attr
@@ -102,6 +108,8 @@ widgets:
         props:
             label: i18n:users_local_management_enabled:Local User Management
             help: i18n:users_local_management_enabled_help:Enable local User Management
+            field.class_add: form-check ms-4
+            label.class: form-check-label
     - users_login_name_attr:
         factory: field:label:help:text
         value: expr:context.model.attrs.users_login_name_attr
@@ -130,6 +138,7 @@ widgets:
             help: i18n:users_form_attrmap_help:Attributes exposed in user form
             key_label: i18n:principal_attr_name:Attribute name
             value_label: i18n:form_label:Form label
+            scrollable: True
     - users_listing_columns:
         factory: field:label:help:error:dict
         value: expr:context.model.attrs.users_listing_columns
@@ -139,6 +148,7 @@ widgets:
             required: i18n:users_listing_columns_required:User listing columns must not be empty
             key_label: i18n:principal_attr_name:Attribute name
             value_label: i18n:display_name:Display name
+            scrollable: True
     - users_listing_default_column:
         factory: field:label:help:error:text
         value: expr:context.model.attrs.users_listing_default_column
@@ -167,6 +177,7 @@ widgets:
             help: i18n:groups_form_attrmap_help:Attributes exposed in group form
             key_label: i18n:principal_attr_name:Attribute name
             value_label: i18n:form_label:Form label
+            scrollable: True
     - groups_listing_columns:
         factory: field:label:help:error:dict
         value: expr:context.model.attrs.groups_listing_columns
@@ -176,6 +187,7 @@ widgets:
             required: i18n:groups_listing_columns_required:Group listing columns must not be empty
             key_label: i18n:principal_attr_name:Attribute name
             value_label: i18n:display_name:Display name
+            scrollable: True
     - groups_listing_default_column:
         factory: field:label:help:error:text
         value: expr:context.model.attrs.groups_listing_default_column
@@ -202,6 +214,8 @@ widgets:
         props:
             label: i18n:roles_principal_roles_enabled:Principal roles
             help: i18n:roles_principal_roles_enabled_help:Enable roles on principals
+            field.class_add: form-check ms-4
+            label.class: form-check-label
 - save:
     factory: submit
     props:

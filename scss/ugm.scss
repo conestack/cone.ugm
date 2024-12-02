@@ -185,11 +185,12 @@ div.principal_form {
 
         &:not(:last-child) {
             padding-bottom: 1rem;
-            margin-bottom: 1rem;
-            border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
         }
     }
     label.form-label {
         font-size: 18px;
+    }
+    .scrollable-content {
+        min-width: 400px;
     }
 }

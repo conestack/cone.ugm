@@ -184,9 +184,10 @@ div.principal_form > .btn > * {
 }
 #form-ugm_settings .field:not(:last-child) {
   padding-bottom: 1rem;
-  margin-bottom: 1rem;
-  border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
 }
 #form-ugm_settings label.form-label {
   font-size: 18px;
+}
+#form-ugm_settings .scrollable-content {
+  min-width: 400px;
 }
