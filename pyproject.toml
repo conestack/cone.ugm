@@ -29,8 +29,13 @@ test = [
 [project.urls]
 Homepage = "http://github.com/conestack/cone.ugm"
 
+[tool.hatch.build.targets.sdist]
+include = [
+    "/cfg",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/cone"]
+
 [tool.zest-releaser]
 create-wheel = true
