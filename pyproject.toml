@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cone.ugm"
+version = "1.0a8.dev0"
+description = "User and group management"
+readme = "README.rst"
+license = {text = "LGPLv3"}
+authors = [{name = "Cone Contributors", email = "dev@conestack.org"}]
+classifiers = [
+    "Environment :: Web Environment",
+    "Programming Language :: Python",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+]
+dependencies = [
+    "natsort",
+    "Pillow",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "zope.pytestlayer",
+]
+
+[project.urls]
+Homepage = "http://github.com/conestack/cone.ugm"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.zest-releaser]
+create-wheel = true
