@@ -9,7 +9,7 @@ def read_file(name):
         return f.read()
 
 
-version = '1.0a8.dev0'
+version = '1.0.dev0'
 shortdesc = 'User and group management'
 longdesc = '\n\n'.join([read_file(name) for name in [
     'README.rst',
@@ -49,14 +49,14 @@ setup(
     install_requires=[
         'setuptools',
         'natsort',
-        'Pillow',
-        'cone.app[lxml]>=1.0.3',
-        'yafowil.widget.array',
-        'yafowil.widget.autocomplete',
-        'yafowil.widget.datetime',
-        'yafowil.widget.dict',
-        'yafowil.widget.image',
-        'yafowil.yaml'
+        'Pillow<10.0.0',
+        'cone.app[lxml]>=1.0.3,<1.1.0',
+        'yafowil.widget.array<2.0.0',
+        'yafowil.widget.autocomplete<2.0.0',
+        'yafowil.widget.datetime<2.0.0',
+        'yafowil.widget.dict<2.0.0',
+        'yafowil.widget.image<2.0.0',
+        'yafowil.yaml<3.0.0'
     ],
     extras_require=dict(
         test=[

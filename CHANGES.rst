@@ -1,10 +1,11 @@
 Changes
 =======
 
-1.0a8 (unreleased)
+1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Pin upper versions of dependencies.
+  [rnix]
 
 
 1.0a7 (2023-02-02)
