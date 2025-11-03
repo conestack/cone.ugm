@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "cone.ugm"
-version = "1.0a8.dev0"
+version = "1.1.0.dev0"
 description = "User and group management"
 readme = "README.rst"
 license = {text = "LGPLv3"}

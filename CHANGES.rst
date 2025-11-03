@@ -1,7 +1,7 @@
 Changes
 =======
 
-1.0a8 (unreleased)
+1.1.0 (unreleased)
 ------------------
 
 - Adopt Settings UI changes from ``cone.app``.
