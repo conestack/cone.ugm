@@ -18,8 +18,8 @@ def user_portrait_request(layer, model, portrait):
 
 
 def dummy_file_data(filename):
-    with importlib.resources.path('yafowil.widget.image') as base_path:
-        path = base_path / 'testing' / filename
+    with importlib.resources.path('yafowil.widget.image', 'testing') as base_path:
+        path = base_path / filename
         with open(path, 'rb') as file:
             data = file.read()
     return data
