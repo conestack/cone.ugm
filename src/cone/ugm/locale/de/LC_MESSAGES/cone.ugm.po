@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cone.ugm 0.9.4dev\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-13 08:58+0100\n"
+"POT-Creation-Date: 2025-11-04 20:03+0100\n"
 "PO-Revision-Date: 2012-07-30 14:02+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: de <LL@li.org>\n"
@@ -43,95 +43,20 @@ msgstr "Benutzeradmin"
 msgid "localmanager_settings_node_description"
 msgstr "Benutzeradmin"
 
-#. Default: Group
-#: src/cone/ugm/model/group.py:17 src/cone/ugm/model/group.py:30
-msgid "group_node"
-msgstr "Gruppe"
+#. Default: Add Group
+#: src/cone/ugm/browser/groups.py:22
+msgid "add_group"
+msgstr "Gruppe hinzufügen"
 
-#. Default: Group
-#: src/cone/ugm/model/group.py:18 src/cone/ugm/model/group.py:31
-msgid "group_node_description"
-msgstr "Gruppe"
-
-#. Default: User
-#: src/cone/ugm/model/user.py:35 src/cone/ugm/model/user.py:50
-msgid "user_node"
-msgstr "Benutzer"
-
-#. Default: User
-#: src/cone/ugm/model/user.py:36 src/cone/ugm/model/user.py:51
-msgid "user_node_description"
-msgstr "Benutzer"
-
-#. Default: Groups
-#: src/cone/ugm/model/groups.py:24 src/cone/ugm/model/groups.py:47
-msgid "groups_node"
-msgstr "Gruppen"
-
-#. Default: Container for Groups
-#: src/cone/ugm/model/groups.py:25 src/cone/ugm/model/groups.py:48
-msgid "groups_node_description"
-msgstr "Gruppencontainer"
-
-#. Default: Users
-#: src/cone/ugm/model/users.py:24 src/cone/ugm/model/users.py:47
-msgid "users_node"
-msgstr "Benutzer"
-
-#. Default: Container for Users
-#: src/cone/ugm/model/users.py:25 src/cone/ugm/model/users.py:48
-msgid "users_node_description"
-msgstr "Benutzercontainer"
-
-#. Default: Add user to selected group
-#: src/cone/ugm/browser/group.py:108 src/cone/ugm/browser/user.py:108
-msgid "add_user_to_selected_group"
-msgstr "Benutzer zu Gruppe hinzufügen"
-
-#. Default: Remove user from selected group
-#: src/cone/ugm/browser/group.py:121 src/cone/ugm/browser/user.py:121
-msgid "remove_user_from_selected_group"
-msgstr "Benutzer aus Gruppe entfernen"
-
-#. Default: Group ID
-#: src/cone/ugm/browser/group.py:187
-msgid "group_id"
-msgstr "Gruppen ID"
-
-#. Default: filter listing
-#: src/cone/ugm/browser/listing.py:107
-msgid "filter_listing"
-msgstr "Liste filtern"
-
-#. Default: Delete Principal
-#: src/cone/ugm/browser/listing.py:298
-msgid "delete_principal"
-msgstr "Benutzer/Gruppe löschen"
+#. Default: Delete Group
+#: src/cone/ugm/browser/groups.py:70
+msgid "delete_group"
+msgstr "Gruppe löschen"
 
 #. Default: auto incremented
 #: src/cone/ugm/browser/autoincrement.py:66
 msgid "auto_incremented"
 msgstr "automatisch"
-
-#. Default: User ID
-#: src/cone/ugm/browser/user.py:187
-msgid "user_id"
-msgstr "Benutzer ID"
-
-#. Default: Login name
-#: src/cone/ugm/browser/user.py:188
-msgid "login_name"
-msgstr "Login Name"
-
-#. Default: Password
-#: src/cone/ugm/browser/user.py:189
-msgid "password"
-msgstr "Passwort"
-
-#. Default: Active
-#: src/cone/ugm/browser/expires.py:35
-msgid "active"
-msgstr "Aktiv"
 
 #. Default: Change Password
 #: src/cone/ugm/browser/password.py:32 src/cone/ugm/browser/password.py:145
@@ -179,35 +104,46 @@ msgstr "Passwörter stimmen nicht überein"
 msgid "password_changed"
 msgstr "Passwort wurde geändert"
 
-#. Default: Add Group
-#: src/cone/ugm/browser/groups.py:22
-msgid "add_group"
-msgstr "Gruppe hinzufügen"
+#. Default: filter listing
+#: src/cone/ugm/browser/listing.py:107
+msgid "filter_listing"
+msgstr "Liste filtern"
 
-#. Default: Delete Group
-#: src/cone/ugm/browser/groups.py:70
-msgid "delete_group"
-msgstr "Gruppe löschen"
+#. Default: Delete Principal
+#: src/cone/ugm/browser/listing.py:298
+msgid "delete_principal"
+msgstr "Benutzer/Gruppe löschen"
 
-#. Default: Add User
-#: src/cone/ugm/browser/users.py:22
-msgid "add_user"
-msgstr "Benutzer hinzufügen"
+#. Default: Value is required if portrit support is enabled
+#: src/cone/ugm/browser/settings.py:33
+msgid "required_if_users_portrait"
+msgstr ""
+"Wert erforderlich wenn Portrait Unterstützung für Benutzerkonto aktiviert ist"
 
-#. Default: Delete User
-#: src/cone/ugm/browser/users.py:70
-msgid "delete_user"
-msgstr "Benutzer löschen"
+#. Default: Duplicate access rule
+#: src/cone/ugm/browser/settings.py:122
+msgid "localmanager_duplicate_rule_error"
+msgstr "Doppelte Zugriffsregel definiert"
 
-#. Default: Portrait
-#: src/cone/ugm/browser/portrait.py:80 src/cone/ugm/browser/portrait.py:82
-msgid "portrait"
-msgstr "Portrait"
+#. Default: Target GID equates source GID
+#: src/cone/ugm/browser/settings.py:134
+msgid "localmanager_target_is_source_error"
+msgstr "Ziel GID entspricht Administrations GID"
 
-#. Default: Roles
-#: src/cone/ugm/browser/roles.py:45
-msgid "roles"
-msgstr "Rollen"
+#. Default: Add user to selected group
+#: src/cone/ugm/browser/group.py:108 src/cone/ugm/browser/user.py:108
+msgid "add_user_to_selected_group"
+msgstr "Benutzer zu Gruppe hinzufügen"
+
+#. Default: Remove user from selected group
+#: src/cone/ugm/browser/group.py:121 src/cone/ugm/browser/user.py:121
+msgid "remove_user_from_selected_group"
+msgstr "Benutzer aus Gruppe entfernen"
+
+#. Default: Group ID
+#: src/cone/ugm/browser/group.py:187
+msgid "group_id"
+msgstr "Gruppen ID"
 
 #. Default: No ${field} defined
 #: src/cone/ugm/browser/principal.py:23
@@ -242,21 +178,45 @@ msgstr "Speichern"
 msgid "cancel"
 msgstr "Abbrechen"
 
-#. Default: Value is required if portrit support is enabled
-#: src/cone/ugm/browser/settings.py:33
-msgid "required_if_users_portrait"
-msgstr ""
-"Wert erforderlich wenn Portrait Unterstützung für Benutzerkonto aktiviert ist"
+#. Default: Roles
+#: src/cone/ugm/browser/roles.py:45
+msgid "roles"
+msgstr "Rollen"
 
-#. Default: Duplicate access rule
-#: src/cone/ugm/browser/settings.py:122
-msgid "localmanager_duplicate_rule_error"
-msgstr "Doppelte Zugriffsregel definiert"
+#. Default: Portrait
+#: src/cone/ugm/browser/portrait.py:80 src/cone/ugm/browser/portrait.py:82
+msgid "portrait"
+msgstr "Portrait"
 
-#. Default: Target GID equates source GID
-#: src/cone/ugm/browser/settings.py:134
-msgid "localmanager_target_is_source_error"
-msgstr "Ziel GID entspricht Administrations GID"
+#. Default: Active
+#: src/cone/ugm/browser/expires.py:35
+msgid "active"
+msgstr "Aktiv"
+
+#. Default: Add User
+#: src/cone/ugm/browser/users.py:22
+msgid "add_user"
+msgstr "Benutzer hinzufügen"
+
+#. Default: Delete User
+#: src/cone/ugm/browser/users.py:70
+msgid "delete_user"
+msgstr "Benutzer löschen"
+
+#. Default: User ID
+#: src/cone/ugm/browser/user.py:187
+msgid "user_id"
+msgstr "Benutzer ID"
+
+#. Default: Login name
+#: src/cone/ugm/browser/user.py:188
+msgid "login_name"
+msgstr "Login Name"
+
+#. Default: Password
+#: src/cone/ugm/browser/user.py:189
+msgid "password"
+msgstr "Passwort"
 
 #. Default: Deleted user '${uid}' from database.
 #: src/cone/ugm/browser/actions.py:82
@@ -307,6 +267,21 @@ msgid "lm_remove_target_uid_not_allowed"
 msgstr ""
 "Entfernen von Benutzer '${uid}' aus Gruppe '${gid}' fehlgeschlagen. "
 "Administration Benutzer nicht erlaubt."
+
+#. Default: Sorting
+#: src/cone/ugm/browser/templates/column_listing.pt:15
+msgid "sort_by"
+msgstr "Sortierung"
+
+#. Default: List all
+#: src/cone/ugm/browser/templates/column_listing.pt:41
+msgid "list_all"
+msgstr "Zeige alle"
+
+#. Default: Local User Management is not enabled.
+#: src/cone/ugm/browser/templates/localmanager_settings.pt:11
+msgid "localmanager_disabled_warning"
+msgstr "Lokale Benutzeradministration ist deaktiviert"
 
 #: src/cone/ugm/browser/forms/localmanager_settings.yaml:11
 msgid "localmanager_rules"
@@ -600,17 +575,42 @@ msgstr "Rollen Unterstützung aktiviert"
 msgid "roles_principal_roles_enabled_help"
 msgstr "Rollen auf Benutzer und Gruppen aktivieren"
 
-#. Default: Sorting
-#: src/cone/ugm/browser/templates/column_listing.pt:15
-msgid "sort_by"
-msgstr "Sortierung"
+#. Default: Groups
+#: src/cone/ugm/model/groups.py:24 src/cone/ugm/model/groups.py:47
+msgid "groups_node"
+msgstr "Gruppen"
 
-#. Default: List all
-#: src/cone/ugm/browser/templates/column_listing.pt:41
-msgid "list_all"
-msgstr "Zeige alle"
+#. Default: Container for Groups
+#: src/cone/ugm/model/groups.py:25 src/cone/ugm/model/groups.py:48
+msgid "groups_node_description"
+msgstr "Gruppencontainer"
 
-#. Default: Local User Management is not enabled.
-#: src/cone/ugm/browser/templates/localmanager_settings.pt:11
-msgid "localmanager_disabled_warning"
-msgstr "Lokale Benutzeradministration ist deaktiviert"
+#. Default: Group
+#: src/cone/ugm/model/group.py:17 src/cone/ugm/model/group.py:30
+msgid "group_node"
+msgstr "Gruppe"
+
+#. Default: Group
+#: src/cone/ugm/model/group.py:18 src/cone/ugm/model/group.py:31
+msgid "group_node_description"
+msgstr "Gruppe"
+
+#. Default: Users
+#: src/cone/ugm/model/users.py:24 src/cone/ugm/model/users.py:47
+msgid "users_node"
+msgstr "Benutzer"
+
+#. Default: Container for Users
+#: src/cone/ugm/model/users.py:25 src/cone/ugm/model/users.py:48
+msgid "users_node_description"
+msgstr "Benutzercontainer"
+
+#. Default: User
+#: src/cone/ugm/model/user.py:35 src/cone/ugm/model/user.py:50
+msgid "user_node"
+msgstr "Benutzer"
+
+#. Default: User
+#: src/cone/ugm/model/user.py:36 src/cone/ugm/model/user.py:51
+msgid "user_node_description"
+msgstr "Benutzer"
