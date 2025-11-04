@@ -21,14 +21,20 @@ classifiers = [
     "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
 ]
 dependencies = [
+    "cone.app[lxml]>1.0.99",
     "natsort",
-    "Pillow",
+    "pillow",
+    "yafowil.widget.array>1.99",
+    "yafowil.widget.autocomplete>1.99",
+    "yafowil.widget.datetime>1.99",
+    "yafowil.widget.dict>1.99",
+    "yafowil.widget.image>1.99",
+    "yafowil.yaml>2.99",
 ]
 
 [project.optional-dependencies]
 test = [
-    "pytest",
-    "zope.pytestlayer",
+    "cone.app[test]",
 ]
 
 [project.urls]
