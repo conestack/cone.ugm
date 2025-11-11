@@ -1,12 +1,13 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-fancy-pypi-readme"]
 build-backend = "hatchling.build"
 
 [project]
 name = "cone.ugm"
 version = "1.1.0.dev0"
 description = "User and group management"
-readme = "README.rst"
+dynamic = ["readme"]
+requires-python = ">=3.10"
 license = {text = "LGPLv3"}
 authors = [{name = "Cone Contributors", email = "dev@conestack.org"}]
 classifiers = [
@@ -23,7 +24,7 @@ classifiers = [
 dependencies = [
     "cone.app[lxml]>1.0.99",
     "natsort",
-    "pillow",
+    "pillow>=10.0.0",
     "yafowil.widget.array>1.99",
     "yafowil.widget.autocomplete>1.99",
     "yafowil.widget.datetime>1.99",
@@ -44,6 +45,24 @@ Homepage = "http://github.com/conestack/cone.ugm"
 include = [
     "/cfg",
 ]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.metadata.hooks.fancy-pypi-readme]
+content-type = "text/x-rst"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "README.rst"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "CHANGES.rst"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "LICENSE.rst"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/cone"]
