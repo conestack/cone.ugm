@@ -1,3 +1,4 @@
+
 .. image:: https://img.shields.io/pypi/v/cone.ugm.svg
     :target: https://pypi.python.org/pypi/cone.ugm
     :alt: Latest PyPI version
@@ -17,7 +18,7 @@ user and group management UI.
 
 
 Features
---------
+========
 
 - Users and Groups CRUD
 - Principal membership of users and groups
@@ -246,7 +247,6 @@ Development and Testing
 
 Python
 ~~~~~~
-
 For testing and development, ``cone.ugm`` contains a buildout configuration.
 Download or checkout package and run:
 

@@ -1,0 +1,74 @@
+[build-system]
+requires = ["hatchling", "hatch-fancy-pypi-readme"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cone.ugm"
+version = "1.1.0.dev0"
+description = "User and group management"
+dynamic = ["readme"]
+requires-python = ">=3.10"
+license = {text = "LGPLv3"}
+authors = [{name = "Cone Contributors", email = "dev@conestack.org"}]
+classifiers = [
+    "Environment :: Web Environment",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+]
+dependencies = [
+    "cone.app[lxml]>1.0.99",
+    "natsort",
+    "pillow>=10.0.0",
+    "yafowil.widget.array>1.99",
+    "yafowil.widget.autocomplete>1.99",
+    "yafowil.widget.datetime>1.99",
+    "yafowil.widget.dict>1.99",
+    "yafowil.widget.image>1.99",
+    "yafowil.yaml>2.99",
+]
+
+[project.optional-dependencies]
+test = [
+    "cone.app[test]",
+]
+
+[project.urls]
+Homepage = "http://github.com/conestack/cone.ugm"
+
+[tool.hatch.metadata.hooks.fancy-pypi-readme]
+content-type = "text/x-rst"
+fragments = [
+    {path = "README.rst"},
+    {text = "\n\n"},
+    {path = "CHANGES.rst"},
+    {text = "\n\n"},
+    {path = "LICENSE.rst"},
+]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/.github/",
+    "/js/",
+    "/Makefile",
+    "/mx.ini",
+    "/package.json",
+    "/pnpm-lock.yaml",
+    "/scripts/",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cone"]
+
+[tool.pytest.ini_options]
+consider_namespace_packages = true
+addopts = ["--import-mode=importlib"]
+pythonpath = "src"
+
+[tool.zest-releaser]
+create-wheel = true

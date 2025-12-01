@@ -4,7 +4,7 @@ from cone.tile.tests import TileTestCase
 from cone.ugm import testing
 from cone.ugm.utils import general_settings
 from io import BytesIO
-import pkg_resources
+import importlib
 
 
 def user_portrait_request(layer, model, portrait):
@@ -18,12 +18,10 @@ def user_portrait_request(layer, model, portrait):
 
 
 def dummy_file_data(filename):
-    path = pkg_resources.resource_filename(
-        'yafowil.widget.image',
-        'testing/{}'.format(filename)
-    )
-    with open(path, 'rb') as file:
-        data = file.read()
+    with importlib.resources.path('yafowil.widget.image', 'testing') as base_path:
+        path = base_path / filename
+        with open(path, 'rb') as file:
+            data = file.read()
     return data
 
 
