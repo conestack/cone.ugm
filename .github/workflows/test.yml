@@ -1,4 +1,4 @@
-name: Test cone.ugm
+name: Python Tests
 
 on: [push]
 
