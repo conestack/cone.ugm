@@ -32,6 +32,13 @@ class BrowserSettingsTests(object):
 
         form = tile.form
         self.assertEqual(form.keys(), [
+            'users_settings',
+            'groups_settings',
+            'roles_settings',
+            'save',
+            'came_from'
+        ])
+        self.assertEqual(form['users_settings'].keys(), [
             'users_heading',
             'users_account_expiration',
             'user_id_autoincrement',
@@ -47,15 +54,17 @@ class BrowserSettingsTests(object):
             'users_exposed_attributes',
             'users_form_attrmap',
             'users_listing_columns',
-            'users_listing_default_column',
+            'users_listing_default_column'
+        ])
+        self.assertEqual(form['groups_settings'].keys(), [
             'groups_heading',
             'groups_form_attrmap',
             'groups_listing_columns',
-            'groups_listing_default_column',
+            'groups_listing_default_column'
+        ])
+        self.assertEqual(form['roles_settings'].keys(), [
             'roles_heading',
-            'roles_principal_roles_enabled',
-            'save',
-            'came_from'
+            'roles_principal_roles_enabled'
         ])
 
     @testing.principals(
