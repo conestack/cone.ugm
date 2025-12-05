@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "cone.ugm"
-version = "1.1.0.dev0"
+version = "2.0.0.dev0"
 description = "User and group management"
 dynamic = ["readme"]
 requires-python = ">=3.10"
@@ -22,7 +22,7 @@ classifiers = [
     "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
 ]
 dependencies = [
-    "cone.app[lxml]>1.0.99",
+    "cone.app[lxml]>1.99",
     "natsort",
     "pillow>=10.0.0",
     "yafowil.widget.array>1.99",
