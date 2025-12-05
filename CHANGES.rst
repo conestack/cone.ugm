@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.0a1 (unreleased)
+2.0.0 (unreleased)
 ------------------
 
 - Users and Groups entry nodes are no longer displayed in main menu.
@@ -12,10 +12,20 @@ Changes
   [rnix]
 
 
-1.0 (unreleased)
-----------------
+1.1.0 (unreleased)
+------------------
+
+- Refactor package layout to use ``pyproject.toml`` and implicit namespace packages.
+  [rnix]
 
 - Adopt Settings UI changes from ``cone.app``.
+  [rnix]
+
+
+1.0 (2025-10-25)
+----------------
+
+- Pin upper versions of dependencies.
   [rnix]
 
 

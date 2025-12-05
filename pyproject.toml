@@ -54,8 +54,9 @@ fragments = [
 [tool.hatch.build.targets.sdist]
 exclude = [
     "/.github/",
-    "/js/",
     "/Makefile",
+    "/cfg/",
+    "/js/",
     "/mx.ini",
     "/package.json",
     "/pnpm-lock.yaml",

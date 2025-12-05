@@ -7,11 +7,9 @@
     :target: https://pypi.python.org/pypi/cone.ugm
     :alt: Number of PyPI downloads
 
-.. image:: https://travis-ci.org/bluedynamics/cone.ugm.svg?branch=master
-    :target: https://travis-ci.org/bluedynamics/cone.ugm
-
-.. image:: https://coveralls.io/repos/github/bluedynamics/cone.ugm/badge.svg?branch=master
-    :target: https://coveralls.io/github/bluedynamics/cone.ugm?branch=master
+.. image:: https://github.com/conestack/cone.ugm/actions/workflows/test.yml/badge.svg
+    :target: https://github.com/conestack/cone.ugm/actions/workflows/test.yml
+    :alt: Test cone.ugm
 
 Plugin for `cone.app <http://packages.python.org/cone.app>`_ providing a
 user and group management UI.
