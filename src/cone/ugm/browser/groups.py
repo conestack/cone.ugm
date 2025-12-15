@@ -20,6 +20,7 @@ _ = TranslationStringFactory('cone.ugm')
     permission='view')
 class GroupsLeftColumn(Tile):
     add_label = _('add_group', default='Add Group')
+    title = _('groups', default='Groups')
 
     @property
     def add_target(self):
@@ -40,6 +41,8 @@ class GroupsLeftColumn(Tile):
     interface=Groups,
     permission='view')
 class GroupsRightColumn(Column):
+    no_principal = _('no_group_selected', default='No Group selected.')
+    header_title = _('group_data', default='Group Data')
 
     @property
     def principal_id(self):
@@ -47,12 +50,8 @@ class GroupsRightColumn(Column):
 
     @property
     def principal_form(self):
+        self.request.environ['cone.ugm.column'] = 'right'
         return self._render(self.model[self.principal_id], 'editform')
-
-    @property
-    def principal_target(self):
-        return make_url(self.request, node=self.model[self.principal_id])
-
 
 @tile(
     name='columnlisting',

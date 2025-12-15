@@ -1,0 +1,27 @@
+<tal:block xmlns:tal="http://xml.zope.org/namespaces/tal"
+           xmlns:ajax="http://namespaces.conestack.org/ajax"
+           xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+           i18n:domain="cone.ugm"
+           omit-tag="True">
+
+  <div class="principal_form">
+
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="m-0" tal:content="context.header_title"></h5>
+        <div class="go_to_principal btn btn-primary text-light"
+             tal:condition="context.principal_id"
+             ajax:bind="click"
+             ajax:target="${context.link_target.target}"
+             ajax:action="content:.columns:replace">
+          <span tal:content="context.link_target.title"></span>
+          <span class="${context.link_target.icon}"></span>
+        </div>
+    </div>
+
+    <div class="card-body">
+      <tal:form replace="structure context.rendered_form" />
+    </div>
+
+  </div>
+
+</tal:block>

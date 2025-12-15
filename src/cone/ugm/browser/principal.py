@@ -1,3 +1,4 @@
+from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
 from cone.app.ugm import ugm_backend
 from cone.ugm.utils import general_settings
@@ -6,8 +7,8 @@ from pyramid.i18n import get_localizer
 from pyramid.i18n import TranslationStringFactory
 from yafowil.base import ExtractionError
 from yafowil.base import factory
-from yafowil.password import ascii_extractor
 from yafowil.common import generic_extractor
+from yafowil.password import ascii_extractor
 import itertools
 
 
@@ -335,8 +336,22 @@ def email_field_factory(form, label, value):
 # Principal form
 ###############################################################################
 
-class PrincipalForm(object):
+class PrincipalForm:
     form_name = None
+
+    @property
+    def link_target(self):
+        env = self.request.environ
+        if 'cone.ugm.column' in env and env['cone.ugm.column'] == 'right':
+            title = self.to_principal
+            icon = 'bi-caret-right'
+            target = make_url(self.request, node=self.model)
+        else:
+            title = self.to_principals
+            icon = 'bi-caret-left'
+            query = make_query(pid=self.model.name)
+            target = make_url(self.request, node=self.model.parent, query=query)
+        return dict(title=title, icon=icon, target=target)
 
     @property
     def reserved_attrs(self):
@@ -382,6 +397,7 @@ class PrincipalForm(object):
             props={
                 'action': 'save',
                 'expression': True,
+                'class_add': 'me-2',
                 'handler': self.save,
                 'next': self.next,
                 'label': _('save', default='Save')
