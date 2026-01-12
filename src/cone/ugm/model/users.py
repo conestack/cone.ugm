@@ -26,7 +26,7 @@ _ = TranslationStringFactory('cone.ugm')
         'users_node_description',
         default='Container for Users'
     ),
-    icon='ion-person',
+    icon='bi bi-person',
     addables=['user'])
 @plumbing(
     NodeInit,

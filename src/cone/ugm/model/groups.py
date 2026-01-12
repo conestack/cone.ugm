@@ -26,7 +26,7 @@ _ = TranslationStringFactory('cone.ugm')
         'groups_node_description',
         default='Container for Groups'
     ),
-    icon='ion-person-stalker',
+    icon='bi bi-people',
     addables=['group'])
 @plumbing(
     NodeInit,
