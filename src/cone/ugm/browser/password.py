@@ -30,7 +30,7 @@ _ = TranslationStringFactory('cone.ugm')
 @personal_tools_action(name='change_password')
 class ChangePasswordAction(LinkAction):
     text = _('change_password', default='Change Password')
-    icon = 'glyphicons glyphicons-keys'
+    icon = 'bi bi-key'
     event = 'contextchanged:#layout'
     path = 'href'
 
@@ -52,7 +52,7 @@ class ChangePasswordAction(LinkAction):
         return make_url(
             self.request,
             node=self.model.root['users'][self.request.authenticated_userid],
-            query=make_query(contenttile='change_password')
+            query=make_query(contenttile='change_password_form')
         )
 
 
