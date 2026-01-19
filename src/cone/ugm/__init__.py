@@ -72,10 +72,9 @@ class UGMLayoutConfig(LayoutConfig):
     def __init__(self, model=None, request=None):
         super(UGMLayoutConfig, self).__init__(model=model, request=request)
         self.mainmenu = True
-        self.mainmenu_fluid = True
         self.livesearch = False
         self.personaltools = True
-        self.columns_fluid = True
+        self.limit_content_width = False
         self.pathbar = False
         self.sidebar_left = ['navtree']
 
