@@ -30,14 +30,11 @@ class LayoutTests(object):
         self.assertIsInstance(config, UGMLayoutConfig)
 
         self.assertTrue(config.mainmenu)
-        self.assertTrue(config.mainmenu_fluid)
         self.assertFalse(config.livesearch)
         self.assertTrue(config.personaltools)
-        self.assertTrue(config.columns_fluid)
+        self.assertFalse(config.limit_content_width)
         self.assertFalse(config.pathbar)
-        self.assertEqual(config.sidebar_left, [])
-        self.assertEqual(config.sidebar_left_grid_width, 0)
-        self.assertEqual(config.content_grid_width, 12)
+        self.assertEqual(config.sidebar_left, ['navtree'])
 
 
 class TestLayout(unittest.TestCase, LayoutTests):

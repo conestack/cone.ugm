@@ -9,7 +9,7 @@ class AddFormFiddle(Behavior):
 
     @plumb
     def __call__(_next, self, model, request):
-        ajax_form_fiddle(request, '.right_column', 'inner')
+        ajax_form_fiddle(request, '.principal_form', 'inner')
         return _next(self, model, request)
 
 
