@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "cone.ugm"
-version = "1.1.0"
+version = "1.1.1.dev0"
 description = "User and group management"
 dynamic = ["readme"]
 requires-python = ">=3.10"
