@@ -86,7 +86,9 @@
 
     </div>
 
-    <tal:batch replace="structure context.rendered_batch" />
+    <div class="mt-3">
+      <tal:batch replace="structure context.rendered_batch" />
+    </div>
 
   </div>
 </tal:block>

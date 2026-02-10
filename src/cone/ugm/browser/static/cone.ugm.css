@@ -10,15 +10,15 @@ div.columns div.left_column, div.columns div.right_column {
   flex: 1;
   flex-basis: 500px;
 }
-div.columns .card .card-header {
+div.columns .card:not(.datepicker-picker) .card-header {
   min-height: 55px; /* to provide static height without button */
 }
-div.columns .card .card {
+div.columns .card:not(.datepicker-picker) .card:not(.datepicker-picker) {
   border: none;
   background: none;
   margin-top: 0 !important;
 }
-div.columns .card .card .card-body {
+div.columns .card:not(.datepicker-picker) .card:not(.datepicker-picker) .card-body {
   padding: 0;
 }
 

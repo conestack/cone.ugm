@@ -11,11 +11,11 @@ div.columns {
         flex-basis: 500px;
     }
 
-    .card {
+    .card:not(.datepicker-picker) {
         .card-header {
             min-height: 55px; /* to provide static height without button */
         }
-        .card {
+        .card:not(.datepicker-picker) {
             border: none;
             background: none;
             margin-top: 0!important;
