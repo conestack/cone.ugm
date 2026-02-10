@@ -4,6 +4,10 @@ Changes
 2.0.0 (unreleased)
 ------------------
 
+- Create a copy of principal.roles in PrincipalRolesForm.save() to avoid
+  stale reference. This fixes not being able to remove roles.
+  [lenadax]
+
 - Users and Groups entry nodes are no longer displayed in main menu.
   [rnix]
 
