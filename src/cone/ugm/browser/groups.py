@@ -1,3 +1,5 @@
+from cone.app.browser.actions import LinkAction
+from cone.app.browser.layout import personal_tools_action
 from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
 from cone.tile import Tile
@@ -11,6 +13,28 @@ import logging
 
 logger = logging.getLogger('cone.ugm')
 _ = TranslationStringFactory('cone.ugm')
+
+
+@personal_tools_action(name='groups')
+class ViewGroupsAction(LinkAction):
+    text = _('groups_node', default='Groups')
+    icon = 'bi-people'
+    event = 'contextchanged:#layout'
+    path = 'href'
+    order = -2
+
+    @property
+    def display(self):
+        groups = self.model.root.get('groups')
+        if groups is None:
+            return False
+        return self.request.has_permission('view', groups)
+
+    @property
+    def target(self):
+        return make_url(self.request, node=self.model.root['groups'])
+
+    href = target
 
 
 @tile(

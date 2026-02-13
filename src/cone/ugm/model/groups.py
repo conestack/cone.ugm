@@ -38,7 +38,7 @@ class Groups(object):
     @instance_property
     def properties(self):
         props = Properties()
-        props.in_navtree = True
+        # props.in_navtree = True
         props.skip_mainmenu = True
         return props
 

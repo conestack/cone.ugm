@@ -1,3 +1,5 @@
+from cone.app.browser.actions import LinkAction
+from cone.app.browser.layout import personal_tools_action
 from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
 from cone.tile import Tile
@@ -7,11 +9,32 @@ from cone.ugm.browser.listing import PrincipalsListing
 from cone.ugm.model.users import Users
 from pyramid.i18n import TranslationStringFactory
 import logging
-from pyramid.i18n import get_localizer
 
 
 logger = logging.getLogger('cone.ugm')
 _ = TranslationStringFactory('cone.ugm')
+
+
+@personal_tools_action(name='users')
+class ViewUsersAction(LinkAction):
+    text = _('users_node', default='Users')
+    icon = 'bi-person'
+    event = 'contextchanged:#layout'
+    path = 'href'
+    order = -1
+
+    @property
+    def display(self):
+        users = self.model.root.get('users')
+        if users is None:
+            return False
+        return self.request.has_permission('view', users)
+
+    @property
+    def target(self):
+        return make_url(self.request, node=self.model.root['users'])
+
+    href = target
 
 
 @tile(
