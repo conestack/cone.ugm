@@ -28,7 +28,11 @@ class ViewUsersAction(LinkAction):
         users = self.model.root.get('users')
         if users is None:
             return False
-        return self.request.has_permission('view', users)
+        if not self.request.has_permission('view', users):
+            return False
+        if users.local_manager_consider_for_user and users.local_manager_gid is None:
+            return False
+        return True
 
     @property
     def target(self):

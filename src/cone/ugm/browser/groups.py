@@ -28,7 +28,11 @@ class ViewGroupsAction(LinkAction):
         groups = self.model.root.get('groups')
         if groups is None:
             return False
-        return self.request.has_permission('view', groups)
+        if not self.request.has_permission('view', groups):
+            return False
+        if groups.local_manager_consider_for_user and groups.local_manager_gid is None:
+            return False
+        return True
 
     @property
     def target(self):
