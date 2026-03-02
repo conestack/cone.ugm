@@ -36,7 +36,7 @@ class BrowserPasswordTests(object):
             )
             self.assertEqual(
                 action.target,
-                'http://example.com/users/user_1?contenttile=change_password'
+                'http://example.com/users/user_1?contenttile=change_password_form'
             )
 
     @testing.principals(

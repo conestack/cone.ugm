@@ -51,7 +51,7 @@ class BrowserUserTests(object):
 
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'leftcolumn')
-        expected = '<div class="column left_column col-md-6">'
+        expected = '<div class="card column left_column bg-primary-100">'
         self.assertTrue(res.find(expected) > -1)
 
     @testing.principals(
@@ -78,7 +78,7 @@ class BrowserUserTests(object):
 
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'rightcolumn')
-        expected = '<div class="column right_column col-md-6">'
+        expected = '<div class="card column right_column">'
         self.assertTrue(res.find(expected) > -1)
 
     @testing.principals(
@@ -112,7 +112,7 @@ class BrowserUserTests(object):
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'columnlisting')
         expected = (
-            '<li class="list-group-item "\n              '
+            '<li class="list-group-item d-flex justify-content-between "\n              '
             'ajax:target="http://example.com/groups/group_1">'
         )
         self.assertTrue(res.find(expected) > -1)
@@ -150,13 +150,13 @@ class BrowserUserTests(object):
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'allcolumnlisting')
         expected = (
-            '<li class="list-group-item "\n              '
+            '<li class="list-group-item d-flex justify-content-between "\n              '
             'ajax:target="http://example.com/groups/group_1">'
         )
         self.assertTrue(res.find(expected) > -1)
 
         expected = (
-            '<li class="list-group-item "\n              '
+            '<li class="list-group-item d-flex justify-content-between "\n              '
             'ajax:target="http://example.com/groups/group_2">'
         )
         self.assertTrue(res.find(expected) > -1)

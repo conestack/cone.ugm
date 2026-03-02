@@ -1,10 +1,19 @@
 Changes
 =======
 
-1.1.1 (unreleased)
+2.0.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Create a copy of principal.roles in PrincipalRolesForm.save() to avoid
+  stale reference. This fixes not being able to remove roles.
+  [lenadax]
+
+- Users and Groups entry nodes are no longer displayed in main menu.
+  [rnix]
+
+- Remove no longer used ``content_grid_width`` and ``sidebar_left_grid_width``
+  properties from ``UGMLayoutConfig``.
+  [rnix]
 
 
 1.1.0 (2026-02-03)

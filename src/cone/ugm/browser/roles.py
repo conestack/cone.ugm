@@ -63,7 +63,8 @@ class PrincipalRolesForm(Behavior):
         existing_roles = list()
         if self.action_resource == 'edit':
             principal = self.model.model
-            existing_roles = principal.roles
+            # copy to prevent stale reference after remove_role()/add_role()
+            existing_roles = list(principal.roles)
         else:
             uid = data.fetch('{}.id'.format(form_name)).extracted
             principal = self.model.parent[uid].model

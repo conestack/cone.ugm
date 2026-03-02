@@ -1,3 +1,5 @@
+from cone.app.browser.actions import LinkAction
+from cone.app.browser.layout import personal_tools_action
 from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
 from cone.tile import Tile
@@ -13,6 +15,32 @@ logger = logging.getLogger('cone.ugm')
 _ = TranslationStringFactory('cone.ugm')
 
 
+@personal_tools_action(name='users')
+class ViewUsersAction(LinkAction):
+    text = _('users_node', default='Users')
+    icon = 'bi-person'
+    event = 'contextchanged:#layout'
+    path = 'href'
+    order = -1
+
+    @property
+    def display(self):
+        users = self.model.root.get('users')
+        if users is None:
+            return False
+        if not self.request.has_permission('view', users):
+            return False
+        if users.local_manager_consider_for_user and users.local_manager_gid is None:
+            return False
+        return True
+
+    @property
+    def target(self):
+        return make_url(self.request, node=self.model.root['users'])
+
+    href = target
+
+
 @tile(
     name='leftcolumn',
     path='templates/principals_left_column.pt',
@@ -20,6 +48,7 @@ _ = TranslationStringFactory('cone.ugm')
     permission='view')
 class UsersLeftColumn(Tile):
     add_label = _('add_user', default='Add User')
+    title = _('users', default='Users')
 
     @property
     def add_target(self):
@@ -40,6 +69,8 @@ class UsersLeftColumn(Tile):
     interface=Users,
     permission='view')
 class UsersRightColumn(Column):
+    no_principal = _('no_user_selected', default='No User selected.')
+    header_title = _('user_data', default='User Data')
 
     @property
     def principal_id(self):
@@ -47,12 +78,8 @@ class UsersRightColumn(Column):
 
     @property
     def principal_form(self):
+        self.request.environ['cone.ugm.column'] = 'right'
         return self._render(self.model[self.principal_id], 'editform')
-
-    @property
-    def principal_target(self):
-        return make_url(self.request, node=self.model[self.principal_id])
-
 
 @tile(
     name='columnlisting',

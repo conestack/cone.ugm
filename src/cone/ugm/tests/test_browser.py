@@ -11,7 +11,7 @@ def np(path):
 class TestBrowser(unittest.TestCase):
     layer = ugm_layer
 
-    def test_cone_fileupload_resources(self):
+    def test_cone_ugm_resources(self):
         resources_ = browser.cone_ugm_resources
         self.assertTrue(resources_.directory.endswith(np('/static')))
         self.assertEqual(resources_.name, 'cone.ugm-ugm')
@@ -30,5 +30,5 @@ class TestBrowser(unittest.TestCase):
 
         self.assertTrue(styles[0].directory.endswith(np('/static')))
         self.assertEqual(styles[0].path, 'ugm')
-        self.assertEqual(styles[0].file_name, 'cone.ugm.css')
+        self.assertEqual(styles[0].file_name, 'cone.ugm.min.css')
         self.assertTrue(os.path.exists(styles[0].file_path))

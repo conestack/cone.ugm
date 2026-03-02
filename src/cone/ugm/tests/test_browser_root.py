@@ -37,7 +37,7 @@ class BrowserRootTests(object):
 
         with self.layer.authenticated('editor'):
             res = render_tile(root, request, 'leftcolumn')
-        expected = '<div class="column left_column col-md-6">'
+        expected = '<div class="card column left_column">'
         self.assertTrue(res.find(expected) > -1)
 
     @testing.principals(
@@ -61,7 +61,7 @@ class BrowserRootTests(object):
 
         with self.layer.authenticated('editor'):
             res = render_tile(root, request, 'rightcolumn')
-        expected = '<div class="column right_column col-md-6">'
+        expected = '<div class="card column right_column bg-primary-100">'
         self.assertTrue(res.find(expected) > -1)
 
     @testing.principals(

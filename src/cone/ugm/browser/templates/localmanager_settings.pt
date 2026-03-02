@@ -4,7 +4,7 @@
            omit-tag="True">
   <div class="settings-form">
 
-    <h1 tal:content="context.form_heading">Title</h1>
+    <h1 tal:content="context.form_heading" class="mt-2">Title</h1>
 
     <tal:disabled condition="not model.enabled">
       <div class="warning">
