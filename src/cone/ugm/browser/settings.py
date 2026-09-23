@@ -18,7 +18,7 @@ _ = TranslationStringFactory('cone.ugm')
 @settings_form(interface=GeneralSettings)
 @plumbing(SettingsForm, YAMLForm)
 class GeneralSettingsForm(Form):
-    action_resource = u'edit'
+    action_resource = 'edit'
     form_template = 'cone.ugm.browser:forms/general_settings.yaml'
 
     @property
@@ -72,7 +72,7 @@ class GeneralSettingsForm(Form):
     path='cone.ugm.browser:templates/localmanager_settings.pt')
 @plumbing(SettingsForm, YAMLForm)
 class LocalManagerSettingsForm(Form):
-    action_resource = u'edit'
+    action_resource = 'edit'
     form_template = 'cone.ugm.browser:forms/localmanager_settings.yaml'
 
     @property

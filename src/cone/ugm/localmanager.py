@@ -22,7 +22,7 @@ class LocalManagerConfig(DictStorage):
         path = self.file_path
         if not path or not os.path.exists(path):
             return
-        with open(path, 'r') as handle:
+        with open(path) as handle:
             tree = etree.parse(handle)
         root = tree.getroot()
         for rule in root.getchildren():
@@ -49,7 +49,7 @@ class LocalManagerConfig(DictStorage):
 
 
 @plumbing(MappingNode, LocalManagerConfig)
-class LocalManagerConfigAttributes(object):
+class LocalManagerConfigAttributes:
 
     def __init__(self, path):
         self.file_path = path
@@ -106,10 +106,10 @@ class LocalManager(Behavior):
             return None
         if len(adm_gids) > 1:
             msg = (
-                u"Authenticated member defined in local manager "
-                u"groups %s but only one management group allowed for "
-                u"each user. Please contact System Administrator in "
-                u"order to fix this problem."
+                "Authenticated member defined in local manager "
+                "groups %s but only one management group allowed for "
+                "each user. Please contact System Administrator in "
+                "order to fix this problem."
             )
             exc = msg % ', '.join(["'%s'" % gid for gid in sorted(adm_gids)])
             raise Exception(exc)
@@ -166,7 +166,7 @@ class LocalManager(Behavior):
         settings = localmanager_settings(self.root)
         rule = settings.attrs[adm_gid]
         if gid not in rule['target']:
-            raise Exception(u"group '%s' not managed by '%s'" % (gid, adm_gid))
+            raise Exception("group '%s' not managed by '%s'" % (gid, adm_gid))
         return gid in rule['default']
 
 
@@ -178,8 +178,8 @@ class LocalManagerACL(LocalManager):
     @property
     def local_manager_acl(self):
         raise NotImplementedError(
-            u'Abstract ``LocalManagerACL`` does not '
-            u'implement ``local_manager_acl``'
+            'Abstract ``LocalManagerACL`` does not '
+            'implement ``local_manager_acl``'
         )
 
     @plumb

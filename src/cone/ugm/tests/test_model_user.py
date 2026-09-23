@@ -9,7 +9,7 @@ from pyramid.security import Allow
 import unittest
 
 
-class ModelUserTests(object):
+class ModelUserTests:
 
     @testing.principals(
         users={

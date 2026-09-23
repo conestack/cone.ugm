@@ -1,3 +1,4 @@
+from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
 from cone.app.ugm import ugm_backend
 from cone.ugm.utils import general_settings
@@ -6,8 +7,8 @@ from pyramid.i18n import get_localizer
 from pyramid.i18n import TranslationStringFactory
 from yafowil.base import ExtractionError
 from yafowil.base import factory
-from yafowil.password import ascii_extractor
 from yafowil.common import generic_extractor
+from yafowil.password import ascii_extractor
 import itertools
 
 
@@ -67,7 +68,7 @@ SCOPE_GROUP = 'group'
 BACKEND_ALL = '__all_backends__'
 
 
-class _form_field(object):
+class _form_field:
     """Abstract form field factory registry and decorator.
     """
 
@@ -138,7 +139,7 @@ class group_field(_form_field):
 # Principal ID form field factories
 ###############################################################################
 
-class PrincipalExistsExtractor(object):
+class PrincipalExistsExtractor:
     """Abstract application model aware yafowil extractor checking whether
     principal ID already exists.
     """
@@ -190,7 +191,7 @@ class GroupExistsExtractor(PrincipalExistsExtractor):
         )
 
 
-class PrincipalIdFieldFactory(object):
+class PrincipalIdFieldFactory:
     """Principal ID field factory.
 
     Creates a form widget which validates an input only contains ASCII
@@ -236,7 +237,7 @@ group_id_field_factory = group_field('id')(
 # Login name form field factory
 ###############################################################################
 
-class LoginNameExtractor(object):
+class LoginNameExtractor:
     """Application model aware yafowil extractor checking whether optional
     login name is valid.
     """
@@ -335,8 +336,22 @@ def email_field_factory(form, label, value):
 # Principal form
 ###############################################################################
 
-class PrincipalForm(object):
+class PrincipalForm:
     form_name = None
+
+    @property
+    def link_target(self):
+        env = self.request.environ
+        if 'cone.ugm.column' in env and env['cone.ugm.column'] == 'right':
+            title = self.to_principal
+            icon = 'bi-caret-right'
+            target = make_url(self.request, node=self.model)
+        else:
+            title = self.to_principals
+            icon = 'bi-caret-left'
+            query = make_query(pid=self.model.name)
+            target = make_url(self.request, node=self.model.parent, query=query)
+        return dict(title=title, icon=icon, target=target)
 
     @property
     def reserved_attrs(self):
@@ -362,7 +377,7 @@ class PrincipalForm(object):
         request = self.request
         scope = self.action_resource
         self.form = form = factory(
-            u'form',
+            'form',
             name=self.form_name,
             props={
                 'action': make_url(request, node=model, resource=scope),
@@ -382,6 +397,7 @@ class PrincipalForm(object):
             props={
                 'action': 'save',
                 'expression': True,
+                'class_add': 'me-2',
                 'handler': self.save,
                 'next': self.next,
                 'label': _('save', default='Save')

@@ -35,12 +35,12 @@ class portrait_principals(testing.principals):
                 w(inst)
             finally:
                 settings = general_settings(get_root())
-                settings.attrs.users_portrait = u'True'
+                settings.attrs.users_portrait = 'True'
                 settings()
         return wrapper
 
 
-class BrowserPortraitTests(object):
+class BrowserPortraitTests:
 
     @portrait_principals(
         users={
@@ -99,7 +99,7 @@ class BrowserPortraitTests(object):
         self.assertTrue(res.find(expected) > -1)
 
         # Portrait disabled, widget is skipped
-        settings.attrs.users_portrait = u'False'
+        settings.attrs.users_portrait = 'False'
         settings()
 
         request = self.layer.new_request()

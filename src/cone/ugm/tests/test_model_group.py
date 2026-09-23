@@ -8,7 +8,7 @@ from node.ext.ugm.interfaces import IGroup
 import unittest
 
 
-class ModelGroupTests(object):
+class ModelGroupTests:
 
     @testing.principals(
         groups={

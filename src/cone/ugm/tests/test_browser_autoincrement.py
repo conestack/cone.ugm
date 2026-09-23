@@ -38,7 +38,7 @@ class autoincrement_principals(testing.principals):
         return wrapper
 
 
-class BrowserAutoincrementTests(object):
+class BrowserAutoincrementTests:
 
     @autoincrement_principals(
         users={

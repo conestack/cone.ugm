@@ -6,7 +6,7 @@ from pyramid.view import render_view_to_response
 import json
 
 
-class BrowserRemoteTests(object):
+class BrowserRemoteTests:
 
     @testing.principals(
         users={

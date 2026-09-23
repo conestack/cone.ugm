@@ -4,8 +4,14 @@
            i18n:domain="cone.ugm"
            omit-tag="True">
 
-  <div class="column right_column col-md-6">
-    <tal:listing replace="structure tile('columnlisting')" />
+  <div class="card column right_column">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="m-0" tal:content="context.title"></h5>
+    </div>
+
+    <div class="card-body">
+      <tal:listing replace="structure tile('columnlisting')" />
+    </div>
   </div>
 
 </tal:block>

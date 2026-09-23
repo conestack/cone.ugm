@@ -72,30 +72,11 @@ class UGMLayoutConfig(LayoutConfig):
     def __init__(self, model=None, request=None):
         super(UGMLayoutConfig, self).__init__(model=model, request=request)
         self.mainmenu = True
-        self.mainmenu_fluid = True
         self.livesearch = False
         self.personaltools = True
-        self.columns_fluid = True
+        self.limit_content_width = False
         self.pathbar = False
-        self.sidebar_left = []
-        self.sidebar_left_grid_width = 0
-        self.content_grid_width = 12
-
-
-def register_config(key, factory):
-    # Avoid registration conflict if testrun inside conestack dev env.
-    if os.environ.get('TESTRUN_MARKER'):
-        if key in get_root()['settings'].factories:
-            return
-    _register_config(key, factory)
-
-
-def register_entry(key, factory):
-    # Avoid registration conflict if testrun inside conestack dev env.
-    if os.environ.get('TESTRUN_MARKER'):
-        if key in get_root().factories:
-            return
-    _register_entry(key, factory)
+        self.sidebar_left = ['navtree']
 
 
 # application startup hooks

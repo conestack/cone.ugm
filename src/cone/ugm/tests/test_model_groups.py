@@ -9,7 +9,7 @@ from node.ext.ugm.interfaces import IGroups
 from node.tests import NodeTestCase
 
 
-class ModelGroupsTests(object):
+class ModelGroupsTests:
 
     @testing.principals(
         groups={

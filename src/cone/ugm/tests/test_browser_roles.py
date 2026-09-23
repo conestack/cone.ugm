@@ -2,7 +2,7 @@ from cone.tile.tests import TileTestCase
 from cone.ugm import testing
 
 
-class BrowserRolesTests(object):
+class BrowserRolesTests:
 
     def test_roles(self):
         pass

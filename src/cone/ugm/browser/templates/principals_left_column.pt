@@ -4,23 +4,25 @@
            i18n:domain="cone.ugm"
            omit-tag="True">
 
-  <div class="column left_column col-md-6">
-
-    <div class="add_button"
-         tal:condition="context.can_add">
-      <button class="btn btn-default"
-              type="submit"
-              ajax:target="${context.add_target}">
-         <span class="ion-plus"></span>
-         <span tal:content="context.add_label">
-           Add principal
-         </span>
-      </button>
+  <div class="card column left_column">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="m-0" tal:content="context.title"></h5>
+      <div class="add_button"
+           tal:condition="context.can_add">
+        <button class="btn btn-primary text-light"
+                type="submit"
+                ajax:target="${context.add_target}">
+           <span class="bi-plus"></span>
+           <span class="d-none d-sm-inline" tal:content="context.add_label">
+             Add principal
+           </span>
+        </button>
+      </div>
     </div>
 
-    <div class="clearfix"></div>
-
-    <tal:listing replace="structure tile('columnlisting')" />
+    <div class="card-body">
+      <tal:listing replace="structure tile('columnlisting')" />
+    </div>
 
   </div>
 

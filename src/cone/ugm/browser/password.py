@@ -30,7 +30,7 @@ _ = TranslationStringFactory('cone.ugm')
 @personal_tools_action(name='change_password')
 class ChangePasswordAction(LinkAction):
     text = _('change_password', default='Change Password')
-    icon = 'glyphicons glyphicons-keys'
+    icon = 'bi bi-key'
     event = 'contextchanged:#layout'
     path = 'href'
 
@@ -52,7 +52,7 @@ class ChangePasswordAction(LinkAction):
         return make_url(
             self.request,
             node=self.model.root['users'][self.request.authenticated_userid],
-            query=make_query(contenttile='change_password')
+            query=make_query(contenttile='change_password_form')
         )
 
 
@@ -91,7 +91,7 @@ class ChangePasswordForm(Form):
             resource='change_password'
         )
         form = factory(
-            u'form',
+            'form',
             name='change_password_form',
             props={
                 'action': action,
@@ -170,7 +170,7 @@ class ChangePasswordForm(Form):
 
     def change_password(self, widget, data):
         def fetch(name):
-            dottedpath = 'change_password_form.{0}'.format(name)
+            dottedpath = f'change_password_form.{name}'
             return data.fetch(dottedpath).extracted
         user = security.authenticated_user(self.request)
         current_password = fetch('current_password')

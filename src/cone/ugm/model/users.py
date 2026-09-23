@@ -26,19 +26,20 @@ _ = TranslationStringFactory('cone.ugm')
         'users_node_description',
         default='Container for Users'
     ),
-    icon='ion-person',
+    icon='bi bi-person',
     addables=['user'])
 @plumbing(
     NodeInit,
     LocalManagerUsersACL,
     AppNode,
     MappingNode)
-class Users(object):
+class Users:
 
     @instance_property
     def properties(self):
         props = Properties()
-        props.in_navtree = True
+        # props.in_navtree = True
+        props.skip_mainmenu = True
         return props
 
     @instance_property

@@ -31,26 +31,26 @@ class UGMSettings(SettingsNode):
     def attrs(self):
         config_file = self.config_file
         if not os.path.isfile(config_file):
-            msg = 'Configuration file {} not exists.'.format(config_file)
+            msg = f'Configuration file {config_file} not exists.'
             raise ValueError(msg)
         return XMLProperties(config_file)
 
     def invalidate(self, attrs=[]):
         attrs.append('attrs')
         for attr in attrs:
-            _attr = '_{}'.format(attr)
+            _attr = f'_{attr}'
             if hasattr(self, _attr):
                 delattr(self, _attr)
 
 
 @node_info(
     name='ugm_general_settings',
-    title=_('ugm_settings_node', default='UGM Settings'),
+    title=_('ugm_settings_node', default='UGM'),
     description = _(
         'ugm_settings_node_description',
         default='General user and group management settings'
     ),
-    icon='ion-person-stalker')
+    icon='bi-people')
 class GeneralSettings(UGMSettings):
     category = _('category_ugm', default='User and Group Management')
 
@@ -61,12 +61,12 @@ class GeneralSettings(UGMSettings):
 
 @node_info(
     name='ugm_localmanager_settings',
-    title=_('localmanager_settings_node', default='Local Manager Settings'),
+    title=_('localmanager_settings_node', default='Local Manager'),
     description=_(
         'localmanager_settings_node_description',
-        default='Local Manager Settings'
+        default='Manage Local Manager access rules'
     ),
-    icon='ion-person')
+    icon='bi-person-video2')
 @plumbing(Attributes)
 class LocalManagerSettings(SettingsNode):
     category = _('category_ugm', default='User and Group Management')
