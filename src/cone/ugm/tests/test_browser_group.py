@@ -10,7 +10,7 @@ from webob.exc import HTTPFound
 from zope.event import classhandler
 
 
-class BrowserGroupTests(object):
+class BrowserGroupTests:
 
     @testing.principals(
         groups={

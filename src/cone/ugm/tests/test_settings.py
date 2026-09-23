@@ -7,7 +7,7 @@ from node.tests import NodeTestCase
 import os
 
 
-class SettingsTests(object):
+class SettingsTests:
 
     @testing.temp_directory
     def test_UGMSettings(self, tempdir):
@@ -18,7 +18,7 @@ class SettingsTests(object):
             initialize_ugm_on_invalidate = False
 
         settings = MyUGMSettings()
-        expected = 'Configuration file {} not exists.'.format(path)
+        expected = f'Configuration file {path} not exists.'
         err = self.expectError(ValueError, lambda: settings.attrs)
         self.assertEqual(str(err), expected)
 
@@ -31,7 +31,7 @@ class SettingsTests(object):
         attrs.foo = 'foo'
         settings()
 
-        with open(path, 'r') as f:
+        with open(path) as f:
             content = f.read()
         expected = '<properties>\n  <foo>foo</foo>\n</properties>\n'
         self.assertEqual(content, expected)

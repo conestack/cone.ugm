@@ -73,10 +73,7 @@ class ColumnListing(Tile):
 
     @property
     def ajax_event(self):
-        return '{}:{}'.format(
-            self.batch.trigger_event,
-            self.batch.trigger_selector
-        )
+        return f'{self.batch.trigger_event}:{self.batch.trigger_selector}'
 
     @property
     def sortheader(self):
@@ -97,9 +94,7 @@ class ColumnListing(Tile):
     def unquoted_param_value(self, name):
         value = self.request.params.get(name)
         if value:
-            value = value.encode('utf-8') if compat.IS_PY2 else value
             value = compat.unquote(value)
-            value = value.decode('utf-8') if compat.IS_PY2 else value
         return value
 
     def filter_value_or_default(self, name):
@@ -201,7 +196,7 @@ class ColumnListing(Tile):
             'Abstract ``ColumnListing`` does not implement ``listing_items``')
 
     def item_content(self, *args):
-        ret = u''
+        ret = ''
         pt = 0
         for arg in args:
             pt += 1
@@ -227,7 +222,7 @@ class ColumnListing(Tile):
 
     def extract_raw(self, attrs, name):
         raw = attrs.get(name)
-        if type(raw) in compat.ITER_TYPES:
+        if isinstance(raw, (list, tuple)):
             return raw[0]
         return raw and raw or ''
 

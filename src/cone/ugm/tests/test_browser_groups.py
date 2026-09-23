@@ -5,7 +5,7 @@ from cone.ugm import testing
 from pyramid.httpexceptions import HTTPForbidden
 
 
-class BrowserGroupsTests(object):
+class BrowserGroupsTests:
 
     def test_content_tile(self):
         root = get_root()

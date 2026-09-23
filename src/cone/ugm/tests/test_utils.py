@@ -7,7 +7,7 @@ from node.ext.ugm.interfaces import IUgm
 import unittest
 
 
-class UtilsTests(object):
+class UtilsTests:
 
     def test_general_settings(self):
         root = get_root()

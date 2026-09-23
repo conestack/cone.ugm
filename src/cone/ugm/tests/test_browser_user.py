@@ -10,7 +10,7 @@ from webob.exc import HTTPFound
 from zope.event import classhandler
 
 
-class BrowserUserTests(object):
+class BrowserUserTests:
 
     @testing.principals(
         users={

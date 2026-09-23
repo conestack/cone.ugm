@@ -7,7 +7,7 @@ from cone.ugm.browser.password import ChangePasswordAction
 from cone.ugm.browser.password import ChangePasswordForm
 
 
-class BrowserPasswordTests(object):
+class BrowserPasswordTests:
 
     @testing.principals(
         users={

@@ -14,7 +14,7 @@ ugm_config = os.path.join(base_path, 'ugm.xml')
 localmanager_config = os.path.join(base_path, 'localmanager.xml')
 
 
-class principals(object):
+class principals:
 
     def __init__(self, users={}, groups={}, membership={}, roles={}):
         self.users = users
@@ -62,10 +62,10 @@ class principals(object):
             except KeyError:
                 continue
             except Exception as e:
-                print((
+                print(
                     'Error while removing user. Please '
-                    'check underlying UGM implementation: {}'
-                ).format(e))
+                    f'check underlying UGM implementation: {e}'
+                )
         for group_id in ugm_groups.keys():
             try:
                 del ugm_groups[group_id]
@@ -73,10 +73,10 @@ class principals(object):
             except KeyError:
                 continue
             except Exception as e:
-                print((
+                print(
                     'Error while removing group. Please '
-                    'check underlying UGM implementation: {}'
-                ).format(e))
+                    f'check underlying UGM implementation: {e}'
+                )
         self.apply()
 
     def __call__(self, fn):

@@ -8,7 +8,7 @@ from plumber import plumbing
 import os
 
 
-class ModelLocalmanagerTests(object):
+class ModelLocalmanagerTests:
 
     @testing.temp_directory
     def test_LocalManagerConfigAttributes(self, tempdir):
@@ -134,7 +134,7 @@ class ModelLocalmanagerTests(object):
 
         del group['local_manager_1']
         group()
-        self.assertEqual(group.member_ids, [u'local_manager_2'])
+        self.assertEqual(group.member_ids, ['local_manager_2'])
 
         # Authenticated, local manager
         with self.layer.authenticated('local_manager_1'):

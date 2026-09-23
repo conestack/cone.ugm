@@ -31,14 +31,14 @@ class UGMSettings(SettingsNode):
     def attrs(self):
         config_file = self.config_file
         if not os.path.isfile(config_file):
-            msg = 'Configuration file {} not exists.'.format(config_file)
+            msg = f'Configuration file {config_file} not exists.'
             raise ValueError(msg)
         return XMLProperties(config_file)
 
     def invalidate(self, attrs=[]):
         attrs.append('attrs')
         for attr in attrs:
-            _attr = '_{}'.format(attr)
+            _attr = f'_{attr}'
             if hasattr(self, _attr):
                 delattr(self, _attr)
 

@@ -28,7 +28,7 @@ from yafowil.base import factory
 from yafowil.password import ascii_extractor
 
 
-class BrowserPrincipalTests(object):
+class BrowserPrincipalTests:
 
     def test_default_required_message(self):
         request = self.layer.new_request()
@@ -113,7 +113,7 @@ class BrowserPrincipalTests(object):
         # dummy extractor
         class MyPrincipalExistsExtractor(PrincipalExistsExtractor):
             def error_message(self, principal_id):
-                return 'Principal {} already exists'.format(principal_id)
+                return f'Principal {principal_id} already exists'
 
         # principals container, add model and form widget
         principals = Principals(name='principals')
@@ -274,7 +274,7 @@ class BrowserPrincipalTests(object):
 
     def test_LoginNameExtractor(self):
         # dummy backend
-        class UsersBackend(object):
+        class UsersBackend:
             def search(self, criteria):
                 if criteria['login_attr'] == 'Login Name':
                     return ['user_name']

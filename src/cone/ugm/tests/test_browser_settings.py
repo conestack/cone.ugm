@@ -8,7 +8,7 @@ from pyramid.httpexceptions import HTTPForbidden
 import os
 
 
-class BrowserSettingsTests(object):
+class BrowserSettingsTests:
 
     @testing.principals(
         users={'manager': {}},

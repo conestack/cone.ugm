@@ -9,7 +9,7 @@ from zope.event import classhandler
 import json
 
 
-class BrowserActionsTests(object):
+class BrowserActionsTests:
 
     @testing.principals(
         users={

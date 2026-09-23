@@ -9,7 +9,7 @@ from node.ext.ugm.interfaces import IUsers
 from node.tests import NodeTestCase
 
 
-class ModelUsersTests(object):
+class ModelUsersTests:
 
     @testing.principals(
         users={

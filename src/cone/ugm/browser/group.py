@@ -258,7 +258,7 @@ class GroupEditForm(GroupForm, Form):
         came_from = request.get('came_from')
         if came_from:
             came_from = compat.unquote(came_from)
-            url = '{}?pid={}'.format(came_from, self.model.name)
+            url = f'{came_from}?pid={self.model.name}'
         else:
             url = make_url(request.request, node=self.model)
         if self.ajax_request:

@@ -68,7 +68,7 @@ SCOPE_GROUP = 'group'
 BACKEND_ALL = '__all_backends__'
 
 
-class _form_field(object):
+class _form_field:
     """Abstract form field factory registry and decorator.
     """
 
@@ -139,7 +139,7 @@ class group_field(_form_field):
 # Principal ID form field factories
 ###############################################################################
 
-class PrincipalExistsExtractor(object):
+class PrincipalExistsExtractor:
     """Abstract application model aware yafowil extractor checking whether
     principal ID already exists.
     """
@@ -191,7 +191,7 @@ class GroupExistsExtractor(PrincipalExistsExtractor):
         )
 
 
-class PrincipalIdFieldFactory(object):
+class PrincipalIdFieldFactory:
     """Principal ID field factory.
 
     Creates a form widget which validates an input only contains ASCII
@@ -237,7 +237,7 @@ group_id_field_factory = group_field('id')(
 # Login name form field factory
 ###############################################################################
 
-class LoginNameExtractor(object):
+class LoginNameExtractor:
     """Application model aware yafowil extractor checking whether optional
     login name is valid.
     """
@@ -377,7 +377,7 @@ class PrincipalForm:
         request = self.request
         scope = self.action_resource
         self.form = form = factory(
-            u'form',
+            'form',
             name=self.form_name,
             props={
                 'action': make_url(request, node=model, resource=scope),

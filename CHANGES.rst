@@ -4,6 +4,22 @@ Changes
 2.0.0 (unreleased)
 ------------------
 
+- Drop the Python 2 remnants. ``ColumnListing`` used ``IS_PY2`` and
+  ``ITER_TYPES`` from ``cone.app.compat``, which ``cone.app`` 2.0 removed -
+  rendering a column listing raised ``AttributeError``.
+  [rnix]
+
+- Modernise the code ruff flags as outdated: ``u''`` prefixes, ``class
+  X(object)``, ``.format()`` over f-strings, redundant ``open()`` mode.
+  Remove the duplicate definitions of ``register_config`` and
+  ``register_entry``. Behaviour unchanged. ``super(Class, self)`` is kept, see
+  ``cone.app``.
+  [rnix]
+
+- Add ``qa.ruff`` domain to Makefile and pin the ruff rule selection in
+  ``pyproject.toml``, ``make check`` runs ``ruff check``.
+  [rnix]
+
 - Create a copy of principal.roles in PrincipalRolesForm.save() to avoid
   stale reference. This fixes not being able to remove roles.
   [lenadax]

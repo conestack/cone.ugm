@@ -66,9 +66,9 @@ class PrincipalRolesForm(Behavior):
             # copy to prevent stale reference after remove_role()/add_role()
             existing_roles = list(principal.roles)
         else:
-            uid = data.fetch('{}.id'.format(form_name)).extracted
+            uid = data.fetch(f'{form_name}.id').extracted
             principal = self.model.parent[uid].model
-        new_roles = data.fetch('{}.principal_roles'.format(form_name)).extracted
+        new_roles = data.fetch(f'{form_name}.principal_roles').extracted
         removed_roles = list()
         for role in existing_roles:
             if role not in new_roles:

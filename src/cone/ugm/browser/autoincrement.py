@@ -26,7 +26,7 @@ class AutoIncrementForm(Behavior):
         settings = general_settings(self.model)
         prefix = settings.attrs.user_id_autoincrement_prefix
         default = int(settings.attrs.user_id_autoincrement_start)
-        search = u'%s*' % prefix
+        search = '%s*' % prefix
         backend = self.model.parent.backend
         backend.invalidate()
         result = backend.search(attrlist=['id'], criteria={'id': search})
@@ -51,7 +51,7 @@ class AutoIncrementForm(Behavior):
             principal_id = sorted(matching)[-1] + 1
         if principal_id < default:
             principal_id = default
-        return u'%s%i' % (prefix, principal_id)
+        return '%s%i' % (prefix, principal_id)
 
     @plumb
     def prepare(_next, self):

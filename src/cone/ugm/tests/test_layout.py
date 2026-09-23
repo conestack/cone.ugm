@@ -8,7 +8,7 @@ from pyramid.testing import DummyRequest
 import unittest
 
 
-class LayoutTests(object):
+class LayoutTests:
 
     def test_layout(self):
         config = layout_config.lookup(

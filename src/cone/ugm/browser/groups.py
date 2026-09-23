@@ -55,7 +55,7 @@ class GroupsLeftColumn(Tile):
         return make_url(
             self.request,
             node=self.model.root['groups'],
-            query=make_query(factory=u'group')
+            query=make_query(factory='group')
         )
 
     @property

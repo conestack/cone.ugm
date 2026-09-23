@@ -91,7 +91,7 @@ class ChangePasswordForm(Form):
             resource='change_password'
         )
         form = factory(
-            u'form',
+            'form',
             name='change_password_form',
             props={
                 'action': action,
@@ -170,7 +170,7 @@ class ChangePasswordForm(Form):
 
     def change_password(self, widget, data):
         def fetch(name):
-            dottedpath = 'change_password_form.{0}'.format(name)
+            dottedpath = f'change_password_form.{name}'
             return data.fetch(dottedpath).extracted
         user = security.authenticated_user(self.request)
         current_password = fetch('current_password')

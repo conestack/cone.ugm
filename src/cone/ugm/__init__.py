@@ -79,22 +79,6 @@ class UGMLayoutConfig(LayoutConfig):
         self.sidebar_left = ['navtree']
 
 
-def register_config(key, factory):
-    # Avoid registration conflict if testrun inside conestack dev env.
-    if os.environ.get('TESTRUN_MARKER'):
-        if key in get_root()['settings'].factories:
-            return
-    _register_config(key, factory)
-
-
-def register_entry(key, factory):
-    # Avoid registration conflict if testrun inside conestack dev env.
-    if os.environ.get('TESTRUN_MARKER'):
-        if key in get_root().factories:
-            return
-    _register_entry(key, factory)
-
-
 # application startup hooks
 @main_hook
 def initialize_ugm(config, global_config, settings):

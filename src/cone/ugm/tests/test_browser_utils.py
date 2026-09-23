@@ -4,7 +4,7 @@ from cone.ugm.browser.utils import quote_slash
 from cone.ugm.browser.utils import unquote_slash
 
 
-class BrowserUtilsTests(object):
+class BrowserUtilsTests:
 
     def test_utils(self):
         quoted = quote_slash('foo/bar')

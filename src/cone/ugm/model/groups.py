@@ -33,7 +33,7 @@ _ = TranslationStringFactory('cone.ugm')
     LocalManagerGroupsACL,
     AppNode,
     MappingNode)
-class Groups(object):
+class Groups:
 
     @instance_property
     def properties(self):
