@@ -4,10 +4,14 @@ Changes
 2.0.0 (unreleased)
 ------------------
 
-- Render the local manager settings as a card with its heading as
-  ``h5.card-header`` instead of a bare ``h1``, like the other views and the
-  cone.app forms. The "not enabled" notice is a Bootstrap ``alert`` - the
-  ``warning`` class it carried has no style in Bootstrap 5.
+- Render the settings panels as cards with their heading as
+  ``h5.card-header``, like the other views and the cone.app forms. The local
+  manager settings had a bare ``h1``; the user, group and roles sections of
+  the general settings had a ``h3`` inside the card body - each section is a
+  card with header and a structural ``div.card-body`` around its fields now,
+  so field names and extraction are unchanged. The "not enabled" notice of
+  the local manager settings is a Bootstrap ``alert`` - the ``warning`` class
+  it carried has no style in Bootstrap 5.
   [rnix]
 
 - Drop the Python 2 remnants. ``ColumnListing`` used ``IS_PY2`` and
