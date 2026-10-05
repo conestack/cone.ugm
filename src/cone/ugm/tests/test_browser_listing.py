@@ -4,7 +4,6 @@ from cone.ugm.browser.listing import ColumnListing
 
 
 class BrowserListingTests:
-
     def test_unquoted_param_value(self):
         listing = ColumnListing()
         listing.request = self.layer.new_request()

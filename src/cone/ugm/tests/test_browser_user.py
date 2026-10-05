@@ -11,11 +11,7 @@ from zope.event import classhandler
 
 
 class BrowserUserTests:
-
-    @testing.principals(
-        users={
-            'user_1': {}
-        })
+    @testing.principals(users={'user_1': {}})
     def test_content_tile(self):
         root = get_root()
         users = root['users']
@@ -28,26 +24,15 @@ class BrowserUserTests:
         self.assertTrue(res.find(expected) > -1)
 
     @testing.principals(
-        users={
-            'manager': {},
-            'user_1': {}
-        },
-        roles={
-            'manager': ['manager']
-        })
+        users={'manager': {}, 'user_1': {}}, roles={'manager': ['manager']}
+    )
     def test_leftcolumn_tile(self):
         root = get_root()
         users = root['users']
         user = users['user_1']
         request = self.layer.new_request()
 
-        self.expectError(
-            HTTPForbidden,
-            render_tile,
-            user,
-            request,
-            'leftcolumn'
-        )
+        self.expectError(HTTPForbidden, render_tile, user, request, 'leftcolumn')
 
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'leftcolumn')
@@ -55,26 +40,15 @@ class BrowserUserTests:
         self.assertTrue(res.find(expected) > -1)
 
     @testing.principals(
-        users={
-            'manager': {},
-            'user_1': {}
-        },
-        roles={
-            'manager': ['manager']
-        })
+        users={'manager': {}, 'user_1': {}}, roles={'manager': ['manager']}
+    )
     def test_rightcolumn_tile(self):
         root = get_root()
         users = root['users']
         user = users['user_1']
         request = self.layer.new_request()
 
-        self.expectError(
-            HTTPForbidden,
-            render_tile,
-            user,
-            request,
-            'rightcolumn'
-        )
+        self.expectError(HTTPForbidden, render_tile, user, request, 'rightcolumn')
 
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'rightcolumn')
@@ -82,32 +56,18 @@ class BrowserUserTests:
         self.assertTrue(res.find(expected) > -1)
 
     @testing.principals(
-        users={
-            'manager': {},
-            'user_1': {}
-        },
-        groups={
-            'group_1': {}
-        },
-        membership={
-            'group_1': ['user_1']
-        },
-        roles={
-            'manager': ['manager']
-        })
+        users={'manager': {}, 'user_1': {}},
+        groups={'group_1': {}},
+        membership={'group_1': ['user_1']},
+        roles={'manager': ['manager']},
+    )
     def test_columnlisting_tile(self):
         root = get_root()
         users = root['users']
         user = users['user_1']
         request = self.layer.new_request()
 
-        self.expectError(
-            HTTPForbidden,
-            render_tile,
-            user,
-            request,
-            'columnlisting'
-        )
+        self.expectError(HTTPForbidden, render_tile, user, request, 'columnlisting')
 
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'columnlisting')
@@ -118,34 +78,18 @@ class BrowserUserTests:
         self.assertTrue(res.find(expected) > -1)
 
     @testing.principals(
-        users={
-            'manager': {},
-            'user_1': {}
-        },
-        groups={
-            'group_1': {},
-            'group_2': {}
-
-        },
-        membership={
-            'group_1': ['user_1']
-        },
-        roles={
-            'manager': ['manager']
-        })
+        users={'manager': {}, 'user_1': {}},
+        groups={'group_1': {}, 'group_2': {}},
+        membership={'group_1': ['user_1']},
+        roles={'manager': ['manager']},
+    )
     def test_allcolumnlisting_tile(self):
         root = get_root()
         users = root['users']
         user = users['user_1']
         request = self.layer.new_request()
 
-        self.expectError(
-            HTTPForbidden,
-            render_tile,
-            user,
-            request,
-            'allcolumnlisting'
-        )
+        self.expectError(HTTPForbidden, render_tile, user, request, 'allcolumnlisting')
 
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'allcolumnlisting')
@@ -161,13 +105,7 @@ class BrowserUserTests:
         )
         self.assertTrue(res.find(expected) > -1)
 
-    @testing.principals(
-        users={
-            'manager': {}
-        },
-        roles={
-            'manager': ['manager']
-        })
+    @testing.principals(users={'manager': {}}, roles={'manager': ['manager']})
     def test_add_user(self):
         root = get_root()
         users = root['users']
@@ -181,13 +119,7 @@ class BrowserUserTests:
             events_called.append('UserCreatedEvent')
 
         with self.layer.authenticated('viewer'):
-            self.expectError(
-                HTTPForbidden,
-                render_tile,
-                users,
-                request,
-                'add'
-            )
+            self.expectError(HTTPForbidden, render_tile, users, request, 'add')
 
         with self.layer.authenticated('manager'):
             res = render_tile(users, request, 'add')
@@ -226,12 +158,11 @@ class BrowserUserTests:
             'manager': {},
             'user_1': {
                 'fullname': 'Max Mustermann',
-                'email': 'max.mustermann@example.com'
-            }
+                'email': 'max.mustermann@example.com',
+            },
         },
-        roles={
-            'manager': ['manager']
-        })
+        roles={'manager': ['manager']},
+    )
     def test_edit_user(self):
         root = get_root()
         users = root['users']

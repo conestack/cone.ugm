@@ -50,21 +50,18 @@ class LocalManagerConfig(DictStorage):
 
 @plumbing(MappingNode, LocalManagerConfig)
 class LocalManagerConfigAttributes:
-
     def __init__(self, path):
         self.file_path = path
         self.load()
 
 
 class LocalManager(Behavior):
-    """Behavior providing local manager information for authenticated user.
-    """
+    """Behavior providing local manager information for authenticated user."""
 
     @finalize
     @property
     def local_management_enabled(self):
-        """Flag whether local management is enabled.
-        """
+        """Flag whether local management is enabled."""
         settings = general_settings(self.root)
         return settings.attrs.users_local_management_enabled == 'True'
 
@@ -106,10 +103,10 @@ class LocalManager(Behavior):
             return None
         if len(adm_gids) > 1:
             msg = (
-                "Authenticated member defined in local manager "
-                "groups %s but only one management group allowed for "
-                "each user. Please contact System Administrator in "
-                "order to fix this problem."
+                'Authenticated member defined in local manager '
+                'groups %s but only one management group allowed for '
+                'each user. Please contact System Administrator in '
+                'order to fix this problem.'
             )
             exc = msg % ', '.join(["'%s'" % gid for gid in sorted(adm_gids)])
             raise Exception(exc)
@@ -118,8 +115,7 @@ class LocalManager(Behavior):
     @finalize
     @property
     def local_manager_rule(self):
-        """Return rule for local manager.
-        """
+        """Return rule for local manager."""
         adm_gid = self.local_manager_gid
         if not adm_gid:
             return None
@@ -129,8 +125,7 @@ class LocalManager(Behavior):
     @finalize
     @property
     def local_manager_default_gids(self):
-        """Return default group id's for local manager.
-        """
+        """Return default group id's for local manager."""
         rule = self.local_manager_rule
         if not rule:
             return list()
@@ -139,8 +134,7 @@ class LocalManager(Behavior):
     @finalize
     @property
     def local_manager_target_gids(self):
-        """Target group id's for local manager.
-        """
+        """Target group id's for local manager."""
         rule = self.local_manager_rule
         if not rule:
             return list()
@@ -149,8 +143,7 @@ class LocalManager(Behavior):
     @finalize
     @property
     def local_manager_target_uids(self):
-        """Target uid's for local manager.
-        """
+        """Target uid's for local manager."""
         groups = self.root['groups'].backend
         managed_uids = set()
         for gid in self.local_manager_target_gids:
@@ -161,8 +154,7 @@ class LocalManager(Behavior):
 
     @finalize
     def local_manager_is_default(self, adm_gid, gid):
-        """Check whether gid is default group for local manager group.
-        """
+        """Check whether gid is default group for local manager group."""
         settings = localmanager_settings(self.root)
         rule = settings.attrs[adm_gid]
         if gid not in rule['target']:
@@ -171,15 +163,13 @@ class LocalManager(Behavior):
 
 
 class LocalManagerACL(LocalManager):
-    """Behavior providing ACL's by local manager configuration.
-    """
+    """Behavior providing ACL's by local manager configuration."""
 
     @default
     @property
     def local_manager_acl(self):
         raise NotImplementedError(
-            'Abstract ``LocalManagerACL`` does not '
-            'implement ``local_manager_acl``'
+            'Abstract ``LocalManagerACL`` does not implement ``local_manager_acl``'
         )
 
     @plumb
@@ -192,25 +182,24 @@ class LocalManagerACL(LocalManager):
 
 
 class LocalManagerUsersACL(LocalManagerACL):
-
     @finalize
     @property
     def local_manager_acl(self):
         if not self.local_manager_target_gids:
             return []
         permissions = [
-            'view', 'add', 'add_user', 'edit', 'edit_user',
-            'manage_expiration', 'manage_membership'
+            'view',
+            'add',
+            'add_user',
+            'edit',
+            'edit_user',
+            'manage_expiration',
+            'manage_membership',
         ]
-        return [(
-            Allow,
-            get_current_request().authenticated_userid,
-            permissions
-        )]
+        return [(Allow, get_current_request().authenticated_userid, permissions)]
 
 
 class LocalManagerUserACL(LocalManagerACL):
-
     @finalize
     @property
     def local_manager_acl(self):
@@ -219,41 +208,32 @@ class LocalManagerUserACL(LocalManagerACL):
             if self.name not in self.local_manager_target_uids:
                 return []
         permissions = [
-            'view', 'add', 'add_user', 'edit', 'edit_user',
-            'manage_expiration', 'manage_membership'
+            'view',
+            'add',
+            'add_user',
+            'edit',
+            'edit_user',
+            'manage_expiration',
+            'manage_membership',
         ]
-        return [(
-            Allow,
-            get_current_request().authenticated_userid,
-            permissions
-        )]
+        return [(Allow, get_current_request().authenticated_userid, permissions)]
 
 
 class LocalManagerGroupsACL(LocalManagerACL):
-
     @finalize
     @property
     def local_manager_acl(self):
         if not self.local_manager_target_gids:
             return []
         permissions = ['view', 'manage_membership']
-        return [(
-            Allow,
-            get_current_request().authenticated_userid,
-            permissions
-        )]
+        return [(Allow, get_current_request().authenticated_userid, permissions)]
 
 
 class LocalManagerGroupACL(LocalManagerACL):
-
     @finalize
     @property
     def local_manager_acl(self):
         if self.name not in self.local_manager_target_gids:
             return []
         permissions = ['view', 'manage_membership']
-        return [(
-            Allow,
-            get_current_request().authenticated_userid,
-            permissions
-        )]
+        return [(Allow, get_current_request().authenticated_userid, permissions)]

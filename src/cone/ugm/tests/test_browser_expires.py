@@ -3,7 +3,6 @@ from cone.ugm import testing
 
 
 class BrowserExpiresTests:
-
     def test_expiration_widget(self):
         pass
 

@@ -46,11 +46,12 @@ class UGMSettings(SettingsNode):
 @node_info(
     name='ugm_general_settings',
     title=_('ugm_settings_node', default='UGM'),
-    description = _(
+    description=_(
         'ugm_settings_node_description',
-        default='General user and group management settings'
+        default='General user and group management settings',
     ),
-    icon='bi-people')
+    icon='bi-people',
+)
 class GeneralSettings(UGMSettings):
     category = _('category_ugm', default='User and Group Management')
 
@@ -64,9 +65,10 @@ class GeneralSettings(UGMSettings):
     title=_('localmanager_settings_node', default='Local Manager'),
     description=_(
         'localmanager_settings_node_description',
-        default='Manage Local Manager access rules'
+        default='Manage Local Manager access rules',
     ),
-    icon='bi-person-video2')
+    icon='bi-person-video2',
+)
 @plumbing(Attributes)
 class LocalManagerSettings(SettingsNode):
     category = _('category_ugm', default='User and Group Management')

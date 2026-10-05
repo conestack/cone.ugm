@@ -13,32 +13,35 @@ from cone.ugm.model.users import Users
     path='cone.ugm:browser/templates/columns.pt',
     interface=Group,
     permission='login',
-    strict=False)
+    strict=False,
+)
 @tile(
     name='content',
     path='cone.ugm:browser/templates/columns.pt',
     interface=Groups,
     permission='login',
-    strict=False)
+    strict=False,
+)
 @tile(
     name='content',
     path='cone.ugm:browser/templates/columns.pt',
     interface=User,
     permission='login',
-    strict=False)
+    strict=False,
+)
 @tile(
     name='content',
     path='cone.ugm:browser/templates/columns.pt',
     interface=Users,
     permission='login',
-    strict=False)
+    strict=False,
+)
 class Columns(ProtectedContentTile):
     pass
 
 
 class Column(Tile):
-    """Abstract column.
-    """
+    """Abstract column."""
 
     def _render(self, model, name):
         return render_tile(model, self.request, name)

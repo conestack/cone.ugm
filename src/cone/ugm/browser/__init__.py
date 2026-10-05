@@ -4,21 +4,21 @@ import os
 
 resources_dir = os.path.join(os.path.dirname(__file__), 'static')
 cone_ugm_resources = wr.ResourceGroup(
-    name='cone.ugm-ugm',
-    directory=resources_dir,
-    path='ugm'
+    name='cone.ugm-ugm', directory=resources_dir, path='ugm'
 )
-cone_ugm_resources.add(wr.ScriptResource(
-    name='cone-ugm-js',
-    depends='cone-app-js',
-    resource='cone.ugm.js',
-    compressed='cone.ugm.min.js'
-))
-cone_ugm_resources.add(wr.StyleResource(
-    name='cone-ugm-css',
-    resource='cone.ugm.css',
-    compressed='cone.ugm.min.css'
-))
+cone_ugm_resources.add(
+    wr.ScriptResource(
+        name='cone-ugm-js',
+        depends='cone-app-js',
+        resource='cone.ugm.js',
+        compressed='cone.ugm.min.js',
+    )
+)
+cone_ugm_resources.add(
+    wr.StyleResource(
+        name='cone-ugm-css', resource='cone.ugm.css', compressed='cone.ugm.min.css'
+    )
+)
 
 
 def configure_resources(config, settings):

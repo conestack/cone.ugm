@@ -19,18 +19,20 @@ _ = TranslationStringFactory('cone.ugm')
 # Form helper functions
 ###############################################################################
 
+
 def default_required_message(request, label):
     localizer = get_localizer(request)
     return _(
         'no_field_value_defined',
         default='No ${field} defined',
-        mapping={'field': localizer.translate(_(label, default=label))}
+        mapping={'field': localizer.translate(_(label, default=label))},
     )
 
 
 ###############################################################################
 # Form field factory basics
 ###############################################################################
+
 
 def default_form_field_factory(form, label, value, required=False):
     """Default form field factory.
@@ -53,10 +55,8 @@ def default_form_field_factory(form, label, value, required=False):
     return factory(
         'field:label:error:text',
         value=value,
-        props={
-            'label': label,
-            'required': required
-        })
+        props={'label': label, 'required': required},
+    )
 
 
 ###############################################################################
@@ -69,16 +69,12 @@ BACKEND_ALL = '__all_backends__'
 
 
 class _form_field:
-    """Abstract form field factory registry and decorator.
-    """
+    """Abstract form field factory registry and decorator."""
 
     scope = None
     """Registration scope."""
 
-    registry = {
-        SCOPE_USER: {},
-        SCOPE_GROUP: {}
-    }
+    registry = {SCOPE_USER: {}, SCOPE_GROUP: {}}
     """Form field factory and attribute name registry by scope and UGM backend
     name.
     """
@@ -124,20 +120,21 @@ class _form_field:
 
 
 class user_field(_form_field):
-    """Form field factory registry and decorator for user principal form.
-    """
+    """Form field factory registry and decorator for user principal form."""
+
     scope = SCOPE_USER
 
 
 class group_field(_form_field):
-    """Form field factory registry and decorator for group principal form.
-    """
+    """Form field factory registry and decorator for group principal form."""
+
     scope = SCOPE_GROUP
 
 
 ###############################################################################
 # Principal ID form field factories
 ###############################################################################
+
 
 class PrincipalExistsExtractor:
     """Abstract application model aware yafowil extractor checking whether
@@ -162,32 +159,29 @@ class PrincipalExistsExtractor:
 
     def error_message(self, principal_id):
         raise NotImplementedError(
-            'Abstract ``PrincipalExistsExtractor```does '
-            'not implement ``error_message``'
+            'Abstract ``PrincipalExistsExtractor```does not implement ``error_message``'
         )
 
 
 class UserExistsExtractor(PrincipalExistsExtractor):
-    """Yafowil extractor checking whether user ID already exists.
-    """
+    """Yafowil extractor checking whether user ID already exists."""
 
     def error_message(self, principal_id):
         return _(
             'user_already_exists',
-            default="User ${principal_id} already exists.",
-            mapping={'principal_id': principal_id}
+            default='User ${principal_id} already exists.',
+            mapping={'principal_id': principal_id},
         )
 
 
 class GroupExistsExtractor(PrincipalExistsExtractor):
-    """Yafowil extractor checking whether group ID already exists.
-    """
+    """Yafowil extractor checking whether group ID already exists."""
 
     def error_message(self, principal_id):
         return _(
             'group_already_exists',
-            default="Group ${principal_id} already exists.",
-            mapping={'principal_id': principal_id}
+            default='Group ${principal_id} already exists.',
+            mapping={'principal_id': principal_id},
         )
 
 
@@ -208,24 +202,18 @@ class PrincipalIdFieldFactory:
             props={
                 'label': label,
                 'required': default_required_message(form.request, label),
-                'ascii': True
+                'ascii': True,
             },
             custom={
-                'ascii': {
-                    'extractors': [ascii_extractor]
-                },
-                'exists': {
-                    'extractors': [self.principal_exists_extractor(form.model)]
-                }
+                'ascii': {'extractors': [ascii_extractor]},
+                'exists': {'extractors': [self.principal_exists_extractor(form.model)]},
             },
-            mode='edit' if form.action_resource == 'add' else 'display'
+            mode='edit' if form.action_resource == 'add' else 'display',
         )
 
 
 # register user ID field factory
-user_id_field_factory = user_field('id')(
-    PrincipalIdFieldFactory(UserExistsExtractor)
-)
+user_id_field_factory = user_field('id')(PrincipalIdFieldFactory(UserExistsExtractor))
 
 # register group ID field factory
 group_id_field_factory = group_field('id')(
@@ -236,6 +224,7 @@ group_id_field_factory = group_field('id')(
 ###############################################################################
 # Login name form field factory
 ###############################################################################
+
 
 class LoginNameExtractor:
     """Application model aware yafowil extractor checking whether optional
@@ -253,9 +242,7 @@ class LoginNameExtractor:
         login = generic_extractor(widget, data)
         if not login:
             return login
-        res = self.model.parent.backend.search(criteria={
-            self.login_attr: login
-        })
+        res = self.model.parent.backend.search(criteria={self.login_attr: login})
         # no entries found with same login attribute set.
         if not res:
             return login
@@ -265,7 +252,7 @@ class LoginNameExtractor:
         message = _(
             'user_login_not_unique',
             default='User login ${login} not unique.',
-            mapping={'login': data.extracted}
+            mapping={'login': data.extracted},
         )
         raise ExtractionError(message)
 
@@ -291,6 +278,7 @@ def login_name_field_factory(form, label, value):
 # Password form field factory
 ###############################################################################
 
+
 def password_settings():
     """Returns general password related settings. Used by
     ``password_field_factory`` and ``ChangePasswordForm`` to ensure password
@@ -298,10 +286,7 @@ def password_settings():
 
     XXX: Make this settings configurable.
     """
-    return {
-        'minlength': 6,
-        'ascii': True
-    }
+    return {'minlength': 6, 'ascii': True}
 
 
 @user_field('password')
@@ -311,30 +296,24 @@ def password_field_factory(form, label, value):
         'required': default_required_message(form.request, label),
     }
     props.update(password_settings())
-    return factory(
-        'field:label:error:password',
-        value=value,
-        props=props)
+    return factory('field:label:error:password', value=value, props=props)
 
 
 ###############################################################################
 # Email form field factory
 ###############################################################################
 
+
 @user_field('mail')
 @user_field('email')
 def email_field_factory(form, label, value):
-    return factory(
-        'field:label:error:email',
-        value=value,
-        props={
-            'label': label
-        })
+    return factory('field:label:error:email', value=value, props={'label': label})
 
 
 ###############################################################################
 # Principal form
 ###############################################################################
+
 
 class PrincipalForm:
     form_name = None
@@ -368,8 +347,7 @@ class PrincipalForm:
     @property
     def field_factory_registry(self):
         raise NotImplementedError(
-            'Abstract principal form does not '
-            'implement ``field_factory_registry``'
+            'Abstract principal form does not implement ``field_factory_registry``'
         )
 
     def prepare(self):
@@ -381,12 +359,13 @@ class PrincipalForm:
             name=self.form_name,
             props={
                 'action': make_url(request, node=model, resource=scope),
-            })
+            },
+        )
         registry = self.field_factory_registry
         backend_name = ugm_backend.name
         form_attrs = itertools.chain(
             self.reserved_attrs.items(),
-            self.form_attrmap.items() if self.form_attrmap else []
+            self.form_attrmap.items() if self.form_attrmap else [],
         )
         for attr_name, label in form_attrs:
             field_factory = registry.factory(attr_name, backend=backend_name)
@@ -400,8 +379,9 @@ class PrincipalForm:
                 'class_add': 'me-2',
                 'handler': self.save,
                 'next': self.next,
-                'label': _('save', default='Save')
-            })
+                'label': _('save', default='Save'),
+            },
+        )
         if scope == 'add':
             form['cancel'] = factory(
                 'submit',
@@ -411,5 +391,6 @@ class PrincipalForm:
                     'handler': None,
                     'next': self.next,
                     'label': _('cancel', default='Cancel'),
-                    'skip': True
-                })
+                    'skip': True,
+                },
+            )

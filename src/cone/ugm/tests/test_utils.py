@@ -8,7 +8,6 @@ import unittest
 
 
 class UtilsTests:
-
     def test_general_settings(self):
         root = get_root()
         settings = general_settings(root)

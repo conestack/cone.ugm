@@ -29,7 +29,6 @@ from yafowil.password import ascii_extractor
 
 
 class BrowserPrincipalTests:
-
     def test_default_required_message(self):
         request = self.layer.new_request()
         message = default_required_message(request, 'Name')
@@ -44,15 +43,12 @@ class BrowserPrincipalTests:
         widget = default_form_field_factory(form, label, value)
         self.assertEqual(widget.getter, 'Field Value')
         self.assertEqual(widget.blueprints, ['field', 'label', 'error', 'text'])
-        self.assertEqual(widget.properties, {
-            'label': 'Field Label',
-            'required': False
-        })
+        self.assertEqual(widget.properties, {'label': 'Field Label', 'required': False})
         widget = default_form_field_factory(form, label, value, required=True)
-        self.assertEqual(widget.properties, {
-            'label': 'Field Label',
-            'required': 'no_field_value_defined'
-        })
+        self.assertEqual(
+            widget.properties,
+            {'label': 'Field Label', 'required': 'no_field_value_defined'},
+        )
 
     def test__form_field(self):
         self.expectError(AssertionError, _form_field, 'field')
@@ -72,14 +68,17 @@ class BrowserPrincipalTests:
         def backend_form_field_factory(form, label, value):
             pass
 
-        self.assertEqual(_form_field.registry[SCOPE], {
-            '__all_backends__': {
-                'field': form_field_factory,
+        self.assertEqual(
+            _form_field.registry[SCOPE],
+            {
+                '__all_backends__': {
+                    'field': form_field_factory,
+                },
+                'backend': {
+                    'field': backend_form_field_factory,
+                },
             },
-            'backend': {
-                'field': backend_form_field_factory,
-            }
-        })
+        )
 
         factory = form_field.factory('field')
         self.assertEqual(factory, form_field_factory)
@@ -122,17 +121,14 @@ class BrowserPrincipalTests:
         widget = factory(
             '*exists:text',
             name='principal_id',
-            custom={'exists': {'extractors': [extractor]}}
+            custom={'exists': {'extractors': [extractor]}},
         )
 
         # test already exists
         request = {'principal_id': 'pid'}
         data = widget.extract(request=request)
         self.assertTrue(data.has_errors)
-        self.assertEqual(
-            data.errors,
-            [ExtractionError('Principal pid already exists')]
-        )
+        self.assertEqual(data.errors, [ExtractionError('Principal pid already exists')])
 
         # test not already exists
         request = {'principal_id': 'new_pid'}
@@ -140,10 +136,7 @@ class BrowserPrincipalTests:
         self.assertFalse(data.has_errors)
         self.assertEqual(data.extracted, 'new_pid')
 
-    @testing.principals(
-        users={
-            'user_exists': {}
-        })
+    @testing.principals(users={'user_exists': {}})
     def test_UserExistsExtractor(self):
         root = get_root()
         users = root['users']
@@ -152,17 +145,14 @@ class BrowserPrincipalTests:
         widget = factory(
             '*exists:text',
             name='user_id',
-            custom={'exists': {'extractors': [extractor]}}
+            custom={'exists': {'extractors': [extractor]}},
         )
 
         # test already exists
         request = {'user_id': 'user_exists'}
         data = widget.extract(request=request)
         self.assertTrue(data.has_errors)
-        self.assertEqual(
-            data.errors,
-            [ExtractionError('user_already_exists')]
-        )
+        self.assertEqual(data.errors, [ExtractionError('user_already_exists')])
 
         # test not already exists
         request = {'user_id': 'new_user_id'}
@@ -170,10 +160,7 @@ class BrowserPrincipalTests:
         self.assertFalse(data.has_errors)
         self.assertEqual(data.extracted, 'new_user_id')
 
-    @testing.principals(
-        groups={
-            'group_exists': {}
-        })
+    @testing.principals(groups={'group_exists': {}})
     def test_GroupExistsExtractor(self):
         root = get_root()
         groups = root['groups']
@@ -182,17 +169,14 @@ class BrowserPrincipalTests:
         widget = factory(
             '*exists:text',
             name='group_id',
-            custom={'exists': {'extractors': [extractor]}}
+            custom={'exists': {'extractors': [extractor]}},
         )
 
         # test already exists
         request = {'group_id': 'group_exists'}
         data = widget.extract(request=request)
         self.assertTrue(data.has_errors)
-        self.assertEqual(
-            data.errors,
-            [ExtractionError('group_already_exists')]
-        )
+        self.assertEqual(data.errors, [ExtractionError('group_already_exists')])
 
         # test not already exists
         request = {'group_id': 'new_group_id'}
@@ -214,23 +198,24 @@ class BrowserPrincipalTests:
         form.model = BaseNode()
         form.request = self.layer.new_request()
         widget = factory(form, 'Principal ID', UNSET)
-        self.assertEqual(widget.blueprints, [
-            'field', '*ascii', '*exists', 'label', 'error', 'text'
-        ])
-        self.assertEqual(widget.getter, UNSET)
-        self.assertEqual(widget.properties, {
-            'label': 'Principal ID',
-            'required': 'no_field_value_defined',
-            'ascii': True
-        })
         self.assertEqual(
-            widget.custom['ascii']['extractors'],
-            [ascii_extractor]
+            widget.blueprints, ['field', '*ascii', '*exists', 'label', 'error', 'text']
         )
-        self.assertTrue(isinstance(
-            widget.custom['exists']['extractors'][0],
-            PrincipalExistsExtractor
-        ))
+        self.assertEqual(widget.getter, UNSET)
+        self.assertEqual(
+            widget.properties,
+            {
+                'label': 'Principal ID',
+                'required': 'no_field_value_defined',
+                'ascii': True,
+            },
+        )
+        self.assertEqual(widget.custom['ascii']['extractors'], [ascii_extractor])
+        self.assertTrue(
+            isinstance(
+                widget.custom['exists']['extractors'][0], PrincipalExistsExtractor
+            )
+        )
         self.assertEqual(widget.mode, 'edit')
 
         # principal edit form
@@ -239,38 +224,33 @@ class BrowserPrincipalTests:
         form.request = self.layer.new_request()
         widget = factory(form, 'Principal ID', 'pid')
         self.assertEqual(widget.getter, 'pid')
-        self.assertEqual(widget.properties, {
-            'label': 'Principal ID',
-            'required': 'no_field_value_defined',
-            'ascii': True
-        })
         self.assertEqual(
-            widget.custom['ascii']['extractors'],
-            [ascii_extractor]
+            widget.properties,
+            {
+                'label': 'Principal ID',
+                'required': 'no_field_value_defined',
+                'ascii': True,
+            },
         )
-        self.assertTrue(isinstance(
-            widget.custom['exists']['extractors'][0],
-            PrincipalExistsExtractor
-        ))
+        self.assertEqual(widget.custom['ascii']['extractors'], [ascii_extractor])
+        self.assertTrue(
+            isinstance(
+                widget.custom['exists']['extractors'][0], PrincipalExistsExtractor
+            )
+        )
         self.assertEqual(widget.mode, 'display')
 
     def test_user_id_field_factory(self):
         factory = user_field.factory('id')
         self.assertTrue(isinstance(factory, PrincipalIdFieldFactory))
         self.assertEqual(factory, user_id_field_factory)
-        self.assertEqual(
-            factory.principal_exists_extractor,
-            UserExistsExtractor
-        )
+        self.assertEqual(factory.principal_exists_extractor, UserExistsExtractor)
 
     def test_group_id_field_factory(self):
         factory = group_field.factory('id')
         self.assertTrue(isinstance(factory, PrincipalIdFieldFactory))
         self.assertEqual(factory, group_id_field_factory)
-        self.assertEqual(
-            factory.principal_exists_extractor,
-            GroupExistsExtractor
-        )
+        self.assertEqual(factory.principal_exists_extractor, GroupExistsExtractor)
 
     def test_LoginNameExtractor(self):
         # dummy backend
@@ -290,17 +270,14 @@ class BrowserPrincipalTests:
         widget = factory(
             '*login:text',
             name='login_name',
-            custom={'login': {'extractors': [extractor]}}
+            custom={'login': {'extractors': [extractor]}},
         )
 
         # test already exists
         request = {'login_name': 'Login Name'}
         data = widget.extract(request=request)
         self.assertTrue(data.has_errors)
-        self.assertEqual(
-            data.errors,
-            [ExtractionError('user_login_not_unique')]
-        )
+        self.assertEqual(data.errors, [ExtractionError('user_login_not_unique')])
 
         # test not already exists
         request = {'login_name': 'Other Login Name'}
@@ -320,7 +297,7 @@ class BrowserPrincipalTests:
         widget = factory(
             '*login:text',
             name='login_name',
-            custom={'login': {'extractors': [extractor]}}
+            custom={'login': {'extractors': [extractor]}},
         )
 
         # test login name belongs to edited node
@@ -339,10 +316,7 @@ class BrowserPrincipalTests:
         request = {'login_name': 'Login Name'}
         data = widget.extract(request=request)
         self.assertTrue(data.has_errors)
-        self.assertEqual(
-            data.errors,
-            [ExtractionError('user_login_not_unique')]
-        )
+        self.assertEqual(data.errors, [ExtractionError('user_login_not_unique')])
 
     @testing.invalidate_settings
     def test_login_name_field_factory(self):
@@ -360,17 +334,13 @@ class BrowserPrincipalTests:
 
         widget = factory(form, 'Login Name', UNSET)
         self.assertEqual(widget.getter, UNSET)
-        self.assertEqual(widget.blueprints, [
-            'field', 'label', 'error', 'text', '*login'
-        ])
-        self.assertEqual(widget.properties, {
-            'label': 'Login Name',
-            'required': False
-        })
-        self.assertTrue(isinstance(
-            widget.custom['login']['extractors'][0],
-            LoginNameExtractor
-        ))
+        self.assertEqual(
+            widget.blueprints, ['field', 'label', 'error', 'text', '*login']
+        )
+        self.assertEqual(widget.properties, {'label': 'Login Name', 'required': False})
+        self.assertTrue(
+            isinstance(widget.custom['login']['extractors'][0], LoginNameExtractor)
+        )
         self.assertEqual(widget.mode, 'skip')
 
         settings.attrs.users_login_name_attr = 'login'
@@ -379,9 +349,9 @@ class BrowserPrincipalTests:
 
         settings.attrs.users_login_name_attr = 'mail'
         widget = factory(form, 'Login Name', UNSET)
-        self.assertEqual(widget.blueprints, [
-            'field', 'label', 'error', 'email', '*login'
-        ])
+        self.assertEqual(
+            widget.blueprints, ['field', 'label', 'error', 'email', '*login']
+        )
 
     def test_password_field_factory(self):
         factory = user_field.factory('password')
@@ -390,16 +360,17 @@ class BrowserPrincipalTests:
         form = Tile()
         form.request = self.layer.new_request()
         widget = factory(form, 'User Password', UNSET)
-        self.assertEqual(widget.blueprints, [
-            'field', 'label', 'error', 'password'
-        ])
+        self.assertEqual(widget.blueprints, ['field', 'label', 'error', 'password'])
         self.assertEqual(widget.getter, UNSET)
-        self.assertEqual(widget.properties, {
-            'ascii': True,
-            'label': 'User Password',
-            'minlength': 6,
-            'required': 'no_field_value_defined'
-        })
+        self.assertEqual(
+            widget.properties,
+            {
+                'ascii': True,
+                'label': 'User Password',
+                'minlength': 6,
+                'required': 'no_field_value_defined',
+            },
+        )
 
     def test_email_field_factory(self):
         factory = user_field.factory('email')
@@ -408,9 +379,7 @@ class BrowserPrincipalTests:
         form = Tile()
         form.request = self.layer.new_request()
         widget = factory(form, 'Email address', UNSET)
-        self.assertEqual(widget.blueprints, [
-            'field', 'label', 'error', 'email'
-        ])
+        self.assertEqual(widget.blueprints, ['field', 'label', 'error', 'email'])
         self.assertEqual(widget.getter, UNSET)
         self.assertEqual(widget.properties, {'label': 'Email address'})
 
@@ -448,13 +417,16 @@ class BrowserPrincipalTests:
         form.request = request
         form.prepare()
 
-        self.checkOutput("""
+        self.checkOutput(
+            """
         <class 'yafowil.base.Widget'>: principal
           <class 'yafowil.base.Widget'>: reserved_field
           <class 'yafowil.base.Widget'>: form_field
           <class 'yafowil.base.Widget'>: save
           <class 'yafowil.base.Widget'>: cancel
-        """, form.form.treerepr())
+        """,
+            form.form.treerepr(),
+        )
 
         self.assertEqual(form.form['reserved_field'].getter, UNSET)
         self.assertEqual(form.form['form_field'].getter, UNSET)
@@ -467,12 +439,15 @@ class BrowserPrincipalTests:
         form.request = request
         form.prepare()
 
-        self.checkOutput("""
+        self.checkOutput(
+            """
         <class 'yafowil.base.Widget'>: principal
           <class 'yafowil.base.Widget'>: reserved_field
           <class 'yafowil.base.Widget'>: form_field
           <class 'yafowil.base.Widget'>: save
-        """, form.form.treerepr())
+        """,
+            form.form.treerepr(),
+        )
 
         self.assertEqual(form.form['reserved_field'].getter, 'Reserved Value')
         self.assertEqual(form.form['form_field'].getter, 'Field Value')

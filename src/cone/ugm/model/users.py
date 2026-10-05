@@ -22,19 +22,12 @@ _ = TranslationStringFactory('cone.ugm')
 @node_info(
     'users',
     title=_('users_node', default='Users'),
-    description=_(
-        'users_node_description',
-        default='Container for Users'
-    ),
+    description=_('users_node_description', default='Container for Users'),
     icon='bi bi-person',
-    addables=['user'])
-@plumbing(
-    NodeInit,
-    LocalManagerUsersACL,
-    AppNode,
-    MappingNode)
+    addables=['user'],
+)
+@plumbing(NodeInit, LocalManagerUsersACL, AppNode, MappingNode)
 class Users:
-
     @instance_property
     def properties(self):
         props = Properties()
@@ -47,8 +40,7 @@ class Users:
         metadata = Metadata()
         metadata.title = _('users_node', default='Users')
         metadata.description = _(
-            'users_node_description',
-            default='Container for Users'
+            'users_node_description', default='Container for Users'
         )
         return metadata
 

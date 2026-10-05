@@ -3,7 +3,6 @@ from cone.ugm import testing
 
 
 class BrowserRolesTests:
-
     def test_roles(self):
         pass
 

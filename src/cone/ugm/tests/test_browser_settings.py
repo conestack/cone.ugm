@@ -9,10 +9,7 @@ import os
 
 
 class BrowserSettingsTests:
-
-    @testing.principals(
-        users={'manager': {}},
-        roles={'manager': ['manager']})
+    @testing.principals(users={'manager': {}}, roles={'manager': ['manager']})
     @testing.custom_config_path
     @testing.temp_directory
     def test_GeneralSettingsForm(self, tempdir):
@@ -31,51 +28,58 @@ class BrowserSettingsTests:
             tile.prepare()
 
         form = tile.form
-        self.assertEqual(form.keys(), [
-            'users_settings',
-            'groups_settings',
-            'roles_settings',
-            'save',
-            'came_from'
-        ])
-        self.assertEqual(form['users_settings'].keys(), [
-            'users_heading',
-            'users_account_expiration',
-            'user_id_autoincrement',
-            'user_id_autoincrement_prefix',
-            'user_id_autoincrement_start',
-            'users_portrait',
-            'users_portrait_attr',
-            'users_portrait_accept',
-            'users_portrait_width',
-            'users_portrait_height',
-            'users_local_management_enabled',
-            'users_login_name_attr',
-            'users_exposed_attributes',
-            'users_form_attrmap',
-            'users_listing_columns',
-            'users_listing_default_column'
-        ])
-        self.assertEqual(form['groups_settings'].keys(), [
-            'groups_heading',
-            'groups_form_attrmap',
-            'groups_listing_columns',
-            'groups_listing_default_column'
-        ])
-        self.assertEqual(form['roles_settings'].keys(), [
-            'roles_heading',
-            'roles_principal_roles_enabled'
-        ])
+        self.assertEqual(
+            form.keys(),
+            [
+                'users_settings',
+                'groups_settings',
+                'roles_settings',
+                'save',
+                'came_from',
+            ],
+        )
+        self.assertEqual(
+            form['users_settings'].keys(),
+            [
+                'users_heading',
+                'users_account_expiration',
+                'user_id_autoincrement',
+                'user_id_autoincrement_prefix',
+                'user_id_autoincrement_start',
+                'users_portrait',
+                'users_portrait_attr',
+                'users_portrait_accept',
+                'users_portrait_width',
+                'users_portrait_height',
+                'users_local_management_enabled',
+                'users_login_name_attr',
+                'users_exposed_attributes',
+                'users_form_attrmap',
+                'users_listing_columns',
+                'users_listing_default_column',
+            ],
+        )
+        self.assertEqual(
+            form['groups_settings'].keys(),
+            [
+                'groups_heading',
+                'groups_form_attrmap',
+                'groups_listing_columns',
+                'groups_listing_default_column',
+            ],
+        )
+        self.assertEqual(
+            form['roles_settings'].keys(),
+            ['roles_heading', 'roles_principal_roles_enabled'],
+        )
 
     @testing.principals(
         users={
             'editor': {},
             'manager': {},
         },
-        roles={
-            'editor': ['editor'],
-            'manager': ['manager']
-        })
+        roles={'editor': ['editor'], 'manager': ['manager']},
+    )
     def test_general_settings_tiles(self):
         root = get_root()
         general_settings = root['settings']['ugm_general']
@@ -83,21 +87,13 @@ class BrowserSettingsTests:
 
         # Unauthenticated content tile raises error
         self.expectError(
-            HTTPForbidden,
-            render_tile,
-            general_settings,
-            request,
-            'content'
+            HTTPForbidden, render_tile, general_settings, request, 'content'
         )
 
         # Form tile raise if not manager
         with self.layer.authenticated('editor'):
             self.expectError(
-                HTTPForbidden,
-                render_tile,
-                general_settings,
-                request,
-                'editform'
+                HTTPForbidden, render_tile, general_settings, request, 'editform'
             )
 
         # Authenticate and render tile
@@ -111,32 +107,20 @@ class BrowserSettingsTests:
             'editor': {},
             'manager': {},
         },
-        roles={
-            'editor': ['editor'],
-            'manager': ['manager']
-        })
+        roles={'editor': ['editor'], 'manager': ['manager']},
+    )
     def test_localmanager_settings_tiles(self):
         root = get_root()
         lm_settings = root['settings']['ugm_localmanager']
         request = self.layer.new_request()
 
         # Unauthenticated content tile raises error
-        self.expectError(
-            HTTPForbidden,
-            render_tile,
-            lm_settings,
-            request,
-            'content'
-        )
+        self.expectError(HTTPForbidden, render_tile, lm_settings, request, 'content')
 
         # Form tile raise if not manager
         with self.layer.authenticated('editor'):
             self.expectError(
-                HTTPForbidden,
-                render_tile,
-                lm_settings,
-                request,
-                'editform'
+                HTTPForbidden, render_tile, lm_settings, request, 'editform'
             )
 
         # Disabled: the card says so instead of showing the form
@@ -155,7 +139,8 @@ class BrowserSettingsTests:
         self.assertTrue(res.find(expected) > -1)
         # The heading is the header of the settings card, the form its body
         self.assertTrue(
-            res.find('<h5 class="card-header">') < res.find('class="card-body"')
+            res.find('<h5 class="card-header">')
+            < res.find('class="card-body"')
             < res.find(expected)
         )
         self.assertFalse(res.find('<h1') > -1)

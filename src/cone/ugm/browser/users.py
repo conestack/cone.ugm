@@ -45,7 +45,8 @@ class ViewUsersAction(LinkAction):
     name='leftcolumn',
     path='templates/principals_left_column.pt',
     interface=Users,
-    permission='view')
+    permission='view',
+)
 class UsersLeftColumn(Tile):
     add_label = _('add_user', default='Add User')
     title = _('users', default='Users')
@@ -55,7 +56,7 @@ class UsersLeftColumn(Tile):
         return make_url(
             self.request,
             node=self.model.root['users'],
-            query=make_query(factory='user')
+            query=make_query(factory='user'),
         )
 
     @property
@@ -67,7 +68,8 @@ class UsersLeftColumn(Tile):
     name='rightcolumn',
     path='templates/principals_right_column.pt',
     interface=Users,
-    permission='view')
+    permission='view',
+)
 class UsersRightColumn(Column):
     no_principal = _('no_user_selected', default='No User selected.')
     header_title = _('user_data', default='User Data')
@@ -81,11 +83,13 @@ class UsersRightColumn(Column):
         self.request.environ['cone.ugm.column'] = 'right'
         return self._render(self.model[self.principal_id], 'editform')
 
+
 @tile(
     name='columnlisting',
     path='templates/column_listing.pt',
     interface=Users,
-    permission='view')
+    permission='view',
+)
 class UsersColumnListing(PrincipalsListing):
     slot = 'leftlisting'
     list_columns = PrincipalsListing.user_list_columns

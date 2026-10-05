@@ -10,12 +10,12 @@ from node.tests import NodeTestCase
 
 
 class ModelUsersTests:
-
     @testing.principals(
         users={
             'user_1': {},
             'user_2': {},
-        })
+        }
+    )
     def test_users(self):
         # Users container
         root = get_root()

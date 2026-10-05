@@ -15,7 +15,6 @@ localmanager_config = os.path.join(base_path, 'localmanager.xml')
 
 
 class principals:
-
     def __init__(self, users={}, groups={}, membership={}, roles={}):
         self.users = users
         self.groups = groups
@@ -89,6 +88,7 @@ class principals:
                     self.remove_principals()
                 except Exception as e:
                     raise e
+
         return wrapper
 
 
@@ -98,20 +98,21 @@ def _invalidate_settings():
 
 
 def invalidate_settings(fn):
-    """Decorator for tests working on settings nodes.
-    """
+    """Decorator for tests working on settings nodes."""
+
     def wrapper(*a, **kw):
         _invalidate_settings()
         try:
             fn(*a, **kw)
         finally:
             _invalidate_settings()
+
     return wrapper
 
 
 def custom_config_path(fn):
-    """Decorator for tests writing to config files.
-    """
+    """Decorator for tests writing to config files."""
+
     def wrapper(*a, **kw):
         ugm_settings = ugm_cfg.ugm_settings
         _invalidate_settings()
@@ -120,12 +121,13 @@ def custom_config_path(fn):
         finally:
             ugm_cfg.ugm_settings = ugm_settings
             _invalidate_settings()
+
     return wrapper
 
 
 def temp_directory(fn):
-    """Decorator for tests needing a temporary directory.
-    """
+    """Decorator for tests needing a temporary directory."""
+
     def wrapper(*a, **kw):
         tempdir = tempfile.mkdtemp()
         kw['tempdir'] = tempdir
@@ -133,27 +135,25 @@ def temp_directory(fn):
             fn(*a, **kw)
         finally:
             shutil.rmtree(tempdir)
+
     return wrapper
 
 
 class UGMLayer(Security):
-
     def make_app(self, **kw):
         ugm_users_file = os.path.join(self.ugm_dir, 'users')
         ugm_groups_file = os.path.join(self.ugm_dir, 'groups')
         ugm_roles_file = os.path.join(self.ugm_dir, 'roles')
         ugm_datadir = os.path.join(self.ugm_dir, 'data')
         settings = {
-            'cone.plugins': '\n'.join([
-                'cone.ugm'
-            ]),
+            'cone.plugins': '\n'.join(['cone.ugm']),
             'ugm.backend': 'file',
             'ugm.config': ugm_config,
             'ugm.localmanager_config': localmanager_config,
             'ugm.users_file': ugm_users_file,
             'ugm.groups_file': ugm_groups_file,
             'ugm.roles_file': ugm_roles_file,
-            'ugm.datadir': ugm_datadir
+            'ugm.datadir': ugm_datadir,
         }
         settings.update(**kw)
         super(UGMLayer, self).make_app(**settings)

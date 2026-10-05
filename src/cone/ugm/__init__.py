@@ -25,19 +25,31 @@ logger = logging.getLogger('cone.ugm')
 
 # security
 management_permissions = [
-    'add', 'edit', 'delete',
+    'add',
+    'edit',
+    'delete',
 ]
 user_management_permissions = [
-    'add_user', 'edit_user', 'delete_user', 'manage_expiration',
+    'add_user',
+    'edit_user',
+    'delete_user',
+    'manage_expiration',
 ]
 group_management_permissions = [
-    'add_group', 'edit_group', 'delete_group',
+    'add_group',
+    'edit_group',
+    'delete_group',
 ]
-admin_permissions = [
-    'view', 'manage_membership', 'view_portrait',
-] + management_permissions \
-  + user_management_permissions \
-  + group_management_permissions
+admin_permissions = (
+    [
+        'view',
+        'manage_membership',
+        'view_portrait',
+    ]
+    + management_permissions
+    + user_management_permissions
+    + group_management_permissions
+)
 ugm_default_acl = [
     (Allow, 'role:editor', ['view', 'manage_membership']),
     (Allow, 'role:admin', admin_permissions),
@@ -68,7 +80,6 @@ def register_entry(key, factory):
 
 @layout_config(Group, Groups, User, Users)
 class UGMLayoutConfig(LayoutConfig):
-
     def __init__(self, model=None, request=None):
         super(UGMLayoutConfig, self).__init__(model=model, request=request)
         self.mainmenu = True

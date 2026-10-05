@@ -9,11 +9,9 @@ import unittest
 
 
 class LayoutTests:
-
     def test_layout(self):
         config = layout_config.lookup(
-            model=Group(None, None, None),
-            request=DummyRequest()
+            model=Group(None, None, None), request=DummyRequest()
         )
         self.assertIsInstance(config, UGMLayoutConfig)
 
@@ -21,8 +19,7 @@ class LayoutTests:
         self.assertIsInstance(config, UGMLayoutConfig)
 
         config = layout_config.lookup(
-            model=User(None, None, None),
-            request=DummyRequest()
+            model=User(None, None, None), request=DummyRequest()
         )
         self.assertIsInstance(config, UGMLayoutConfig)
 

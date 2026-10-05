@@ -10,11 +10,11 @@ _ = TranslationStringFactory('cone.ugm')
 
 
 class PrincipalRolesForm(Behavior):
-
     @default
     @property
     def roles_vocab(self):
         from cone.app.security import DEFAULT_ROLES
+
         return DEFAULT_ROLES
 
     @default
@@ -48,7 +48,8 @@ class PrincipalRolesForm(Behavior):
                 'format': 'single',
                 'listing_tag': 'ul',
                 'listing_label_position': 'after',
-            })
+            },
+        )
         save_widget = self.form['save']
         self.form.insertbefore(roles_widget, save_widget)
 

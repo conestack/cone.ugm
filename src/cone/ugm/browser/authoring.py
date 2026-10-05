@@ -4,8 +4,7 @@ from plumber import plumb
 
 
 class AddFormFiddle(Behavior):
-    """Form fiddle plumbing behavior for user and group add forms.
-    """
+    """Form fiddle plumbing behavior for user and group add forms."""
 
     @plumb
     def __call__(_next, self, model, request):
@@ -14,8 +13,7 @@ class AddFormFiddle(Behavior):
 
 
 class EditFormFiddle(Behavior):
-    """Form fiddle plumbing behavior for user and group edit forms.
-    """
+    """Form fiddle plumbing behavior for user and group edit forms."""
 
     @plumb
     def __call__(_next, self, model, request):

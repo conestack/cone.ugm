@@ -39,7 +39,7 @@ class AutoIncrementForm(Behavior):
         matching = list()
         for principal_id in principlal_ids:
             if prefix:
-                principal_id = principal_id[len(prefix):]
+                principal_id = principal_id[len(prefix) :]
             try:
                 principal_id = int(principal_id)
             except ValueError:
@@ -55,8 +55,7 @@ class AutoIncrementForm(Behavior):
 
     @plumb
     def prepare(_next, self):
-        """Hook after prepare and set 'id' disabled.
-        """
+        """Hook after prepare and set 'id' disabled."""
         _next(self)
         if not self.autoincrement_support:
             return

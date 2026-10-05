@@ -30,10 +30,12 @@ class GeneralSettingsForm(Form):
         if extracted is UNSET:
             return extracted
         if data.root['users_portrait'].extracted and not extracted:
-            raise ExtractionError(_(
-                'required_if_users_portrait',
-                default='Value is required if portrit support is enabled'
-            ))
+            raise ExtractionError(
+                _(
+                    'required_if_users_portrait',
+                    default='Value is required if portrit support is enabled',
+                )
+            )
         return extracted
 
     def save(self, widget, data):
@@ -58,7 +60,7 @@ class GeneralSettingsForm(Form):
             'groups_form_attrmap',
             'groups_listing_columns',
             'groups_listing_default_column',
-            'roles_principal_roles_enabled'
+            'roles_principal_roles_enabled',
         ]:
             val = data.fetch('ugm_settings.%s' % attr_name).extracted
             setattr(model.attrs, attr_name, val)
@@ -69,7 +71,8 @@ class GeneralSettingsForm(Form):
 
 @settings_form(
     interface=LocalManagerSettings,
-    path='cone.ugm.browser:templates/localmanager_settings.pt')
+    path='cone.ugm.browser:templates/localmanager_settings.pt',
+)
 @plumbing(SettingsForm, YAMLForm)
 class LocalManagerSettingsForm(Form):
     action_resource = 'edit'
@@ -83,13 +86,13 @@ class LocalManagerSettingsForm(Form):
     def rules_value(self):
         """Return value format:
 
-            return [{
-                'source': 'aaa',
-                'targets': [{
-                    'gid': 'bbb',
-                    'default': False,
-                }]
+        return [{
+            'source': 'aaa',
+            'targets': [{
+                'gid': 'bbb',
+                'default': False,
             }]
+        }]
         """
         rules = list()
         items = self.model.attrs.items()
@@ -100,16 +103,12 @@ class LocalManagerSettingsForm(Form):
             rule['targets'] = list()
             targets = sorted(defs['target'])
             for gid in targets:
-                rule['targets'].append({
-                    'gid': gid,
-                    'default': gid in defs['default']
-                })
+                rule['targets'].append({'gid': gid, 'default': gid in defs['default']})
             rules.append(rule)
         return rules
 
     def duplicate_rule(self, widget, data):
-        """Check for duplicate rules.
-        """
+        """Check for duplicate rules."""
         source = data.extracted['source']
         if not source:
             return data.extracted
@@ -119,27 +118,29 @@ class LocalManagerSettingsForm(Form):
                 continue
             other = val.extracted['source']
             if other in exists:
-                raise ExtractionError(_(
-                    'localmanager_duplicate_rule_error',
-                    default='Duplicate access rule'
-                ))
+                raise ExtractionError(
+                    _(
+                        'localmanager_duplicate_rule_error',
+                        default='Duplicate access rule',
+                    )
+                )
             exists.append(other)
         return data.extracted
 
     def target_not_source(self, widget, data):
-        """Check whether source and target are same.
-        """
+        """Check whether source and target are same."""
         source = data.parent.parent.parent['source'].extracted
         if source == data.extracted:
-            raise ExtractionError(_(
-                'localmanager_target_is_source_error',
-                default='Target GID equates source GID'
-            ))
+            raise ExtractionError(
+                _(
+                    'localmanager_target_is_source_error',
+                    default='Target GID equates source GID',
+                )
+            )
         return data.extracted
 
     def save(self, widget, data):
-        """save rules.
-        """
+        """save rules."""
         attrs = self.model.attrs
         recent = attrs.keys()
         extracted = data.fetch('localmanager_settings.rules').extracted
@@ -167,7 +168,8 @@ class LocalManagerSettingsForm(Form):
     name='group_id_vocab',
     accept='application/json',
     renderer='json',
-    permission='manage')
+    permission='manage',
+)
 def group_id_vocab(model, request):
     term = request.params['term']
     if len(term) < 2:

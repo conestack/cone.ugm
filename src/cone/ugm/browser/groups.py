@@ -45,7 +45,8 @@ class ViewGroupsAction(LinkAction):
     name='leftcolumn',
     path='templates/principals_left_column.pt',
     interface=Groups,
-    permission='view')
+    permission='view',
+)
 class GroupsLeftColumn(Tile):
     add_label = _('add_group', default='Add Group')
     title = _('groups', default='Groups')
@@ -55,7 +56,7 @@ class GroupsLeftColumn(Tile):
         return make_url(
             self.request,
             node=self.model.root['groups'],
-            query=make_query(factory='group')
+            query=make_query(factory='group'),
         )
 
     @property
@@ -67,7 +68,8 @@ class GroupsLeftColumn(Tile):
     name='rightcolumn',
     path='templates/principals_right_column.pt',
     interface=Groups,
-    permission='view')
+    permission='view',
+)
 class GroupsRightColumn(Column):
     no_principal = _('no_group_selected', default='No Group selected.')
     header_title = _('group_data', default='Group Data')
@@ -81,11 +83,13 @@ class GroupsRightColumn(Column):
         self.request.environ['cone.ugm.column'] = 'right'
         return self._render(self.model[self.principal_id], 'editform')
 
+
 @tile(
     name='columnlisting',
     path='templates/column_listing.pt',
     interface=Groups,
-    permission='view')
+    permission='view',
+)
 class GroupsColumnListing(PrincipalsListing):
     slot = 'leftlisting'
     list_columns = PrincipalsListing.group_list_columns

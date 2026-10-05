@@ -22,19 +22,12 @@ _ = TranslationStringFactory('cone.ugm')
 @node_info(
     'groups',
     title=_('groups_node', default='Groups'),
-    description=_(
-        'groups_node_description',
-        default='Container for Groups'
-    ),
+    description=_('groups_node_description', default='Container for Groups'),
     icon='bi bi-people',
-    addables=['group'])
-@plumbing(
-    NodeInit,
-    LocalManagerGroupsACL,
-    AppNode,
-    MappingNode)
+    addables=['group'],
+)
+@plumbing(NodeInit, LocalManagerGroupsACL, AppNode, MappingNode)
 class Groups:
-
     @instance_property
     def properties(self):
         props = Properties()
@@ -47,8 +40,7 @@ class Groups:
         metadata = Metadata()
         metadata.title = _('groups_node', default='Groups')
         metadata.description = _(
-            'groups_node_description',
-            default='Container for Groups'
+            'groups_node_description', default='Container for Groups'
         )
         return metadata
 

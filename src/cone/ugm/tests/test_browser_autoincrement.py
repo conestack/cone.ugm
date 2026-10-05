@@ -23,7 +23,6 @@ def user_request(layer):
 
 
 class autoincrement_principals(testing.principals):
-
     def __call__(self, fn):
         w = super(autoincrement_principals, self).__call__(fn)
 
@@ -35,19 +34,12 @@ class autoincrement_principals(testing.principals):
                 settings.attrs.user_id_autoincrement = 'False'
                 settings.attrs.user_id_autoincrement_prefix = ''
                 settings()
+
         return wrapper
 
 
 class BrowserAutoincrementTests:
-
-    @autoincrement_principals(
-        users={
-            'manager': {}
-        },
-        roles={
-            'manager': ['manager']
-        }
-    )
+    @autoincrement_principals(users={'manager': {}}, roles={'manager': ['manager']})
     def test_autoincrement(self):
         root = get_root()
         users = root['users']
@@ -60,10 +52,13 @@ class BrowserAutoincrementTests:
         request = self.layer.new_request()
         with self.layer.authenticated('manager'):
             res = render_tile(vessel, request, 'addform')
-        self.checkOutput("""
+        self.checkOutput(
+            """
         ...id="input-userform-id" name="userform.id" required="required"
         type="text" value="" />...
-        """, res)
+        """,
+            res,
+        )
 
         settings.attrs.user_id_autoincrement = 'True'
         settings()
@@ -71,10 +66,13 @@ class BrowserAutoincrementTests:
         vessel = user_vessel(users)
         with self.layer.authenticated('manager'):
             res = render_tile(vessel, request, 'addform')
-        self.checkOutput("""
+        self.checkOutput(
+            """
         ...disabled="disabled" id="input-userform-id" name="userform.id"
         type="text" value="auto_incremented" />...
-        """, res)
+        """,
+            res,
+        )
 
         request = user_request(self.layer)
         vessel = user_vessel(users)
@@ -94,17 +92,15 @@ class BrowserAutoincrementTests:
         vessel = user_vessel(users)
         with self.layer.authenticated('manager'):
             res = render_tile(vessel, request, 'addform')
-        self.assertEqual(sorted(users.keys()), [
-            '100', '101', 'manager', 'uid100'
-        ])
+        self.assertEqual(sorted(users.keys()), ['100', '101', 'manager', 'uid100'])
 
         request = user_request(self.layer)
         vessel = user_vessel(users)
         with self.layer.authenticated('manager'):
             res = render_tile(vessel, request, 'addform')
-        self.assertEqual(sorted(users.keys()), [
-            '100', '101', 'manager', 'uid100', 'uid101'
-        ])
+        self.assertEqual(
+            sorted(users.keys()), ['100', '101', 'manager', 'uid100', 'uid101']
+        )
 
 
 class TestBrowserAutoincrement(TileTestCase, BrowserAutoincrementTests):

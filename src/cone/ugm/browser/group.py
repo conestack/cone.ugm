@@ -33,7 +33,8 @@ _ = TranslationStringFactory('cone.ugm')
     name='leftcolumn',
     path='templates/principal_left_column.pt',
     interface=Group,
-    permission='view')
+    permission='view',
+)
 class GroupLeftColumn(Tile):
     title = _('group_data', default='Group Data')
     to_principal = _('groups', default='Groups')
@@ -48,7 +49,8 @@ class GroupLeftColumn(Tile):
     name='rightcolumn',
     path='templates/principal_right_column.pt',
     interface=Group,
-    permission='view')
+    permission='view',
+)
 class GroupRightColumn(Tile):
     title = _('group_users', default='Group Users')
 
@@ -78,29 +80,19 @@ class UsersListing(ColumnListing):
         attrlist = self.user_attrs
         sort_attr = self.user_default_sort_column
         filter_term = self.unquoted_param_value('filter')
-        can_change = self.request.has_permission(
-            'manage_membership',
-            self.model.parent
-        )
+        can_change = self.request.has_permission('manage_membership', self.model.parent)
         ret = list()
         for user in users:
             attrs = user.attrs
             # reduce by search term
             if filter_term:
-                s_attrs = [
-                    attrs[attr] for attr in attrlist
-                    if attrs[attr] is not None
-                ]
+                s_attrs = [attrs[attr] for attr in attrlist if attrs[attr] is not None]
                 if not fnmatch.filter(s_attrs, filter_term):
                     continue
             uid = user.name
             item_target = make_url(self.request, path=user.path[1:])
             action_query = make_query(id=uid)
-            action_target = make_url(
-                self.request,
-                node=appgroup,
-                query=action_query
-            )
+            action_target = make_url(self.request, node=appgroup, query=action_query)
             if not self.members_only:
                 related = uid in member_ids
             actions = list()
@@ -108,40 +100,27 @@ class UsersListing(ColumnListing):
                 action_id = 'add_item'
                 action_enabled = not bool(related)
                 action_title = _(
-                    'add_user_to_selected_group',
-                    default='Add user to selected group'
+                    'add_user_to_selected_group', default='Add user to selected group'
                 )
                 add_item_action = self.create_action(
-                    action_id,
-                    action_enabled,
-                    action_title,
-                    action_target
+                    action_id, action_enabled, action_title, action_target
                 )
                 actions.append(add_item_action)
                 action_id = 'remove_item'
                 action_enabled = bool(related)
                 action_title = _(
                     'remove_user_from_selected_group',
-                    default='Remove user from selected group'
+                    default='Remove user from selected group',
                 )
                 remove_item_action = self.create_action(
-                    action_id,
-                    action_enabled,
-                    action_title,
-                    action_target
+                    action_id, action_enabled, action_title, action_target
                 )
                 actions.append(remove_item_action)
             vals = [self.extract_raw(attrs, attr) for attr in attrlist]
             sort = self.extract_raw(attrs, sort_attr)
             content = self.item_content(*vals)
             current = False
-            item = self.create_item(
-                sort,
-                item_target,
-                content,
-                current,
-                actions
-            )
+            item = self.create_item(sort, item_target, content, current, actions)
             ret.append(item)
         return ret
 
@@ -150,7 +129,8 @@ class UsersListing(ColumnListing):
     name='columnlisting',
     path='templates/column_listing.pt',
     interface=Group,
-    permission='view')
+    permission='view',
+)
 class UsersOfGroupColumnListing(UsersListing):
     css = 'users'
     slot = 'rightlisting'
@@ -165,7 +145,8 @@ class UsersOfGroupColumnListing(UsersListing):
     name='allcolumnlisting',
     path='templates/column_listing.pt',
     interface=Group,
-    permission='view')
+    permission='view',
+)
 class AllUsersColumnListing(UsersListing):
     css = 'users'
     slot = 'rightlisting'
@@ -187,16 +168,19 @@ class GroupForm(PrincipalForm):
 
     @property
     def reserved_attrs(self):
-        return odict([
-            ('id', _('group_id', default='Group ID'))
-        ])
+        return odict([('id', _('group_id', default='Group ID'))])
 
     @property
     def form_attrmap(self):
         return general_settings(self.model).attrs.groups_form_attrmap
 
 
-@tile(name='addform', interface=Group, permission="add_group", path='templates/principal_form.pt')
+@tile(
+    name='addform',
+    interface=Group,
+    permission='add_group',
+    path='templates/principal_form.pt',
+)
 @plumbing(ContentAddForm, PrincipalRolesForm, AddFormFiddle)
 class GroupAddForm(GroupForm, Form):
     show_heading = False
@@ -234,7 +218,13 @@ class GroupAddForm(GroupForm, Form):
         return HTTPFound(location=url)
 
 
-@tile(name='editform', interface=Group, permission="edit_group", strict=False, path='templates/principal_form.pt')
+@tile(
+    name='editform',
+    interface=Group,
+    permission='edit_group',
+    strict=False,
+    path='templates/principal_form.pt',
+)
 @plumbing(ContentEditForm, PrincipalRolesForm, EditFormFiddle)
 class GroupEditForm(GroupForm, Form):
     show_heading = False

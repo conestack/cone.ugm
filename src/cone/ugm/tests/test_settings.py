@@ -8,7 +8,6 @@ import os
 
 
 class SettingsTests:
-
     @testing.temp_directory
     def test_UGMSettings(self, tempdir):
         path = os.path.join(tempdir, 'settings.xml')
@@ -51,27 +50,30 @@ class SettingsTests:
         self.assertEqual(md.description, 'ugm_settings_node_description')
 
         attrs = settings.attrs
-        self.assertEqual(sorted(attrs.keys()), [
-            'groups_form_attrmap',
-            'groups_listing_columns',
-            'groups_listing_default_column',
-            'roles_principal_roles_enabled',
-            'user_id_autoincrement',
-            'user_id_autoincrement_prefix',
-            'user_id_autoincrement_start',
-            'users_account_expiration',
-            'users_exposed_attributes',
-            'users_form_attrmap',
-            'users_listing_columns',
-            'users_listing_default_column',
-            'users_local_management_enabled',
-            'users_login_name_attr',
-            'users_portrait',
-            'users_portrait_accept',
-            'users_portrait_attr',
-            'users_portrait_height',
-            'users_portrait_width',
-        ])
+        self.assertEqual(
+            sorted(attrs.keys()),
+            [
+                'groups_form_attrmap',
+                'groups_listing_columns',
+                'groups_listing_default_column',
+                'roles_principal_roles_enabled',
+                'user_id_autoincrement',
+                'user_id_autoincrement_prefix',
+                'user_id_autoincrement_start',
+                'users_account_expiration',
+                'users_exposed_attributes',
+                'users_form_attrmap',
+                'users_listing_columns',
+                'users_listing_default_column',
+                'users_local_management_enabled',
+                'users_login_name_attr',
+                'users_portrait',
+                'users_portrait_accept',
+                'users_portrait_attr',
+                'users_portrait_height',
+                'users_portrait_width',
+            ],
+        )
 
         self.assertTrue(attrs is settings.attrs)
         settings.invalidate()

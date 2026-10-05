@@ -10,12 +10,12 @@ from node.tests import NodeTestCase
 
 
 class ModelGroupsTests:
-
     @testing.principals(
         groups={
             'group_1': {},
             'group_2': {},
-        })
+        }
+    )
     def test_groups(self):
         # Groups container
         root = get_root()

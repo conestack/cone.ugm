@@ -9,11 +9,11 @@ import unittest
 
 
 class ModelGroupTests:
-
     @testing.principals(
         groups={
             'group_1': {},
-        })
+        }
+    )
     def test_group(self):
         # Group node
         root = get_root()
