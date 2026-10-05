@@ -236,6 +236,16 @@ class BrowserSettingsTests:
         # Re read after saving
         self.assertEqual(tile.model.attrs.user_id_autoincrement_prefix, 'uid-')
 
+    def _find_message(self, res, start, msgid, text):
+        """Position of a validation message after ``start``. It renders as
+        its translation, its default or its id, depending on whether a
+        translation is active - which the order of a test run decides, not
+        the form. Default and catalog differ in case."""
+        res = res.lower()
+        candidates = (res.find(msgid.lower(), start), res.find(text.lower(), start))
+        found = [pos for pos in candidates if pos > -1]
+        return min(found) if found else -1
+
     def _drop_lm_rules(self):
         # The rules are cached on the settings node (``Attributes``), read
         # from ``ugm_cfg.lm_settings`` on first access. Dropping them makes
@@ -340,7 +350,9 @@ class BrowserSettingsTests:
         array = res.find(f'id="array-{rule.replace(".", "-")}-targets"')
         array_tag = res[res.rfind('<div', 0, array) : array]
         self.assertNotIn('ms-md-3', array_tag)
-        message = res.find("No target GID's defined for source GID", array)
+        message = self._find_message(
+            res, array, 'localmanager_no_targets_for_source', 'No target GID'
+        )
         self.assertTrue(field < array < message)
 
     @testing.principals(users={'manager': {}}, roles={'manager': ['manager']})
@@ -380,7 +392,9 @@ class BrowserSettingsTests:
             gid = res.find(f'name="{rule}.targets.0.gid"', group)
             default = res.find(f'name="{rule}.targets.0.default"', group)
             closed = res.find('</div></div>', default)
-            message = res.find('No target GID defined', group)
+            message = self._find_message(
+                res, group, 'localmanager_target_empty', 'No target GID defined'
+            )
             self.assertTrue(-1 < group < gid < default < closed < message)
             # What passed is not marked green after the submit
             self.assertNotIn('is-valid', res)
