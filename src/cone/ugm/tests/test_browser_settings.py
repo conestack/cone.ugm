@@ -8,9 +8,11 @@ from cone.ugm.browser.settings import LocalManagerSettingsForm
 from cone.ugm.settings import ugm_cfg
 from node.utils import UNSET
 from pyramid.httpexceptions import HTTPForbidden
+from pyramid.view import render_view_to_response
 from types import SimpleNamespace
 from yafowil.base import ExtractionError
 import os
+import re
 import shutil
 
 
@@ -250,7 +252,9 @@ class BrowserSettingsTests:
         tile = self._lm_form()
 
         def rule(name, source):
-            return SimpleNamespace(name=name, extracted={'source': source})
+            # The source autocomplete extracts ``{'value': ..., 'label': ...}``
+            extracted = {'source': {'value': source, 'label': source.upper()}}
+            return SimpleNamespace(name=name, extracted=extracted)
 
         def data(source, *others):
             current = rule('0', source)
@@ -260,10 +264,10 @@ class BrowserSettingsTests:
 
         # No source yet: nothing to compare
         current = data('', rule('1', ''))
-        self.assertEqual(tile.duplicate_rule(None, current), {'source': ''})
+        self.assertIs(tile.duplicate_rule(None, current), current.extracted)
         # Distinct sources
         current = data('a', rule('1', 'b'))
-        self.assertEqual(tile.duplicate_rule(None, current), {'source': 'a'})
+        self.assertIs(tile.duplicate_rule(None, current), current.extracted)
         # A source twice
         current = data('a', rule('1', 'b'), rule('2', 'a'))
         err = self.expectError(ExtractionError, tile.duplicate_rule, None, current)
@@ -274,16 +278,63 @@ class BrowserSettingsTests:
 
         def data(source, target):
             # gid -> target compound -> targets array -> rule compound
-            rule = {'source': SimpleNamespace(extracted=source)}
+            rule = {'source': SimpleNamespace(extracted={'value': source})}
             targets = SimpleNamespace(parent=rule)
             target_compound = SimpleNamespace(parent=targets)
-            return SimpleNamespace(extracted=target, parent=target_compound)
+            return SimpleNamespace(extracted={'value': target}, parent=target_compound)
 
-        self.assertEqual(tile.target_not_source(None, data('a', 'b')), 'b')
+        self.assertEqual(tile.target_not_source(None, data('a', 'b')), {'value': 'b'})
         err = self.expectError(
             ExtractionError, tile.target_not_source, None, data('a', 'a')
         )
         self.assertEqual(str(err.msg), 'localmanager_target_is_source_error')
+
+    @testing.principals(users={'manager': {}}, roles={'manager': ['manager']})
+    @testing.invalidate_settings
+    @testing.temp_directory
+    def test_LocalManagerSettingsForm_submit(self, tempdir):
+        # Through the real form: the autocomplete extracts ``{'value': ...}``,
+        # not the bare group id - ``save`` raised ``unhashable type: 'dict'``
+        config_file = os.path.join(tempdir, 'localmanager.xml')
+        shutil.copy(testing.localmanager_config, config_file)
+        lm_settings = ugm_cfg.lm_settings
+        ugm_cfg.lm_settings = config_file
+        self._drop_lm_rules()
+        general_settings = get_root()['settings']['ugm_general']
+        general_settings.attrs.users_local_management_enabled = 'True'
+        try:
+            request = self.layer.new_request()
+            # Keyed autocompletes: the hidden field carries the group id, the
+            # visible ``.label`` field its title
+            rule = 'localmanager_settings.rules.0'
+            params = {
+                f'{rule}.source': 'admin_group_1',
+                f'{rule}.source.label': 'Admin Group 1',
+                f'{rule}.targets.0.gid': 'managed_group_3',
+                f'{rule}.targets.0.gid.label': 'Managed Group 3',
+                f'{rule}.targets.0.default': 'checked',
+                f'{rule}.targets.0.default-exists': '1',
+                f'{rule}.targets.1.gid': 'managed_group_4',
+                f'{rule}.targets.1.gid.label': 'Managed Group 4',
+                f'{rule}.targets.1.default-exists': '1',
+                'action.localmanager_settings.save': '1',
+            }
+            request.params.update(params)
+            with self.layer.authenticated('manager'):
+                render_tile(
+                    get_root()['settings']['ugm_localmanager'], request, 'editform'
+                )
+            attrs = get_root()['settings']['ugm_localmanager'].attrs
+            self.assertEqual(sorted(attrs.keys()), ['admin_group_1'])
+            self.assertEqual(
+                sorted(attrs['admin_group_1']['target']),
+                ['managed_group_3', 'managed_group_4'],
+            )
+            self.assertEqual(attrs['admin_group_1']['default'], ['managed_group_3'])
+        finally:
+            ugm_cfg.lm_settings = lm_settings
+            general_settings.invalidate()
+            self._drop_lm_rules()
 
     @testing.invalidate_settings
     @testing.temp_directory
@@ -362,7 +413,11 @@ class BrowserSettingsTests:
 
     @testing.principals(
         users={'manager': {}},
-        groups={'group_1': {}, 'group_2': {}, 'other': {}},
+        groups={
+            'group_1': {'groupname': 'Group One'},
+            'group_2': {'groupname': 'Accounting'},
+            'other': {},
+        },
         roles={'manager': ['manager']},
     )
     def test_group_id_vocab(self):
@@ -371,8 +426,85 @@ class BrowserSettingsTests:
         # Too short a term searches nothing
         request.params['term'] = 'g'
         self.assertEqual(group_id_vocab(model, request), [])
+        # Key and title pairs for the keyed autocomplete, by title. A group
+        # without a title shows its id.
         request.params['term'] = 'gr'
-        self.assertEqual(sorted(group_id_vocab(model, request)), ['group_1', 'group_2'])
+        self.assertEqual(
+            group_id_vocab(model, request),
+            [
+                {'id': 'group_2', 'title': 'Accounting'},
+                {'id': 'group_1', 'title': 'Group One'},
+            ],
+        )
+        # Found by title as well, case insensitive and anywhere in it
+        request.params['term'] = 'ACC'
+        self.assertEqual(
+            group_id_vocab(model, request), [{'id': 'group_2', 'title': 'Accounting'}]
+        )
+        request.params['term'] = 'ounti'
+        self.assertEqual(
+            group_id_vocab(model, request), [{'id': 'group_2', 'title': 'Accounting'}]
+        )
+        request.params['term'] = 'oth'
+        self.assertEqual(
+            group_id_vocab(model, request), [{'id': 'other', 'title': 'other'}]
+        )
+
+    @testing.principals(
+        users={'manager': {}},
+        groups={'group_1': {}, 'group_2': {}},
+        roles={'manager': ['manager']},
+    )
+    def test_group_id_vocab_on_local_manager_settings(self):
+        # The autocomplete asks the local manager settings node, where the
+        # manager holds ``manage``. A relative ``group_id_vocab`` resolved
+        # against ``/settings/ugm_localmanager`` hit the settings container,
+        # which grants ``view`` only - a 403, and treibstoff redirected to the
+        # application root.
+        settings = get_root()['settings']
+
+        def call(model):
+            request = self.layer.new_request()
+            request.accept = 'application/json'
+            request.params['term'] = 'gr'
+            return render_view_to_response(model, request, name='group_id_vocab')
+
+        with self.layer.authenticated('manager'):
+            response = call(settings['ugm_localmanager'])
+            self.assertEqual(
+                sorted(each['id'] for each in response.json), ['group_1', 'group_2']
+            )
+            # Not registered anywhere else
+            self.assertIsNone(call(settings))
+
+    @testing.principals(
+        users={'manager': {}},
+        groups={'admin_group_1': {'groupname': 'Admin Group One'}},
+        roles={'manager': ['manager']},
+    )
+    def test_autocomplete_source(self):
+        # Source and target fields ask the vocabulary by absolute url
+        general_settings = get_root()['settings']['ugm_general']
+        general_settings.attrs.users_local_management_enabled = 'True'
+        try:
+            request = self.layer.new_request()
+            with self.layer.authenticated('manager'):
+                res = render_tile(
+                    get_root()['settings']['ugm_localmanager'], request, 'editform'
+                )
+        finally:
+            general_settings.invalidate()
+        # Every source and target field, including the templates of new rows
+        sources = re.findall(r"data-source='([^']*)'", res)
+        self.assertTrue(sources)
+        self.assertEqual(
+            set(sources),
+            {'http://example.com/settings/ugm_localmanager/group_id_vocab'},
+        )
+        # Keyed: the id goes in the hidden field, the title is what one sees
+        self.assertEqual(set(re.findall(r"data-keys='([^']*)'", res)), {'true'})
+        self.assertIn('name="localmanager_settings.rules.0.source.label"', res)
+        self.assertIn('value="Admin Group One"', res)
 
 
 class TestBrowserSettings(TileTestCase, BrowserSettingsTests):

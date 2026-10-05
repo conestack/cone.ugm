@@ -4,6 +4,30 @@ Changes
 2.0.0 (unreleased)
 ------------------
 
+- Fix the group autocomplete of the local manager settings redirecting to the
+  application root. ``lm_autocomplete_gid`` asked the relative url
+  ``group_id_vocab``, which resolved against ``/settings/ugm_localmanager`` to
+  the settings container - it grants ``view`` only, the 403 made treibstoff
+  redirect. The form passes the absolute url of the vocabulary as remote
+  source of the autocomplete now (``group_id_vocab_url``), and the view is
+  bound to ``LocalManagerSettings``. The JavaScript function
+  ``ugm.lm_autocomplete_gid`` is removed.
+  [rnix]
+
+- Fix saving the local manager settings with ``TypeError: unhashable type:
+  'dict'``. The autocompletes extract ``{'value': ...}``, while ``save`` and
+  the duplicate and target-is-source validators took the bare group id - the
+  values are unwrapped now. The duplicate check also never saw an empty
+  source, a dict being truthy.
+  [rnix]
+
+- Pick the groups of the local manager rules by title. The autocompletes are
+  keyed: the group id is what is stored, the title
+  (``ugm_backend.group_display_attr``) what is shown and searched, case
+  insensitive and anywhere in id or title. Rules from the configuration show
+  their group titles through ``LocalManagerSettingsForm.group_title``.
+  [rnix]
+
 - Render the settings panels as cards with their heading as
   ``h5.card-header``, like the other views and the cone.app forms. The local
   manager settings had a bare ``h1``; the user, group and roles sections of

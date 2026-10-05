@@ -24,7 +24,9 @@ widgets:
             props:
                 label: i18n:localmanager_rule_source
                 required: i18n:localmanager_source_empty
-                source: javascript:ugm.lm_autocomplete_gid
+                source: expr:context.group_id_vocab_url
+                keys: True
+                lookup: context.group_title
                 minLength: 1
                 delay: 300
                 field.class_add: col-12 col-md-6 p-0
@@ -45,7 +47,9 @@ widgets:
                     factory: error:*notsource:autocomplete
                     props:
                         required: i18n:localmanager_target_empty
-                        source: javascript:ugm.lm_autocomplete_gid
+                        source: expr:context.group_id_vocab_url
+                        keys: True
+                        lookup: context.group_title
                         minLength: 1
                         delay: 300
                     custom:
