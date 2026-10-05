@@ -11,10 +11,9 @@ div.columns {
         flex-basis: 500px;
     }
 
+    // The header height - with or without the add button - comes from
+    // cone.app's ``.card-header``, the same as every other section card.
     .card:not(.datepicker-picker) {
-        .card-header {
-            min-height: 55px; /* to provide static height without button */
-        }
         .card:not(.datepicker-picker) {
             border: none;
             background: none;

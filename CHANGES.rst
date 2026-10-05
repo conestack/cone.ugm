@@ -4,6 +4,12 @@ Changes
 2.0.0 (unreleased)
 ------------------
 
+- Drop the own ``min-height`` of the column card headers, the height comes
+  from cone.app's ``.card-header`` now. The add button of the left column and
+  the button to the members of the right one are small buttons, so both
+  headers stand at that height.
+  [rnix]
+
 - Fix the group autocomplete of the local manager settings on LDAP. The
   backend hands attributes over as lists, ``group_id_vocab`` and
   ``group_title`` took the title as string and failed with ``AttributeError:

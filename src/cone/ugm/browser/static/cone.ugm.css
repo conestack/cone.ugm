@@ -10,9 +10,6 @@ div.columns div.left_column, div.columns div.right_column {
   flex: 1;
   flex-basis: 500px;
 }
-div.columns .card:not(.datepicker-picker) .card-header {
-  min-height: 55px; /* to provide static height without button */
-}
 div.columns .card:not(.datepicker-picker) .card:not(.datepicker-picker) {
   border: none;
   background: none;

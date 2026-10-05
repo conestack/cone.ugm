@@ -33,6 +33,9 @@ class BrowserGroupsTests:
             res = render_tile(groups, request, 'leftcolumn')
         expected = '<div class="card column left_column">'
         self.assertTrue(res.find(expected) > -1)
+        # The add button small, so the header is as high as the one of the
+        # right column - the height of every section card header
+        self.assertIn('<button class="btn btn-sm btn-primary text-light"', res)
 
     @testing.principals(
         users={
