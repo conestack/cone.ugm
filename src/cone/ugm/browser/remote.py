@@ -8,7 +8,8 @@ from pyramid.view import view_config
     accept='application/json',
     renderer='json',
     context=Users,
-    permission='add_user')
+    permission='add_user',
+)
 def remote_add_user(model, request):
     """Add user via remote service.
 
@@ -48,14 +49,14 @@ def remote_add_user(model, request):
     if not uid:
         return {
             'success': False,
-            'message': u"No user ID given.",
+            'message': 'No user ID given.',
         }
 
     users = model.backend
     if uid in users:
         return {
             'success': False,
-            'message': u"User with given ID already exists.",
+            'message': 'User with given ID already exists.',
         }
 
     password = params.get('password')
@@ -70,7 +71,7 @@ def remote_add_user(model, request):
     for key, val in params.items():
         if not key.startswith('attr.'):
             continue
-        key = key[key.find('.') + 1:]
+        key = key[key.find('.') + 1 :]
         attrs[key] = val
 
     settings = general_settings(model)
@@ -88,20 +89,21 @@ def remote_add_user(model, request):
 
     try:
         user = users.create(uid, **checked_attrs)
-        message = u""
+        message = ''
 
         from cone.app.security import DEFAULT_ROLES
+
         available_roles = [role[0] for role in DEFAULT_ROLES]
         for role in add_roles:
             if role not in available_roles:
-                message += u"Role '%s' given but inexistent. " % role
+                message += "Role '%s' given but inexistent. " % role
                 continue
             user.add_role(role)
 
         groups = users.parent.groups
         for group in add_groups:
             if group not in groups:
-                message += u"Group '%s' given but inexistent. " % group
+                message += "Group '%s' given but inexistent. " % group
                 continue
             groups[group].add(uid)
 
@@ -110,7 +112,7 @@ def remote_add_user(model, request):
         if password is not None:
             users.passwd(uid, None, password)
 
-        message += u"Created user with ID '%s'." % uid
+        message += "Created user with ID '%s'." % uid
         return {
             'success': True,
             'message': message,
@@ -129,7 +131,8 @@ def remote_add_user(model, request):
     accept='application/json',
     renderer='json',
     context=Users,
-    permission='delete_user')
+    permission='delete_user',
+)
 def remote_delete_user(model, request):
     """Remove user via remote service.
 
@@ -152,21 +155,21 @@ def remote_delete_user(model, request):
     if not uid:
         return {
             'success': False,
-            'message': u"No user ID given.",
+            'message': 'No user ID given.',
         }
 
     users = model.backend
     if uid not in users:
         return {
             'success': False,
-            'message': u"User with given ID not exists.",
+            'message': 'User with given ID not exists.',
         }
 
     try:
         del users[uid]
         users.parent()
 
-        message = u"Deleted user with ID '%s'." % uid
+        message = "Deleted user with ID '%s'." % uid
         return {
             'success': True,
             'message': message,

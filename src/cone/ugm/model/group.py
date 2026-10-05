@@ -15,10 +15,10 @@ _ = TranslationStringFactory('cone.ugm')
 @node_info(
     'group',
     title=_('group_node', default='Group'),
-    description=_('group_node_description', default='Group'))
+    description=_('group_node_description', default='Group'),
+)
 @plumbing(LocalManagerGroupACL)
 class Group(AdapterNode):
-
     @instance_property
     def properties(self):
         props = Properties()

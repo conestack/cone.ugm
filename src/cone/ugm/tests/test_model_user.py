@@ -9,12 +9,12 @@ from pyramid.security import Allow
 import unittest
 
 
-class ModelUserTests(object):
-
+class ModelUserTests:
     @testing.principals(
         users={
             'user_1': {},
-        })
+        }
+    )
     def test_user(self):
         # User node
         root = get_root()
@@ -44,7 +44,7 @@ class ModelUserTests(object):
         with self.layer.authenticated('user_1'):
             self.assertEqual(
                 user.__acl__,
-                [(Allow, 'user_1', ['change_own_password'])] + ugm_user_acl
+                [(Allow, 'user_1', ['change_own_password'])] + ugm_user_acl,
             )
 
 

@@ -15,10 +15,7 @@ from yafowil.base import factory
 _ = TranslationStringFactory('cone.ugm')
 
 
-@view_config(
-    name='portrait_image',
-    context=User,
-    permission='view_portrait')
+@view_config(name='portrait_image', context=User, permission='view_portrait')
 def portrait_image(model, request):
     """XXX: needs polishing. Return configured default portrait if not set
     on user.
@@ -32,8 +29,7 @@ def portrait_image(model, request):
 
 
 class PortraitForm(Behavior):
-    """Plumbing behavior for setting user portrait image.
-    """
+    """Plumbing behavior for setting user portrait image."""
 
     @default
     @property
@@ -66,8 +62,7 @@ class PortraitForm(Behavior):
                 'file': BytesIO(image_data),
                 'mimetype': 'image/jpeg',
             }
-            image_url = make_url(request, node=model,
-                                 resource='portrait_image')
+            image_url = make_url(request, node=model, resource='portrait_image')
         else:
             image_value = UNSET
             resource = 'resources/ugm/images/default_portrait.jpg'
@@ -85,16 +80,18 @@ class PortraitForm(Behavior):
                 'crop': {
                     'size': (image_width, image_height),
                     'fitting': True,
-                }
+                },
             },
-            mode=mode)
+            mode=mode,
+        )
         save_widget = self.form['save']
         self.form.insertbefore(portrait_widget, save_widget)
 
     @plumb
     def save(_next, self, widget, data):
-        if not self.portrait_support or \
-                not self.request.has_permission('edit_user', self.model.parent):
+        if not self.portrait_support or not self.request.has_permission(
+            'edit_user', self.model.parent
+        ):
             _next(self, widget, data)
             return
         settings = general_settings(self.model)

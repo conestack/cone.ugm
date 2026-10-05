@@ -1,4 +1,4 @@
-class PrincipalManagementEvent(object):
+class PrincipalManagementEvent:
     """Principal management related base event."""
 
     def __init__(self, principal):

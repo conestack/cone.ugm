@@ -2,6 +2,7 @@ from cone.app.browser.form import Form
 from cone.app.browser.form import YAMLForm
 from cone.app.browser.settings import settings_form
 from cone.app.browser.settings import SettingsForm
+from cone.app.browser.utils import make_url
 from cone.app.ugm import ugm_backend
 from cone.ugm.settings import GeneralSettings
 from cone.ugm.settings import LocalManagerSettings
@@ -10,7 +11,7 @@ from plumber import plumbing
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
 from yafowil.base import ExtractionError
-
+from yafowil.widget.autocomplete.widget import unwrap_extracted
 
 _ = TranslationStringFactory('cone.ugm')
 
@@ -18,7 +19,7 @@ _ = TranslationStringFactory('cone.ugm')
 @settings_form(interface=GeneralSettings)
 @plumbing(SettingsForm, YAMLForm)
 class GeneralSettingsForm(Form):
-    action_resource = u'edit'
+    action_resource = 'edit'
     form_template = 'cone.ugm.browser:forms/general_settings.yaml'
 
     @property
@@ -30,10 +31,12 @@ class GeneralSettingsForm(Form):
         if extracted is UNSET:
             return extracted
         if data.root['users_portrait'].extracted and not extracted:
-            raise ExtractionError(_(
-                'required_if_users_portrait',
-                default='Value is required if portrit support is enabled'
-            ))
+            raise ExtractionError(
+                _(
+                    'required_if_users_portrait',
+                    default='Value is required if portrit support is enabled',
+                )
+            )
         return extracted
 
     def save(self, widget, data):
@@ -58,7 +61,7 @@ class GeneralSettingsForm(Form):
             'groups_form_attrmap',
             'groups_listing_columns',
             'groups_listing_default_column',
-            'roles_principal_roles_enabled'
+            'roles_principal_roles_enabled',
         ]:
             val = data.fetch('ugm_settings.%s' % attr_name).extracted
             setattr(model.attrs, attr_name, val)
@@ -69,10 +72,11 @@ class GeneralSettingsForm(Form):
 
 @settings_form(
     interface=LocalManagerSettings,
-    path='cone.ugm.browser:templates/localmanager_settings.pt')
+    path='cone.ugm.browser:templates/localmanager_settings.pt',
+)
 @plumbing(SettingsForm, YAMLForm)
 class LocalManagerSettingsForm(Form):
-    action_resource = u'edit'
+    action_resource = 'edit'
     form_template = 'cone.ugm.browser:forms/localmanager_settings.yaml'
 
     @property
@@ -80,16 +84,29 @@ class LocalManagerSettingsForm(Form):
         return _
 
     @property
+    def group_id_vocab_url(self):
+        """Source of the group id autocompletes, see ``group_id_vocab``."""
+        return make_url(self.request, node=self.model, resource='group_id_vocab')
+
+    def group_title(self, gid):
+        """Title a stored group id is shown with - the ``lookup`` of the
+        autocompletes, for rules rendered from the configuration."""
+        group = self.model.root['groups'].backend.get(gid)
+        if group is None:
+            return gid
+        return display_value(group.attrs.get(ugm_backend.group_display_attr)) or gid
+
+    @property
     def rules_value(self):
         """Return value format:
 
-            return [{
-                'source': 'aaa',
-                'targets': [{
-                    'gid': 'bbb',
-                    'default': False,
-                }]
+        return [{
+            'source': 'aaa',
+            'targets': [{
+                'gid': 'bbb',
+                'default': False,
             }]
+        }]
         """
         rules = list()
         items = self.model.attrs.items()
@@ -100,59 +117,77 @@ class LocalManagerSettingsForm(Form):
             rule['targets'] = list()
             targets = sorted(defs['target'])
             for gid in targets:
-                rule['targets'].append({
-                    'gid': gid,
-                    'default': gid in defs['default']
-                })
+                rule['targets'].append({'gid': gid, 'default': gid in defs['default']})
             rules.append(rule)
         return rules
 
     def duplicate_rule(self, widget, data):
         """Check for duplicate rules.
+
+        Source and target are autocompletes, which extract ``{'value': ...}``
+        rather than the group id - unwrapped here and in ``target_not_source``
+        and ``save``.
         """
-        source = data.extracted['source']
+        source = unwrap_extracted(data.extracted['source'])
         if not source:
             return data.extracted
         exists = [source]
         for val in data.parent.values():
             if val.name == data.name:
                 continue
-            other = val.extracted['source']
+            other = unwrap_extracted(val.extracted['source'])
             if other in exists:
-                raise ExtractionError(_(
-                    'localmanager_duplicate_rule_error',
-                    default='Duplicate access rule'
-                ))
+                raise ExtractionError(
+                    _(
+                        'localmanager_duplicate_rule_error',
+                        default='Duplicate access rule',
+                    )
+                )
             exists.append(other)
         return data.extracted
 
-    def target_not_source(self, widget, data):
-        """Check whether source and target are same.
+    def target_gid_required(self, widget, data):
+        """A target needs its group.
+
+        On the target entry rather than on the autocomplete: the entry is the
+        input group of group and default flag, and the message renders below
+        it - on the autocomplete it landed inside the group.
         """
-        source = data.parent.parent.parent['source'].extracted
-        if source == data.extracted:
-            raise ExtractionError(_(
-                'localmanager_target_is_source_error',
-                default='Target GID equates source GID'
-            ))
+        if not unwrap_extracted(data['gid'].extracted):
+            raise ExtractionError(
+                _('localmanager_target_empty', default='No Target GID defined')
+            )
+        return data.extracted
+
+    def target_not_source(self, widget, data):
+        """Check whether source and target are same - on the target entry, see
+        ``target_gid_required``."""
+        source = unwrap_extracted(data.parent.parent['source'].extracted)
+        if source == unwrap_extracted(data['gid'].extracted):
+            raise ExtractionError(
+                _(
+                    'localmanager_target_is_source_error',
+                    default='Target GID equates source GID',
+                )
+            )
         return data.extracted
 
     def save(self, widget, data):
-        """save rules.
-        """
+        """save rules."""
         attrs = self.model.attrs
         recent = attrs.keys()
         extracted = data.fetch('localmanager_settings.rules').extracted
         for entry in extracted:
-            source = entry['source']
+            source = unwrap_extracted(entry['source'])
             if source in recent:
                 recent.remove(source)
             targets = set()
             defaults = set()
             for target in entry['targets']:
-                targets.add(target['gid'])
+                gid = unwrap_extracted(target['gid'])
+                targets.add(gid)
                 if target['default']:
-                    defaults.add(target['gid'])
+                    defaults.add(gid)
             rule = {
                 'target': list(targets),
                 'default': list(defaults),
@@ -163,14 +198,45 @@ class LocalManagerSettingsForm(Form):
         self.model()
 
 
+def display_value(value):
+    """A principal attribute as text. LDAP hands attributes over as lists of
+    values, the file and SQL backends as plain strings; the first value is the
+    one shown, like in the principal listings."""
+    if isinstance(value, (list, tuple)):
+        return value[0] if value else None
+    return value
+
+
 @view_config(
     name='group_id_vocab',
+    context=LocalManagerSettings,
     accept='application/json',
     renderer='json',
-    permission='manage')
+    permission='manage',
+)
 def group_id_vocab(model, request):
+    """Groups for the keyed autocomplete of the local manager rules.
+
+    ``[{'id': ..., 'title': ...}]`` - the id is what the rules store, the
+    title (``ugm_backend.group_display_attr``) what one picks by; a group
+    without one shows its id. Matched by either, case insensitive and
+    anywhere in it, sorted by title. Filtered here rather than by the backend
+    search, whose matching differs per backend - the file backend compares
+    case sensitive, and "acc" would not find "Accounting".
+
+    On the local manager settings node, where the manager holds ``manage``;
+    the form passes its absolute url (``group_id_vocab_url``). Asked relative
+    to the browser url it hit the settings container, which grants ``view``
+    only.
+    """
     term = request.params['term']
     if len(term) < 2:
         return []
-    backend = model.root['groups'].backend
-    return backend.search(criteria={'id': '%s*' % term})
+    attr = ugm_backend.group_display_attr
+    term = term.lower()
+    groups = []
+    for gid, attrs in model.root['groups'].backend.search(attrlist=[attr]):
+        title = display_value(attrs.get(attr)) or gid
+        if term in gid.lower() or term in title.lower():
+            groups.append({'id': gid, 'title': title})
+    return sorted(groups, key=lambda group: group['title'].lower())

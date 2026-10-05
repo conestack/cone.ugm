@@ -233,19 +233,6 @@ var cone_ugm = (function (exports, $, ts, cone) {
         }
     }
 
-    function lm_autocomplete_gid(request, callback) {
-        ts.ajax.request({
-            success: function(data) {
-                callback(data);
-            },
-            url: 'group_id_vocab',
-            params: {
-                term: request.term
-            },
-            type: 'json'
-        });
-    }
-
     $(function() {
         ts.ajax.register(PrincipalListing.initialize, true);
     });
@@ -254,7 +241,6 @@ var cone_ugm = (function (exports, $, ts, cone) {
     exports.PrincipalActions = PrincipalActions;
     exports.PrincipalListing = PrincipalListing;
     exports.RightPrincipalListing = RightPrincipalListing;
-    exports.lm_autocomplete_gid = lm_autocomplete_gid;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 

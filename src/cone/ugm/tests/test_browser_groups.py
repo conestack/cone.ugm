@@ -5,8 +5,7 @@ from cone.ugm import testing
 from pyramid.httpexceptions import HTTPForbidden
 
 
-class BrowserGroupsTests(object):
-
+class BrowserGroupsTests:
     def test_content_tile(self):
         root = get_root()
         groups = root['groups']
@@ -21,71 +20,53 @@ class BrowserGroupsTests(object):
         users={
             'manager': {},
         },
-        roles={
-            'manager': ['manager']
-        })
+        roles={'manager': ['manager']},
+    )
     def test_leftcolumn_tile(self):
         root = get_root()
         groups = root['groups']
         request = self.layer.new_request()
 
-        self.expectError(
-            HTTPForbidden,
-            render_tile,
-            groups,
-            request,
-            'leftcolumn'
-        )
+        self.expectError(HTTPForbidden, render_tile, groups, request, 'leftcolumn')
 
         with self.layer.authenticated('manager'):
             res = render_tile(groups, request, 'leftcolumn')
-        expected = '<div class="column left_column col-md-6">'
+        expected = '<div class="card column left_column">'
         self.assertTrue(res.find(expected) > -1)
+        # The add button small, so the header is as high as the one of the
+        # right column - the height of every section card header
+        self.assertIn('<button class="btn btn-sm btn-primary text-light"', res)
 
     @testing.principals(
         users={
             'manager': {},
         },
-        roles={
-            'manager': ['manager']
-        })
+        roles={'manager': ['manager']},
+    )
     def test_rightcolumn_tile(self):
         root = get_root()
         groups = root['groups']
         request = self.layer.new_request()
 
-        self.expectError(
-            HTTPForbidden,
-            render_tile,
-            groups,
-            request,
-            'rightcolumn'
-        )
+        self.expectError(HTTPForbidden, render_tile, groups, request, 'rightcolumn')
 
         with self.layer.authenticated('manager'):
             res = render_tile(groups, request, 'rightcolumn')
-        expected = '<div class="column right_column col-md-6">'
+        expected = '<div class="card column right_column bg-primary-100">'
         self.assertTrue(res.find(expected) > -1)
 
     @testing.principals(
         users={
             'manager': {},
         },
-        roles={
-            'manager': ['manager']
-        })
+        roles={'manager': ['manager']},
+    )
     def test_columnlisting_tile(self):
         root = get_root()
         groups = root['groups']
         request = self.layer.new_request()
 
-        self.expectError(
-            HTTPForbidden,
-            render_tile,
-            groups,
-            request,
-            'columnlisting'
-        )
+        self.expectError(HTTPForbidden, render_tile, groups, request, 'columnlisting')
 
         with self.layer.authenticated('manager'):
             res = render_tile(groups, request, 'columnlisting')

@@ -1,3 +1,5 @@
+from cone.app.browser.actions import LinkAction
+from cone.app.browser.layout import personal_tools_action
 from cone.app.browser.utils import make_query
 from cone.app.browser.utils import make_url
 from cone.tile import Tile
@@ -13,20 +15,48 @@ logger = logging.getLogger('cone.ugm')
 _ = TranslationStringFactory('cone.ugm')
 
 
+@personal_tools_action(name='groups')
+class ViewGroupsAction(LinkAction):
+    text = _('groups_node', default='Groups')
+    icon = 'bi-people'
+    event = 'contextchanged:#layout'
+    path = 'href'
+    order = -2
+
+    @property
+    def display(self):
+        groups = self.model.root.get('groups')
+        if groups is None:
+            return False
+        if not self.request.has_permission('view', groups):
+            return False
+        if groups.local_manager_consider_for_user and groups.local_manager_gid is None:
+            return False
+        return True
+
+    @property
+    def target(self):
+        return make_url(self.request, node=self.model.root['groups'])
+
+    href = target
+
+
 @tile(
     name='leftcolumn',
     path='templates/principals_left_column.pt',
     interface=Groups,
-    permission='view')
+    permission='view',
+)
 class GroupsLeftColumn(Tile):
     add_label = _('add_group', default='Add Group')
+    title = _('groups', default='Groups')
 
     @property
     def add_target(self):
         return make_url(
             self.request,
             node=self.model.root['groups'],
-            query=make_query(factory=u'group')
+            query=make_query(factory='group'),
         )
 
     @property
@@ -38,8 +68,11 @@ class GroupsLeftColumn(Tile):
     name='rightcolumn',
     path='templates/principals_right_column.pt',
     interface=Groups,
-    permission='view')
+    permission='view',
+)
 class GroupsRightColumn(Column):
+    no_principal = _('no_group_selected', default='No Group selected.')
+    header_title = _('group_data', default='Group Data')
 
     @property
     def principal_id(self):
@@ -47,18 +80,16 @@ class GroupsRightColumn(Column):
 
     @property
     def principal_form(self):
+        self.request.environ['cone.ugm.column'] = 'right'
         return self._render(self.model[self.principal_id], 'editform')
-
-    @property
-    def principal_target(self):
-        return make_url(self.request, node=self.model[self.principal_id])
 
 
 @tile(
     name='columnlisting',
     path='templates/column_listing.pt',
     interface=Groups,
-    permission='view')
+    permission='view',
+)
 class GroupsColumnListing(PrincipalsListing):
     slot = 'leftlisting'
     list_columns = PrincipalsListing.group_list_columns

@@ -37,22 +37,20 @@ _ = TranslationStringFactory('cone.ugm')
     name='leftcolumn',
     path='templates/principal_left_column.pt',
     interface=User,
-    permission='view')
+    permission='view',
+)
 class UserLeftColumn(Tile):
-
-    @property
-    def principals_target(self):
-        query = make_query(pid=self.model.name)
-        return make_url(self.request, node=self.model.parent, query=query)
+    pass
 
 
 @tile(
     name='rightcolumn',
     path='templates/principal_right_column.pt',
     interface=User,
-    permission='view')
+    permission='view',
+)
 class UserRightColumn(Tile):
-    pass
+    title = _('user_groups', default='User Groups')
 
 
 class GroupsListing(ColumnListing):
@@ -76,29 +74,19 @@ class GroupsListing(ColumnListing):
         attrlist = self.group_attrs
         sort_attr = self.group_default_sort_column
         filter_term = self.unquoted_param_value('filter')
-        can_change = self.request.has_permission(
-            'manage_membership',
-            self.model.parent
-        )
+        can_change = self.request.has_permission('manage_membership', self.model.parent)
         ret = list()
         for group in groups:
             attrs = group.attrs
             # reduce by search term
             if filter_term:
-                s_attrs = [
-                    attrs[attr] for attr in attrlist
-                    if attrs[attr] is not None
-                ]
+                s_attrs = [attrs[attr] for attr in attrlist if attrs[attr] is not None]
                 if not fnmatch.filter(s_attrs, filter_term):
                     continue
             gid = group.name
             item_target = make_url(self.request, path=group.path[1:])
             action_query = make_query(id=gid)
-            action_target = make_url(
-                self.request,
-                node=appuser,
-                query=action_query
-            )
+            action_target = make_url(self.request, node=appuser, query=action_query)
             if not self.related_only:
                 related = gid in related_ids
             actions = list()
@@ -106,40 +94,27 @@ class GroupsListing(ColumnListing):
                 action_id = 'add_item'
                 action_enabled = not bool(related)
                 action_title = _(
-                    'add_user_to_selected_group',
-                    default='Add user to selected group'
+                    'add_user_to_selected_group', default='Add user to selected group'
                 )
                 add_item_action = self.create_action(
-                    action_id,
-                    action_enabled,
-                    action_title,
-                    action_target
+                    action_id, action_enabled, action_title, action_target
                 )
                 actions.append(add_item_action)
                 action_id = 'remove_item'
                 action_enabled = bool(related)
                 action_title = _(
                     'remove_user_from_selected_group',
-                    default='Remove user from selected group'
+                    default='Remove user from selected group',
                 )
                 remove_item_action = self.create_action(
-                    action_id,
-                    action_enabled,
-                    action_title,
-                    action_target
+                    action_id, action_enabled, action_title, action_target
                 )
                 actions.append(remove_item_action)
             vals = [self.extract_raw(attrs, attr) for attr in attrlist]
             sort = self.extract_raw(attrs, sort_attr)
             content = self.item_content(*vals)
             current = False
-            item = self.create_item(
-                sort,
-                item_target,
-                content,
-                current,
-                actions
-            )
+            item = self.create_item(sort, item_target, content, current, actions)
             ret.append(item)
         return ret
 
@@ -148,7 +123,8 @@ class GroupsListing(ColumnListing):
     name='columnlisting',
     path='templates/column_listing.pt',
     interface=User,
-    permission='view')
+    permission='view',
+)
 class GroupsOfUserColumnListing(GroupsListing):
     slot = 'rightlisting'
     list_columns = ColumnListing.group_list_columns
@@ -163,7 +139,8 @@ class GroupsOfUserColumnListing(GroupsListing):
     name='allcolumnlisting',
     path='templates/column_listing.pt',
     interface=User,
-    permission='view')
+    permission='view',
+)
 class AllGroupsColumnListing(GroupsListing):
     slot = 'rightlisting'
     list_columns = ColumnListing.group_list_columns
@@ -180,31 +157,43 @@ class AllGroupsColumnListing(GroupsListing):
 class UserForm(PrincipalForm):
     form_name = 'userform'
     field_factory_registry = user_field
+    to_principal = _('user_groups', default='User Groups')
+    to_principals = _('users', default='Users')
 
     @property
     def reserved_attrs(self):
-        return odict([
-            ('id', _('user_id', default='User ID')),
-            ('login', _('login_name', default='Login name')),
-            ('password', _('password', default='Password'))
-        ])
+        return odict(
+            [
+                ('id', _('user_id', default='User ID')),
+                ('login', _('login_name', default='Login name')),
+                ('password', _('password', default='Password')),
+            ]
+        )
 
     @property
     def form_attrmap(self):
         return general_settings(self.model).attrs.users_form_attrmap
 
 
-@tile(name='addform', interface=User, permission='add_user')
+@tile(
+    name='addform',
+    interface=User,
+    permission='add_user',
+    path='templates/principal_form.pt',
+)
 @plumbing(
     ContentAddForm,
     PrincipalRolesForm,
     PortraitForm,
     ExpirationForm,
     AutoIncrementForm,
-    AddFormFiddle)
+    AddFormFiddle,
+)
 class UserAddForm(UserForm, Form):
     show_heading = False
     show_contextmenu = False
+    header_title = _('new_user', default='New User')
+    principal_id = None
 
     def save(self, widget, data):
         extracted = dict()
@@ -231,10 +220,7 @@ class UserAddForm(UserForm, Form):
         self.request.environ['next_resource'] = user_id
         if password is not UNSET:
             users.passwd(user_id, None, password)
-        notify(events.UserCreatedEvent(
-            principal=user,
-            password=password
-        ))
+        notify(events.UserCreatedEvent(principal=user, password=password))
         self.model.parent.invalidate()
 
     def next(self, request):
@@ -252,16 +238,24 @@ class UserAddForm(UserForm, Form):
         return HTTPFound(location=url)
 
 
-@tile(name='editform', interface=User, permission='edit_user', strict=False)
+@tile(
+    name='editform',
+    interface=User,
+    permission='edit_user',
+    strict=False,
+    path='templates/principal_form.pt',
+)
 @plumbing(
-    ContentEditForm,
-    PrincipalRolesForm,
-    PortraitForm,
-    ExpirationForm,
-    EditFormFiddle)
+    ContentEditForm, PrincipalRolesForm, PortraitForm, ExpirationForm, EditFormFiddle
+)
 class UserEditForm(UserForm, Form):
     show_heading = False
     show_contextmenu = False
+    header_title = _('user_data', default='User Data')
+
+    @property
+    def principal_id(self):
+        return self.model.name
 
     def save(self, widget, data):
         attrs = self.model.attrs
@@ -274,16 +268,13 @@ class UserEditForm(UserForm, Form):
         if password is not UNSET:
             user_id = self.model.name
             ugm_backend.ugm.users.passwd(user_id, None, password)
-        notify(events.UserModifiedEvent(
-            principal=self.model,
-            password=password
-        ))
+        notify(events.UserModifiedEvent(principal=self.model, password=password))
 
     def next(self, request):
         came_from = request.get('came_from')
         if came_from:
             came_from = compat.unquote(came_from)
-            url = '{}?pid={}'.format(came_from, self.model.name)
+            url = f'{came_from}?pid={self.model.name}'
         else:
             url = make_url(request.request, node=self.model)
         if self.ajax_request:

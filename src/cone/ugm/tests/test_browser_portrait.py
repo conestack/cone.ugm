@@ -26,7 +26,6 @@ def dummy_file_data(filename):
 
 
 class portrait_principals(testing.principals):
-
     def __call__(self, fn):
         w = super(portrait_principals, self).__call__(fn)
 
@@ -35,21 +34,16 @@ class portrait_principals(testing.principals):
                 w(inst)
             finally:
                 settings = general_settings(get_root())
-                settings.attrs.users_portrait = u'True'
+                settings.attrs.users_portrait = 'True'
                 settings()
+
         return wrapper
 
 
-class BrowserPortraitTests(object):
-
+class BrowserPortraitTests:
     @portrait_principals(
-        users={
-            'manager': {},
-            'user_1': {}
-        },
-        roles={
-            'manager': ['manager']
-        })
+        users={'manager': {}, 'user_1': {}}, roles={'manager': ['manager']}
+    )
     def test_portrait(self):
         root = get_root()
         users = root['users']
@@ -71,8 +65,7 @@ class BrowserPortraitTests(object):
 
         # No portrait, default portrait is shown
         expected = (
-            'src="http://example.com/resources/ugm/images/'
-            'default_portrait.jpg?nocache='
+            'src="http://example.com/resources/ugm/images/default_portrait.jpg?nocache='
         )
         self.assertTrue(res.find(expected) > -1)
 
@@ -99,7 +92,7 @@ class BrowserPortraitTests(object):
         self.assertTrue(res.find(expected) > -1)
 
         # Portrait disabled, widget is skipped
-        settings.attrs.users_portrait = u'False'
+        settings.attrs.users_portrait = 'False'
         settings()
 
         request = self.layer.new_request()

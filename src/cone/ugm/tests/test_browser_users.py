@@ -5,8 +5,7 @@ from cone.ugm import testing
 from pyramid.httpexceptions import HTTPForbidden
 
 
-class BrowserUsersTests(object):
-
+class BrowserUsersTests:
     def test_content_tile(self):
         root = get_root()
         users = root['users']
@@ -21,71 +20,50 @@ class BrowserUsersTests(object):
         users={
             'manager': {},
         },
-        roles={
-            'manager': ['manager']
-        })
+        roles={'manager': ['manager']},
+    )
     def test_leftcolumn_tile(self):
         root = get_root()
         users = root['users']
         request = self.layer.new_request()
 
-        self.expectError(
-            HTTPForbidden,
-            render_tile,
-            users,
-            request,
-            'leftcolumn'
-        )
+        self.expectError(HTTPForbidden, render_tile, users, request, 'leftcolumn')
 
         with self.layer.authenticated('manager'):
             res = render_tile(users, request, 'leftcolumn')
-        expected = '<div class="column left_column col-md-6">'
+        expected = '<div class="card column left_column">'
         self.assertTrue(res.find(expected) > -1)
 
     @testing.principals(
         users={
             'manager': {},
         },
-        roles={
-            'manager': ['manager']
-        })
+        roles={'manager': ['manager']},
+    )
     def test_rightcolumn_tile(self):
         root = get_root()
         users = root['users']
         request = self.layer.new_request()
 
-        self.expectError(
-            HTTPForbidden,
-            render_tile,
-            users,
-            request,
-            'rightcolumn'
-        )
+        self.expectError(HTTPForbidden, render_tile, users, request, 'rightcolumn')
 
         with self.layer.authenticated('manager'):
             res = render_tile(users, request, 'rightcolumn')
-        expected = '<div class="column right_column col-md-6">'
+        expected = '<div class="card column right_column bg-primary-100">'
         self.assertTrue(res.find(expected) > -1)
 
     @testing.principals(
         users={
             'manager': {},
         },
-        roles={
-            'manager': ['manager']
-        })
+        roles={'manager': ['manager']},
+    )
     def test_columnlisting_tile(self):
         root = get_root()
         users = root['users']
         request = self.layer.new_request()
 
-        self.expectError(
-            HTTPForbidden,
-            render_tile,
-            users,
-            request,
-            'columnlisting'
-        )
+        self.expectError(HTTPForbidden, render_tile, users, request, 'columnlisting')
 
         with self.layer.authenticated('manager'):
             res = render_tile(users, request, 'columnlisting')

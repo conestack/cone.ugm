@@ -1,10 +1,102 @@
 Changes
 =======
 
-1.1.1 (unreleased)
+2.0.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Drop the own ``min-height`` of the column card headers, the height comes
+  from cone.app's ``.card-header`` now. The add button of the left column and
+  the button to the members of the right one are small buttons, so both
+  headers stand at that height.
+  [rnix]
+
+- Fix the group autocomplete of the local manager settings on LDAP. The
+  backend hands attributes over as lists, ``group_id_vocab`` and
+  ``group_title`` took the title as string and failed with ``AttributeError:
+  'list' object has no attribute 'lower'``. Both take the first value now
+  (``display_value``).
+  [rnix]
+
+- Fix the group autocomplete of the local manager settings redirecting to the
+  application root. ``lm_autocomplete_gid`` asked the relative url
+  ``group_id_vocab``, which resolved against ``/settings/ugm_localmanager`` to
+  the settings container - it grants ``view`` only, the 403 made treibstoff
+  redirect. The form passes the absolute url of the vocabulary as remote
+  source of the autocomplete now (``group_id_vocab_url``), and the view is
+  bound to ``LocalManagerSettings``. The JavaScript function
+  ``ugm.lm_autocomplete_gid`` is removed.
+  [rnix]
+
+- Fix saving the local manager settings with ``TypeError: unhashable type:
+  'dict'``. The autocompletes extract ``{'value': ...}``, while ``save`` and
+  the duplicate and target-is-source validators took the bare group id - the
+  values are unwrapped now. The duplicate check also never saw an empty
+  source, a dict being truthy.
+  [rnix]
+
+- Pick the groups of the local manager rules by title. The autocompletes are
+  keyed: the group id is what is stored, the title
+  (``ugm_backend.group_display_attr``) what is shown and searched, case
+  insensitive and anywhere in id or title. Rules from the configuration show
+  their group titles through ``LocalManagerSettingsForm.group_title``.
+  [rnix]
+
+- Render a target of a local manager rule as one input group, the group and
+  its default flag side by side. Required and target-is-source are checked
+  on the target entry (``target_gid_required``, ``target_not_source``), so
+  the message renders below the group - on the autocomplete it landed inside
+  and pushed the checkbox onto a line of its own.
+  [rnix]
+
+- No ``is-valid`` marking in the local manager settings form: the green
+  border and check mark on what passed after a submit are switched off per
+  widget (``valid_class: False``).
+  [rnix]
+
+- Align the message of an empty target array with the array: the gap to the
+  source sits on the targets field now, not on the array, so the message
+  rendered after the array starts where the array starts. And give the group
+  input of a target the bootstrap invalid style when its entry carries an
+  error - the message belongs to the entry, so the input has no
+  ``is-invalid`` of its own and is styled from the message beside it.
+  [rnix]
+
+- Render the settings panels as cards with their heading as
+  ``h5.card-header``, like the other views and the cone.app forms. The local
+  manager settings had a bare ``h1``; the user, group and roles sections of
+  the general settings had a ``h3`` inside the card body - each section is a
+  card with header and a structural ``div.card-body`` around its fields now,
+  so field names and extraction are unchanged. The "not enabled" notice of
+  the local manager settings is a Bootstrap ``alert`` - the ``warning`` class
+  it carried has no style in Bootstrap 5.
+  [rnix]
+
+- Drop the Python 2 remnants. ``ColumnListing`` used ``IS_PY2`` and
+  ``ITER_TYPES`` from ``cone.app.compat``, which ``cone.app`` 2.0 removed -
+  rendering a column listing raised ``AttributeError``.
+  [rnix]
+
+- Modernise the code ruff flags as outdated: ``u''`` prefixes, ``class
+  X(object)``, ``.format()`` over f-strings, redundant ``open()`` mode.
+  Remove the duplicate definitions of ``register_config`` and
+  ``register_entry``. Behaviour unchanged. ``super(Class, self)`` is kept, see
+  ``cone.app``.
+  [rnix]
+
+- Add ``qa.ruff`` domain to Makefile and pin the ruff rule selection in
+  ``pyproject.toml``, ``make check`` runs ``ruff check``.
+  [rnix]
+
+- Create a copy of principal.roles in PrincipalRolesForm.save() to avoid
+  stale reference. This fixes not being able to remove roles.
+  [lenadax]
+
+- Users and Groups entry nodes are no longer displayed in main menu.
+  [rnix]
+
+- Remove no longer used ``content_grid_width`` and ``sidebar_left_grid_width``
+  properties from ``UGMLayoutConfig``.
+  [rnix]
 
 
 1.1.0 (2026-02-03)

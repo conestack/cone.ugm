@@ -17,8 +17,7 @@ _ = TranslationStringFactory('cone.ugm')
 
 
 class OwnUserACL(Behavior):
-    """Behavior providing ACL for own user permissions.
-    """
+    """Behavior providing ACL for own user permissions."""
 
     @plumb
     @property
@@ -33,12 +32,10 @@ class OwnUserACL(Behavior):
 @node_info(
     'user',
     title=_('user_node', default='User'),
-    description=_('user_node_description', default='User'))
-@plumbing(
-    OwnUserACL,
-    LocalManagerUserACL)
+    description=_('user_node_description', default='User'),
+)
+@plumbing(OwnUserACL, LocalManagerUserACL)
 class User(AdapterNode):
-
     @instance_property
     def properties(self):
         props = Properties()

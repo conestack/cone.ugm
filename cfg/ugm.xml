@@ -1,9 +1,9 @@
 <properties>
-  <users_exposed_attributes></users_exposed_attributes>
+  <users_exposed_attributes/>
   <users_account_expiration>False</users_account_expiration>
-  <user_id_autoincrement>False</user_id_autoincrement>
+  <user_id_autoincrement>True</user_id_autoincrement>
   <user_id_autoincrement_prefix></user_id_autoincrement_prefix>
-  <user_id_autoincrement_start></user_id_autoincrement_start>
+  <user_id_autoincrement_start>0</user_id_autoincrement_start>
   <users_portrait>True</users_portrait>
   <users_portrait_attr>portrait</users_portrait_attr>
   <users_portrait_accept>image/jpeg</users_portrait_accept>

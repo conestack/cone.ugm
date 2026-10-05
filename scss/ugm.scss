@@ -1,0 +1,234 @@
+.hidden {
+    display: none;
+}
+
+/* columns */
+div.columns {
+    gap: 20px;
+
+    div.left_column, div.right_column {
+        flex: 1;
+        flex-basis: 500px;
+    }
+
+    // The header height - with or without the add button - comes from
+    // cone.app's ``.card-header``, the same as every other section card.
+    .card:not(.datepicker-picker) {
+        .card:not(.datepicker-picker) {
+            border: none;
+            background: none;
+            margin-top: 0!important;
+
+            .card-body {
+                padding: 0;
+            }
+        }
+    }
+}
+
+/* action icons */
+a.action {
+    line-height:16px;
+    font-size:16px;
+    text-decoration:none;
+    float:right;
+    margin-top:2px;
+
+    &:hover {
+        text-decoration:none;
+    }
+}
+a.add_item::before,
+a.add_item_disabled::before {
+    font-family:"bootstrap-icons";
+    content: "\F4FA";
+}
+a.add_item,
+a.add_item:hover {
+    color:#00ff00;
+}
+a.remove_item,
+a.remove_item:hover,
+a.delete_item,
+a.delete_item:hover {
+    color:#ff0000;
+}
+a.delete_item::before,
+a.delete_item_disabled::before {
+    font-family:"bootstrap-icons";
+    content: "\F623";
+}
+a.remove_item::before,
+a.remove_item_disabled::before {
+    font-family:"bootstrap-icons";
+    content: "\F2E6";
+}
+a.add_item_disabled,
+a.add_item_disable:hover,
+a.remove_item_disabled,
+a.remove_item_disable:hover,
+a.delete_item_disabled,
+a.delete_item_disable:hover {
+    cursor:default;
+    color:#ccc !important;
+}
+
+/* column listing */
+div.columnlisting div.column_filter {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 150px;
+    max-width: 300px;
+}
+div.columnsorting {
+   flex-shrink: 0;
+
+   @media(max-width: 400px) {
+    flex-direction: column;
+    width: 100%;
+   }
+
+   .columnsorticon::before {
+    font-family:"bootstrap-icons";
+    content:"\F5D4";
+   }
+
+    .btn.asc .columnsorticon::before {
+        font-family:"bootstrap-icons";
+        content:"\F229";
+    }
+    .btn.desc .columnsorticon::before {
+        font-family:"bootstrap-icons";
+        content:"\F235";
+    }
+}
+div.columnitems {
+    &.users {
+        .sort_col_1 {
+            width: 100%!important;
+        }
+        .sort_col_2 {
+            display: none!important;
+            width: 0!important;
+        }
+    }
+    li {
+        cursor:pointer;
+
+        &.hidden {
+            display:none;
+        }
+    }
+    div.cols {
+        flex: 1;
+
+        .sort_col_1 {
+            width: 30%;
+        }
+        .sort_col_2 {
+            width: 70%;
+        }
+    }
+}
+[data-bs-theme="light"] div.columnitems li.selected {
+    background-color: var(--primary-100)!important;
+}
+[data-bs-theme="dark"] div.columnitems li.selected {
+    background-color: var(--primary-100-dark)!important;
+}
+
+/* principal forms */
+div.principal_form {
+    position: relative;
+
+    div.display-form-control {
+        background: none;
+        height: 38px;
+        border-radius: 3px;
+        border: 1px solid #b1c7e5;
+        padding: 5px 12px;
+    }
+
+    > .btn > * {
+        vertical-align: middle;
+    }
+}
+#form-groupform .display-text.form-control,
+#form-userform .display-text.form-control {
+    border:none;
+    box-shadow:none;
+    padding-left:0;
+}
+#field-userform-active label {
+    display: block;
+    clear: both;
+}
+#image-preview-userform-portrait {
+    border-radius:3px 3px 3px 3px;
+    box-shadow:0px 0px 4px #666666;
+}
+#input-userform-portrait {
+    margin-top:12px;
+    margin-bottom:6px;
+}
+#checkbox-groupform-principal_roles-wrapper,
+#checkbox-userform-principal_roles-wrapper {
+    padding-left:0;
+}
+
+/* settings form */
+#form-ugm_settings {
+    .field {
+        padding-left: 1rem;
+        padding-right: 1rem;
+
+        &:not(:last-child) {
+            padding-bottom: 1rem;
+        }
+    }
+    label.form-label {
+        font-size: 18px;
+    }
+    .scrollable-content {
+        min-width: 400px;
+    }
+}
+
+#form-localmanager_settings {
+    #array-localmanager_settings-rules {
+        table td.widget {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+    // A target is one input group, ``[group    ][x]``. The autocomplete
+    // renders its input inside a wrapper, which has to take the room and the
+    // squared right edge a bare input would have in the group.
+    .input-group > .yafowil-widget-autocomplete {
+        position: relative;
+        flex: 1 1 auto;
+        width: 1%;
+        min-width: 0;
+        > .form-control {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+    }
+    // A target without a group, or with the source as its group: the message
+    // belongs to the target entry and renders as the input group's sibling
+    // (``target_gid_required``, ``target_not_source``), so the input carries
+    // no ``is-invalid`` of its own. Bootstrap's invalid style, taken from the
+    // sibling.
+    .input-group:has(+ .invalid-feedback) > .yafowil-widget-autocomplete > .form-control {
+        border-color: var(--bs-form-invalid-border-color);
+        padding-right: calc(1.5em + 0.75rem);
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(0.375em + 0.1875rem) center;
+        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+        &:focus {
+            border-color: var(--bs-form-invalid-border-color);
+            box-shadow: 0 0 0 0.25rem rgba(var(--bs-danger-rgb), 0.25);
+        }
+    }
+}

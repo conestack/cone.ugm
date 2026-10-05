@@ -25,19 +25,31 @@ logger = logging.getLogger('cone.ugm')
 
 # security
 management_permissions = [
-    'add', 'edit', 'delete',
+    'add',
+    'edit',
+    'delete',
 ]
 user_management_permissions = [
-    'add_user', 'edit_user', 'delete_user', 'manage_expiration',
+    'add_user',
+    'edit_user',
+    'delete_user',
+    'manage_expiration',
 ]
 group_management_permissions = [
-    'add_group', 'edit_group', 'delete_group',
+    'add_group',
+    'edit_group',
+    'delete_group',
 ]
-admin_permissions = [
-    'view', 'manage_membership', 'view_portrait',
-] + management_permissions \
-  + user_management_permissions \
-  + group_management_permissions
+admin_permissions = (
+    [
+        'view',
+        'manage_membership',
+        'view_portrait',
+    ]
+    + management_permissions
+    + user_management_permissions
+    + group_management_permissions
+)
 ugm_default_acl = [
     (Allow, 'role:editor', ['view', 'manage_membership']),
     (Allow, 'role:admin', admin_permissions),
@@ -68,34 +80,14 @@ def register_entry(key, factory):
 
 @layout_config(Group, Groups, User, Users)
 class UGMLayoutConfig(LayoutConfig):
-
     def __init__(self, model=None, request=None):
         super(UGMLayoutConfig, self).__init__(model=model, request=request)
         self.mainmenu = True
-        self.mainmenu_fluid = True
         self.livesearch = False
         self.personaltools = True
-        self.columns_fluid = True
+        self.limit_content_width = False
         self.pathbar = False
-        self.sidebar_left = []
-        self.sidebar_left_grid_width = 0
-        self.content_grid_width = 12
-
-
-def register_config(key, factory):
-    # Avoid registration conflict if testrun inside conestack dev env.
-    if os.environ.get('TESTRUN_MARKER'):
-        if key in get_root()['settings'].factories:
-            return
-    _register_config(key, factory)
-
-
-def register_entry(key, factory):
-    # Avoid registration conflict if testrun inside conestack dev env.
-    if os.environ.get('TESTRUN_MARKER'):
-        if key in get_root().factories:
-            return
-    _register_entry(key, factory)
+        self.sidebar_left = ['navtree']
 
 
 # application startup hooks

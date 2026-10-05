@@ -8,12 +8,12 @@ from node.ext.ugm.interfaces import IGroup
 import unittest
 
 
-class ModelGroupTests(object):
-
+class ModelGroupTests:
     @testing.principals(
         groups={
             'group_1': {},
-        })
+        }
+    )
     def test_group(self):
         # Group node
         root = get_root()

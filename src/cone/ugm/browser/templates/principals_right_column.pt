@@ -4,19 +4,19 @@
            i18n:domain="cone.ugm"
            omit-tag="True">
 
-  <div class="column right_column col-md-6">
+  <div class="card column right_column bg-primary-100">
+    <div class="principal_form">
+      <tal:form condition="context.principal_id" replace="structure context.principal_form" />
 
-    <div class="principal_form" tal:condition="context.principal_id">
-
-      <span class="go_to_principal ion-arrow-right-b"
-            ajax:bind="click"
-            ajax:target="${context.principal_target}"
-            ajax:action="content:.columns:replace"></span>
-
-      <tal:form replace="structure context.principal_form" />
-
+      <div tal:condition="not context.principal_id">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="m-0" tal:content="context.header_title"></h5>
+        </div>
+        <div class="card-body">
+          <span tal:content="context.no_principal"/>
+        </div>
+      </div>
     </div>
-
   </div>
 
 </tal:block>

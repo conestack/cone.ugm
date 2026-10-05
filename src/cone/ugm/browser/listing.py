@@ -21,8 +21,7 @@ _ = TranslationStringFactory('cone.ugm')
 
 
 class ColumnListingBatch(Batch):
-    """Column listing batch.
-    """
+    """Column listing batch."""
 
     def __init__(self, listing):
         self.listing = listing
@@ -44,18 +43,20 @@ class ColumnListingBatch(Batch):
             pages += 1
         current = self.listing.current_page
         for i in range(pages):
-            ret.append({
-                'page': '%i' % (i + 1),
-                'current': current == i,
-                'visible': True,
-                'target': self.listing.batch_target(path, i)
-            })
+            ret.append(
+                {
+                    'page': '%i' % (i + 1),
+                    'current': current == i,
+                    'visible': True,
+                    'target': self.listing.batch_target(path, i),
+                }
+            )
         return ret
 
 
 class ColumnListing(Tile):
-    """Abstract column listing.
-    """
+    """Abstract column listing."""
+
     current_id = None
     slot = None
     list_columns = []
@@ -73,10 +74,7 @@ class ColumnListing(Tile):
 
     @property
     def ajax_event(self):
-        return '{}:{}'.format(
-            self.batch.trigger_event,
-            self.batch.trigger_selector
-        )
+        return f'{self.batch.trigger_event}:{self.batch.trigger_selector}'
 
     @property
     def sortheader(self):
@@ -87,19 +85,19 @@ class ColumnListing(Tile):
             selected = cur_sort == cid
             alter = selected and cur_order == 'asc'
             order = alter and 'desc' or 'asc'
-            ret.append({
-                'title': name,
-                'order': order if selected else '',
-                'target': self.sort_target(cid, order)
-            })
+            ret.append(
+                {
+                    'title': name,
+                    'order': order if selected else '',
+                    'target': self.sort_target(cid, order),
+                }
+            )
         return ret
 
     def unquoted_param_value(self, name):
         value = self.request.params.get(name)
         if value:
-            value = value.encode('utf-8') if compat.IS_PY2 else value
             value = compat.unquote(value)
-            value = value.decode('utf-8') if compat.IS_PY2 else value
         return value
 
     def filter_value_or_default(self, name):
@@ -133,10 +131,8 @@ class ColumnListing(Tile):
 
     def sort_target(self, sort, order):
         query = make_query(
-            filter=self.filter_term,
-            b_page=self.current_page,
-            sort=sort,
-            order=order)
+            filter=self.filter_term, b_page=self.current_page, sort=sort, order=order
+        )
         return safe_decode(make_url(self.request, node=self.model, query=query))
 
     @property
@@ -156,7 +152,8 @@ class ColumnListing(Tile):
             b_page=str(b_page),
             filter=self.filter_term,
             sort=self.sort_column,
-            order=self.sort_order)
+            order=self.sort_order,
+        )
         return safe_decode(make_url(self.request, path=path, query=query))
 
     @property
@@ -171,10 +168,7 @@ class ColumnListing(Tile):
         items = self.listing_items
         inv = self.sort_order == 'desc'
         items = natsort.natsorted(
-            items,
-            key=lambda x: x['sort_by'],
-            reverse=inv,
-            alg=natsort.ns.IC
+            items, key=lambda x: x['sort_by'], reverse=inv, alg=natsort.ns.IC
         )
         return items[start:end]
 
@@ -198,10 +192,11 @@ class ColumnListing(Tile):
         }
         """
         raise NotImplementedError(
-            'Abstract ``ColumnListing`` does not implement ``listing_items``')
+            'Abstract ``ColumnListing`` does not implement ``listing_items``'
+        )
 
     def item_content(self, *args):
-        ret = u''
+        ret = ''
         pt = 0
         for arg in args:
             pt += 1
@@ -227,7 +222,7 @@ class ColumnListing(Tile):
 
     def extract_raw(self, attrs, name):
         raw = attrs.get(name)
-        if type(raw) in compat.ITER_TYPES:
+        if isinstance(raw, (list, tuple)):
             return raw[0]
         return raw and raw or ''
 
@@ -293,8 +288,8 @@ class ColumnListing(Tile):
 
 
 class PrincipalsListing(ColumnListing):
-    """Column listing for principals.
-    """
+    """Column listing for principals."""
+
     delete_label = _('delete_principal', default='Delete Principal')
     delete_permission = 'delete_principal'  # inexistent permission
     listing_attrs = []
@@ -303,10 +298,7 @@ class PrincipalsListing(ColumnListing):
 
     @request_property
     def listing_items(self):
-        can_delete = self.request.has_permission(
-            self.delete_permission,
-            self.model
-        )
+        can_delete = self.request.has_permission(self.delete_permission, self.model)
         try:
             ret = list()
             localmanager_ids = self.localmanager_ids
@@ -325,9 +317,7 @@ class PrincipalsListing(ColumnListing):
                     criteria[attr] = filter_term
             principals = self.model.backend
             result = principals.search(
-                criteria=criteria,
-                attrlist=attrlist,
-                or_search=True
+                criteria=criteria, attrlist=attrlist, or_search=True
             )
             for key, attrs in result:
                 # reduce result by localmanager ids if not None
@@ -338,33 +328,21 @@ class PrincipalsListing(ColumnListing):
                     action_id = 'delete_item'
                     action_title = self.delete_label
                     action_target = make_url(
-                        self.request,
-                        node=self.model,
-                        resource=key
+                        self.request, node=self.model, resource=key
                     )
                     delete_action = self.create_action(
-                        action_id,
-                        True,
-                        action_title,
-                        action_target
+                        action_id, True, action_title, action_target
                     )
                     actions = [delete_action]
                 vals = [self.extract_raw(attrs, attr) for attr in attrlist]
                 sort = self.extract_raw(attrs, sort_attr)
                 query = make_query(
-                    pid=key,
-                    came_from=make_url(self.request, node=self.model)
+                    pid=key, came_from=make_url(self.request, node=self.model)
                 )
                 target = make_url(self.request, node=self.model, query=query)
                 content = self.item_content(*vals)
                 current = self.current_id == key
-                ret.append(self.create_item(
-                    sort,
-                    target,
-                    content,
-                    current,
-                    actions
-                ))
+                ret.append(self.create_item(sort, target, content, current, actions))
             return ret
         except Exception:
             logger.exception('Failed to query listing items')

@@ -8,12 +8,10 @@ from pyramid.testing import DummyRequest
 import unittest
 
 
-class LayoutTests(object):
-
+class LayoutTests:
     def test_layout(self):
         config = layout_config.lookup(
-            model=Group(None, None, None),
-            request=DummyRequest()
+            model=Group(None, None, None), request=DummyRequest()
         )
         self.assertIsInstance(config, UGMLayoutConfig)
 
@@ -21,8 +19,7 @@ class LayoutTests(object):
         self.assertIsInstance(config, UGMLayoutConfig)
 
         config = layout_config.lookup(
-            model=User(None, None, None),
-            request=DummyRequest()
+            model=User(None, None, None), request=DummyRequest()
         )
         self.assertIsInstance(config, UGMLayoutConfig)
 
@@ -30,14 +27,11 @@ class LayoutTests(object):
         self.assertIsInstance(config, UGMLayoutConfig)
 
         self.assertTrue(config.mainmenu)
-        self.assertTrue(config.mainmenu_fluid)
         self.assertFalse(config.livesearch)
         self.assertTrue(config.personaltools)
-        self.assertTrue(config.columns_fluid)
+        self.assertFalse(config.limit_content_width)
         self.assertFalse(config.pathbar)
-        self.assertEqual(config.sidebar_left, [])
-        self.assertEqual(config.sidebar_left_grid_width, 0)
-        self.assertEqual(config.content_grid_width, 12)
+        self.assertEqual(config.sidebar_left, ['navtree'])
 
 
 class TestLayout(unittest.TestCase, LayoutTests):
