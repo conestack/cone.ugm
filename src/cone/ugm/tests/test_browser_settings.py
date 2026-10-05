@@ -139,6 +139,13 @@ class BrowserSettingsTests:
                 'editform'
             )
 
+        # Disabled: the card says so instead of showing the form
+        with self.layer.authenticated('manager'):
+            res = render_tile(lm_settings, request, 'editform')
+        self.assertTrue(res.find('<h5 class="card-header">') > -1)
+        self.assertTrue(res.find('class="alert alert-warning mb-0"') > -1)
+        self.assertFalse(res.find('<form') > -1)
+
         # Authenticate and render tile
         general_settings = root['settings']['ugm_general']
         general_settings.attrs.users_local_management_enabled = 'True'
@@ -146,6 +153,12 @@ class BrowserSettingsTests:
             res = render_tile(lm_settings, request, 'editform')
         expected = 'form action="http://example.com/settings/ugm_localmanager/edit"'
         self.assertTrue(res.find(expected) > -1)
+        # The heading is the header of the settings card, the form its body
+        self.assertTrue(
+            res.find('<h5 class="card-header">') < res.find('class="card-body"')
+            < res.find(expected)
+        )
+        self.assertFalse(res.find('<h1') > -1)
         general_settings.invalidate()
 
 

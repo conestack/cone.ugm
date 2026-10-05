@@ -4,6 +4,12 @@ Changes
 2.0.0 (unreleased)
 ------------------
 
+- Render the local manager settings as a card with its heading as
+  ``h5.card-header`` instead of a bare ``h1``, like the other views and the
+  cone.app forms. The "not enabled" notice is a Bootstrap ``alert`` - the
+  ``warning`` class it carried has no style in Bootstrap 5.
+  [rnix]
+
 - Drop the Python 2 remnants. ``ColumnListing`` used ``IS_PY2`` and
   ``ITER_TYPES`` from ``cone.app.compat``, which ``cone.app`` 2.0 removed -
   rendering a column listing raised ``AttributeError``.
