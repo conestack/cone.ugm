@@ -2,6 +2,7 @@ from cone.app import get_root
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
+from cone.ugm.browser.settings import display_value
 from cone.ugm.browser.settings import GeneralSettingsForm
 from cone.ugm.browser.settings import group_id_vocab
 from cone.ugm.browser.settings import LocalManagerSettingsForm
@@ -10,7 +11,9 @@ from node.utils import UNSET
 from pyramid.httpexceptions import HTTPForbidden
 from pyramid.view import render_view_to_response
 from types import SimpleNamespace
+from unittest import mock
 from yafowil.base import ExtractionError
+
 import os
 import re
 import shutil
@@ -568,6 +571,40 @@ class BrowserSettingsTests:
         self.assertEqual(
             group_id_vocab(model, request), [{'id': 'other', 'title': 'other'}]
         )
+
+    def test_display_value(self):
+        # LDAP hands attributes over as lists, file and SQL as strings
+        self.assertEqual(display_value('Group One'), 'Group One')
+        self.assertEqual(display_value(['Group One', 'Other']), 'Group One')
+        self.assertIsNone(display_value([]))
+        self.assertIsNone(display_value(None))
+
+    @testing.principals(
+        users={'manager': {}},
+        groups={'group_1': {'groupname': 'Group One'}},
+        roles={'manager': ['manager']},
+    )
+    def test_group_titles_multi_valued(self):
+        # A backend with list valued attributes (LDAP) - the vocabulary sorted
+        # by ``title.lower()`` and broke on the list
+        model = get_root()['settings']['ugm_localmanager']
+        backend = model.root['groups'].backend
+        request = self.layer.new_request()
+        request.params['term'] = 'gr'
+        hits = [('group_1', {'groupname': ['Group One']}), ('group_2', {})]
+        with mock.patch.object(backend, 'search', return_value=hits):
+            self.assertEqual(
+                group_id_vocab(model, request),
+                [
+                    {'id': 'group_1', 'title': 'Group One'},
+                    {'id': 'group_2', 'title': 'group_2'},
+                ],
+            )
+        form = LocalManagerSettingsForm()
+        form.model = model
+        group = SimpleNamespace(attrs={'groupname': ['Group One']})
+        with mock.patch.object(backend, 'get', return_value=group):
+            self.assertEqual(form.group_title('group_1'), 'Group One')
 
     @testing.principals(
         users={'manager': {}},

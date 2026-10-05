@@ -13,7 +13,6 @@ from pyramid.view import view_config
 from yafowil.base import ExtractionError
 from yafowil.widget.autocomplete.widget import unwrap_extracted
 
-
 _ = TranslationStringFactory('cone.ugm')
 
 
@@ -95,7 +94,7 @@ class LocalManagerSettingsForm(Form):
         group = self.model.root['groups'].backend.get(gid)
         if group is None:
             return gid
-        return group.attrs.get(ugm_backend.group_display_attr) or gid
+        return display_value(group.attrs.get(ugm_backend.group_display_attr)) or gid
 
     @property
     def rules_value(self):
@@ -199,6 +198,15 @@ class LocalManagerSettingsForm(Form):
         self.model()
 
 
+def display_value(value):
+    """A principal attribute as text. LDAP hands attributes over as lists of
+    values, the file and SQL backends as plain strings; the first value is the
+    one shown, like in the principal listings."""
+    if isinstance(value, (list, tuple)):
+        return value[0] if value else None
+    return value
+
+
 @view_config(
     name='group_id_vocab',
     context=LocalManagerSettings,
@@ -228,7 +236,7 @@ def group_id_vocab(model, request):
     term = term.lower()
     groups = []
     for gid, attrs in model.root['groups'].backend.search(attrlist=[attr]):
-        title = attrs.get(attr) or gid
+        title = display_value(attrs.get(attr)) or gid
         if term in gid.lower() or term in title.lower():
             groups.append({'id': gid, 'title': title})
     return sorted(groups, key=lambda group: group['title'].lower())

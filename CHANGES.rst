@@ -4,6 +4,13 @@ Changes
 2.0.0 (unreleased)
 ------------------
 
+- Fix the group autocomplete of the local manager settings on LDAP. The
+  backend hands attributes over as lists, ``group_id_vocab`` and
+  ``group_title`` took the title as string and failed with ``AttributeError:
+  'list' object has no attribute 'lower'``. Both take the first value now
+  (``display_value``).
+  [rnix]
+
 - Fix the group autocomplete of the local manager settings redirecting to the
   application root. ``lm_autocomplete_gid`` asked the relative url
   ``group_id_vocab``, which resolved against ``/settings/ugm_localmanager`` to
