@@ -652,3 +652,7 @@ msgstr ""
 #: ./src/cone/ugm/browser/forms/localmanager_settings.yaml:47
 msgid "localmanager_target_empty"
 msgstr ""
+
+#. Default: Default group
+msgid "localmanager_target_default"
+msgstr ""

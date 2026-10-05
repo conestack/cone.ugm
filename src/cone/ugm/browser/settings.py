@@ -147,10 +147,24 @@ class LocalManagerSettingsForm(Form):
             exists.append(other)
         return data.extracted
 
+    def target_gid_required(self, widget, data):
+        """A target needs its group.
+
+        On the target entry rather than on the autocomplete: the entry is the
+        input group of group and default flag, and the message renders below
+        it - on the autocomplete it landed inside the group.
+        """
+        if not unwrap_extracted(data['gid'].extracted):
+            raise ExtractionError(
+                _('localmanager_target_empty', default='No Target GID defined')
+            )
+        return data.extracted
+
     def target_not_source(self, widget, data):
-        """Check whether source and target are same."""
-        source = unwrap_extracted(data.parent.parent.parent['source'].extracted)
-        if source == unwrap_extracted(data.extracted):
+        """Check whether source and target are same - on the target entry, see
+        ``target_gid_required``."""
+        source = unwrap_extracted(data.parent.parent['source'].extracted)
+        if source == unwrap_extracted(data['gid'].extracted):
             raise ExtractionError(
                 _(
                     'localmanager_target_is_source_error',

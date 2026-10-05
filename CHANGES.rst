@@ -28,6 +28,26 @@ Changes
   their group titles through ``LocalManagerSettingsForm.group_title``.
   [rnix]
 
+- Render a target of a local manager rule as one input group, the group and
+  its default flag side by side. Required and target-is-source are checked
+  on the target entry (``target_gid_required``, ``target_not_source``), so
+  the message renders below the group - on the autocomplete it landed inside
+  and pushed the checkbox onto a line of its own.
+  [rnix]
+
+- No ``is-valid`` marking in the local manager settings form: the green
+  border and check mark on what passed after a submit are switched off per
+  widget (``valid_class: False``).
+  [rnix]
+
+- Align the message of an empty target array with the array: the gap to the
+  source sits on the targets field now, not on the array, so the message
+  rendered after the array starts where the array starts. And give the group
+  input of a target the bootstrap invalid style when its entry carries an
+  error - the message belongs to the entry, so the input has no
+  ``is-invalid`` of its own and is styled from the message beside it.
+  [rnix]
+
 - Render the settings panels as cards with their heading as
   ``h5.card-header``, like the other views and the cone.app forms. The local
   manager settings had a bare ``h1``; the user, group and roles sections of

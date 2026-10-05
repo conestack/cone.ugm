@@ -665,3 +665,7 @@ msgstr "No target GID's defined for source GID"
 #: src/cone/ugm/browser/forms/localmanager_settings.yaml:47
 msgid "localmanager_target_empty"
 msgstr "No target GID defined"
+
+#. Default: Default group
+msgid "localmanager_target_default"
+msgstr "Default group"

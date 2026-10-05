@@ -11,6 +11,9 @@ widgets:
         label: i18n:localmanager_rules
         sort: False
         class_add: mb-3
+        # No green border and check mark on what passed after a submit -
+        # here and on every widget below (bootstrap ``is-valid``)
+        valid_class: False
     widgets:
     - rule:
         factory: error:*duplicate_rule:compound
@@ -29,6 +32,7 @@ widgets:
                 lookup: context.group_title
                 minLength: 1
                 delay: 300
+                valid_class: False
                 field.class_add: col-12 col-md-6 p-0
         - targets:
             factory: field:error:array
@@ -37,29 +41,52 @@ widgets:
                 required: i18n:localmanager_no_targets_for_source
                 error.position: after
                 sort: False
-                field.class_add: col-12 col-md-6 mt-md-4 p-0
-                array.class_add: mt-md-2 ms-md-3
+                valid_class: False
+                # The gap to the source on the field, not on the array: the
+                # message of an empty array renders after the array inside
+                # the field, and has to start where the array starts
+                field.class_add: col-12 col-md-6 mt-md-4 p-0 ps-md-3
+                array.class_add: mt-md-2
             widgets:
+            # One input group, ``[group    ][x]``: the group and the flag
+            # whether it is a default one. Checked on the entry, so a
+            # missing or wrong group is said below the group rather than
+            # inside it, where it pushed the checkbox onto a line of its own.
             - target:
-                factory: compound
+                factory: error:*target:compound
+                custom:
+                    target:
+                        extractors:
+                            - context.target_gid_required
+                            - context.target_not_source
                 widgets:
-                - gid:
-                    factory: error:*notsource:autocomplete
+                - group:
+                    factory: div
                     props:
-                        required: i18n:localmanager_target_empty
-                        source: expr:context.group_id_vocab_url
-                        keys: True
-                        lookup: context.group_title
-                        minLength: 1
-                        delay: 300
-                    custom:
-                        notsource:
-                            extractors:
-                                - context.target_not_source
-                - default:
-                    factory: checkbox
-                    props:
-                        class: form-check target_default
+                        structural: True
+                        class: input-group flex-nowrap
+                    widgets:
+                    - gid:
+                        factory: autocomplete
+                        props:
+                            source: expr:context.group_id_vocab_url
+                            keys: True
+                            lookup: context.group_title
+                            minLength: 1
+                            delay: 300
+                            valid_class: False
+                    - default_wrapper:
+                        factory: div
+                        props:
+                            structural: True
+                            class: input-group-text
+                        widgets:
+                        - default:
+                            factory: checkbox
+                            props:
+                                class: form-check-input mt-0 target_default
+                                title: i18n:localmanager_target_default:Default group
+                                valid_class: False
 - save:
     factory: submit
     props:

@@ -273,21 +273,126 @@ class BrowserSettingsTests:
         err = self.expectError(ExtractionError, tile.duplicate_rule, None, current)
         self.assertEqual(str(err.msg), 'localmanager_duplicate_rule_error')
 
+    def _target(self, source, gid):
+        """Extraction data of a target entry - its gid autocomplete, and the
+        rule above it: target -> targets array -> rule compound."""
+
+        class Data(dict):
+            pass
+
+        rule = {'source': SimpleNamespace(extracted={'value': source})}
+        data = Data(gid=SimpleNamespace(extracted={'value': gid, 'label': gid}))
+        data.parent = SimpleNamespace(parent=rule)
+        data.extracted = {'gid': {'value': gid}, 'default': False}
+        return data
+
+    def test_target_gid_required(self):
+        # Checked on the target entry rather than on the autocomplete: the
+        # message renders below the input group, not inside it
+        tile = self._lm_form()
+        data = self._target('a', 'b')
+        self.assertIs(tile.target_gid_required(None, data), data.extracted)
+        for gid in ('', None):
+            err = self.expectError(
+                ExtractionError,
+                tile.target_gid_required,
+                None,
+                self._target('a', gid),
+            )
+            self.assertEqual(str(err.msg), 'localmanager_target_empty')
+
     def test_target_not_source(self):
         tile = self._lm_form()
-
-        def data(source, target):
-            # gid -> target compound -> targets array -> rule compound
-            rule = {'source': SimpleNamespace(extracted={'value': source})}
-            targets = SimpleNamespace(parent=rule)
-            target_compound = SimpleNamespace(parent=targets)
-            return SimpleNamespace(extracted={'value': target}, parent=target_compound)
-
-        self.assertEqual(tile.target_not_source(None, data('a', 'b')), {'value': 'b'})
+        data = self._target('a', 'b')
+        self.assertIs(tile.target_not_source(None, data), data.extracted)
         err = self.expectError(
-            ExtractionError, tile.target_not_source, None, data('a', 'a')
+            ExtractionError, tile.target_not_source, None, self._target('a', 'a')
         )
         self.assertEqual(str(err.msg), 'localmanager_target_is_source_error')
+
+    @testing.principals(users={'manager': {}}, roles={'manager': ['manager']})
+    def test_empty_targets_message_aligned_with_array(self):
+        # The message of an empty target array renders after the array inside
+        # its field. The gap to the source sits on the field, so array and
+        # message start at the same place.
+        general_settings = get_root()['settings']['ugm_general']
+        general_settings.attrs.users_local_management_enabled = 'True'
+        try:
+            rule = 'localmanager_settings.rules.0'
+            request = self.layer.new_request()
+            request.params.update(
+                {
+                    f'{rule}.source': 'admin_group_1',
+                    f'{rule}.source.label': 'admin_group_1',
+                    'action.localmanager_settings.save': '1',
+                }
+            )
+            with self.layer.authenticated('manager'):
+                res = render_tile(
+                    get_root()['settings']['ugm_localmanager'], request, 'editform'
+                )
+        finally:
+            general_settings.invalidate()
+            self._drop_lm_rules()
+        field = res.find(f'id="field-{rule.replace(".", "-")}-targets"')
+        field_tag = res[res.rfind('<div', 0, field) : field]
+        self.assertIn('ps-md-3', field_tag)
+        array = res.find(f'id="array-{rule.replace(".", "-")}-targets"')
+        array_tag = res[res.rfind('<div', 0, array) : array]
+        self.assertNotIn('ms-md-3', array_tag)
+        message = res.find("No target GID's defined for source GID", array)
+        self.assertTrue(field < array < message)
+
+    @testing.principals(users={'manager': {}}, roles={'manager': ['manager']})
+    @testing.invalidate_settings
+    @testing.temp_directory
+    def test_target_input_group(self, tempdir):
+        # Group and default checkbox are one input group, ``[...    ][x]``,
+        # and a missing group is said below it - not inside, where it pushed
+        # the checkbox onto a line of its own
+        config_file = os.path.join(tempdir, 'localmanager.xml')
+        shutil.copy(testing.localmanager_config, config_file)
+        lm_settings = ugm_cfg.lm_settings
+        ugm_cfg.lm_settings = config_file
+        self._drop_lm_rules()
+        general_settings = get_root()['settings']['ugm_general']
+        general_settings.attrs.users_local_management_enabled = 'True'
+        try:
+            rule = 'localmanager_settings.rules.0'
+            request = self.layer.new_request()
+            request.params.update(
+                {
+                    f'{rule}.source': 'admin_group_1',
+                    f'{rule}.source.label': 'admin_group_1',
+                    f'{rule}.targets.0.gid': '',
+                    f'{rule}.targets.0.gid.label': '',
+                    f'{rule}.targets.0.default-exists': '1',
+                    'action.localmanager_settings.save': '1',
+                }
+            )
+            with self.layer.authenticated('manager'):
+                res = render_tile(
+                    get_root()['settings']['ugm_localmanager'], request, 'editform'
+                )
+            # The test layer renders bootstrap 3 - the message markup differs
+            # from bootstrap 5, its place does not
+            group = res.find('<div class="flex-nowrap input-group">')
+            gid = res.find(f'name="{rule}.targets.0.gid"', group)
+            default = res.find(f'name="{rule}.targets.0.default"', group)
+            closed = res.find('</div></div>', default)
+            message = res.find('No target GID defined', group)
+            self.assertTrue(-1 < group < gid < default < closed < message)
+            # What passed is not marked green after the submit
+            self.assertNotIn('is-valid', res)
+            # Not saved
+            self.assertEqual(
+                sorted(get_root()['settings']['ugm_localmanager'].attrs.keys()),
+                ['admin_group_1', 'admin_group_2'],
+            )
+        finally:
+            ugm_cfg.lm_settings = lm_settings
+            general_settings.invalidate()
+            self._drop_lm_rules()
 
     @testing.principals(users={'manager': {}}, roles={'manager': ['manager']})
     @testing.invalidate_settings
