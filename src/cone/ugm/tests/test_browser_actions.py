@@ -5,10 +5,10 @@ from cone.ugm.events import GroupDeletedEvent
 from cone.ugm.events import UserDeletedEvent
 from cone.ugm.tests.fixtures import local_management_enabled
 from cone.ugm.tests.fixtures import local_manager_principals
+from cone.ugm.tests.fixtures import register_event_handler
 from pyramid.exceptions import HTTPForbidden
 from pyramid.view import render_view_to_response
 from webob.multidict import MultiDict
-from zope.event import classhandler
 import json
 
 
@@ -171,9 +171,10 @@ class BrowserActionsTests:
 
         events_called = []
 
-        @classhandler.handler(UserDeletedEvent)
         def on_user_deleted(event):
             events_called.append('UserDeletedEvent')
+
+        register_event_handler(self, UserDeletedEvent, on_user_deleted)
 
         request = self.layer.new_request(type='json')
         with self.layer.authenticated('viewer'):
@@ -216,9 +217,10 @@ class BrowserActionsTests:
 
         events_called = []
 
-        @classhandler.handler(GroupDeletedEvent)
         def on_group_deleted(event):
             events_called.append('GroupDeletedEvent')
+
+        register_event_handler(self, GroupDeletedEvent, on_group_deleted)
 
         with self.layer.authenticated('viewer'):
             self.expectError(
@@ -374,15 +376,20 @@ class BrowserActionsTests:
     @local_management_enabled
     def test_user_add_to_group_action_local_manager_user_not_managed(self):
         # The editor role grants ``manage_membership`` on users outside the
-        # managed groups too. The action has no message for this case.
+        # managed groups too.
         user = get_root()['users']['unmanaged_user']
-        request = self.layer.new_request(type='json')
-        request.params['id'] = 'managed_group_0'
-        with self.layer.authenticated('local_editor'):
-            err = self.expectError(
-                Exception, render_view_to_response, user, request, name='add_item'
-            )
-        self.assertEqual(str(err), 'Unknown ManageMembershipError reason.')
+        res = self._render_action(user, 'local_editor', 'add_item', 'managed_group_0')
+        self.assertEqual(
+            res,
+            {
+                'message': (
+                    "Failed adding user 'unmanaged_user' to group 'managed_group_0'. "
+                    'Manage membership denied for user.'
+                ),
+                'success': False,
+            },
+        )
+        self.assertEqual(user.model.group_ids, ['managed_group_2'])
 
     @local_manager_principals
     @local_management_enabled
@@ -438,15 +445,19 @@ class BrowserActionsTests:
     @local_management_enabled
     def test_user_remove_from_group_action_local_manager_user_not_managed(self):
         # The editor role grants ``manage_membership`` on users outside the
-        # managed groups too. The action has no message for this case.
+        # managed groups too.
         user = get_root()['users']['unmanaged_user']
-        request = self.layer.new_request(type='json')
-        request.params['id'] = 'managed_group_0'
-        with self.layer.authenticated('local_editor'):
-            err = self.expectError(
-                Exception, render_view_to_response, user, request, name='remove_item'
-            )
-        self.assertEqual(str(err), 'Unknown ManageMembershipError reason.')
+        res = self._render_action(user, 'local_editor', 'remove_item', 'managed_group_0')
+        self.assertEqual(
+            res,
+            {
+                'message': (
+                    "Failed removing user 'unmanaged_user' from group "
+                    "'managed_group_0'. Manage membership denied for user."
+                ),
+                'success': False,
+            },
+        )
 
     @local_manager_principals
     @local_management_enabled
@@ -483,15 +494,20 @@ class BrowserActionsTests:
     @local_management_enabled
     def test_group_add_user_action_local_manager_group_not_managed(self):
         # The editor role grants ``manage_membership`` on groups outside the
-        # managed ones too. The action has no message for this case.
+        # managed ones too.
         group = get_root()['groups']['managed_group_2']
-        request = self.layer.new_request(type='json')
-        request.params['id'] = 'managed_user'
-        with self.layer.authenticated('local_editor'):
-            err = self.expectError(
-                Exception, render_view_to_response, group, request, name='add_item'
-            )
-        self.assertEqual(str(err), 'Unknown ManageMembershipError reason.')
+        res = self._render_action(group, 'local_editor', 'add_item', 'managed_user')
+        self.assertEqual(
+            res,
+            {
+                'message': (
+                    "Failed adding user 'managed_user' to group 'managed_group_2'. "
+                    'Manage membership denied for target group.'
+                ),
+                'success': False,
+            },
+        )
+        self.assertEqual(group.model.member_ids, ['unmanaged_user'])
 
     @local_manager_principals
     @local_management_enabled
@@ -546,15 +562,19 @@ class BrowserActionsTests:
     @local_management_enabled
     def test_group_remove_user_action_local_manager_group_not_managed(self):
         # The editor role grants ``manage_membership`` on groups outside the
-        # managed ones too. The action has no message for this case.
+        # managed ones too.
         group = get_root()['groups']['managed_group_2']
-        request = self.layer.new_request(type='json')
-        request.params['id'] = 'unmanaged_user'
-        with self.layer.authenticated('local_editor'):
-            err = self.expectError(
-                Exception, render_view_to_response, group, request, name='remove_item'
-            )
-        self.assertEqual(str(err), 'Unknown ManageMembershipError reason.')
+        res = self._render_action(group, 'local_editor', 'remove_item', 'unmanaged_user')
+        self.assertEqual(
+            res,
+            {
+                'message': (
+                    "Failed removing user 'unmanaged_user' from group "
+                    "'managed_group_2'. Manage membership denied for target group."
+                ),
+                'success': False,
+            },
+        )
 
 
 class TestBrowserActions(TileTestCase, BrowserActionsTests):

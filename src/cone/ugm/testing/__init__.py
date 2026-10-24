@@ -84,10 +84,7 @@ class principals:
             try:
                 fn(inst)
             finally:
-                try:
-                    self.remove_principals()
-                except Exception as e:
-                    raise e
+                self.remove_principals()
 
         return wrapper
 

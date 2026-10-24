@@ -141,16 +141,10 @@ class BrowserPortraitTests:
         user = get_root()['users']['user_1']
         self.assertIsNone(user.attrs.get('portrait'))
 
-
-class TestBrowserPortrait(TileTestCase, BrowserPortraitTests):
-    layer = testing.ugm_layer
-
     @testing.principals(
         users={'manager': {}, 'user_1': {}}, roles={'manager': ['manager']}
     )
     def test_delete_portrait(self):
-        # Not part of ``BrowserPortraitTests``: the SQL backend refuses to
-        # delete user attributes
         user = get_root()['users']['user_1']
         user.attrs['portrait'] = dummy_file_data('dummy.jpg')
         user()
@@ -160,3 +154,7 @@ class TestBrowserPortrait(TileTestCase, BrowserPortraitTests):
             render_tile(user, request, 'editform')
         user = get_root()['users']['user_1']
         self.assertIsNone(user.attrs.get('portrait'))
+
+
+class TestBrowserPortrait(TileTestCase, BrowserPortraitTests):
+    layer = testing.ugm_layer

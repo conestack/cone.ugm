@@ -56,6 +56,63 @@ def validate_remove_users_from_groups(model, user_ids, group_ids):
             raise ManageMembershipError(LM_TARGET_GID_IS_DEFAULT, group_id)
 
 
+def add_membership_error_message(request, error, user_ids, group_ids):
+    """Translated message for ``ManageMembershipError`` raised when adding
+    users to groups."""
+    if error.reason is LM_TARGET_UID_NOT_ALLOWED:
+        message = _(
+            'lm_add_target_uid_not_allowed',
+            default=(
+                "Failed adding user '${uid}' to group '${gid}'. "
+                'Manage membership denied for user.'
+            ),
+            mapping={'uid': error.data, 'gid': ', '.join(group_ids)},
+        )
+    else:
+        message = _(
+            'lm_add_target_gid_not_allowed',
+            default=(
+                "Failed adding user '${uid}' to group '${gid}'. "
+                'Manage membership denied for target group.'
+            ),
+            mapping={'uid': ', '.join(user_ids), 'gid': error.data},
+        )
+    return get_localizer(request).translate(message)
+
+
+def remove_membership_error_message(request, error, user_ids, group_ids):
+    """Translated message for ``ManageMembershipError`` raised when removing
+    users from groups."""
+    if error.reason is LM_TARGET_UID_NOT_ALLOWED:
+        message = _(
+            'lm_remove_target_uid_not_allowed',
+            default=(
+                "Failed removing user '${uid}' from group '${gid}'. "
+                'Manage membership denied for user.'
+            ),
+            mapping={'uid': error.data, 'gid': ', '.join(group_ids)},
+        )
+    elif error.reason is LM_TARGET_GID_NOT_ALLOWED:
+        message = _(
+            'lm_remove_target_gid_not_allowed',
+            default=(
+                "Failed removing user '${uid}' from group '${gid}'. "
+                'Manage membership denied for target group.'
+            ),
+            mapping={'uid': ', '.join(user_ids), 'gid': error.data},
+        )
+    else:
+        message = _(
+            'lm_remove_target_gid_is_default',
+            default=(
+                "Failed removing user '${uid}' from group '${gid}'. "
+                'Target group is default group of user.'
+            ),
+            mapping={'uid': ', '.join(user_ids), 'gid': error.data},
+        )
+    return get_localizer(request).translate(message)
+
+
 ###############################################################################
 # Actions for User application node
 ###############################################################################
@@ -123,19 +180,7 @@ def user_add_to_group_action(model, request):
         )
         return {'success': True, 'message': message}
     except ManageMembershipError as e:
-        if e.reason is not LM_TARGET_GID_NOT_ALLOWED:
-            raise Exception('Unknown ManageMembershipError reason.')
-        localizer = get_localizer(request)
-        message = localizer.translate(
-            _(
-                'lm_add_target_gid_not_allowed',
-                default=(
-                    "Failed adding user '${uid}' to group '${gid}'. "
-                    'Manage membership denied for target group.'
-                ),
-                mapping={'uid': user.id, 'gid': e.data},
-            )
-        )
+        message = add_membership_error_message(request, e, [user.id], group_ids)
         return {'success': False, 'message': message}
     except Exception as e:
         return {'success': False, 'message': str(e)}
@@ -173,31 +218,7 @@ def user_remove_from_group_action(model, request):
         )
         return {'success': True, 'message': message}
     except ManageMembershipError as e:
-        localizer = get_localizer(request)
-        if e.reason is LM_TARGET_GID_NOT_ALLOWED:
-            message = localizer.translate(
-                _(
-                    'lm_remove_target_gid_not_allowed',
-                    default=(
-                        "Failed removing user '${uid}' from group '${gid}'. "
-                        'Manage membership denied for target group.'
-                    ),
-                    mapping={'uid': user.id, 'gid': e.data},
-                )
-            )
-        elif e.reason is LM_TARGET_GID_IS_DEFAULT:
-            message = localizer.translate(
-                _(
-                    'lm_remove_target_gid_is_default',
-                    default=(
-                        "Failed removing user '${uid}' from group '${gid}'. "
-                        'Target group is default group of user.'
-                    ),
-                    mapping={'uid': user.id, 'gid': e.data},
-                )
-            )
-        else:
-            raise Exception('Unknown ManageMembershipError reason.')
+        message = remove_membership_error_message(request, e, [user.id], group_ids)
         return {'success': False, 'message': message}
     except Exception as e:
         return {'success': False, 'message': str(e)}
@@ -264,19 +285,7 @@ def group_add_user_action(model, request):
         )
         return {'success': True, 'message': message}
     except ManageMembershipError as e:
-        if e.reason is not LM_TARGET_UID_NOT_ALLOWED:
-            raise Exception('Unknown ManageMembershipError reason.')
-        localizer = get_localizer(request)
-        message = localizer.translate(
-            _(
-                'lm_add_target_uid_not_allowed',
-                default=(
-                    "Failed adding user '${uid}' to group '${gid}'. "
-                    'Manage membership denied for user.'
-                ),
-                mapping={'uid': e.data, 'gid': group.id},
-            )
-        )
+        message = add_membership_error_message(request, e, user_ids, [group.id])
         return {'success': False, 'message': message}
     except Exception as e:
         return {'success': False, 'message': str(e)}
@@ -314,31 +323,7 @@ def group_remove_user_action(model, request):
         )
         return {'success': True, 'message': message}
     except ManageMembershipError as e:
-        localizer = get_localizer(request)
-        if e.reason is LM_TARGET_UID_NOT_ALLOWED:
-            message = localizer.translate(
-                _(
-                    'lm_remove_target_uid_not_allowed',
-                    default=(
-                        "Failed removing user '${uid}' from group '${gid}'. "
-                        'Manage membership denied for user.'
-                    ),
-                    mapping={'uid': e.data, 'gid': group.id},
-                )
-            )
-        elif e.reason is LM_TARGET_GID_IS_DEFAULT:
-            message = localizer.translate(
-                _(
-                    'lm_remove_target_gid_is_default',
-                    default=(
-                        "Failed removing user '${uid}' from group '${gid}'. "
-                        'Target group is default group of user.'
-                    ),
-                    mapping={'uid': ', '.join(user_ids), 'gid': e.data},
-                )
-            )
-        else:
-            raise Exception('Unknown ManageMembershipError reason.')
+        message = remove_membership_error_message(request, e, user_ids, [group.id])
         return {'success': False, 'message': message}
     except Exception as e:
         return {'success': False, 'message': str(e)}

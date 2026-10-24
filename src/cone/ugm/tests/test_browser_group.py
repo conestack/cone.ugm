@@ -9,10 +9,10 @@ from cone.ugm.events import GroupModifiedEvent
 from cone.ugm.model.group import Group
 from cone.ugm.tests.fixtures import local_management_enabled
 from cone.ugm.tests.fixtures import local_manager_principals
+from cone.ugm.tests.fixtures import register_event_handler
 from cone.ugm.utils import general_settings
 from pyramid.httpexceptions import HTTPForbidden
 from webob.exc import HTTPFound
-from zope.event import classhandler
 
 
 class BrowserGroupTests:
@@ -119,9 +119,10 @@ class BrowserGroupTests:
 
         events_called = []
 
-        @classhandler.handler(GroupCreatedEvent)
         def on_group_created(event):
             events_called.append('GroupCreatedEvent')
+
+        register_event_handler(self, GroupCreatedEvent, on_group_created)
 
         with self.layer.authenticated('viewer'):
             self.expectError(HTTPForbidden, render_tile, groups, request, 'add')
@@ -169,9 +170,10 @@ class BrowserGroupTests:
 
         events_called = []
 
-        @classhandler.handler(GroupModifiedEvent)
         def on_user_created(event):
             events_called.append('GroupModifiedEvent')
+
+        register_event_handler(self, GroupModifiedEvent, on_user_created)
 
         with self.layer.authenticated('manager'):
             res = render_tile(group, request, 'editform')
@@ -210,6 +212,26 @@ class BrowserGroupTests:
         with self.layer.authenticated('manager'):
             listed = [item['sort_by'] for item in listing.listing_items]
         self.assertEqual(listed, ['user_1'])
+
+    @testing.principals(
+        users={
+            'manager': {},
+            'user_1': {},
+            'user_2': {'email': 'user_2@example.com'},
+        },
+        groups={'group_1': {}},
+        membership={'group_1': ['user_1', 'user_2']},
+        roles={'manager': ['manager']},
+    )
+    def test_columnlisting_filter_user_without_listed_attribute(self):
+        group = get_root()['groups']['group_1']
+        listing = UsersOfGroupColumnListing()
+        listing.model = group
+        listing.request = self.layer.new_request()
+        listing.request.params['filter'] = 'user_*'
+        with self.layer.authenticated('manager'):
+            listed = listing.listing_items
+        self.assertEqual(len(listed), 2)
 
     @local_manager_principals
     @local_management_enabled

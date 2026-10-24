@@ -80,7 +80,9 @@ class UsersListing(ColumnListing):
             attrs = user.attrs
             # reduce by search term
             if filter_term:
-                s_attrs = [attrs[attr] for attr in attrlist if attrs[attr] is not None]
+                s_attrs = [
+                    attrs.get(attr) for attr in attrlist if attrs.get(attr) is not None
+                ]
                 if not fnmatch.filter(s_attrs, filter_term):
                     continue
             uid = user.name

@@ -9,10 +9,10 @@ from cone.ugm.events import UserModifiedEvent
 from cone.ugm.model.user import User
 from cone.ugm.tests.fixtures import local_management_enabled
 from cone.ugm.tests.fixtures import local_manager_principals
+from cone.ugm.tests.fixtures import register_event_handler
 from cone.ugm.utils import general_settings
 from pyramid.httpexceptions import HTTPForbidden
 from webob.exc import HTTPFound
-from zope.event import classhandler
 
 
 class BrowserUserTests:
@@ -119,9 +119,10 @@ class BrowserUserTests:
 
         events_called = []
 
-        @classhandler.handler(UserCreatedEvent)
         def on_user_created(event):
             events_called.append('UserCreatedEvent')
+
+        register_event_handler(self, UserCreatedEvent, on_user_created)
 
         with self.layer.authenticated('viewer'):
             self.expectError(HTTPForbidden, render_tile, users, request, 'add')
@@ -179,9 +180,10 @@ class BrowserUserTests:
 
         events_called = []
 
-        @classhandler.handler(UserModifiedEvent)
         def on_user_modified(event):
             events_called.append('UserModifiedEvent')
+
+        register_event_handler(self, UserModifiedEvent, on_user_modified)
 
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'editform')
@@ -220,6 +222,22 @@ class BrowserUserTests:
             listed = [item['sort_by'] for item in listing.listing_items]
         self.assertEqual(listed, ['group_1'])
 
+    @testing.principals(
+        users={'user_1': {}, 'manager': {}},
+        groups={'group_1': {}, 'group_2': {'groupname': 'Group 2'}},
+        membership={'group_1': ['user_1'], 'group_2': ['user_1']},
+        roles={'manager': ['manager']},
+    )
+    def test_columnlisting_filter_group_without_listed_attribute(self):
+        user = get_root()['users']['user_1']
+        listing = GroupsOfUserColumnListing()
+        listing.model = user
+        listing.request = self.layer.new_request()
+        listing.request.params['filter'] = 'group_*'
+        with self.layer.authenticated('manager'):
+            listed = listing.listing_items
+        self.assertEqual(len(listed), 2)
+
     @local_manager_principals
     @local_management_enabled
     def test_allcolumnlisting_local_manager(self):
@@ -249,6 +267,21 @@ class BrowserUserTests:
         users = get_root()['users']
         request = self._add_user_request(
             **{'userform.login': 'max@example.com', 'userform.email': ''}
+        )
+        with self.layer.authenticated('manager'):
+            render_tile(users, request, 'add')
+        self.assertEqual(users['user_1'].attrs['email'], 'max@example.com')
+
+    @testing.principals(users={'manager': {}}, roles={'manager': ['manager']})
+    @testing.invalidate_settings
+    def test_add_user_without_login_name(self):
+        # The login field is optional, an empty login keeps the login name
+        # attribute as entered
+        settings = general_settings(get_root())
+        settings.attrs.users_login_name_attr = 'email'
+        users = get_root()['users']
+        request = self._add_user_request(
+            **{'userform.login': '', 'userform.email': 'max@example.com'}
         )
         with self.layer.authenticated('manager'):
             render_tile(users, request, 'add')

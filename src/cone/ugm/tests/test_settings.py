@@ -39,6 +39,17 @@ class SettingsTests:
         settings.invalidate()
         self.assertFalse(attrs is settings.attrs)
 
+    def test_UGMSettings_invalidate_keeps_given_attrs(self):
+        class MyUGMSettings(UGMSettings):
+            initialize_ugm_on_invalidate = False
+
+        settings = MyUGMSettings()
+        settings._foo = 'foo'
+        attrs = ['foo']
+        settings.invalidate(attrs)
+        self.assertEqual(attrs, ['foo'])
+        self.assertFalse(hasattr(settings, '_foo'))
+
     @testing.invalidate_settings
     def test_UGMGeneralSettings(self):
         settings = get_root()['settings']['ugm_general']

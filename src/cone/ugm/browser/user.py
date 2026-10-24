@@ -80,7 +80,9 @@ class GroupsListing(ColumnListing):
             attrs = group.attrs
             # reduce by search term
             if filter_term:
-                s_attrs = [attrs[attr] for attr in attrlist if attrs[attr] is not None]
+                s_attrs = [
+                    attrs.get(attr) for attr in attrlist if attrs.get(attr) is not None
+                ]
                 if not fnmatch.filter(s_attrs, filter_term):
                     continue
             gid = group.name
@@ -209,7 +211,10 @@ class UserAddForm(UserForm, Form):
         password = extracted.pop('password')
         login_name = general_settings(self.model).attrs.users_login_name_attr
         if login_name:
-            extracted[login_name] = extracted.pop('login')
+            # the login field is optional
+            login = extracted.pop('login', None)
+            if login:
+                extracted[login_name] = login
         user = users.create(user_id, **extracted)
         users()
         if self.model.local_manager_consider_for_user:

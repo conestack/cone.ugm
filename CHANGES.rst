@@ -4,6 +4,29 @@ Changes
 2.0.1 (unreleased)
 ------------------
 
+- Fix the membership actions failing with "Unknown ManageMembershipError
+  reason." for local managers, who also have the ``editor`` role. All local
+  manager reasons return their error message now, built by
+  ``add_membership_error_message`` and ``remove_membership_error_message``.
+  [rnix]
+
+- Fix the user and group listing filters failing with ``KeyError`` if a listed
+  attribute is not set on a principal.
+  [rnix]
+
+- Fix the user add form failing with ``KeyError`` if a login name attribute is
+  configured and the optional login field is left empty.
+  [rnix]
+
+- Fix ``UGMSettings.invalidate`` extending its shared default list and the
+  given ``attrs`` on every call.
+  [rnix]
+
+- Run the portrait deletion test with all backends, unregister the event
+  handlers of the tests and remove a no-op ``except`` in
+  ``testing.principals``.
+  [rnix]
+
 - Fix the ``group:`` prefix of group role principals in
   ``cone.ugm.testing.principals``, the group id lost its first character.
   [rnix]

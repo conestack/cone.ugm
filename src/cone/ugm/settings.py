@@ -35,9 +35,8 @@ class UGMSettings(SettingsNode):
             raise ValueError(msg)
         return XMLProperties(config_file)
 
-    def invalidate(self, attrs=[]):
-        attrs.append('attrs')
-        for attr in attrs:
+    def invalidate(self, attrs=None):
+        for attr in [*(attrs or []), 'attrs']:
             _attr = f'_{attr}'
             if hasattr(self, _attr):
                 delattr(self, _attr)

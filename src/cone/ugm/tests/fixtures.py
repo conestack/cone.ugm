@@ -1,5 +1,6 @@
 from cone.app import get_root
 from cone.ugm import testing
+from zope.event import classhandler
 
 
 # ``admin_group_1`` manages ``managed_group_0`` and ``managed_group_1``, the
@@ -44,3 +45,10 @@ def local_management_enabled(fn):
             settings.invalidate()
 
     return wrapper
+
+
+def register_event_handler(testcase, event_class, handler):
+    """Register ``handler`` for ``event_class`` and unregister it when
+    ``testcase`` is finished."""
+    classhandler.handler(event_class, handler)
+    testcase.addCleanup(classhandler.registry[event_class].remove, handler)
