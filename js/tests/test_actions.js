@@ -71,7 +71,7 @@ QUnit.module('cone.ugm.actions.PrincipalActions', (hooks) => {
         assert.strictEqual(dialog_opts.title, 'Delete Principal');
         assert.strictEqual(
             dialog_opts.message,
-            'Do you really want to delete this item?\n\n\n"user&lt;1&gt;"',
+            'Do you really want to delete this item?<br><br>"user&lt;1&gt;"',
         );
         assert.strictEqual(request_opts, undefined);
 
@@ -91,9 +91,28 @@ QUnit.module('cone.ugm.actions.PrincipalActions', (hooks) => {
 
         const body = $('.modal.dialog .modal-body');
         assert.strictEqual($('b, img', body).length, 0);
-        assert.strictEqual(body.text(), `Do you really want to delete this item?\n\n\n"${id}"`);
+        assert.strictEqual(body.text(), `Do you really want to delete this item?"${id}"`);
         $('.modal.dialog button.cancel').trigger('click');
         assert.strictEqual($('.modal.dialog').length, 0);
+    });
+
+    QUnit.test('delete_item shows principal id on its own line in dialog', (assert) => {
+        create_delete_listing();
+
+        $('a.delete_item', container).trigger('click');
+
+        const body = $('.modal.dialog .modal-body');
+        const lines = body
+            .contents()
+            .toArray()
+            .map((node) => (node.nodeName === 'BR' ? '<br>' : node.textContent));
+        assert.deepEqual(lines, [
+            'Do you really want to delete this item?',
+            '<br>',
+            '<br>',
+            '"user<1>"',
+        ]);
+        $('.modal.dialog button.cancel').trigger('click');
     });
 
     QUnit.test('delete_item failure', (assert) => {

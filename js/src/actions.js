@@ -46,7 +46,7 @@ export class PrincipalActions {
                 li.remove();
             },
         });
-        const msg = `Do you really want to delete this item?\n\n\n"${id}"`;
+        const msg = `Do you really want to delete this item?<br><br>"${id}"`;
         ts.show_dialog({
             title: 'Delete Principal',
             message: msg,

@@ -4,6 +4,11 @@ Changes
 2.0.1 (unreleased)
 ------------------
 
+- Fix the line breaks between question and principal id in the delete
+  principal dialog getting lost. The message is rendered as HTML, so the
+  principal id is separated by ``<br>`` elements now.
+  [rnix]
+
 - Fix HTML injection in the delete principal dialog. The principal id is
   displayed as text now, all occurrences of ``&``, ``<``, ``>`` and quotes get
   escaped, not only the first ``<`` and ``>``.
