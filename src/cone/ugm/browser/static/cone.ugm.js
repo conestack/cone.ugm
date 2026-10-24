@@ -15,13 +15,13 @@ var cone_ugm = (function (exports, $, ts, cone) {
                 id = col.text();
             id = id.replace('<', '&lt;');
             id = id.replace('>', '&gt;');
-            let options = {
-                action_id: 'delete_item'
+            const options = {
+                action_id: 'delete_item',
             };
-            let target = elem.attr('ajax:target');
+            const target = elem.attr('ajax:target');
             $.extend(options, ts.ajax.parse_target(target));
             $.extend(options, {
-                success: function(data) {
+                success: (data) => {
                     if (!data) {
                         ts.show_error('Empty response');
                         return;
@@ -30,33 +30,32 @@ var cone_ugm = (function (exports, $, ts, cone) {
                         ts.show_error(data.message);
                         return;
                     }
-                    let li = elem.parent().parent();
+                    const li = elem.parent().parent();
                     if (li.hasClass('selected')) {
-                        let col = $('div.right_column');
+                        const col = $('div.right_column');
                         col.empty();
                     }
                     li.remove();
-                }
+                },
             });
-            let msg = `Do you really want to delete this item?\n\n\n"${id}"`;
+            const msg = `Do you really want to delete this item?\n\n\n"${id}"`;
             ts.show_dialog({
                 title: 'Delete Principal',
                 message: msg,
-                on_confirm: function(inst) {
+                on_confirm: function (_inst) {
                     this.perform(options);
-                }.bind(this)
+                }.bind(this),
             });
         }
         add_item(evt) {
             evt.preventDefault();
             evt.stopPropagation();
-            let elem = $(evt.currentTarget),
+            const elem = $(evt.currentTarget),
                 target = elem.attr('ajax:target'),
-                options = ts.ajax.parse_target(target),
-                that = this;
+                options = ts.ajax.parse_target(target);
             $.extend(options, {
                 action_id: 'add_item',
-                success: function(data) {
+                success: (data) => {
                     if (!data) {
                         ts.show_error('Empty response');
                         return;
@@ -68,28 +67,27 @@ var cone_ugm = (function (exports, $, ts, cone) {
                     elem.off()
                         .removeClass('add_item')
                         .addClass('add_item_disabled')
-                        .on('click', function(e) {
+                        .on('click', (e) => {
                             e.preventDefault();
                         });
                     $('.remove_item_disabled', elem.parent())
                         .off()
                         .removeClass('remove_item_disabled')
                         .addClass('remove_item')
-                        .on('click', that.remove_item_handle);
-                }
+                        .on('click', this.remove_item_handle);
+                },
             });
             this.perform(options);
         }
         remove_item(evt) {
             evt.preventDefault();
             evt.stopPropagation();
-            let elem = $(evt.currentTarget),
+            const elem = $(evt.currentTarget),
                 target = elem.attr('ajax:target'),
-                options = ts.ajax.parse_target(target),
-                that = this;
+                options = ts.ajax.parse_target(target);
             $.extend(options, {
                 action_id: 'remove_item',
-                success: function(data) {
+                success: (data) => {
                     if (!data) {
                         ts.show_error('Empty response');
                         return;
@@ -101,15 +99,15 @@ var cone_ugm = (function (exports, $, ts, cone) {
                     elem.off()
                         .removeClass('remove_item')
                         .addClass('remove_item_disabled')
-                        .on('click', function(e) {
+                        .on('click', (e) => {
                             e.preventDefault();
                         });
                     $('.add_item_disabled', elem.parent())
                         .off()
                         .removeClass('add_item_disabled')
                         .addClass('add_item')
-                        .on('click', that.add_item_handle);
-                }
+                        .on('click', this.add_item_handle);
+                },
             });
             this.perform(options);
         }
@@ -118,23 +116,19 @@ var cone_ugm = (function (exports, $, ts, cone) {
                 url: `${ts.parse_url(opts.url)}/${opts.action_id}`,
                 type: 'json',
                 params: opts.params,
-                success: opts.success
+                success: opts.success,
             });
         }
     }
 
     class PrincipalListing {
         static initialize(context) {
-            cone.BatchedItemsSearch.initialize(
-                context,
-                'div.column_filter input',
-                'filter'
-            );
+            cone.BatchedItemsSearch.initialize(context, 'div.column_filter input', 'filter');
             new LeftPrincipalListing(context);
             new RightPrincipalListing(context);
         }
         constructor() {
-            this.actions = new PrincipalActions;
+            this.actions = new PrincipalActions();
         }
         noop(evt) {
             evt.preventDefault();
@@ -150,41 +144,41 @@ var cone_ugm = (function (exports, $, ts, cone) {
     class LeftPrincipalListing extends PrincipalListing {
         constructor(context) {
             super();
-            let add_btn = $('div.add_button button', context);
+            const add_btn = $('div.add_button button', context);
             add_btn.off('click').on('click', this.add_principal.bind(this));
-            let actions = $('div.columnitems div.actions', context);
-            let delete_actions = $('a.delete_item', actions);
+            const actions = $('div.columnitems div.actions', context);
+            const delete_actions = $('a.delete_item', actions);
             delete_actions.off().on('click', this.actions.delete_item);
-            let delete_actions_disabled = $('a.delete_item_disabled', actions);
+            const delete_actions_disabled = $('a.delete_item_disabled', actions);
             delete_actions_disabled.off().on('click', this.noop);
-            let listing_items = $('ul.leftlisting li', context);
+            const listing_items = $('ul.leftlisting li', context);
             listing_items.off().on('click', this.show_item.bind(this));
         }
         add_principal(evt) {
             evt.preventDefault();
             evt.stopPropagation();
-            let listing = $('.left_column ul.leftlisting');
+            const listing = $('.left_column ul.leftlisting');
             this.reset_selected(listing);
-            let elem = $(evt.currentTarget),
+            const elem = $(evt.currentTarget),
                 target = ts.ajax.parse_target(elem.attr('ajax:target'));
             ts.ajax.action({
                 name: 'add',
                 selector: '.right_column',
                 mode: 'inner',
                 url: target.url,
-                params: target.params
+                params: target.params,
             });
         }
         show_item(evt) {
-            let li = $(evt.currentTarget);
+            const li = $(evt.currentTarget);
             this.set_selected(li);
-            let target = ts.ajax.parse_target(li.attr('ajax:target'));
+            const target = ts.ajax.parse_target(li.attr('ajax:target'));
             ts.ajax.action({
                 name: 'rightcolumn',
                 selector: '.right_column',
                 mode: 'replace',
                 url: target.url,
-                params: target.params
+                params: target.params,
             });
             return false;
         }
@@ -192,24 +186,24 @@ var cone_ugm = (function (exports, $, ts, cone) {
     class RightPrincipalListing extends PrincipalListing {
         constructor(context) {
             super();
-            let actions = $('div.columnitems div.actions', context);
-            let add_actions = $('a.add_item', actions);
+            const actions = $('div.columnitems div.actions', context);
+            const add_actions = $('a.add_item', actions);
             add_actions.off().on('click', this.actions.add_item);
-            let add_actions_disabled = $('a.add_item_disabled', actions);
+            const add_actions_disabled = $('a.add_item_disabled', actions);
             add_actions_disabled.off().on('click', this.noop);
-            let remove_actions = $('a.remove_item', actions);
+            const remove_actions = $('a.remove_item', actions);
             remove_actions.off().on('click', this.actions.remove_item);
-            let remove_actions_disabled = $('a.remove_item_disabled', actions);
+            const remove_actions_disabled = $('a.remove_item_disabled', actions);
             remove_actions_disabled.off().on('click', this.noop);
-            let listing_items = $('ul.rightlisting li', context);
+            const listing_items = $('ul.rightlisting li', context);
             listing_items.off().on('click', this.show_item.bind(this));
-            let list_all_action = $('div.column_limit input.list_all', context);
+            const list_all_action = $('div.column_limit input.list_all', context);
             list_all_action.off().on('click', this.list_related.bind(this));
         }
         show_item(evt) {
-            let li = $(evt.currentTarget);
+            const li = $(evt.currentTarget);
             this.set_selected(li);
-            let target = li.attr('ajax:target');
+            const target = li.attr('ajax:target');
             ts.ajax.trigger('contextchanged', '.contextsensitiv', target);
             ts.ajax.trigger('contextchanged', '#content', target);
             return false;
@@ -222,18 +216,18 @@ var cone_ugm = (function (exports, $, ts, cone) {
             } else {
                 action = 'columnlisting';
             }
-            let target = ts.ajax.parse_target(elem.attr('ajax:target'));
+            const target = ts.ajax.parse_target(elem.attr('ajax:target'));
             ts.ajax.action({
                 name: action,
                 selector: 'div.right_column .columnlisting',
                 mode: 'replace',
                 url: target.url,
-                params: target.params
+                params: target.params,
             });
         }
     }
 
-    $(function() {
+    $(() => {
         ts.ajax.register(PrincipalListing.initialize, true);
     });
 

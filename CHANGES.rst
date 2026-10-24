@@ -4,6 +4,24 @@ Changes
 2.0.1 (unreleased)
 ------------------
 
+- Fix the JS test import map: jQuery 4 module path and a ``cone`` stub.
+  [rnix]
+
+- Extend the JS tests to 100 % coverage, all modules including bundles are
+  loaded by the tests now.
+  [rnix]
+
+- Lint and format the JS code with biome. ``make check`` runs ``biome check``,
+  ``make format`` runs ``biome check --write`` (see ``include.mk``). Behavior
+  unchanged.
+  [rnix]
+
+- JS tooling: Commit ``pnpm-lock.yaml``. Upgrade ``@web/test-runner`` to 1.0
+  and run the JS tests headless in Chromium via Playwright. Drop the accidental
+  ``install`` dev dependency. Pin patched versions of vulnerable transitive
+  dependencies via ``pnpm.overrides``.
+  [rnix]
+
 - Fix the membership actions failing with "Unknown ManageMembershipError
   reason." for local managers, who also have the ``editor`` role. All local
   manager reasons return their error message now, built by

@@ -1,10 +1,10 @@
 import * as actions from './actions.js';
 import * as listing from './listing.js';
 
-let api = {};
+const api = {};
 
 Object.assign(api, actions);
 Object.assign(api, listing);
 
-let ugm = api;
+const ugm = api;
 export default ugm;

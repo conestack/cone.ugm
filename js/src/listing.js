@@ -1,17 +1,12 @@
+import cone from 'cone';
 import $ from 'jquery';
 import ts from 'treibstoff';
-import cone from 'cone';
-import {PrincipalActions} from './actions.js';
+import { PrincipalActions } from './actions.js';
 
 export class PrincipalListing {
-
     static initialize(context) {
         // bind listing filter
-        cone.BatchedItemsSearch.initialize(
-            context,
-            'div.column_filter input',
-            'filter'
-        );
+        cone.BatchedItemsSearch.initialize(context, 'div.column_filter input', 'filter');
 
         // bind principal listings
         new LeftPrincipalListing(context);
@@ -19,7 +14,7 @@ export class PrincipalListing {
     }
 
     constructor() {
-        this.actions = new PrincipalActions;
+        this.actions = new PrincipalActions();
     }
 
     noop(evt) {
@@ -37,25 +32,24 @@ export class PrincipalListing {
 }
 
 export class LeftPrincipalListing extends PrincipalListing {
-
     constructor(context) {
         super();
 
         // bind add principal button
-        let add_btn = $('div.add_button button', context);
+        const add_btn = $('div.add_button button', context);
         add_btn.off('click').on('click', this.add_principal.bind(this));
 
         // bind listing item actions
-        let actions = $('div.columnitems div.actions', context);
+        const actions = $('div.columnitems div.actions', context);
 
-        let delete_actions = $('a.delete_item', actions);
+        const delete_actions = $('a.delete_item', actions);
         delete_actions.off().on('click', this.actions.delete_item);
 
-        let delete_actions_disabled = $('a.delete_item_disabled', actions);
+        const delete_actions_disabled = $('a.delete_item_disabled', actions);
         delete_actions_disabled.off().on('click', this.noop);
 
         // bind item navigation
-        let listing_items = $('ul.leftlisting li', context);
+        const listing_items = $('ul.leftlisting li', context);
         listing_items.off().on('click', this.show_item.bind(this));
     }
 
@@ -63,72 +57,71 @@ export class LeftPrincipalListing extends PrincipalListing {
         evt.preventDefault();
         evt.stopPropagation();
 
-        let listing = $('.left_column ul.leftlisting');
+        const listing = $('.left_column ul.leftlisting');
         this.reset_selected(listing);
 
-        let elem = $(evt.currentTarget),
+        const elem = $(evt.currentTarget),
             target = ts.ajax.parse_target(elem.attr('ajax:target'));
         ts.ajax.action({
             name: 'add',
             selector: '.right_column',
             mode: 'inner',
             url: target.url,
-            params: target.params
-        })
+            params: target.params,
+        });
     }
 
     show_item(evt) {
-        let li = $(evt.currentTarget);
+        const li = $(evt.currentTarget);
         this.set_selected(li);
 
-        let target = ts.ajax.parse_target(li.attr('ajax:target'));
+        const target = ts.ajax.parse_target(li.attr('ajax:target'));
         ts.ajax.action({
             name: 'rightcolumn',
             selector: '.right_column',
             mode: 'replace',
             url: target.url,
-            params: target.params
+            params: target.params,
         });
         return false;
     }
 }
 
 export class RightPrincipalListing extends PrincipalListing {
-
     constructor(context) {
         super();
 
         // bind listing item actions
-        let actions = $('div.columnitems div.actions', context);
+        const actions = $('div.columnitems div.actions', context);
 
-        let add_actions = $('a.add_item', actions);
+        const add_actions = $('a.add_item', actions);
         add_actions.off().on('click', this.actions.add_item);
 
-        let add_actions_disabled = $('a.add_item_disabled', actions);
+        const add_actions_disabled = $('a.add_item_disabled', actions);
         add_actions_disabled.off().on('click', this.noop);
 
-        let remove_actions = $('a.remove_item', actions);
+        const remove_actions = $('a.remove_item', actions);
         remove_actions.off().on('click', this.actions.remove_item);
 
-        let remove_actions_disabled = $('a.remove_item_disabled', actions);
+        const remove_actions_disabled = $('a.remove_item_disabled', actions);
         remove_actions_disabled.off().on('click', this.noop);
 
         // bind item navigation
-        let listing_items = $('ul.rightlisting li', context);
+        const listing_items = $('ul.rightlisting li', context);
         listing_items.off().on('click', this.show_item.bind(this));
 
         // bind list all action
         // XXX: changed to list_all, wait for group in group to fix naming
-        let list_all_action = $('div.column_limit input.list_all', context);
+        const list_all_action = $('div.column_limit input.list_all', context);
         list_all_action.off().on('click', this.list_related.bind(this));
     }
 
     show_item(evt) {
-        let li = $(evt.currentTarget);
+        const li = $(evt.currentTarget);
         this.set_selected(li);
 
         // reload context sensitiv tiles and context with new target
-        let target = li.attr('ajax:target');
+        const target = li.attr('ajax:target');
         ts.ajax.trigger('contextchanged', '.contextsensitiv', target);
         ts.ajax.trigger('contextchanged', '#content', target);
         return false;
@@ -142,13 +135,13 @@ export class RightPrincipalListing extends PrincipalListing {
         } else {
             action = 'columnlisting';
         }
-        let target = ts.ajax.parse_target(elem.attr('ajax:target'));
+        const target = ts.ajax.parse_target(elem.attr('ajax:target'));
         ts.ajax.action({
             name: action,
             selector: 'div.right_column .columnlisting',
             mode: 'replace',
             url: target.url,
-            params: target.params
+            params: target.params,
         });
     }
 }
