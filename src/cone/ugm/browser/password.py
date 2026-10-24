@@ -36,10 +36,10 @@ class ChangePasswordAction(LinkAction):
 
     @property
     def display(self):
-        return (
-            ugm_backend.ugm is not None
-            and self.request.authenticated_userid not in [security.ADMIN_USER, None]
-        )
+        return ugm_backend.ugm is not None and self.request.authenticated_userid not in [
+            security.ADMIN_USER,
+            None,
+        ]
 
     @property
     def href(self):

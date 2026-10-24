@@ -66,13 +66,9 @@ class BrowserPasswordTests:
         request.params['action.change_password_form.change'] = '1'
         with self.layer.authenticated('user_1'):
             data = form.form.extract(request)
-            self.assertEqual(
-                data['current_password'].errors[0].msg, 'no_password_given'
-            )
+            self.assertEqual(data['current_password'].errors[0].msg, 'no_password_given')
             self.assertEqual(data['new_password'].errors[0].msg, 'no_password_given')
-            self.assertEqual(
-                data['confirm_password'].errors[0].msg, 'no_password_given'
-            )
+            self.assertEqual(data['confirm_password'].errors[0].msg, 'no_password_given')
 
         request.params['change_password_form.current_password'] = 'invalid'
         with self.layer.authenticated('user_1'):
@@ -85,9 +81,7 @@ class BrowserPasswordTests:
         with self.layer.authenticated('user_1'):
             data = form.form.extract(request)
             self.assertEqual(data['current_password'].errors, [])
-            self.assertEqual(
-                data['confirm_password'].errors[0].msg, 'password_missmatch'
-            )
+            self.assertEqual(data['confirm_password'].errors[0].msg, 'password_missmatch')
 
         request.params['change_password_form.confirm_password'] = '123456'
         with self.layer.authenticated('user_1'):

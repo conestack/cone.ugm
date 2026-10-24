@@ -216,9 +216,7 @@ class PrincipalIdFieldFactory:
 user_id_field_factory = user_field('id')(PrincipalIdFieldFactory(UserExistsExtractor))
 
 # register group ID field factory
-group_id_field_factory = group_field('id')(
-    PrincipalIdFieldFactory(GroupExistsExtractor)
-)
+group_id_field_factory = group_field('id')(PrincipalIdFieldFactory(GroupExistsExtractor))
 
 
 ###############################################################################

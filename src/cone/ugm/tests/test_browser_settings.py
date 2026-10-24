@@ -13,7 +13,6 @@ from pyramid.view import render_view_to_response
 from types import SimpleNamespace
 from unittest import mock
 from yafowil.base import ExtractionError
-
 import os
 import re
 import shutil
@@ -106,9 +105,7 @@ class BrowserSettingsTests:
         request = self.layer.new_request()
 
         # Unauthenticated content tile raises error
-        self.expectError(
-            HTTPForbidden, render_tile, general_settings, request, 'content'
-        )
+        self.expectError(HTTPForbidden, render_tile, general_settings, request, 'content')
 
         # Form tile raise if not manager
         with self.layer.authenticated('editor'):
@@ -149,9 +146,7 @@ class BrowserSettingsTests:
 
         # Form tile raise if not manager
         with self.layer.authenticated('editor'):
-            self.expectError(
-                HTTPForbidden, render_tile, lm_settings, request, 'editform'
-            )
+            self.expectError(HTTPForbidden, render_tile, lm_settings, request, 'editform')
 
         # Disabled: the card says so instead of showing the form
         with self.layer.authenticated('manager'):

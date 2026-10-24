@@ -1,5 +1,5 @@
-import webresource as wr
 import os
+import webresource as wr
 
 
 resources_dir = os.path.join(os.path.dirname(__file__), 'static')

@@ -212,9 +212,7 @@ class BrowserPrincipalTests:
         )
         self.assertEqual(widget.custom['ascii']['extractors'], [ascii_extractor])
         self.assertTrue(
-            isinstance(
-                widget.custom['exists']['extractors'][0], PrincipalExistsExtractor
-            )
+            isinstance(widget.custom['exists']['extractors'][0], PrincipalExistsExtractor)
         )
         self.assertEqual(widget.mode, 'edit')
 
@@ -234,9 +232,7 @@ class BrowserPrincipalTests:
         )
         self.assertEqual(widget.custom['ascii']['extractors'], [ascii_extractor])
         self.assertTrue(
-            isinstance(
-                widget.custom['exists']['extractors'][0], PrincipalExistsExtractor
-            )
+            isinstance(widget.custom['exists']['extractors'][0], PrincipalExistsExtractor)
         )
         self.assertEqual(widget.mode, 'display')
 
@@ -334,9 +330,7 @@ class BrowserPrincipalTests:
 
         widget = factory(form, 'Login Name', UNSET)
         self.assertEqual(widget.getter, UNSET)
-        self.assertEqual(
-            widget.blueprints, ['field', 'label', 'error', 'text', '*login']
-        )
+        self.assertEqual(widget.blueprints, ['field', 'label', 'error', 'text', '*login'])
         self.assertEqual(widget.properties, {'label': 'Login Name', 'required': False})
         self.assertTrue(
             isinstance(widget.custom['login']['extractors'][0], LoginNameExtractor)

@@ -327,9 +327,7 @@ class PrincipalsListing(ColumnListing):
                 if can_delete:
                     action_id = 'delete_item'
                     action_title = self.delete_label
-                    action_target = make_url(
-                        self.request, node=self.model, resource=key
-                    )
+                    action_target = make_url(self.request, node=self.model, resource=key)
                     delete_action = self.create_action(
                         action_id, True, action_title, action_target
                     )

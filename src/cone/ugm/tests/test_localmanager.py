@@ -126,9 +126,7 @@ class ModelLocalmanagerTests:
         group = groups['admin_group_2']
         group.add('local_manager_1')
         group()
-        self.assertEqual(
-            sorted(group.member_ids), ['local_manager_1', 'local_manager_2']
-        )
+        self.assertEqual(sorted(group.member_ids), ['local_manager_1', 'local_manager_2'])
 
         with self.layer.authenticated('local_manager_1'):
             err = self.expectError(Exception, lambda: lm_node.local_manager_target_gids)

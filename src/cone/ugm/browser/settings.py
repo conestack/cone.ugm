@@ -13,6 +13,7 @@ from pyramid.view import view_config
 from yafowil.base import ExtractionError
 from yafowil.widget.autocomplete.widget import unwrap_extracted
 
+
 _ = TranslationStringFactory('cone.ugm')
 
 

@@ -1,5 +1,6 @@
-from cone.tile import tile, Tile
 from cone.app.model import AppRoot
+from cone.tile import Tile
+from cone.tile import tile
 from cone.ugm.browser.columns import Column
 
 

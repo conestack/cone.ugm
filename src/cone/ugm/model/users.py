@@ -39,9 +39,7 @@ class Users:
     def metadata(self):
         metadata = Metadata()
         metadata.title = _('users_node', default='Users')
-        metadata.description = _(
-            'users_node_description', default='Container for Users'
-        )
+        metadata.description = _('users_node_description', default='Container for Users')
         return metadata
 
     @property
