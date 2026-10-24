@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.0.0 (unreleased)
+2.0.0 (2026-10-24)
 ------------------
 
 - Drop the own ``min-height`` of the column card headers, the height comes
