@@ -4,6 +4,16 @@ Changes
 2.0.1 (unreleased)
 ------------------
 
+- Fix HTML injection in the delete principal dialog. The principal id is
+  displayed as text now, all occurrences of ``&``, ``<``, ``>`` and quotes get
+  escaped, not only the first ``<`` and ``>``.
+  [rnix]
+
+- Fix the remove and add membership actions enabled after a successful add or
+  remove doing nothing until the listing was reloaded. They were bound to the
+  not existing ``remove_item_handle`` and ``add_item_handle`` handlers.
+  [rnix]
+
 - Fix the JS test import map: jQuery 4 module path and a ``cone`` stub.
   [rnix]
 

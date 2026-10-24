@@ -44,8 +44,8 @@ QUnit.module('cone.ugm.actions.PrincipalActions', (hooks) => {
         $(`
             <div class="actions">
               <a class="${css}" ajax:target="http://tld.com/groups/group1?id=user1">+</a>
-              <a class="add_item_disabled">+</a>
-              <a class="remove_item_disabled">-</a>
+              <a class="add_item_disabled" ajax:target="http://tld.com/groups/group1?id=user1">+</a>
+              <a class="remove_item_disabled" ajax:target="http://tld.com/groups/group1?id=user1">-</a>
             </div>
         `).appendTo(container);
         const actions = new PrincipalActions();
@@ -80,6 +80,20 @@ QUnit.module('cone.ugm.actions.PrincipalActions', (hooks) => {
         assert.strictEqual(request_opts.url, 'http://tld.com/users/user1/delete_item');
         assert.strictEqual(request_opts.type, 'json');
         assert.deepEqual(request_opts.params, { a: 'b' });
+    });
+
+    QUnit.test('delete_item displays principal id as text in dialog', (assert) => {
+        create_delete_listing();
+        const id = `a<b>c<img class="injected">&amp;"'`;
+        $('.sort_col_1', container).text(id);
+
+        $('a.delete_item', container).trigger('click');
+
+        const body = $('.modal.dialog .modal-body');
+        assert.strictEqual($('b, img', body).length, 0);
+        assert.strictEqual(body.text(), `Do you really want to delete this item?\n\n\n"${id}"`);
+        $('.modal.dialog button.cancel').trigger('click');
+        assert.strictEqual($('.modal.dialog').length, 0);
     });
 
     QUnit.test('delete_item failure', (assert) => {
@@ -190,6 +204,24 @@ QUnit.module('cone.ugm.actions.PrincipalActions', (hooks) => {
         assert.strictEqual(requests.length, 1);
     });
 
+    QUnit.test('remove action enabled by add_item performs request', (assert) => {
+        create_item_actions('add_item');
+        const requests = [];
+        ts.ajax.request = (opts) => {
+            requests.push(opts);
+        };
+        $('a.add_item', container).trigger('click');
+        requests[0].success({ success: true });
+
+        const evt = $.Event('click');
+        $('a.remove_item', container).trigger(evt);
+
+        assert.true(evt.isDefaultPrevented());
+        assert.strictEqual(requests.length, 2);
+        assert.strictEqual(requests[1].url, 'http://tld.com/groups/group1/remove_item');
+        assert.deepEqual(requests[1].params, { id: 'user1' });
+    });
+
     QUnit.test('remove_item performs request', (assert) => {
         create_item_actions('remove_item');
         let request_opts;
@@ -243,5 +275,23 @@ QUnit.module('cone.ugm.actions.PrincipalActions', (hooks) => {
         remove_action.trigger(evt);
         assert.true(evt.isDefaultPrevented());
         assert.strictEqual(requests.length, 1);
+    });
+
+    QUnit.test('add action enabled by remove_item performs request', (assert) => {
+        create_item_actions('remove_item');
+        const requests = [];
+        ts.ajax.request = (opts) => {
+            requests.push(opts);
+        };
+        $('a.remove_item', container).trigger('click');
+        requests[0].success({ success: true });
+
+        const evt = $.Event('click');
+        $('a.add_item', container).trigger(evt);
+
+        assert.true(evt.isDefaultPrevented());
+        assert.strictEqual(requests.length, 2);
+        assert.strictEqual(requests[1].url, 'http://tld.com/groups/group1/add_item');
+        assert.deepEqual(requests[1].params, { id: 'user1' });
     });
 });

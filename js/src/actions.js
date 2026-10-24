@@ -1,6 +1,15 @@
 import $ from 'jquery';
 import ts from 'treibstoff';
 
+function escape_html(value) {
+    return value
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+}
+
 export class PrincipalActions {
     constructor() {
         this.delete_item = this.delete_item.bind(this);
@@ -11,11 +20,9 @@ export class PrincipalActions {
     delete_item(evt) {
         evt.preventDefault();
         evt.stopPropagation();
-        let elem = $(evt.currentTarget),
+        const elem = $(evt.currentTarget),
             col = $('.cols .sort_col_1', elem.parent().parent()),
-            id = col.text();
-        id = id.replace('<', '&lt;');
-        id = id.replace('>', '&gt;');
+            id = escape_html(col.text());
         const options = {
             action_id: 'delete_item',
         };
@@ -76,7 +83,7 @@ export class PrincipalActions {
                     .off()
                     .removeClass('remove_item_disabled')
                     .addClass('remove_item')
-                    .on('click', this.remove_item_handle);
+                    .on('click', this.remove_item);
             },
         });
         this.perform(options);
@@ -109,7 +116,7 @@ export class PrincipalActions {
                     .off()
                     .removeClass('add_item_disabled')
                     .addClass('add_item')
-                    .on('click', this.add_item_handle);
+                    .on('click', this.add_item);
             },
         });
         this.perform(options);
