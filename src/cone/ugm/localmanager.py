@@ -9,7 +9,7 @@ from plumber import default
 from plumber import finalize
 from plumber import plumb
 from plumber import plumbing
-from pyramid.security import Allow
+from pyramid.authorization import Allow
 from pyramid.threadlocal import get_current_request
 import os
 

@@ -62,11 +62,11 @@ class BrowserPrincipalTests:
 
         @form_field('field')
         def form_field_factory(form, label, value):
-            pass
+            """Dummy form field factory, only registered."""
 
         @form_field('field', backend='backend')
         def backend_form_field_factory(form, label, value):
-            pass
+            """Dummy form field factory, only registered."""
 
         self.assertEqual(
             _form_field.registry[SCOPE],
@@ -391,10 +391,10 @@ class BrowserPrincipalTests:
             field_factory_registry = form_field
 
             def save(self, widget, data):
-                pass
+                """Dummy save handler, form gets prepared only."""
 
             def next(self, request):
-                pass
+                """Dummy next handler, form gets prepared only."""
 
         class PrincipalAddForm(DummyPrincipalForm):
             action_resource = 'add'
@@ -447,6 +447,12 @@ class BrowserPrincipalTests:
         self.assertEqual(form.form['form_field'].getter, 'Field Value')
 
         del _form_field.registry[SCOPE]
+
+    def test_principal_form_is_abstract(self):
+        form = PrincipalForm()
+        self.expectError(NotImplementedError, lambda: form.reserved_attrs)
+        self.expectError(NotImplementedError, lambda: form.form_attrmap)
+        self.expectError(NotImplementedError, lambda: form.field_factory_registry)
 
 
 class TestBrowserPrincipal(TileTestCase, BrowserPrincipalTests):

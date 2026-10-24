@@ -37,12 +37,6 @@ _ = TranslationStringFactory('cone.ugm')
 )
 class GroupLeftColumn(Tile):
     title = _('group_data', default='Group Data')
-    to_principal = _('groups', default='Groups')
-
-    @property
-    def principals_target(self):
-        query = make_query(pid=self.model.name)
-        return make_url(self.request, node=self.model.parent, query=query)
 
 
 @tile(

@@ -4,8 +4,10 @@ from cone.app.model import Properties
 from cone.ugm import testing
 from cone.ugm import ugm_user_acl
 from cone.ugm.model.user import User
+from datetime import datetime
 from node.ext.ugm.interfaces import IUser
-from pyramid.security import Allow
+from pyramid.authorization import Allow
+from types import SimpleNamespace
 import unittest
 
 
@@ -39,6 +41,7 @@ class ModelUserTests:
         self.assertTrue(user.attrs is user.model.attrs)
 
         # ACL
+        self.layer.new_request()
         self.assertEqual(user.__acl__, ugm_user_acl)
 
         with self.layer.authenticated('user_1'):
@@ -46,6 +49,18 @@ class ModelUserTests:
                 user.__acl__,
                 [(Allow, 'user_1', ['change_own_password'])] + ugm_user_acl,
             )
+
+    def test_expires_unsupported_by_backend(self):
+        user = User(object(), 'user_1', None)
+        self.assertIsNone(user.expires)
+
+    def test_expires_set_on_backend_user(self):
+        model = SimpleNamespace(expires=None)
+        user = User(model, 'user_1', None)
+        expires = datetime(2030, 1, 1)
+        user.expires = expires
+        self.assertEqual(model.expires, expires)
+        self.assertEqual(user.expires, expires)
 
 
 class TestModelUser(unittest.TestCase, ModelUserTests):

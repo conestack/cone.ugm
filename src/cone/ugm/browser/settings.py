@@ -1,4 +1,5 @@
 from cone.app.browser.form import Form
+from cone.app.browser.form import YAMLEditFormTarget
 from cone.app.browser.form import YAMLForm
 from cone.app.browser.settings import settings_form
 from cone.app.browser.settings import SettingsForm
@@ -18,7 +19,7 @@ _ = TranslationStringFactory('cone.ugm')
 
 
 @settings_form(interface=GeneralSettings)
-@plumbing(SettingsForm, YAMLForm)
+@plumbing(SettingsForm, YAMLForm, YAMLEditFormTarget)
 class GeneralSettingsForm(Form):
     action_resource = 'edit'
     form_template = 'cone.ugm.browser:forms/general_settings.yaml'
@@ -75,7 +76,7 @@ class GeneralSettingsForm(Form):
     interface=LocalManagerSettings,
     path='cone.ugm.browser:templates/localmanager_settings.pt',
 )
-@plumbing(SettingsForm, YAMLForm)
+@plumbing(SettingsForm, YAMLForm, YAMLEditFormTarget)
 class LocalManagerSettingsForm(Form):
     action_resource = 'edit'
     form_template = 'cone.ugm.browser:forms/localmanager_settings.yaml'

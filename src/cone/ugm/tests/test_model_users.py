@@ -7,6 +7,7 @@ from cone.ugm.model.user import User
 from cone.ugm.model.users import Users
 from node.ext.ugm.interfaces import IUsers
 from node.tests import NodeTestCase
+from unittest import mock
 
 
 class ModelUsersTests:
@@ -53,6 +54,30 @@ class ModelUsersTests:
 
         # ACL
         self.assertEqual(users.__acl__, ugm_default_acl)
+
+    def test_call_persists_backend(self):
+        users = get_root()['users']
+        backend = mock.Mock()
+        with mock.patch.object(Users, 'backend', backend):
+            users()
+        backend.assert_called_once_with()
+
+    def test_iter_failing_backend(self):
+        users = get_root()['users']
+        backend = mock.MagicMock()
+        backend.__iter__.side_effect = Exception('Backend not available')
+        with mock.patch.object(Users, 'backend', backend):
+            with self.assertLogs('cone.ugm', level='ERROR') as logs:
+                self.assertEqual([name for name in users], [])
+        self.assertEqual(logs.output, ['ERROR:cone.ugm:Backend not available'])
+
+    def test_getitem_backend_attribute_error(self):
+        users = get_root()['users']
+        backend = mock.MagicMock()
+        backend.__getitem__.side_effect = AttributeError('user_1')
+        with mock.patch.object(Users, 'backend', backend):
+            err = self.expectError(KeyError, users.__getitem__, 'user_1')
+        self.assertEqual(str(err), "'user_1'")
 
 
 class TestModelUsers(NodeTestCase, ModelUsersTests):

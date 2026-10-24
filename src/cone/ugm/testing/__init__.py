@@ -43,7 +43,7 @@ class principals:
                 ugm_group.add(user_id)
         for principal_id, roles in self.roles.items():
             if principal_id.startswith('group:'):
-                principal = ugm_groups[principal_id[5:]]
+                principal = ugm_groups[principal_id[6:]]
             else:
                 principal = ugm_users[principal_id]
             for role in roles:

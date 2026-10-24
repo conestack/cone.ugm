@@ -3,6 +3,7 @@ from cone.app.model import BaseNode
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
+from cone.ugm.browser.user import UserAddForm
 from cone.ugm.model.user import User
 from cone.ugm.utils import general_settings
 
@@ -101,6 +102,14 @@ class BrowserAutoincrementTests:
         self.assertEqual(
             sorted(users.keys()), ['100', '101', 'manager', 'uid100', 'uid101']
         )
+
+    @testing.principals(users={'manager': {}, '5': {}}, roles={'manager': ['manager']})
+    def test_next_principal_id_not_below_start(self):
+        users = get_root()['users']
+        self.assertEqual(general_settings(users).attrs.user_id_autoincrement_start, '100')
+        form = UserAddForm()
+        form.model = user_vessel(users)
+        self.assertEqual(form.next_principal_id, '100')
 
 
 class TestBrowserAutoincrement(TileTestCase, BrowserAutoincrementTests):

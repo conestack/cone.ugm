@@ -5,6 +5,8 @@ from cone.tile.tests import TileTestCase
 from cone.ugm import testing
 from cone.ugm.browser.password import ChangePasswordAction
 from cone.ugm.browser.password import ChangePasswordForm
+from node.utils import UNSET
+from pyramid.view import render_view_to_response
 
 
 class BrowserPasswordTests:
@@ -88,6 +90,28 @@ class BrowserPasswordTests:
             form(model, request)
             user = security.authenticated_user(request)
             self.assertTrue(user.authenticate('123456'))
+
+    @testing.principals(users={'user_1': {}})
+    def test_change_password_view(self):
+        model = get_root()['users']['user_1']
+        request = self.layer.new_request()
+        with self.layer.authenticated('user_1'):
+            res = render_view_to_response(model, request, name='change_password')
+        expected = 'action="http://example.com/users/user_1/change_password"'
+        self.assertIn(expected, res.text)
+
+    @testing.principals(users={'user_1': {}})
+    def test_ChangePasswordForm_not_submitted(self):
+        form = ChangePasswordForm()
+        form.model = get_root()['users']['user_1']
+        form.request = self.layer.new_request()
+        form.prepare()
+        with self.layer.authenticated('user_1'):
+            data = form.form.extract(form.request)
+        self.assertEqual(data['current_password'].errors, [])
+        self.assertIs(data['current_password'].extracted, UNSET)
+        self.assertEqual(data['confirm_password'].errors, [])
+        self.assertIs(data['confirm_password'].extracted, UNSET)
 
 
 class TestBrowserPassword(TileTestCase, BrowserPasswordTests):

@@ -94,7 +94,7 @@ widgets:
             custom:
                 portrait:
                     extractors:
-                        - yafowil.common.number_extractor
+                        - yafowil.number.number_extractor
                         - context.required_if_users_portrait
         - users_portrait_height:
             factory: field:label:help:error:*portrait:text
@@ -106,7 +106,7 @@ widgets:
             custom:
                 portrait:
                     extractors:
-                        - yafowil.common.number_extractor
+                        - yafowil.number.number_extractor
                         - context.required_if_users_portrait
         - users_local_management_enabled:
             factory: field:label:help:checkbox

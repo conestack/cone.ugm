@@ -2,9 +2,14 @@ from cone.app import get_root
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
+from cone.ugm.browser.user import AllGroupsColumnListing
+from cone.ugm.browser.user import GroupsOfUserColumnListing
 from cone.ugm.events import UserCreatedEvent
 from cone.ugm.events import UserModifiedEvent
 from cone.ugm.model.user import User
+from cone.ugm.tests.fixtures import local_management_enabled
+from cone.ugm.tests.fixtures import local_manager_principals
+from cone.ugm.utils import general_settings
 from pyramid.httpexceptions import HTTPForbidden
 from webob.exc import HTTPFound
 from zope.event import classhandler
@@ -195,6 +200,147 @@ class BrowserUserTests:
         self.assertEqual(user.attrs['fullname'], 'Susi Musterfrau')
         self.assertEqual(user.attrs['email'], 'susi.musterfrau@example.com')
         self.assertTrue('UserModifiedEvent' in events_called)
+
+    @testing.principals(
+        users={'manager': {}, 'user_1': {}},
+        groups={
+            'group_1': {'groupname': 'Group 1'},
+            'group_2': {'groupname': 'Group 2'},
+        },
+        membership={'group_1': ['user_1'], 'group_2': ['user_1']},
+        roles={'manager': ['manager']},
+    )
+    def test_columnlisting_filter(self):
+        user = get_root()['users']['user_1']
+        listing = GroupsOfUserColumnListing()
+        listing.model = user
+        listing.request = self.layer.new_request()
+        listing.request.params['filter'] = 'group_1'
+        with self.layer.authenticated('manager'):
+            listed = [item['sort_by'] for item in listing.listing_items]
+        self.assertEqual(listed, ['group_1'])
+
+    @local_manager_principals
+    @local_management_enabled
+    def test_allcolumnlisting_local_manager(self):
+        user = get_root()['users']['managed_user']
+        listing = AllGroupsColumnListing()
+        listing.model = user
+        listing.request = self.layer.new_request()
+        with self.layer.authenticated('local_manager'):
+            listed = sorted(item['sort_by'] for item in listing.listing_items)
+        self.assertEqual(listed, ['managed_group_0', 'managed_group_1'])
+
+    def _add_user_request(self, **params):
+        request = self.layer.new_request()
+        request.params['factory'] = 'user'
+        request.params['userform.id'] = 'user_1'
+        request.params['userform.password'] = 'secret_1'
+        request.params['userform.principal_roles'] = []
+        request.params['action.userform.save'] = '1'
+        request.params.update(params)
+        return request
+
+    @testing.principals(users={'manager': {}}, roles={'manager': ['manager']})
+    @testing.invalidate_settings
+    def test_add_user_login_name(self):
+        settings = general_settings(get_root())
+        settings.attrs.users_login_name_attr = 'email'
+        users = get_root()['users']
+        request = self._add_user_request(
+            **{'userform.login': 'max@example.com', 'userform.email': ''}
+        )
+        with self.layer.authenticated('manager'):
+            render_tile(users, request, 'add')
+        self.assertEqual(users['user_1'].attrs['email'], 'max@example.com')
+
+    @local_manager_principals
+    @local_management_enabled
+    def test_add_user_local_manager(self):
+        # Users added by a local manager become members of the default groups
+        users = get_root()['users']
+        request = self._add_user_request()
+        with self.layer.authenticated('local_manager'):
+            render_tile(users, request, 'add')
+        self.assertEqual(users['user_1'].model.group_ids, ['managed_group_1'])
+
+    @testing.principals(users={'manager': {}}, roles={'manager': ['manager']})
+    def test_add_user_ajax(self):
+        users = get_root()['users']
+        request = self._add_user_request(ajax='1')
+        with self.layer.authenticated('manager'):
+            render_tile(users, request, 'add')
+        continuation = request.environ['cone.app.continuation']
+        self.assertEqual(
+            [(action.target, action.name) for action in continuation],
+            [
+                ('http://example.com/users?pid=user_1', 'leftcolumn'),
+                ('http://example.com/users?pid=user_1', 'rightcolumn'),
+            ],
+        )
+
+    @testing.principals(users={'manager': {}}, roles={'manager': ['manager']})
+    def test_add_user_cancel(self):
+        users = get_root()['users']
+        request = self._add_user_request()
+        del request.params['action.userform.save']
+        request.params['action.userform.cancel'] = '1'
+        with self.layer.authenticated('manager'):
+            render_tile(users, request, 'add')
+        self.assertEqual(request.environ['redirect'].location, 'http://example.com/users')
+        self.assertEqual(users.keys(), ['manager'])
+
+    def _edit_user_request(self, **params):
+        request = self.layer.new_request()
+        request.params['userform.password'] = '_NOCHANGE_'
+        request.params['userform.fullname'] = 'Susi Musterfrau'
+        request.params['userform.email'] = 'susi.musterfrau@example.com'
+        request.params['userform.principal_roles'] = []
+        request.params['action.userform.save'] = '1'
+        request.params.update(params)
+        return request
+
+    @testing.principals(
+        users={'manager': {}, 'user_1': {}}, roles={'manager': ['manager']}
+    )
+    @testing.invalidate_settings
+    def test_edit_user_password_in_form_attrmap(self):
+        # The password is never written as plain attribute, even if configured
+        # as form attribute
+        settings = general_settings(get_root())
+        settings.attrs.users_form_attrmap['password'] = 'Password'
+        user = get_root()['users']['user_1']
+        request = self._edit_user_request()
+        with self.layer.authenticated('manager'):
+            render_tile(user, request, 'editform')
+        user = get_root()['users']['user_1']
+        self.assertEqual(user.attrs['fullname'], 'Susi Musterfrau')
+        self.assertTrue(user.model.authenticate('secret'))
+
+    @testing.principals(
+        users={'manager': {}, 'user_1': {}}, roles={'manager': ['manager']}
+    )
+    def test_edit_user_password(self):
+        user = get_root()['users']['user_1']
+        request = self._edit_user_request(**{'userform.password': 'secret_1'})
+        with self.layer.authenticated('manager'):
+            render_tile(user, request, 'editform')
+        user = get_root()['users']['user_1']
+        self.assertTrue(user.model.authenticate('secret_1'))
+        self.assertFalse(user.model.authenticate('secret'))
+
+    @testing.principals(
+        users={'manager': {}, 'user_1': {}}, roles={'manager': ['manager']}
+    )
+    def test_edit_user_came_from(self):
+        user = get_root()['users']['user_1']
+        request = self._edit_user_request(came_from='http%3A%2F%2Fexample.com%2Fusers')
+        with self.layer.authenticated('manager'):
+            render_tile(user, request, 'editform')
+        self.assertEqual(
+            request.environ['redirect'].location,
+            'http://example.com/users?pid=user_1',
+        )
 
 
 class TestBrowserUser(TileTestCase, BrowserUserTests):

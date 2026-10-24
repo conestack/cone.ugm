@@ -7,6 +7,7 @@ from cone.ugm.model.groups import Group
 from cone.ugm.model.groups import Groups
 from node.ext.ugm.interfaces import IGroups
 from node.tests import NodeTestCase
+from unittest import mock
 
 
 class ModelGroupsTests:
@@ -53,6 +54,30 @@ class ModelGroupsTests:
 
         # ACL
         self.assertEqual(groups.__acl__, ugm_default_acl)
+
+    def test_call_persists_backend(self):
+        groups = get_root()['groups']
+        backend = mock.Mock()
+        with mock.patch.object(Groups, 'backend', backend):
+            groups()
+        backend.assert_called_once_with()
+
+    def test_iter_failing_backend(self):
+        groups = get_root()['groups']
+        backend = mock.MagicMock()
+        backend.__iter__.side_effect = Exception('Backend not available')
+        with mock.patch.object(Groups, 'backend', backend):
+            with self.assertLogs('cone.ugm', level='ERROR') as logs:
+                self.assertEqual([name for name in groups], [])
+        self.assertEqual(logs.output, ['ERROR:cone.ugm:Backend not available'])
+
+    def test_getitem_backend_attribute_error(self):
+        groups = get_root()['groups']
+        backend = mock.MagicMock()
+        backend.__getitem__.side_effect = AttributeError('group_1')
+        with mock.patch.object(Groups, 'backend', backend):
+            err = self.expectError(KeyError, groups.__getitem__, 'group_1')
+        self.assertEqual(str(err), "'group_1'")
 
 
 class TestModelGroups(NodeTestCase, ModelGroupsTests):

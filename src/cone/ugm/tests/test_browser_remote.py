@@ -3,6 +3,7 @@ from cone.tile.tests import TileTestCase
 from cone.ugm import testing
 from pyramid.httpexceptions import HTTPForbidden
 from pyramid.view import render_view_to_response
+from unittest import mock
 import json
 
 
@@ -178,6 +179,53 @@ class BrowserRemoteTests:
             json.loads(res.text),
             {'message': "Deleted user with ID 'user_1'.", 'success': True},
         )
+
+    @testing.principals(users={'manager': {}}, roles={'manager': ['manager']})
+    def test_add_user_without_optional_attribute(self):
+        users = get_root()['users']
+        request = self.layer.new_request(type='json')
+        request.params['id'] = 'user_1'
+        request.params['attr.fullname'] = 'Sepp Unterwurzacher'
+        with self.layer.authenticated('manager'):
+            res = render_view_to_response(users, request, name='remote_add_user')
+        self.assertEqual(
+            json.loads(res.text),
+            {'message': "Created user with ID 'user_1'.", 'success': True},
+        )
+        user = users['user_1']
+        self.assertEqual(user.attrs['fullname'], 'Sepp Unterwurzacher')
+
+    @testing.principals(users={'manager': {}}, roles={'manager': ['manager']})
+    def test_add_user_failing_backend(self):
+        users = get_root()['users']
+        request = self.layer.new_request(type='json')
+        request.params['id'] = 'user_1'
+        with mock.patch.object(
+            type(users.backend), 'create', side_effect=Exception('Creation failed')
+        ):
+            with self.layer.authenticated('manager'):
+                res = render_view_to_response(users, request, name='remote_add_user')
+        self.assertEqual(
+            json.loads(res.text), {'message': 'Creation failed', 'success': False}
+        )
+        self.assertEqual(users.keys(), ['manager'])
+
+    @testing.principals(
+        users={'manager': {}, 'user_1': {}}, roles={'manager': ['manager']}
+    )
+    def test_delete_user_failing_backend(self):
+        users = get_root()['users']
+        request = self.layer.new_request(type='json')
+        request.params['id'] = 'user_1'
+        with mock.patch.object(
+            type(users.backend), '__delitem__', side_effect=Exception('Deletion failed')
+        ):
+            with self.layer.authenticated('manager'):
+                res = render_view_to_response(users, request, name='remote_delete_user')
+        self.assertEqual(
+            json.loads(res.text), {'message': 'Deletion failed', 'success': False}
+        )
+        self.assertEqual(sorted(users.keys()), ['manager', 'user_1'])
 
 
 class TestBrowserRemote(TileTestCase, BrowserRemoteTests):

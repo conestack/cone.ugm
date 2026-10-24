@@ -2,9 +2,14 @@ from cone.app import get_root
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
+from cone.ugm.browser.group import AllUsersColumnListing
+from cone.ugm.browser.group import UsersOfGroupColumnListing
 from cone.ugm.events import GroupCreatedEvent
 from cone.ugm.events import GroupModifiedEvent
 from cone.ugm.model.group import Group
+from cone.ugm.tests.fixtures import local_management_enabled
+from cone.ugm.tests.fixtures import local_manager_principals
+from cone.ugm.utils import general_settings
 from pyramid.httpexceptions import HTTPForbidden
 from webob.exc import HTTPFound
 from zope.event import classhandler
@@ -185,6 +190,145 @@ class BrowserGroupTests:
 
         self.assertEqual(group.attrs['groupname'], 'Groupname Changed')
         self.assertTrue('GroupModifiedEvent' in events_called)
+
+    @testing.principals(
+        users={
+            'manager': {},
+            'user_1': {'email': 'user_1@example.com'},
+            'user_2': {'email': 'user_2@example.com'},
+        },
+        groups={'group_1': {}},
+        membership={'group_1': ['user_1', 'user_2']},
+        roles={'manager': ['manager']},
+    )
+    def test_columnlisting_filter(self):
+        group = get_root()['groups']['group_1']
+        listing = UsersOfGroupColumnListing()
+        listing.model = group
+        listing.request = self.layer.new_request()
+        listing.request.params['filter'] = 'user_1'
+        with self.layer.authenticated('manager'):
+            listed = [item['sort_by'] for item in listing.listing_items]
+        self.assertEqual(listed, ['user_1'])
+
+    @local_manager_principals
+    @local_management_enabled
+    def test_allcolumnlisting_local_manager(self):
+        group = get_root()['groups']['managed_group_0']
+        listing = AllUsersColumnListing()
+        listing.model = group
+        listing.request = self.layer.new_request()
+        with self.layer.authenticated('local_manager'):
+            listed = [item['sort_by'] for item in listing.listing_items]
+        self.assertEqual(listed, ['managed_user'])
+
+    def _add_group_request(self, **params):
+        request = self.layer.new_request()
+        request.params['factory'] = 'group'
+        request.params['groupform.id'] = 'group_1'
+        request.params['groupform.groupname'] = ''
+        request.params['groupform.principal_roles'] = []
+        request.params['action.groupform.save'] = '1'
+        request.params.update(params)
+        return request
+
+    @testing.principals(users={'manager': {}}, roles={'manager': ['manager']})
+    def test_add_group_without_groupname(self):
+        groups = get_root()['groups']
+        request = self._add_group_request()
+        with self.layer.authenticated('manager'):
+            render_tile(groups, request, 'add')
+        self.assertEqual(groups.keys(), ['group_1'])
+        self.assertIsNone(groups['group_1'].attrs.get('groupname'))
+
+    @testing.principals(users={'manager': {}}, roles={'manager': ['manager']})
+    def test_add_group_ajax(self):
+        groups = get_root()['groups']
+        request = self._add_group_request(ajax='1')
+        with self.layer.authenticated('manager'):
+            render_tile(groups, request, 'add')
+        continuation = request.environ['cone.app.continuation']
+        self.assertEqual(
+            [(action.target, action.name) for action in continuation],
+            [
+                ('http://example.com/groups?pid=group_1', 'leftcolumn'),
+                ('http://example.com/groups?pid=group_1', 'rightcolumn'),
+            ],
+        )
+
+    @testing.principals(users={'manager': {}}, roles={'manager': ['manager']})
+    def test_add_group_cancel(self):
+        groups = get_root()['groups']
+        request = self._add_group_request()
+        del request.params['action.groupform.save']
+        request.params['action.groupform.cancel'] = '1'
+        with self.layer.authenticated('manager'):
+            render_tile(groups, request, 'add')
+        self.assertEqual(
+            request.environ['redirect'].location, 'http://example.com/groups'
+        )
+        self.assertEqual(groups.keys(), [])
+
+    def _edit_group_request(self, **params):
+        request = self.layer.new_request()
+        request.params['groupform.groupname'] = 'Groupname Changed'
+        request.params['groupform.principal_roles'] = []
+        request.params['action.groupform.save'] = '1'
+        request.params.update(params)
+        return request
+
+    @testing.principals(
+        users={'manager': {}},
+        groups={'group_1': {'groupname': 'Group 1'}},
+        roles={'manager': ['manager']},
+    )
+    @testing.invalidate_settings
+    def test_edit_group_id_in_form_attrmap(self):
+        # The group id is not editable, even if configured as form attribute
+        settings = general_settings(get_root())
+        settings.attrs.groups_form_attrmap['id'] = 'Group ID'
+        group = get_root()['groups']['group_1']
+        request = self._edit_group_request()
+        request.params['groupform.id'] = 'group_2'
+        with self.layer.authenticated('manager'):
+            render_tile(group, request, 'editform')
+        group = get_root()['groups']['group_1']
+        self.assertEqual(group.attrs['groupname'], 'Groupname Changed')
+        self.assertEqual(get_root()['groups'].keys(), ['group_1'])
+
+    @testing.principals(
+        users={'manager': {}},
+        groups={'group_1': {'groupname': 'Group 1'}},
+        roles={'manager': ['manager']},
+    )
+    def test_edit_group_came_from(self):
+        group = get_root()['groups']['group_1']
+        request = self._edit_group_request(came_from='http%3A%2F%2Fexample.com%2Fgroups')
+        with self.layer.authenticated('manager'):
+            render_tile(group, request, 'editform')
+        self.assertEqual(
+            request.environ['redirect'].location,
+            'http://example.com/groups?pid=group_1',
+        )
+
+    @testing.principals(
+        users={'manager': {}},
+        groups={'group_1': {'groupname': 'Group 1'}},
+        roles={'manager': ['manager']},
+    )
+    def test_edit_group_ajax(self):
+        group = get_root()['groups']['group_1']
+        request = self._edit_group_request(ajax='1')
+        with self.layer.authenticated('manager'):
+            render_tile(group, request, 'editform')
+        continuation = request.environ['cone.app.continuation']
+        self.assertEqual(
+            [(action.target, action.name) for action in continuation],
+            [
+                ('http://example.com/groups/group_1', 'leftcolumn'),
+                ('http://example.com/groups/group_1', 'rightcolumn'),
+            ],
+        )
 
 
 class TestBrowserGroup(TileTestCase, BrowserGroupTests):

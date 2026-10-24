@@ -1,8 +1,12 @@
 from cone.app import get_root
 from cone.app.model import BaseNode
 from cone.ugm import testing
+from cone.ugm import ugm_default_acl
 from cone.ugm.localmanager import LocalManager
+from cone.ugm.localmanager import LocalManagerACL
 from cone.ugm.localmanager import LocalManagerConfigAttributes
+from cone.ugm.tests.fixtures import local_management_enabled
+from cone.ugm.tests.fixtures import local_manager_principals
 from node.tests import NodeTestCase
 from plumber import plumbing
 import os
@@ -360,6 +364,55 @@ class ModelLocalmanagerTests:
                     )
                 ],
             )
+
+    @local_manager_principals
+    @local_management_enabled
+    def test_local_manager_consider_for_user(self):
+        users = get_root()['users']
+        self.layer.new_request()
+        with self.layer.authenticated('local_manager'):
+            self.assertTrue(users.local_manager_consider_for_user)
+
+    @local_management_enabled
+    def test_local_manager_consider_for_user_admin_user(self):
+        users = get_root()['users']
+        self.layer.new_request()
+        with self.layer.authenticated('superuser', 'superuser'):
+            self.assertFalse(users.local_manager_consider_for_user)
+
+    @local_manager_principals
+    @local_management_enabled
+    def test_local_manager_consider_for_user_manager_role(self):
+        users = get_root()['users']
+        self.layer.new_request()
+        with self.layer.authenticated('manager'):
+            self.assertFalse(users.local_manager_consider_for_user)
+
+    @local_manager_principals
+    def test_local_manager_default_gids(self):
+        users = get_root()['users']
+        self.layer.new_request()
+        with self.layer.authenticated('managed_user'):
+            self.assertEqual(users.local_manager_default_gids, [])
+        with self.layer.authenticated('local_manager'):
+            self.assertEqual(users.local_manager_default_gids, ['managed_group_1'])
+
+    def test_LocalManagerACL_local_manager_acl_is_abstract(self):
+        @plumbing(LocalManagerACL)
+        class LocalManagerACLNode(BaseNode):
+            pass
+
+        node = LocalManagerACLNode()
+        self.expectError(NotImplementedError, lambda: node.local_manager_acl)
+
+    @local_manager_principals
+    @local_management_enabled
+    def test_LocalManagerACL_prepends_local_manager_acl(self):
+        users = get_root()['users']
+        self.layer.new_request()
+        with self.layer.authenticated('local_manager'):
+            self.assertEqual(users.__acl__, users.local_manager_acl + ugm_default_acl)
+            self.assertEqual(users.__acl__[0][1], 'local_manager')
 
 
 class TestModelLocalmanager(NodeTestCase, ModelLocalmanagerTests):

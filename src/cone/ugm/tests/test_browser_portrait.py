@@ -2,8 +2,10 @@ from cone.app import get_root
 from cone.tile import render_tile
 from cone.tile.tests import TileTestCase
 from cone.ugm import testing
+from cone.ugm.browser.user import UserEditForm
 from cone.ugm.utils import general_settings
 from io import BytesIO
+from pyramid.view import render_view_to_response
 import importlib
 
 
@@ -100,6 +102,61 @@ class BrowserPortraitTests:
             res = render_tile(user, request, 'editform')
         self.assertFalse(res.find('id="input-userform-portrait"') > -1)
 
+    @testing.principals(users={'user_1': {}})
+    def test_portrait_image(self):
+        user = get_root()['users']['user_1']
+        dummy_jpg = dummy_file_data('dummy.jpg')
+        user.attrs['portrait'] = dummy_jpg
+        user()
+        request = self.layer.new_request()
+        with self.layer.authenticated('user_1'):
+            res = render_view_to_response(user, request, name='portrait_image')
+        self.assertEqual(res.body, dummy_jpg)
+        self.assertEqual(res.headers['Content-Type'], 'image/jpeg')
+        self.assertEqual(res.headers['Cache-Control'], 'max-age=0')
+
+    @testing.principals(users={'user_1': {}})
+    def test_portrait_widget_without_edit_user(self):
+        form = UserEditForm()
+        form.model = get_root()['users']['user_1']
+        form.request = self.layer.new_request()
+        with self.layer.authenticated('user_1'):
+            form.prepare()
+        self.assertEqual(form.form['portrait'].mode, 'display')
+
+    @testing.principals(
+        users={'manager': {}, 'user_1': {}}, roles={'manager': ['manager']}
+    )
+    @testing.invalidate_settings
+    def test_save_portrait_disabled(self):
+        general_settings(get_root()).attrs.users_portrait = 'False'
+        user = get_root()['users']['user_1']
+        portrait = {
+            'file': BytesIO(dummy_file_data('dummy.jpg')),
+            'mimetype': 'image/jpeg',
+        }
+        request = user_portrait_request(self.layer, user, portrait)
+        with self.layer.authenticated('manager'):
+            render_tile(user, request, 'editform')
+        user = get_root()['users']['user_1']
+        self.assertIsNone(user.attrs.get('portrait'))
+
 
 class TestBrowserPortrait(TileTestCase, BrowserPortraitTests):
     layer = testing.ugm_layer
+
+    @testing.principals(
+        users={'manager': {}, 'user_1': {}}, roles={'manager': ['manager']}
+    )
+    def test_delete_portrait(self):
+        # Not part of ``BrowserPortraitTests``: the SQL backend refuses to
+        # delete user attributes
+        user = get_root()['users']['user_1']
+        user.attrs['portrait'] = dummy_file_data('dummy.jpg')
+        user()
+        request = user_portrait_request(self.layer, user, '')
+        request.params['userform.portrait-action'] = 'delete'
+        with self.layer.authenticated('manager'):
+            render_tile(user, request, 'editform')
+        user = get_root()['users']['user_1']
+        self.assertIsNone(user.attrs.get('portrait'))

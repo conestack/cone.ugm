@@ -8,8 +8,8 @@ from node.utils import instance_property
 from plumber import Behavior
 from plumber import plumb
 from plumber import plumbing
+from pyramid.authorization import Allow
 from pyramid.i18n import TranslationStringFactory
-from pyramid.security import Allow
 from pyramid.threadlocal import get_current_request
 
 

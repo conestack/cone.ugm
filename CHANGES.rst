@@ -4,6 +4,23 @@ Changes
 2.0.1 (unreleased)
 ------------------
 
+- Fix the ``group:`` prefix of group role principals in
+  ``cone.ugm.testing.principals``, the group id lost its first character.
+  [rnix]
+
+- Remove the unused ``GroupLeftColumn.to_principal`` and
+  ``GroupLeftColumn.principals_target``.
+  [rnix]
+
+- Use ``YAMLEditFormTarget`` for the settings forms and
+  ``yafowil.number.number_extractor`` in the general settings form, the old
+  names are deprecated.
+  [rnix]
+
+- Import ``Allow``, ``Deny``, ``Everyone`` and ``ALL_PERMISSIONS`` from
+  ``pyramid.authorization``.
+  [rnix]
+
 - Sort the imports with ruff (one per line, ``from`` imports first, no
   sections) and format the code with ``ruff format`` (90 characters per line,
   single quotes).
