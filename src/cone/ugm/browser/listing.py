@@ -200,7 +200,7 @@ class ColumnListing(Tile):
         pt = 0
         for arg in args:
             pt += 1
-            ret += tag('div', '%s&nbsp;' % arg, class_='sort_col_%i' % pt)
+            ret += tag('div', f'{tag.escape(arg)}&nbsp;', class_='sort_col_%i' % pt)
         return ret
 
     def create_item(self, sort, target, content, current, actions):

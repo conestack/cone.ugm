@@ -70,10 +70,13 @@ class BrowserAutoincrementTests:
         self.checkOutput(
             """
         ...disabled="disabled" id="input-userform-id" name="userform.id"
-        type="text" value="auto_incremented" />...
+        type="text" value="..." />...
         """,
             res,
         )
+        # The text itself depends on whether a prior test in this run already
+        # cached a localizer without the message catalog of this package.
+        self.assertNotIn('value="auto_incremented"', res)
 
         request = user_request(self.layer)
         vessel = user_vessel(users)

@@ -14,6 +14,15 @@ class BrowserListingTests:
         listing.request.params['filter'] = 'M%C3%BCller%20%2A'
         self.assertEqual(listing.unquoted_param_value('filter'), 'Müller *')
 
+    def test_item_content_encodes_values(self):
+        self.assertEqual(
+            ColumnListing().item_content('<b>x</b>', 'a&b'),
+            (
+                '<div class="sort_col_1">&lt;b&gt;x&lt;/b&gt;&nbsp;</div>'
+                '<div class="sort_col_2">a&amp;b&nbsp;</div>'
+            ),
+        )
+
     def test_extract_raw(self):
         listing = ColumnListing()
         attrs = {

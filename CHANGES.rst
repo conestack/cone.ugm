@@ -4,7 +4,9 @@ Changes
 2.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Encode the principal attributes shown in the column listing. Requires
+  ``yafowil`` 4.2.0.
+  [rnix]
 
 
 2.0.1 (2026-10-31)
