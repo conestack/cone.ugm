@@ -137,6 +137,7 @@ class BrowserUserTests:
         request.params['userform.fullname'] = 'Max Mustermann'
         request.params['userform.email'] = 'max.mustermann@example.com'
         request.params['userform.principal_roles'] = []
+        request.method = 'POST'
         request.params['action.userform.save'] = '1'
 
         with self.layer.authenticated('manager'):
@@ -194,6 +195,7 @@ class BrowserUserTests:
         request.params['userform.fullname'] = 'Susi Musterfrau'
         request.params['userform.email'] = 'susi.musterfrau@example.com'
         request.params['userform.principal_roles'] = []
+        request.method = 'POST'
         request.params['action.userform.save'] = '1'
         with self.layer.authenticated('manager'):
             res = render_tile(user, request, 'editform')
@@ -255,6 +257,7 @@ class BrowserUserTests:
         request.params['userform.id'] = 'user_1'
         request.params['userform.password'] = 'secret_1'
         request.params['userform.principal_roles'] = []
+        request.method = 'POST'
         request.params['action.userform.save'] = '1'
         request.params.update(params)
         return request
@@ -317,6 +320,7 @@ class BrowserUserTests:
         users = get_root()['users']
         request = self._add_user_request()
         del request.params['action.userform.save']
+        request.method = 'POST'
         request.params['action.userform.cancel'] = '1'
         with self.layer.authenticated('manager'):
             render_tile(users, request, 'add')
@@ -329,6 +333,7 @@ class BrowserUserTests:
         request.params['userform.fullname'] = 'Susi Musterfrau'
         request.params['userform.email'] = 'susi.musterfrau@example.com'
         request.params['userform.principal_roles'] = []
+        request.method = 'POST'
         request.params['action.userform.save'] = '1'
         request.params.update(params)
         return request

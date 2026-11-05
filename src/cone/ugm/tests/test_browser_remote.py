@@ -23,6 +23,7 @@ class BrowserRemoteTests:
         root = get_root()
         users = root['users']
         request = self.layer.new_request(type='json')
+        request.method = 'POST'
 
         # Need add permission
         with self.layer.authenticated('viewer'):
@@ -145,6 +146,8 @@ class BrowserRemoteTests:
 
         request = self.layer.new_request(type='json')
 
+        request.method = 'POST'
+
         with self.layer.authenticated('viewer'):
             self.expectError(
                 HTTPForbidden,
@@ -184,6 +187,7 @@ class BrowserRemoteTests:
     def test_add_user_without_optional_attribute(self):
         users = get_root()['users']
         request = self.layer.new_request(type='json')
+        request.method = 'POST'
         request.params['id'] = 'user_1'
         request.params['attr.fullname'] = 'Sepp Unterwurzacher'
         with self.layer.authenticated('manager'):
@@ -199,6 +203,7 @@ class BrowserRemoteTests:
     def test_add_user_failing_backend(self):
         users = get_root()['users']
         request = self.layer.new_request(type='json')
+        request.method = 'POST'
         request.params['id'] = 'user_1'
         with mock.patch.object(
             type(users.backend), 'create', side_effect=Exception('Creation failed')
@@ -216,6 +221,7 @@ class BrowserRemoteTests:
     def test_delete_user_failing_backend(self):
         users = get_root()['users']
         request = self.layer.new_request(type='json')
+        request.method = 'POST'
         request.params['id'] = 'user_1'
         with mock.patch.object(
             type(users.backend), '__delitem__', side_effect=Exception('Deletion failed')

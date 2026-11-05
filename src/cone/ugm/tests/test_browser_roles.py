@@ -10,6 +10,7 @@ class BrowserRolesTests:
         request = self.layer.new_request()
         request.params['userform.password'] = '_NOCHANGE_'
         request.params['userform.principal_roles'] = roles
+        request.method = 'POST'
         request.params['action.userform.save'] = '1'
         return request
 

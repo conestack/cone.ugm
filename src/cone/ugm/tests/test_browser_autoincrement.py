@@ -19,6 +19,7 @@ def user_request(layer):
     request.params['userform.id'] = ''
     request.params['userform.password'] = '123456'
     request.params['userform.principal_roles'] = []
+    request.method = 'POST'
     request.params['action.userform.save'] = '1'
     return request
 

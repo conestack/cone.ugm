@@ -120,6 +120,7 @@ var cone_ugm = (function (exports, $, ts, cone) {
         perform(opts) {
             ts.ajax.request({
                 url: `${ts.parse_url(opts.url)}/${opts.action_id}`,
+                method: 'POST',
                 type: 'json',
                 params: opts.params,
                 success: opts.success,

@@ -7,6 +7,7 @@ from cone.ugm.tests.fixtures import local_management_enabled
 from cone.ugm.tests.fixtures import local_manager_principals
 from cone.ugm.tests.fixtures import register_event_handler
 from pyramid.exceptions import HTTPForbidden
+from pyramid.request import Request
 from pyramid.view import render_view_to_response
 from webob.multidict import MultiDict
 import json
@@ -24,6 +25,8 @@ class BrowserActionsTests:
         group = groups['group_1']
 
         request = self.layer.new_request(type='json')
+
+        request.method = 'POST'
         with self.layer.authenticated('viewer'):
             self.expectError(
                 HTTPForbidden, render_view_to_response, group, request, name='add_item'
@@ -58,6 +61,8 @@ class BrowserActionsTests:
         group = groups['group_1']
 
         request = self.layer.new_request(type='json')
+
+        request.method = 'POST'
         with self.layer.authenticated('viewer'):
             self.expectError(
                 HTTPForbidden,
@@ -95,6 +100,8 @@ class BrowserActionsTests:
         user = users['user_1']
 
         request = self.layer.new_request(type='json')
+
+        request.method = 'POST'
         with self.layer.authenticated('viewer'):
             self.expectError(
                 HTTPForbidden, render_view_to_response, user, request, name='add_item'
@@ -129,6 +136,8 @@ class BrowserActionsTests:
         user = users['user_1']
 
         request = self.layer.new_request(type='json')
+
+        request.method = 'POST'
         with self.layer.authenticated('viewer'):
             self.expectError(
                 HTTPForbidden,
@@ -177,6 +186,8 @@ class BrowserActionsTests:
         register_event_handler(self, UserDeletedEvent, on_user_deleted)
 
         request = self.layer.new_request(type='json')
+
+        request.method = 'POST'
         with self.layer.authenticated('viewer'):
             self.expectError(
                 HTTPForbidden,
@@ -215,6 +226,8 @@ class BrowserActionsTests:
 
         request = self.layer.new_request(type='json')
 
+        request.method = 'POST'
+
         events_called = []
 
         def on_group_deleted(event):
@@ -249,6 +262,7 @@ class BrowserActionsTests:
 
     def _multi_id_request(self, *ids):
         request = self.layer.new_request(type='json')
+        request.method = 'POST'
         request.params = MultiDict(request.params)
         for id_ in ids:
             request.params.add('id[]', id_)
@@ -334,6 +348,7 @@ class BrowserActionsTests:
 
     def _render_action(self, model, login, name, id_):
         request = self.layer.new_request(type='json')
+        request.method = 'POST'
         request.params['id'] = id_
         with self.layer.authenticated(login):
             res = render_view_to_response(model, request, name=name)
@@ -579,3 +594,26 @@ class BrowserActionsTests:
 
 class TestBrowserActions(TileTestCase, BrowserActionsTests):
     layer = testing.ugm_layer
+
+    @testing.principals(users={'user_1': {}}, groups={'group_1': {}})
+    def test_changing_views_answer_post_only(self):
+        for path in (
+            '/users/user_1/add_item',
+            '/users/user_1/remove_item',
+            '/users/user_1/delete_item',
+            '/groups/group_1/add_item',
+            '/groups/group_1/remove_item',
+            '/groups/group_1/delete_item',
+            '/users/remote_add_user',
+            '/users/remote_delete_user',
+        ):
+            with self.subTest(path=path):
+                headers = {'Accept': 'application/json'}
+                response = Request.blank(path, headers=headers).get_response(
+                    self.layer.app
+                )
+                self.assertEqual(response.status_int, 404)
+                response = Request.blank(
+                    path, method='POST', headers=headers
+                ).get_response(self.layer.app)
+                self.assertEqual(response.status_int, 403)

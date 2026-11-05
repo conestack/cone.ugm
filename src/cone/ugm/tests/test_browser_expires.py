@@ -67,6 +67,7 @@ class BrowserExpiresTests:
         request.params['userform.password'] = '_NOCHANGE_'
         request.params['userform.active'] = '01.01.2030'
         request.params['userform.principal_roles'] = []
+        request.method = 'POST'
         request.params['action.userform.save'] = '1'
         with mock.patch.object(
             User, 'expires', new_callable=mock.PropertyMock, return_value=None

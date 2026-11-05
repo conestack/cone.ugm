@@ -6,6 +6,7 @@ from pyramid.view import view_config
 @view_config(
     name='remote_add_user',
     accept='application/json',
+    request_method='POST',
     renderer='json',
     context=Users,
     permission='add_user',
@@ -129,6 +130,7 @@ def remote_add_user(model, request):
 @view_config(
     name='remote_delete_user',
     accept='application/json',
+    request_method='POST',
     renderer='json',
     context=Users,
     permission='delete_user',

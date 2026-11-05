@@ -121,6 +121,7 @@ def remove_membership_error_message(request, error, user_ids, group_ids):
 @view_config(
     name='delete_item',
     accept='application/json',
+    request_method='POST',
     renderer='json',
     context=User,
     permission='delete_user',
@@ -151,6 +152,7 @@ def delete_user_action(model, request):
 @view_config(
     name='add_item',
     accept='application/json',
+    request_method='POST',
     renderer='json',
     context=User,
     permission='manage_membership',
@@ -189,6 +191,7 @@ def user_add_to_group_action(model, request):
 @view_config(
     name='remove_item',
     accept='application/json',
+    request_method='POST',
     renderer='json',
     context=User,
     permission='manage_membership',
@@ -232,6 +235,7 @@ def user_remove_from_group_action(model, request):
 @view_config(
     name='delete_item',
     accept='application/json',
+    request_method='POST',
     renderer='json',
     context=Group,
     permission='delete_group',
@@ -257,6 +261,7 @@ def delete_group_action(model, request):
 @view_config(
     name='add_item',
     accept='application/json',
+    request_method='POST',
     renderer='json',
     context=Group,
     permission='manage_membership',
@@ -294,6 +299,7 @@ def group_add_user_action(model, request):
 @view_config(
     name='remove_item',
     accept='application/json',
+    request_method='POST',
     renderer='json',
     context=Group,
     permission='manage_membership',

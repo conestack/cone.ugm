@@ -181,6 +181,7 @@ QUnit.module('cone.ugm.actions.PrincipalActions', (hooks) => {
         assert.true(evt.isDefaultPrevented());
         assert.true(evt.isPropagationStopped());
         assert.strictEqual(request_opts.url, 'http://tld.com/groups/group1/add_item');
+        assert.strictEqual(request_opts.method, 'POST');
         assert.strictEqual(request_opts.type, 'json');
         assert.deepEqual(request_opts.params, { id: 'user1' });
     });

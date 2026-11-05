@@ -4,6 +4,10 @@ Changes
 2.0.2 (unreleased)
 ------------------
 
+- The views ``add_item``, ``remove_item``, ``delete_item``, ``remote_add_user`` and
+  ``remote_delete_user`` only accept ``POST`` requests.
+  [rnix]
+
 - Encode the principal attributes shown in the column listing. Requires
   ``yafowil`` 4.2.0.
   [rnix]

@@ -136,6 +136,11 @@ class BrowserPrincipalTests:
         self.assertFalse(data.has_errors)
         self.assertEqual(data.extracted, 'new_pid')
 
+        # test no value given
+        data = widget.extract(request={})
+        self.assertFalse(data.has_errors)
+        self.assertEqual(data.extracted, UNSET)
+
     @testing.principals(users={'user_exists': {}})
     def test_UserExistsExtractor(self):
         root = get_root()

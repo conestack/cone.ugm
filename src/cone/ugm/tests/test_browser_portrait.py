@@ -15,6 +15,7 @@ def user_portrait_request(layer, model, portrait):
     request.params['userform.password'] = '_NOCHANGE_'
     request.params['userform.portrait'] = portrait
     request.params['userform.principal_roles'] = []
+    request.method = 'POST'
     request.params['action.userform.save'] = '1'
     return request
 

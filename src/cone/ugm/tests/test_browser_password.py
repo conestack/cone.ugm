@@ -65,6 +65,7 @@ class BrowserPasswordTests:
         request.params['change_password_form.current_password'] = ''
         request.params['change_password_form.new_password'] = ''
         request.params['change_password_form.confirm_password'] = ''
+        request.method = 'POST'
         request.params['action.change_password_form.change'] = '1'
         with self.layer.authenticated('user_1'):
             data = form.form.extract(request)

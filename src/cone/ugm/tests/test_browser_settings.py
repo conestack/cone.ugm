@@ -328,6 +328,7 @@ class BrowserSettingsTests:
         try:
             rule = 'localmanager_settings.rules.0'
             request = self.layer.new_request()
+            request.method = 'POST'
             request.params.update(
                 {
                     f'{rule}.source': 'admin_group_1',
@@ -370,6 +371,7 @@ class BrowserSettingsTests:
         try:
             rule = 'localmanager_settings.rules.0'
             request = self.layer.new_request()
+            request.method = 'POST'
             request.params.update(
                 {
                     f'{rule}.source': 'admin_group_1',
@@ -421,6 +423,7 @@ class BrowserSettingsTests:
         general_settings.attrs.users_local_management_enabled = 'True'
         try:
             request = self.layer.new_request()
+            request.method = 'POST'
             # Keyed autocompletes: the hidden field carries the group id, the
             # visible ``.label`` field its title
             rule = 'localmanager_settings.rules.0'

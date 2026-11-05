@@ -135,6 +135,7 @@ class BrowserGroupTests:
         request.params['groupform.id'] = ''
         request.params['groupform.groupname'] = 'Group 1'
         request.params['groupform.principal_roles'] = []
+        request.method = 'POST'
         request.params['action.groupform.save'] = '1'
 
         with self.layer.authenticated('manager'):
@@ -185,6 +186,7 @@ class BrowserGroupTests:
 
         request.params['groupform.groupname'] = 'Groupname Changed'
         request.params['groupform.principal_roles'] = []
+        request.method = 'POST'
         request.params['action.groupform.save'] = '1'
         with self.layer.authenticated('manager'):
             res = render_tile(group, request, 'editform')
@@ -250,6 +252,7 @@ class BrowserGroupTests:
         request.params['groupform.id'] = 'group_1'
         request.params['groupform.groupname'] = ''
         request.params['groupform.principal_roles'] = []
+        request.method = 'POST'
         request.params['action.groupform.save'] = '1'
         request.params.update(params)
         return request
@@ -283,6 +286,7 @@ class BrowserGroupTests:
         groups = get_root()['groups']
         request = self._add_group_request()
         del request.params['action.groupform.save']
+        request.method = 'POST'
         request.params['action.groupform.cancel'] = '1'
         with self.layer.authenticated('manager'):
             render_tile(groups, request, 'add')
@@ -295,6 +299,7 @@ class BrowserGroupTests:
         request = self.layer.new_request()
         request.params['groupform.groupname'] = 'Groupname Changed'
         request.params['groupform.principal_roles'] = []
+        request.method = 'POST'
         request.params['action.groupform.save'] = '1'
         request.params.update(params)
         return request
