@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.1.0 (unreleased)
+2.1.0 (2026-11-09)
 ------------------
 
 - The views ``add_item``, ``remove_item``, ``delete_item``, ``remote_add_user`` and
